@@ -201,23 +201,29 @@ export const extractTextWithDetails = async (
     }
 
     // Create a comprehensive error with both failures
+    const isBothFailed = tesseractError && transformersError;
+    const userFriendlyMessage = isBothFailed
+      ? 'We tried both our fast OCR and advanced AI methods, but couldn\'t extract text from this image.'
+      : 'Failed to extract text from the image using both methods.';
+    
     throw new OCRError({
       code: 'OCR_PROCESSING_FAILED' as any,
       message: 'Both Tesseract and Transformers failed',
-      userMessage: 'Failed to extract text from the image using both methods.',
+      userMessage: userFriendlyMessage,
       suggestions: [
-        'Ensure the image contains clear, readable text',
-        'Try a higher resolution or clearer image',
-        'Check if the image is properly oriented',
-        'Make sure the image file is not corrupted',
-        'Try converting the image to PNG or JPEG format',
-        tesseractError ? `Tesseract error: ${tesseractError.message}` : null,
-        transformersError ? `AI error: ${transformersError.message}` : null,
-      ].filter(Boolean) as string[],
+        '📷 Ensure the image contains visible, readable text',
+        '🔍 Try a higher resolution or clearer image',
+        '🔄 Check if the image is properly oriented (not upside down)',
+        '✨ Increase brightness if the image is too dark',
+        '📐 Make sure text isn\'t too small or blurry',
+        '📄 Try converting the image to PNG or JPEG format',
+        '🔌 Check your internet connection (needed for first-time AI model download)',
+      ],
       technicalDetails: {
         tesseractError: tesseractError?.message || tesseractError,
         transformersError: transformersError?.message || transformersError,
         tesseractConfidence: tesseractResult?.confidence,
+        bothMethodsAttempted: true,
       },
       recoverable: true,
     });
