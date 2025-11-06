@@ -10,7 +10,7 @@ interface FileInputProps {
 }
 
 const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
-const MAX_FILE_SIZE_BYTES = 50 * 1024 * 1024; // 50 MB
+const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024; // 20 MB (matching backend limits)
 
 export const FileInput: React.FC<FileInputProps> = ({ onFileChange, previewUrl, imageFile, isLoading }) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -31,7 +31,7 @@ export const FileInput: React.FC<FileInputProps> = ({ onFileChange, previewUrl, 
 
     if (file.size > MAX_FILE_SIZE_BYTES) {
       const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
-      setError(`File too large (${fileSizeMB} MB). Max size is 50 MB.`);
+      setError(`File too large (${fileSizeMB} MB). Max size is 20 MB.`);
       onFileChange(null);
       return;
     }
@@ -125,7 +125,7 @@ export const FileInput: React.FC<FileInputProps> = ({ onFileChange, previewUrl, 
         <p className="text-muted-foreground">
           <span className="font-semibold text-primary">Click to upload</span> or drag and drop
         </p>
-        <p className="text-xs text-muted-foreground/80">PNG, JPG, JPEG, or WEBP (max 50MB)</p>
+        <p className="text-xs text-muted-foreground/80">PNG, JPG, JPEG, or WEBP (max 20MB)</p>
         {error && <p className="text-sm text-destructive mt-2 font-medium">{error}</p>}
       </label>
     </div>
