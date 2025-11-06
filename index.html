@@ -74,10 +74,11 @@
         animation: slide-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
       }
     </style>
+    <!-- Google AdSense base script (verification + runtime) -->
+    <script async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2964937995247458"
+      crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <!-- AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
-     crossorigin="anonymous"></script>
   <script type="importmap">
 {
   "imports": {
@@ -91,28 +92,6 @@
 </head>
   <body class="bg-background text-foreground">
     <div id="root"></div>
-    <!-- AdSense Ad Slot -->
-    <div class="container mx-auto mt-8 text-center">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-           data-ad-slot="YYYYYYYYYY"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-    </div>
-    <script>
-         window.addEventListener('load', () => {
-            // Add a small delay to ensure the layout is fully rendered in the SPA
-            // before pushing the ad request. This helps prevent the "availableWidth=0" error.
-            setTimeout(function() {
-                try {
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                } catch (e) {
-                    console.error("AdSense push error: ", e);
-                }
-            }, 200);
-         });
-    </script>
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
