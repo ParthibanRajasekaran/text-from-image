@@ -1,5 +1,0 @@
-{
-  "name": "Text From Image",
-  "description": "An advanced OCR (Optical Character Recognition) application powered by the Gemini 2.5 Pro model. Upload an image to extract all visible text with high precision, preserving original line breaks and orientation. The app supports copying the extracted text and downloading it in various formats.",
-  "requestFramePermissions": []
-}
