@@ -1,46 +1,7 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  colors: {
-    background: "hsl(0 0% 100%)",
-    foreground: "hsl(222.2 84% 4.9%)",
-    card: "hsl(0 0% 100%)",
-    cardForeground: "hsl(222.2 84% 4.9%)",
-    popover: "hsl(0 0% 100%)",
-    popoverForeground: "hsl(222.2 84% 4.9%)",
-    primary: "hsl(210 89% 43%)",
-    primaryForeground: "hsl(210 40% 98%)",
-    secondary: "hsl(210 40% 96.1%)",
-    secondaryForeground: "hsl(210 40% 9.8%)",
-    muted: "hsl(210 40% 96.1%)",
-    mutedForeground: "hsl(215.4 16.3% 46.9%)",
-    accent: "hsl(210 40% 96.1%)",
-    accentForeground: "hsl(210 40% 9.8%)",
-    destructive: "hsl(0 84.2% 60.2%)",
-    destructiveForeground: "hsl(210 40% 98%)",
-    border: "hsl(214.3 31.8% 91.4%)",
-    input: "hsl(214.3 31.8% 91.4%)",
-    ring: "hsl(215 20.2% 65.1%)",
-  },
-  borderRadius: {
-    DEFAULT: "0.5rem",
-  },
-  keyframes: {
-    progress: {
-      "0%": { transform: "translateX(-100%) scaleX(0.1)" },
-      "50%": { transform: "translateX(0) scaleX(1)" },
-      "100%": { transform: "translateX(100%) scaleX(0.1)" },
-    },
-    slideIn: {
-      from: { transform: "translateX(100%)", opacity: "0" },
-      to: { transform: "translateX(0)", opacity: "1" },
-    },
-  },
-  animation: {
-    progress: "progress 2s infinite ease-in-out",
-    slideIn: "slideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both",
-  },
-}
 /* Define CSS variables for light and dark themes */
 :root {
   --background: 0 0% 100%;
