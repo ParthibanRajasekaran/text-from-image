@@ -1,8 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-interface SkeletonProps {
-  className?: string;
+interface SkeletonProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'key'> {
   variant?: 'text' | 'circular' | 'rectangular';
   width?: string | number;
   height?: string | number;
@@ -95,9 +94,9 @@ export function TextSkeleton({ lines = 3, className = '' }: { lines?: number; cl
 /**
  * Card skeleton for loading glass cards
  */
-export function CardSkeleton({ className = '' }: { className?: string }) {
+export function CardSkeleton({ className = '', ...props }: { className?: string } & React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={`rounded-xl bg-surface/40 backdrop-blur-xl border border-border/50 p-6 ${className}`}>
+    <div className={`rounded-xl bg-surface/40 backdrop-blur-xl border border-border/50 p-6 ${className}`} {...props}>
       <Skeleton variant="rectangular" height={24} width="60%" className="mb-4" />
       <TextSkeleton lines={3} />
     </div>

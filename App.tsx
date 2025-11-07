@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { FileInput } from './components/FileInput';
 import { Dropzone } from './components/Dropzone';
-import { ResultDisplay } from './components/ResultDisplay';
+// import { ResultDisplay } from './components/ResultDisplay';
 import { ResultToolbar } from './components/ResultToolbar';
 import { Toast } from './components/Toast';
 import { ThemeToggle } from './components/ThemeToggle';
@@ -315,7 +315,7 @@ function App() {
                       onDownload={() => {}}
                     />
                   )}
-                  <ResultDisplay text={extractedText} originalFilename={imageFile?.name || 'extracted-text.txt'} />
+                  {/* <ResultDisplay text={extractedText} originalFilename={imageFile?.name || 'extracted-text.txt'} /> */}
                   {methodUsed && (
                     <p className="text-xs text-muted-foreground text-center italic">
                       {methodUsed}

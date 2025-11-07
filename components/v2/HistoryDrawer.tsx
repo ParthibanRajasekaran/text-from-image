@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { XCircleIcon } from '../icons/XCircleIcon';
+import { formatTimestamp } from '../../utils/dateUtils';
 import type { HistoryItem } from '../../hooks/useLocalHistory';
 interface HistoryDrawerProps {
   isOpen: boolean;

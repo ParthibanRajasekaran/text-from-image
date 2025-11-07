@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { trackAdSlotVisible } from '../lib/analytics';
 
 interface AdSlotLazyProps {
   /** Ad placement position (for tracking/analytics) */
@@ -41,6 +42,12 @@ export function AdSlotLazy({ slot, dataAdTest = false, className = '' }: AdSlotL
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
+            
+            // Track ad slot visibility
+            trackAdSlotVisible({
+              slotId: slot,
+            });
+            
             observer.disconnect(); // Load once, then stop observing
           }
         });

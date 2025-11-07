@@ -1,6 +1,21 @@
 import '@testing-library/jest-dom';
+import 'jest-axe/extend-expect';
 import { cleanup } from '@testing-library/react';
 import { afterEach } from '@jest/globals';
+import { TextEncoder, TextDecoder } from 'util';
+
+// Extend Jest matchers for jest-axe
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toHaveNoViolations(): R;
+    }
+  }
+}
+
+// Polyfill TextEncoder and TextDecoder for jsdom
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder as any;
 
 // Cleanup after each test
 afterEach(() => {

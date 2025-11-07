@@ -125,19 +125,15 @@ export function HistoryDrawer({
                 <>
                   {/* History list */}
                   <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                    {history.map((entry) => (
-                      <HistoryCard
-                        key={entry.id}
-                        entry={entry}
-                        onSelect={() => onSelectEntry(entry)}
-                        onCopy={(e) => handleCopyText(entry.text, e)}
-                        onRemove={(e) => handleRemove(entry.id, e)}
-                        onRerun={onRerun ? (e) => {
-                          e.stopPropagation();
-                          onRerun(entry);
-                        } : undefined}
-                      />
-                    ))}
+                    {history.map((entry) => {
+                      const { key, ...props } = { key: entry.id, entry, onSelect: () => onSelectEntry(entry), onCopy: (e: React.MouseEvent) => handleCopyText(entry.text, e), onRemove: (e: React.MouseEvent) => handleRemove(entry.id, e), onRerun: onRerun ? (e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        onRerun(entry);
+                      } : undefined };
+                      return (
+                        <HistoryCard key={key} {...(props as any)} />
+                      );
+                    })}
                   </div>
 
                   {/* Footer actions */}

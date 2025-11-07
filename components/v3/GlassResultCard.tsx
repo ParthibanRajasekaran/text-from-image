@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { CopyIcon } from '../icons/CopyIcon';
 import { DownloadIcon } from '../icons/DownloadIcon';
+import { trackCopyClicked, trackDownloadClicked } from '../../lib/analytics';
 
 interface GlassResultCardProps {
   text: string;
@@ -29,6 +30,11 @@ export function GlassResultCard({ text, onCopy, onDownload, filename = 'extracte
     try {
       await navigator.clipboard.writeText(text);
       
+      // Track copy event
+      trackCopyClicked({
+        contentType: 'text',
+      });
+      
       // Trigger confetti
       if (!shouldReduceMotion) {
         setShowConfetti(true);
@@ -50,6 +56,12 @@ export function GlassResultCard({ text, onCopy, onDownload, filename = 'extracte
   }, [text, onCopy, shouldReduceMotion]);
 
   const handleDownload = useCallback(() => {
+    // Track download event
+    trackDownloadClicked({
+      format: 'txt',
+      contentType: 'text',
+    });
+
     const blob = new Blob([text], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

@@ -24,8 +24,8 @@ export const ROUTES = {
   EXTRACT_TEXT_FROM_IMAGE: '/extract-text-from-image',
 } as const;
 
-// Select home component based on feature flag
-const HomeComponent = isUXV3Enabled() ? HeroOCR : App;
+// Always use HeroOCR as the home component
+const HomeComponent = HeroOCR;
 
 /**
  * App router with SEO-friendly paths
