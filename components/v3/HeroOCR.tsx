@@ -1,7 +1,9 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { AuroraBackground } from '../AuroraBackground';
 import { GlassDropzone } from './GlassDropzone';
+import { GlassProgressBar, ProgressStage, GlassProgressBarHandle } from './GlassProgressBar';
+import { GlassResultCard } from './GlassResultCard';
 import { ThemeToggle } from '../ThemeToggle';
 import { extractTextWithDetails } from '../../services/hybridService';
 
@@ -35,7 +37,9 @@ export function HeroOCR() {
   const [extractedText, setExtractedText] = useState<string>('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [progressStage, setProgressStage] = useState<ProgressStage>('idle');
 
+  const progressRef = useRef<GlassProgressBarHandle>(null);
   const shouldReduceMotion = useReducedMotion();
 
   // Theme toggle
@@ -48,22 +52,38 @@ export function HeroOCR() {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  // Handle file upload
+  // Handle file upload with staged progress
   const handleFileSelect = useCallback(async (file: File) => {
     setImageFile(file);
     setExtractedText('');
     setError(null);
     setIsProcessing(true);
+    setProgressStage('upload');
 
     try {
+      // Stage 1: Upload (simulate upload delay)
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      // Stage 2: OCR processing
+      setProgressStage('ocr');
       const result = await extractTextWithDetails(file, {
         minConfidence: 60,
         minTextLength: 3,
       });
 
+      // Stage 3: Render
+      setProgressStage('render');
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      // Complete
+      setProgressStage('complete');
       setExtractedText(result.text);
+      
+      // Announce completion
+      progressRef.current?.announce('Text extraction completed successfully');
     } catch (err: any) {
       setError(err.message || 'Failed to extract text');
+      setProgressStage('idle');
       console.error('OCR Error:', err);
     } finally {
       setIsProcessing(false);
@@ -155,34 +175,27 @@ export function HeroOCR() {
             ))}
           </motion.div>
 
-          {/* Processing state */}
+          {/* Progress Bar */}
           {isProcessing && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mt-8 p-6 rounded-xl bg-surface/60 backdrop-blur border border-border/50"
-            >
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-5 h-5 border-2 border-accent border-t-transparent rounded-full animate-spin" />
-                <p className="text-sm text-muted-foreground">Extracting text...</p>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Result */}
-          {extractedText && !isProcessing && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-8 p-6 rounded-xl bg-surface/60 backdrop-blur border border-border/50 shadow-glow-sm"
+              exit={{ opacity: 0, y: -20 }}
+              className="mt-8"
             >
-              <h3 className="text-lg font-semibold mb-4">Extracted Text</h3>
-              <pre className="whitespace-pre-wrap text-sm text-muted-foreground bg-background/50 p-4 rounded-lg border border-border/50 max-h-96 overflow-y-auto">
-                {extractedText}
-              </pre>
+              <GlassProgressBar ref={progressRef} stage={progressStage} />
             </motion.div>
           )}
+
+          {/* Result Card - Reserve min-height to prevent CLS */}
+          <div className="mt-8" style={{ minHeight: extractedText ? '400px' : '0px' }}>
+            {extractedText && !isProcessing && (
+              <GlassResultCard
+                text={extractedText}
+                filename={imageFile?.name.replace(/\.[^/.]+$/, '') + '-extracted.txt' || 'extracted-text.txt'}
+              />
+            )}
+          </div>
 
           {/* Error */}
           {error && (
