@@ -24,7 +24,7 @@ describe('Dropzone', () => {
     const file1 = new File(['test1'], 'test1.png', { type: 'image/png' });
     const file2 = new File(['test2'], 'test2.jpg', { type: 'image/jpeg' });
     
-    const input = screen.getByRole('button', { name: /upload image/i });
+    
     
     // Find the hidden file input
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
