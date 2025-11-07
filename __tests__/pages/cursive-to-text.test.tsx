@@ -191,7 +191,6 @@ describe('Cursive to Text Page', () => {
       );
 
       const cursiveText = cursiveContainer.textContent || '';
-      const handwritingText = handwritingContainer.textContent || '';
 
       // Cursive-specific FAQ topics
       expect(cursiveText).toMatch(/letter joins|slant|baseline|calligraphy/i);
@@ -357,7 +356,7 @@ describe('Cursive to Text Page', () => {
     it('has higher contrast setting than handwriting page', () => {
       // This is a configuration test - verifying toolDefaults
       const module = require('../../app/cursive-to-text/page');
-      const config = module.default;
+      
       
       // Note: In real implementation, we'd export config for testing
       // For now, we verify the page renders cursive-specific content

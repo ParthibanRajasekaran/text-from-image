@@ -7,7 +7,6 @@ import { render, screen, within } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import ImageToExcelPage from '../../app/image-to-excel/page';
-import { makeNichePage } from '../../app/(tools)/_builder';
 
 // Mock framer-motion to avoid animation issues in tests
 jest.mock('framer-motion', () => ({

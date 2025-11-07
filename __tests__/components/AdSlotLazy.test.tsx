@@ -76,7 +76,7 @@ describe('AdSlotLazy', () => {
   });
 
   it('should display test content in test mode', async () => {
-    const { container, getByText } = render(<AdSlotLazy slot="sidebar" dataAdTest={true} />);
+    const { getByText } = render(<AdSlotLazy slot="sidebar" dataAdTest={true} />);
     
     // Trigger intersection
     mockObserver.trigger(true);

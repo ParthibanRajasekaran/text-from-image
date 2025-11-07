@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { AuroraBackground } from '../AuroraBackground';
 import { GlassDropzone } from './GlassDropzone';
 import { GlassProgressBar } from './GlassProgressBar';
@@ -46,7 +46,6 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
     progressRef,
     handleFileSelect,
     setExtractedText,
-    setImageFile,
     setError,
     clear: handleClear,
   } = useOCRProcessor();
@@ -54,23 +53,14 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
   
   // Local UI state only
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
 
   // Handle restoring from history
   const handleRestore = useCallback((item: HistoryItem) => {
-    // Prevent race conditions by checking if already processing
-    if (isProcessing) {
-      return;
+    // Directly set the extracted text instead of creating a fake file
+    if (extractedText !== item.text) {
+      setExtractedText(item.text);
     }
-    
-    // Simply restore the text directly - no need to process a file
-    // Use the exposed setExtractedText from useOCRProcessor
-    setExtractedText(item.text);
-    
-    // Create a file reference with the actual text content for UI consistency
-    const restoredFile = new File([item.text], item.filename, { type: 'text/plain' });
-    setImageFile(restoredFile);
-  }, [isProcessing, setExtractedText, setImageFile]);
+  }, [extractedText, setExtractedText]);
 
   // Copy text to clipboard (shortcut)
   const handleCopyShortcut = useCallback(async () => {
