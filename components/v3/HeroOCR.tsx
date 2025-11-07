@@ -4,8 +4,11 @@ import { AuroraBackground } from '../AuroraBackground';
 import { GlassDropzone } from './GlassDropzone';
 import { GlassProgressBar, ProgressStage, GlassProgressBarHandle } from './GlassProgressBar';
 import { GlassResultCard } from './GlassResultCard';
+import { HistoryDrawer } from './HistoryDrawer';
 import { ThemeToggle } from '../ThemeToggle';
 import { extractTextWithDetails } from '../../services/hybridService';
+import { useLocalHistory } from '../../hooks/useLocalHistory';
+import { useShortcuts, getCommonShortcuts } from '../../hooks/useShortcuts';
 
 type Theme = 'light' | 'dark';
 
@@ -38,9 +41,13 @@ export function HeroOCR() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [progressStage, setProgressStage] = useState<ProgressStage>('idle');
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   const progressRef = useRef<GlassProgressBarHandle>(null);
   const shouldReduceMotion = useReducedMotion();
+
+  // Local history hook
+  const { history, addToHistory, removeFromHistory, clearHistory } = useLocalHistory();
 
   // Theme toggle
   useEffect(() => {
@@ -51,6 +58,56 @@ export function HeroOCR() {
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
+
+  // Handle restoring from history
+  const handleRestore = useCallback((item: typeof history[0]) => {
+    setExtractedText(item.text);
+    setImageFile(null); // Clear current file since we're restoring
+    setError(null);
+    setProgressStage('complete');
+  }, []);
+
+  // Clear result
+  const handleClear = useCallback(() => {
+    setExtractedText('');
+    setImageFile(null);
+    setError(null);
+    setProgressStage('idle');
+  }, []);
+
+  // Copy text to clipboard
+  const handleCopyShortcut = useCallback(async () => {
+    if (!extractedText) return;
+    try {
+      await navigator.clipboard.writeText(extractedText);
+    } catch (err) {
+      console.error('Copy failed:', err);
+    }
+  }, [extractedText]);
+
+  // Download text file
+  const handleDownloadShortcut = useCallback(() => {
+    if (!extractedText) return;
+    const blob = new Blob([extractedText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = imageFile?.name.replace(/\.[^/.]+$/, '') + '-extracted.txt' || 'extracted-text.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [extractedText, imageFile]);
+
+  // Keyboard shortcuts
+  const shortcuts = getCommonShortcuts({
+    onCopy: extractedText ? handleCopyShortcut : undefined,
+    onDownload: extractedText ? handleDownloadShortcut : undefined,
+    onViewHistory: () => setIsHistoryOpen(true),
+    onClear: extractedText ? handleClear : undefined,
+  });
+
+  useShortcuts(shortcuts, true);
 
   // Handle file upload with staged progress
   const handleFileSelect = useCallback(async (file: File) => {
@@ -79,6 +136,12 @@ export function HeroOCR() {
       setProgressStage('complete');
       setExtractedText(result.text);
       
+      // Add to history
+      addToHistory({
+        filename: file.name,
+        text: result.text,
+      });
+      
       // Announce completion
       progressRef.current?.announce('Text extraction completed successfully');
     } catch (err: any) {
@@ -88,7 +151,7 @@ export function HeroOCR() {
     } finally {
       setIsProcessing(false);
     }
-  }, []);
+  }, [addToHistory]);
 
   return (
     <AuroraBackground>
@@ -105,10 +168,40 @@ export function HeroOCR() {
                 TextFromImage
               </h1>
             </motion.div>
-            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            <div className="flex items-center gap-2">
+              {/* History button */}
+              {history.length > 0 && (
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  onClick={() => setIsHistoryOpen(true)}
+                  className="px-3 py-1.5 rounded-lg bg-surface/60 hover:bg-surface/80 border border-border/50 hover:border-border text-sm font-medium text-foreground transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+                  aria-label="View history"
+                >
+                  <span className="hidden sm:inline">History</span>
+                  <span className="sm:hidden">📚</span>
+                  {history.length > 0 && (
+                    <span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-accent/20 text-accent text-xs font-semibold">
+                      {history.length}
+                    </span>
+                  )}
+                </motion.button>
+              )}
+              <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            </div>
           </div>
         </div>
       </header>
+
+      {/* History Drawer */}
+      <HistoryDrawer
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        history={history}
+        onRestore={handleRestore}
+        onClearHistory={clearHistory}
+        onRemoveItem={removeFromHistory}
+      />
 
       {/* Hero Section */}
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
