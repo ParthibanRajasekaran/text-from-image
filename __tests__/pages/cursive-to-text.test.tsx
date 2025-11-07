@@ -191,7 +191,6 @@ describe('Cursive to Text Page', () => {
       );
 
       const cursiveText = cursiveContainer.textContent || '';
-      const handwritingText = handwritingContainer.textContent || '';
 
       // Cursive-specific FAQ topics
       expect(cursiveText).toMatch(/letter joins|slant|baseline|calligraphy/i);
