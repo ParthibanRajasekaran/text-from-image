@@ -1,6 +1,10 @@
 import { lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
+import { isUXV3Enabled } from './utils/env';
+
+// V3: Futuristic Hero UI (feature-gated)
+import { HeroOCR } from './components/v3/HeroOCR';
 
 // Lazy load feature pages for code splitting
 const ImageToText = lazy(() => import('./pages/ImageToText'));
@@ -9,9 +13,12 @@ const JpgToWord = lazy(() => import('./pages/JpgToWord'));
 const ImageToExcel = lazy(() => import('./pages/ImageToExcel'));
 const ExtractTextFromImage = lazy(() => import('./pages/ExtractTextFromImage'));
 
+// Select home component based on feature flag
+const HomeComponent = isUXV3Enabled() ? HeroOCR : App;
+
 /**
  * App router with SEO-friendly paths
- * - / (home)
+ * - / (home) - Uses V3 HeroOCR if VITE_UX_V2=1, otherwise legacy App
  * - /image-to-text
  * - /image-to-text-converter
  * - /jpg-to-word
@@ -23,7 +30,7 @@ const ExtractTextFromImage = lazy(() => import('./pages/ExtractTextFromImage'));
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <HomeComponent />,
   },
   {
     path: '/image-to-text',
