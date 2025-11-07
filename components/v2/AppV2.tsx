@@ -325,20 +325,43 @@ export function AppV2() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.95 }}
                   transition={{ duration: 0.2 }}
-                  className="rounded-lg overflow-hidden border border-border"
+                  className="space-y-2"
                 >
-                  <img
-                    src={previewUrl}
-                    alt="Preview of uploaded image"
-                    className="w-full h-auto max-h-[300px] object-contain bg-muted"
-                    loading="lazy"
-                  />
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">
+                      {selectedFile?.name || 'Image preview'}
+                    </span>
+                    <button
+                      onClick={() => {
+                        setSelectedFile(null);
+                        setPreviewUrl(null);
+                        setExtractedText('');
+                        setMethodUsed('');
+                      }}
+                      className="text-xs text-destructive hover:bg-destructive hover:text-destructive-foreground px-2 py-1 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-1"
+                      aria-label="Clear selected image"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                  <div className="rounded-lg overflow-hidden border border-border">
+                    <img
+                      src={previewUrl}
+                      alt="Preview of uploaded image"
+                      className="w-full h-auto max-h-[300px] object-contain bg-muted"
+                      loading="lazy"
+                    />
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
 
             {/* Keyboard shortcuts hint */}
-            <div className="text-xs text-muted-foreground space-y-1 p-3 bg-muted/50 rounded-md">
+            <div 
+              className="text-xs text-muted-foreground space-y-1 p-3 bg-muted/50 rounded-md"
+              role="region"
+              aria-label="Keyboard shortcuts"
+            >
               <p className="font-medium">Keyboard Shortcuts:</p>
               <ul className="space-y-0.5">
                 <li><kbd className="px-1 py-0.5 bg-background border border-border rounded text-xs">V</kbd> Paste image</li>

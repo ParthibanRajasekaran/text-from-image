@@ -104,7 +104,7 @@ export function HistoryDrawer({
                 {history.length > 0 && (
                   <button
                     onClick={onClearAll}
-                    className="text-sm text-destructive hover:text-destructive/80 transition-colors focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-2 rounded px-2 py-1"
+                    className="text-sm text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-2 rounded px-2 py-1"
                     aria-label="Clear all history"
                   >
                     Clear All

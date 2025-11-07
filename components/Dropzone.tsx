@@ -92,6 +92,19 @@ export function Dropzone({
     });
   }, [onFiles]);
 
+  // Clear all files
+  const clearAllFiles = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Clean up all preview URLs
+    selectedFiles.forEach((badge) => {
+      if (badge.preview) {
+        URL.revokeObjectURL(badge.preview);
+      }
+    });
+    setSelectedFiles([]);
+    onFiles([]);
+  }, [selectedFiles, onFiles]);
+
   // Cleanup preview URLs on unmount
   useEffect(() => {
     return () => {
@@ -213,7 +226,7 @@ export function Dropzone({
 
   return (
     <div className="space-y-4">
-      {/* File badges row */}
+      {/* File badges row with clear all button */}
       <AnimatePresence mode="popLayout">
         {selectedFiles.length > 0 && (
           <motion.div
@@ -221,8 +234,21 @@ export function Dropzone({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -10 }}
             transition={{ duration: 0.2 }}
-            className="flex flex-wrap gap-2"
+            className="space-y-2"
           >
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">
+                {selectedFiles.length} file{selectedFiles.length > 1 ? 's' : ''} selected
+              </span>
+              <button
+                onClick={clearAllFiles}
+                className="text-xs text-destructive hover:bg-destructive hover:text-destructive-foreground px-2 py-1 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-1"
+                aria-label="Clear all selected files"
+              >
+                Clear All
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2">
             {selectedFiles.map((badge) => (
               <motion.div
                 key={badge.id}
@@ -257,6 +283,7 @@ export function Dropzone({
                 </button>
               </motion.div>
             ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -289,6 +316,8 @@ export function Dropzone({
           }
         )}
         style={{ willChange: 'transform' }}
+        role="region"
+        aria-label="File upload drop zone"
       >
         <motion.div
           animate={isDragging ? { scale: shouldReduceMotion ? 1 : 1.1 } : { scale: 1 }}
