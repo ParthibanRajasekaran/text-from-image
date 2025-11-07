@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { XCircleIcon } from '../icons/XCircleIcon';
 import type { HistoryItem } from '../../hooks/useLocalHistory';
+import { ConfirmDialog } from './ConfirmDialog';
 
 interface HistoryDrawerProps {
   isOpen: boolean;
@@ -34,6 +35,7 @@ export function HistoryDrawer({
   onRemoveItem,
 }: HistoryDrawerProps) {
   const shouldReduceMotion = useReducedMotion();
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   // Escape key to close
   useEffect(() => {
@@ -196,11 +198,7 @@ export function HistoryDrawer({
             {history.length > 0 && (
               <div className="p-4 border-t border-border/50">
                 <button
-                  onClick={() => {
-                    if (confirm('Clear all history? This cannot be undone.')) {
-                      onClearHistory();
-                    }
-                  }}
+                  onClick={() => setShowConfirmDialog(true)}
                   className="w-full px-4 py-2 rounded-lg bg-destructive/10 hover:bg-destructive/20 border border-destructive/20 hover:border-destructive/40 text-destructive text-sm font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-2 focus:ring-offset-background"
                 >
                   Clear All History
@@ -208,6 +206,21 @@ export function HistoryDrawer({
               </div>
             )}
           </motion.aside>
+
+          {/* Confirm Dialog */}
+          <ConfirmDialog
+            isOpen={showConfirmDialog}
+            onConfirm={() => {
+              onClearHistory();
+              setShowConfirmDialog(false);
+            }}
+            onCancel={() => setShowConfirmDialog(false)}
+            title="Clear All History?"
+            message="This action cannot be undone. All your OCR history will be permanently deleted."
+            confirmText="Clear All"
+            cancelText="Cancel"
+            variant="destructive"
+          />
         </>
       )}
     </AnimatePresence>
