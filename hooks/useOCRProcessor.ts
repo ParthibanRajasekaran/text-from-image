@@ -83,6 +83,7 @@ export function useOCRProcessor(options: UseOCRProcessorOptions = {}) {
     // Actions
     handleFileSelect,
     setExtractedText,
+    setImageFile,
     setError,
     setProgressStage,
     clear,
