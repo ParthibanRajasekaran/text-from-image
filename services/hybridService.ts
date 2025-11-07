@@ -1,5 +1,4 @@
-import * as TesseractService from './tesseractService';
-import * as TransformersService from './transformersService';
+// Dynamic imports for code splitting (lazy load OCR libraries)
 import { 
   OCRError, 
   ErrorFactory, 
@@ -12,13 +11,14 @@ import {
  * Hybrid OCR Service - Best of Both Worlds (Enhanced with Error Handling)
  * 
  * Strategy:
- * 1. Try Tesseract first (fast, lightweight, free)
- * 2. If it fails or confidence is low, fallback to Transformers.js (AI-powered)
+ * 1. Try Tesseract first (fast, lightweight, free) - loaded on demand
+ * 2. If it fails or confidence is low, fallback to Transformers.js (AI-powered) - loaded on demand
  * 3. If both fail, throw detailed error with recovery suggestions
  * 
  * Benefits:
  * - Fast for 80% of cases (Tesseract succeeds)
  * - High accuracy for remaining 20% (Transformers fallback)
+ * - Code splitting: OCR libraries only loaded when needed (~1MB smaller initial bundle)
  * - Best user experience (fast when possible, accurate when needed)
  * - Comprehensive error handling with user-friendly messages
  * - Still 100% free with no API costs
@@ -94,6 +94,9 @@ export const extractTextWithDetails = async (
     if (onProgress) onProgress('Using AI model (Transformers)...', 0, 'transformers');
     
     try {
+      // Dynamic import for code splitting
+      const TransformersService = await import('./transformersService');
+      
       const text = await ErrorRecovery.withTimeout(
         TransformersService.extractTextFromImage(
           file,
@@ -127,6 +130,9 @@ export const extractTextWithDetails = async (
   try {
     if (onProgress) onProgress('Trying Tesseract OCR...', 0, 'tesseract');
 
+    // Dynamic import for code splitting
+    const TesseractService = await import('./tesseractService');
+    
     tesseractResult = await ErrorRecovery.withTimeout(
       TesseractService.extractTextWithConfidence(
         file,
@@ -169,6 +175,9 @@ export const extractTextWithDetails = async (
   }
 
   try {
+    // Dynamic import for code splitting
+    const TransformersService = await import('./transformersService');
+    
     const transformersText = await ErrorRecovery.withTimeout(
       TransformersService.extractTextFromImage(
         file,
@@ -241,6 +250,12 @@ export const extractTextParallel = async (
   if (onProgress) onProgress('Processing with both methods...', 0);
 
   try {
+    // Dynamic imports for code splitting
+    const [TesseractService, TransformersService] = await Promise.all([
+      import('./tesseractService'),
+      import('./transformersService'),
+    ]);
+    
     // Run both methods simultaneously
     const [tesseractResult, transformersResult] = await Promise.allSettled([
       TesseractService.extractTextWithConfidence(file),
