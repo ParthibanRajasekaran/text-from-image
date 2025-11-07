@@ -2,15 +2,15 @@ import React, { useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { useSafeMotion, motionTransition } from '../lib/motion';
-import { HistoryEntry } from '../hooks/useLocalHistory';
+import { HistoryItem } from '../hooks/useLocalHistory';
 import { CopyIcon } from './icons/CopyIcon';
 import { XCircleIcon } from './icons/XCircleIcon';
 
 interface HistoryDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  history: HistoryEntry[];
-  onSelectEntry: (entry: HistoryEntry) => void;
+  history: HistoryItem[];
+  onSelectEntry: (entry: HistoryItem) => void;
   onRemoveEntry: (id: string) => void;
   onClearAll: () => void;
 }
@@ -146,7 +146,7 @@ export function HistoryDrawer({
 
 // History card component
 interface HistoryCardProps {
-  entry: HistoryEntry;
+  entry: HistoryItem;
   onSelect: () => void;
   onCopy: (e: React.MouseEvent) => void;
   onRemove: (e: React.MouseEvent) => void;
@@ -189,13 +189,14 @@ function HistoryCard({ entry, onSelect, onCopy, onRemove }: HistoryCardProps) {
       {/* Header */}
       <div className="flex items-start justify-between mb-2">
         <div className="flex-1 min-w-0">
-          {entry.fileName && (
+          {entry.filename && (
             <p className="text-xs font-medium text-gray-900 dark:text-gray-100 truncate mb-1">
-              {entry.fileName}
+              {entry.filename}
             </p>
           )}
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            {formattedDate} · {entry.characterCount.toLocaleString()} chars
+            {formattedDate} · {entry.text.length.toLocaleString()} chars
+            {entry.method && <span className="ml-1">· {entry.method}</span>}
           </p>
         </div>
         <div className="flex items-center gap-1 ml-2">
