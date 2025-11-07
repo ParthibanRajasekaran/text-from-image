@@ -12,6 +12,11 @@ import { useShortcuts, getCommonShortcuts } from '../../hooks/useShortcuts';
 
 type Theme = 'light' | 'dark';
 
+interface HeroOCRProps {
+  customHeading?: string;
+  customSubheading?: string;
+}
+
 /**
  * Futuristic Hero + Tool UI (UX V3)
  * Feature-gated with VITE_UX_V2 === '1'
@@ -24,7 +29,7 @@ type Theme = 'light' | 'dark';
  * - Zero CLS: reserved heights
  * - < 200ms interactions
  */
-export function HeroOCR() {
+export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) {
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
       const storedTheme = window.localStorage.getItem('theme') as Theme | null;
@@ -233,10 +238,14 @@ export function HeroOCR() {
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
-              Image → <span className="bg-gradient-to-r from-accent via-accent-2 to-primary bg-clip-text text-transparent">Text</span>, instantly.
+              {customHeading || (
+                <>
+                  Image → <span className="bg-gradient-to-r from-accent via-accent-2 to-primary bg-clip-text text-transparent">Text</span>, instantly.
+                </>
+              )}
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-              AI-powered OCR that respects your privacy. Extract text from images in seconds, no signup required.
+              {customSubheading || 'AI-powered OCR that respects your privacy. Extract text from images in seconds, no signup required.'}
             </p>
           </motion.div>
 
