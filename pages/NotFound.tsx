@@ -15,13 +15,29 @@ export default function NotFound() {
     document.title = '404 - Page Not Found | Free Text From Image';
     
     // Add meta robots to prevent indexing 404 pages
-    const metaRobots = document.createElement('meta');
-    metaRobots.name = 'robots';
+    // Check if robots meta tag already exists
+    let metaRobots = document.querySelector('meta[name="robots"]') as HTMLMetaElement;
+    let isNewElement = false;
+    
+    if (!metaRobots) {
+      metaRobots = document.createElement('meta');
+      metaRobots.name = 'robots';
+      isNewElement = true;
+    }
+    
+    const originalContent = metaRobots.content;
     metaRobots.content = 'noindex, nofollow';
-    document.head.appendChild(metaRobots);
+    
+    if (isNewElement) {
+      document.head.appendChild(metaRobots);
+    }
 
     return () => {
-      document.head.removeChild(metaRobots);
+      if (isNewElement && metaRobots.parentNode) {
+        document.head.removeChild(metaRobots);
+      } else if (metaRobots) {
+        metaRobots.content = originalContent;
+      }
     };
   }, []);
 
