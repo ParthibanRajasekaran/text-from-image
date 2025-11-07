@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { isUXV3Enabled } from '../utils/env';
+import { ROUTES } from '../router';
 
 /**
  * 404 Not Found page
@@ -54,7 +55,7 @@ export default function NotFound() {
             The page you're looking for doesn't exist or has been moved.
           </p>
           <Link
-            to="/"
+            to={ROUTES.HOME}
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
           >
             Go Back Home
@@ -100,7 +101,7 @@ export default function NotFound() {
           {/* Helpful links */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/"
+              to={ROUTES.HOME}
               className="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
             >
               <svg
@@ -120,7 +121,7 @@ export default function NotFound() {
             </Link>
 
             <Link
-              to="/image-to-text"
+              to={ROUTES.IMAGE_TO_TEXT}
               className="inline-flex items-center justify-center bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-semibold px-8 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 transition-all duration-200"
             >
               <svg
@@ -147,19 +148,19 @@ export default function NotFound() {
             </p>
             <div className="flex flex-wrap gap-2 justify-center mt-4">
               <Link
-                to="/jpg-to-word"
+                to={ROUTES.JPG_TO_WORD}
                 className="text-sm px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               >
                 JPG to Word
               </Link>
               <Link
-                to="/image-to-excel"
+                to={ROUTES.IMAGE_TO_EXCEL}
                 className="text-sm px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               >
                 Image to Excel
               </Link>
               <Link
-                to="/extract-text-from-image"
+                to={ROUTES.EXTRACT_TEXT_FROM_IMAGE}
                 className="text-sm px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               >
                 Extract Text

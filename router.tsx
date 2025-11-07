@@ -14,6 +14,16 @@ const ImageToExcel = lazy(() => import('./pages/ImageToExcel'));
 const ExtractTextFromImage = lazy(() => import('./pages/ExtractTextFromImage'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
+// Route path constants - single source of truth for all route paths
+export const ROUTES = {
+  HOME: '/',
+  IMAGE_TO_TEXT: '/image-to-text',
+  IMAGE_TO_TEXT_CONVERTER: '/image-to-text-converter',
+  JPG_TO_WORD: '/jpg-to-word',
+  IMAGE_TO_EXCEL: '/image-to-excel',
+  EXTRACT_TEXT_FROM_IMAGE: '/extract-text-from-image',
+} as const;
+
 // Select home component based on feature flag
 const HomeComponent = isUXV3Enabled() ? HeroOCR : App;
 
@@ -30,27 +40,27 @@ const HomeComponent = isUXV3Enabled() ? HeroOCR : App;
  */
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: ROUTES.HOME,
     element: <HomeComponent />,
   },
   {
-    path: '/image-to-text',
+    path: ROUTES.IMAGE_TO_TEXT,
     element: <ImageToText />,
   },
   {
-    path: '/image-to-text-converter',
+    path: ROUTES.IMAGE_TO_TEXT_CONVERTER,
     element: <ImageToTextConverter />,
   },
   {
-    path: '/jpg-to-word',
+    path: ROUTES.JPG_TO_WORD,
     element: <JpgToWord />,
   },
   {
-    path: '/image-to-excel',
+    path: ROUTES.IMAGE_TO_EXCEL,
     element: <ImageToExcel />,
   },
   {
-    path: '/extract-text-from-image',
+    path: ROUTES.EXTRACT_TEXT_FROM_IMAGE,
     element: <ExtractTextFromImage />,
   },
   {
