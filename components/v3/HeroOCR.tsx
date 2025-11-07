@@ -45,6 +45,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
     progressStage,
     progressRef,
     handleFileSelect,
+    setExtractedText,
     setError,
     clear: handleClear,
   } = useOCRProcessor();
@@ -55,12 +56,11 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
 
   // Handle restoring from history
   const handleRestore = useCallback((item: HistoryItem) => {
-    // This should ideally be in useOCRProcessor, but keeping simple for now
-    // The processor doesn't expose setExtractedText, so we handle in parent
+    // Directly set the extracted text instead of creating a fake file
     if (extractedText !== item.text) {
-      handleFileSelect(new File(['restored'], item.filename, { type: 'text/plain' }));
+      setExtractedText(item.text);
     }
-  }, [extractedText, handleFileSelect]);
+  }, [extractedText, setExtractedText]);
 
   // Copy text to clipboard (shortcut)
   const handleCopyShortcut = useCallback(async () => {
