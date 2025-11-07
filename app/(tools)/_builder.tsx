@@ -213,7 +213,6 @@ export function makeNichePage(config: NichePageConfig) {
         
         // Track extraction start
         const startTime = Date.now();
-        setExtractionStartTime(startTime);
         trackExtractionStarted();
         
         // Apply preprocessing options from config
