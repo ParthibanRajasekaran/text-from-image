@@ -51,11 +51,16 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   const displayPercent = isIndeterminate ? 100 : Math.min(100, Math.max(0, percent));
   const stageLabel = message || STAGE_LABELS[stage];
 
-  // Simple indeterminate mode for backwards compatibility
-  if (isIndeterminate && !message && stage === 'ocr') {
+  // Simple mode (backwards compatible)
+  if (!stage || stage === 'idle') {
     return (
-      <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
-        <div className="h-full w-full bg-primary animate-progress origin-left-right"></div>
+      <div 
+        className="w-full h-2 bg-secondary rounded-full overflow-hidden"
+        role="progressbar"
+        aria-label="Loading"
+        aria-busy="true"
+      >
+        <div className="h-full w-full bg-primary animate-progress origin-left-right" />
       </div>
     );
   }

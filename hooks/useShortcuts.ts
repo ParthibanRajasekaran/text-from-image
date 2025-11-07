@@ -34,7 +34,7 @@ export function useShortcuts(shortcuts: ShortcutConfig[], enabled: boolean = tru
         target.tagName === 'TEXTAREA' ||
         target.tagName === 'SELECT' ||
         target.isContentEditable ||
-        target.getAttribute('role') === 'textbox';
+        (target.getAttribute && target.getAttribute('role') === 'textbox');
 
       if (isTyping) {
         return;
