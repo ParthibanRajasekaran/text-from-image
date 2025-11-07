@@ -41,8 +41,8 @@ function reportVital(metric: Metric) {
     });
   }
 
-  // In production, you could send to analytics:
-  // sendToAnalytics(report);
+  // To send to production analytics, see web-vitals documentation:
+  // https://github.com/GoogleChrome/web-vitals#send-the-results-to-an-analytics-endpoint
 }
 
 /**
@@ -89,35 +89,4 @@ export function getVitalsSummary() {
   });
 
   return summary;
-}
-
-/**
- * EXAMPLE IMPLEMENTATION: Send vitals to analytics service
- * 
- * This function is intentionally unused and serves as a template/example.
- * To use it, uncomment the sendToAnalytics() call in the reportVital() function
- * above and customize the implementation below for your analytics provider.
- * 
- * Example integrations:
- * - Google Analytics 4 (shown below)
- * - Custom analytics endpoint (commented example)
- * - Third-party services (Sentry, Datadog, etc.)
- */
-function sendToAnalytics(report: VitalsReport) {
-  // Example: Google Analytics 4
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', report.name, {
-      value: Math.round(report.value),
-      metric_rating: report.rating,
-      metric_delta: Math.round(report.delta),
-      metric_id: report.id,
-    });
-  }
-
-  // Example: Custom analytics endpoint
-  // fetch('/api/analytics/vitals', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify(report),
-  // });
 }
