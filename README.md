@@ -17,6 +17,35 @@
 - 💰 **Completely Free** - No API costs, no hidden fees
 - 🌓 **Dark/Light Mode** - Beautiful UI with theme toggle
 - 📱 **Mobile Friendly** - Responsive design for all devices
+- ✨ **V3 Premium UI** - Aurora gradients, glass-morphism, micro-interactions
+- ⌨️ **Keyboard Shortcuts** - Quick actions with keyboard (C/D/H/T/Escape)
+- 📚 **Local History** - Last 20 results saved in browser
+- ♿ **Fully Accessible** - WCAG 2.1 AA compliant, keyboard navigation
+- 🎯 **SEO Optimized** - Intent-specific pages with FAQ rich snippets
+
+## 🎨 UI Variants
+
+### V3 Premium UI (Recommended)
+
+Enable with `VITE_UX_V2=1` environment variable for:
+
+- **Aurora Background** - Animated gradient blobs with grain texture
+- **Glass Morphism** - Modern glassmorphic cards with backdrop blur
+- **Staged Progress** - 3-step progress indicator (Upload → OCR → Render)
+- **Confetti Animation** - Celebratory micro-interaction on copy
+- **History Drawer** - Slide-in drawer with last 20 results
+- **Keyboard Shortcuts**:
+  - `C` - Copy result
+  - `D` - Download result  
+  - `H` - View history
+  - `T` - Toggle theme
+  - `Escape` - Close drawer/clear result
+- **Core Web Vitals** - LCP < 1.8s, INP < 200ms, CLS < 0.1
+- **5 Intent Pages** - SEO-optimized routes with FAQ sections
+
+### Classic UI (Fallback)
+
+Original simple UI without premium features.
 
 ## 🎯 Accuracy
 
@@ -42,11 +71,14 @@ cd text-from-image
 # Install dependencies
 npm install
 
+# Create .env.local file for V3 UI (optional)
+echo "VITE_UX_V2=1" > .env.local
+
 # Start development server
 npm run dev
 ```
 
-Visit `http://localhost:3000` to see the app.
+Visit `http://localhost:5173` to see the app.
 
 ### Build for Production
 
@@ -100,20 +132,42 @@ User uploads image
 ```
 text-from-image/
 ├── components/          # React components
+│   ├── v3/             # V3 Premium UI components
+│   │   ├── AuroraBackground.tsx
+│   │   ├── GlassDropzone.tsx
+│   │   ├── GlassProgressBar.tsx
+│   │   ├── GlassResultCard.tsx
+│   │   ├── HistoryDrawer.tsx
+│   │   ├── HeroOCR.tsx
+│   │   └── IntentPage.tsx
 │   ├── FileInput.tsx
 │   ├── ResultDisplay.tsx
 │   ├── ThemeToggle.tsx
 │   ├── ProgressBar.tsx
+│   ├── Skeleton.tsx
+│   ├── AdSlot.tsx
 │   └── Toast.tsx
 ├── services/           # OCR services
 │   ├── tesseractService.ts
 │   ├── transformersService.ts
 │   └── hybridService.ts
+├── hooks/             # Custom React hooks
+│   ├── useLocalHistory.ts
+│   ├── useShortcuts.ts
+│   └── useWebVitals.ts
+├── pages/             # Route pages (lazy-loaded)
+│   ├── ImageToText.tsx
+│   ├── JpgToWord.tsx
+│   ├── ImageToExcel.tsx
+│   └── ExtractTextFromImage.tsx
 ├── utils/             # Utilities
 │   ├── imagePreprocessing.ts
 │   ├── errorHandling.ts
+│   ├── webVitals.ts
 │   └── fileUtils.ts
+├── __tests__/         # Test files
 ├── App.tsx            # Main app component
+├── router.tsx         # React Router config
 └── index.tsx          # Entry point
 ```
 
