@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { AuroraBackground } from '../AuroraBackground';
 import { GlassDropzone } from './GlassDropzone';
 import { GlassProgressBar } from './GlassProgressBar';
@@ -52,7 +52,6 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
   
   // Local UI state only
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
 
   // Handle restoring from history
   const handleRestore = useCallback((item: HistoryItem) => {
