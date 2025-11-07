@@ -67,8 +67,8 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
     // Use the exposed setExtractedText from useOCRProcessor
     setExtractedText(item.text);
     
-    // Optionally recreate a minimal file reference for UI consistency
-    const restoredFile = new File([''], item.filename, { type: 'text/plain' });
+    // Create a file reference with the actual text content for UI consistency
+    const restoredFile = new File([item.text], item.filename, { type: 'text/plain' });
     setImageFile(restoredFile);
   }, [isProcessing, setExtractedText, setImageFile]);
 
