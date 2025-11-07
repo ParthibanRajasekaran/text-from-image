@@ -9,11 +9,14 @@ interface GlassProgressBarProps {
   message?: string;
   /**
    * Custom progress percentages for each stage.
-   * Defaults to: upload: 25%, ocr: 60%, render: 90%
-   * These defaults represent typical OCR workflow timing:
+   * Defaults: idle: 0%, upload: 25%, ocr: 60%, render: 90%, complete: 100%, error: 0%
+   * The main workflow stages (upload, ocr, render) represent typical OCR timing:
+   * - Idle (0%): Initial state, no progress
    * - Upload (25%): Quick file transfer
    * - OCR (60%): Most time-intensive processing
    * - Render (90%): Fast finalization
+   * - Complete (100%): Finished
+   * - Error (0%): Error state, no progress
    */
   stageProgress?: Partial<Record<ProgressStage, number>>;
 }
