@@ -49,7 +49,6 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   const progressRef = useRef<GlassProgressBarHandle>(null);
-  const shouldReduceMotion = useReducedMotion();
 
   // Local history hook
   const { history, addToHistory, removeFromHistory, clearHistory } = useLocalHistory();
