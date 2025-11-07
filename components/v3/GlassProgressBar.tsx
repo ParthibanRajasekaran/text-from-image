@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useMemo } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 export type ProgressStage = 'idle' | 'upload' | 'ocr' | 'render' | 'complete' | 'error';
@@ -66,7 +66,10 @@ export const GlassProgressBar = forwardRef<GlassProgressBarHandle, GlassProgress
     const shouldReduceMotion = useReducedMotion();
 
     // Merge custom stage progress with defaults
-    const effectiveStageProgress = { ...DEFAULT_STAGE_PROGRESS, ...stageProgress };
+    const effectiveStageProgress = useMemo(
+      () => ({ ...DEFAULT_STAGE_PROGRESS, ...stageProgress }),
+      [stageProgress]
+    );
 
     const currentProgress = percent ?? effectiveStageProgress[stage];
     const currentLabel = message || STAGE_LABELS[stage];
