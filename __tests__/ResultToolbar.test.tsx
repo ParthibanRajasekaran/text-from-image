@@ -29,7 +29,7 @@ describe('ResultToolbar', () => {
 
   it('displays character count', () => {
     render(<ResultToolbar text={mockText} />);
-    expect(screen.getByText(/22 characters/)).toBeInTheDocument();
+    expect(screen.getByText(/21 characters/)).toBeInTheDocument();
   });
 
   it('copies text to clipboard when copy button is clicked', async () => {

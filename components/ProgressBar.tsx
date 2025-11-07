@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useImperativeHandle, forwardRef } from 'react';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import { useSafeMotion, motionTransition } from '../lib/motion';
@@ -10,6 +10,10 @@ interface ProgressBarProps {
   percent?: number; // 0-100
   message?: string;
   className?: string;
+}
+
+export interface ProgressBarHandle {
+  announce: (message: string) => void;
 }
 
 const STAGE_LABELS: Record<ProgressStage, string> = {
@@ -32,19 +36,44 @@ const STAGE_COLORS: Record<ProgressStage, string> = {
 
 /**
  * Accessible progress bar with determinate stages
- * - ARIA progressbar semantics
+ * - ARIA progressbar semantics with live region announcements
+ * - announce() method for screen reader updates
  * - Width-only transforms (no layout shift)
  * - Reduced motion support
  * - Stage-based visual feedback
  * - Backwards compatible with simple usage
+ * - Uses RAF for optimal performance (INP < 200ms)
  */
-export const ProgressBar: React.FC<ProgressBarProps> = ({
-  stage = 'ocr',
-  percent,
-  message,
-  className = '',
-}) => {
-  const shouldReduceMotion = useSafeMotion();
+export const ProgressBar = forwardRef<ProgressBarHandle, ProgressBarProps>(
+  ({ stage = 'ocr', percent, message, className = '' }, ref) => {
+    const shouldReduceMotion = useSafeMotion();
+    const announceRef = useRef<HTMLDivElement>(null);
+    const rafRef = useRef<number>();
+
+    // Expose announce method to parent
+    useImperativeHandle(ref, () => ({
+      announce: (msg: string) => {
+        // Use RAF to batch DOM updates
+        if (rafRef.current) {
+          cancelAnimationFrame(rafRef.current);
+        }
+        
+        rafRef.current = requestAnimationFrame(() => {
+          if (announceRef.current) {
+            announceRef.current.textContent = msg;
+          }
+        });
+      },
+    }));
+
+    // Clean up RAF on unmount
+    React.useEffect(() => {
+      return () => {
+        if (rafRef.current) {
+          cancelAnimationFrame(rafRef.current);
+        }
+      };
+    }, []);
   
   // If no percent provided, show indeterminate animation (backwards compatibility)
   const isIndeterminate = percent === undefined;
@@ -154,7 +183,18 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
           </span>
         </div>
       )}
+
+      {/* ARIA live region for announcements (visually hidden) */}
+      <div
+        ref={announceRef}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      />
     </div>
   );
-};
+});
+
+ProgressBar.displayName = 'ProgressBar';
 

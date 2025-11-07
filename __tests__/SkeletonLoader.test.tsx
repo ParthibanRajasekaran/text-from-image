@@ -7,9 +7,10 @@ expect.extend(toHaveNoViolations);
 
 describe('SkeletonLoader', () => {
   it('renders default variant (backwards compatible)', () => {
-    render(<SkeletonLoader />);
-    const skeletons = screen.getAllByRole('status', { hidden: true });
-    expect(skeletons.length).toBeGreaterThan(0);
+    const { container } = render(<SkeletonLoader />);
+    // Default variant uses animate-pulse class
+    const pulseElements = container.querySelectorAll('.animate-pulse');
+    expect(pulseElements.length).toBeGreaterThan(0);
   });
 
   it('renders text variant', () => {

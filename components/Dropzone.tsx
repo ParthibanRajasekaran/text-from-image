@@ -1,14 +1,21 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { useSafeMotion, motionTransition } from '../lib/motion';
 import { UploadIcon } from './icons/UploadIcon';
+import { XCircleIcon } from './icons/XCircleIcon';
 
 interface DropzoneProps {
   onFiles: (files: File[]) => void;
   disabled?: boolean;
   accept?: string;
   maxFiles?: number;
+}
+
+interface FileBadge {
+  file: File;
+  id: string;
+  preview?: string;
 }
 
 // Sample images that can be loaded for demo purposes
@@ -35,12 +42,14 @@ const SAMPLE_IMAGES = [
 
 /**
  * Production-grade Dropzone with:
+ * - Multiple file support with badge row
  * - Drag & drop support
  * - Clipboard paste (Ctrl/Cmd+V)
  * - Sample image loading
  * - Keyboard accessibility (Enter/Space)
  * - Reduced motion support
  * - < 200ms interaction time
+ * - Compact file badges with remove capability
  */
 export function Dropzone({
   onFiles,
@@ -49,21 +58,50 @@ export function Dropzone({
   maxFiles = 1,
 }: DropzoneProps) {
   const [isDragging, setIsDragging] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<FileBadge[]>([]);
   const [isLoadingSample, setIsLoadingSample] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const shouldReduceMotion = useSafeMotion();
 
-  const handleFiles = useCallback(
-    (files: FileList | File[]) => {
-      if (disabled) return;
-      
-      const fileArray = Array.from(files).slice(0, maxFiles);
-      if (fileArray.length > 0) {
-        onFiles(fileArray);
+  // Process files and create badges
+  const processFiles = useCallback((files: File[]) => {
+    const validFiles = Array.from(files).slice(0, maxFiles);
+    const badges: FileBadge[] = validFiles.map((file) => ({
+      file,
+      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      preview: URL.createObjectURL(file),
+    }));
+    
+    setSelectedFiles(badges);
+    onFiles(validFiles);
+  }, [maxFiles, onFiles]);
+
+  // Remove file badge
+  const removeFile = useCallback((id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedFiles((prev) => {
+      const updated = prev.filter((badge) => badge.id !== id);
+      // Clean up preview URL
+      const removed = prev.find((badge) => badge.id === id);
+      if (removed?.preview) {
+        URL.revokeObjectURL(removed.preview);
       }
-    },
-    [disabled, maxFiles, onFiles]
-  );
+      // Notify parent with remaining files
+      onFiles(updated.map((badge) => badge.file));
+      return updated;
+    });
+  }, [onFiles]);
+
+  // Cleanup preview URLs on unmount
+  useEffect(() => {
+    return () => {
+      selectedFiles.forEach((badge) => {
+        if (badge.preview) {
+          URL.revokeObjectURL(badge.preview);
+        }
+      });
+    };
+  }, [selectedFiles]);
 
   // Drag & drop handlers
   const handleDragEnter = useCallback((e: React.DragEvent) => {
@@ -92,19 +130,19 @@ export function Dropzone({
       if (disabled) return;
 
       const { files } = e.dataTransfer;
-      handleFiles(files);
+      processFiles(Array.from(files));
     },
-    [disabled, handleFiles]
+    [disabled, processFiles]
   );
 
   // File input change
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
-        handleFiles(e.target.files);
+        processFiles(Array.from(e.target.files));
       }
     },
-    [handleFiles]
+    [processFiles]
   );
 
   // Click handler
@@ -145,13 +183,13 @@ export function Dropzone({
       }
 
       if (files.length > 0) {
-        handleFiles(files);
+        processFiles(files);
       }
     };
 
     window.addEventListener('paste', handlePaste);
     return () => window.removeEventListener('paste', handlePaste);
-  }, [disabled, handleFiles]);
+  }, [disabled, processFiles]);
 
   // Load sample image
   const handleLoadSample = useCallback(
@@ -163,18 +201,63 @@ export function Dropzone({
         const response = await fetch(sampleUrl);
         const blob = await response.blob();
         const file = new File([blob], sampleName, { type: blob.type });
-        onFiles([file]);
+        processFiles([file]);
       } catch (error) {
         console.error('Failed to load sample:', error);
       } finally {
         setIsLoadingSample(false);
       }
     },
-    [disabled, isLoadingSample, onFiles]
+    [disabled, isLoadingSample, processFiles]
   );
 
   return (
     <div className="space-y-4">
+      {/* File badges row */}
+      <AnimatePresence mode="popLayout">
+        {selectedFiles.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -10 }}
+            transition={{ duration: 0.2 }}
+            className="flex flex-wrap gap-2"
+          >
+            {selectedFiles.map((badge) => (
+              <motion.div
+                key={badge.id}
+                initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
+                transition={{ duration: 0.15 }}
+                className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-md text-sm"
+              >
+                {badge.preview && (
+                  <img 
+                    src={badge.preview} 
+                    alt={badge.file.name}
+                    className="w-6 h-6 object-cover rounded"
+                  />
+                )}
+                <span className="font-medium text-foreground truncate max-w-[150px]">
+                  {badge.file.name}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  ({(badge.file.size / 1024).toFixed(1)}KB)
+                </span>
+                <button
+                  onClick={(e) => removeFile(badge.id, e)}
+                  className="ml-1 p-0.5 hover:bg-destructive/20 rounded transition-colors"
+                  aria-label={`Remove ${badge.file.name}`}
+                >
+                  <XCircleIcon className="w-4 h-4 text-destructive" />
+                </button>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Main dropzone */}
       <motion.div
         animate={
@@ -193,21 +276,13 @@ export function Dropzone({
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        role="button"
-        tabIndex={disabled ? -1 : 0}
-        aria-label="Upload image file. You can also paste from clipboard using Ctrl+V or Cmd+V"
-        aria-disabled={disabled}
         className={clsx(
           'relative min-h-[280px] border-2 border-dashed rounded-lg',
           'flex flex-col items-center justify-center gap-4 p-8',
-          'cursor-pointer transition-colors',
-          'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
+          'transition-colors',
           {
             'opacity-50 pointer-events-none': disabled,
             'bg-primary/5': isDragging,
-            'hover:bg-accent/50 hover:border-primary/50': !disabled && !isDragging,
           }
         )}
         style={{ willChange: 'transform' }}
@@ -221,7 +296,7 @@ export function Dropzone({
 
         <div className="text-center space-y-2">
           <p className="text-lg font-medium text-foreground">
-            {isDragging ? 'Drop image here' : 'Drop image or click to upload'}
+            {isDragging ? 'Drop image here' : 'Drop image or click button to upload'}
           </p>
           <p className="text-sm text-muted-foreground">
             PNG, JPG, WEBP up to 10MB
@@ -229,6 +304,21 @@ export function Dropzone({
           <p className="text-xs text-muted-foreground">
             💡 Tip: You can also paste (Ctrl+V / Cmd+V)
           </p>
+          <button
+            onClick={handleClick}
+            onKeyDown={handleKeyDown}
+            disabled={disabled}
+            className={clsx(
+              'mt-4 px-6 py-2.5 bg-primary text-primary-foreground rounded-md font-medium',
+              'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
+              'hover:bg-primary/90 transition-colors',
+              {
+                'opacity-50 cursor-not-allowed': disabled,
+              }
+            )}
+          >
+            Upload Image
+          </button>
         </div>
 
         <input
@@ -240,6 +330,7 @@ export function Dropzone({
           disabled={disabled}
           className="sr-only"
           aria-hidden="true"
+          tabIndex={-1}
         />
       </motion.div>
 

@@ -14,6 +14,7 @@ interface HistoryDrawerProps {
   onSelectEntry: (entry: HistoryItem) => void;
   onRemoveEntry: (id: string) => void;
   onClearAll: () => void;
+  onRerun?: (entry: HistoryItem) => void;
   isLoading?: boolean;
 }
 
@@ -21,7 +22,7 @@ interface HistoryDrawerProps {
  * History drawer (side panel)
  * - Last 10 results with image hash, timestamp, text preview
  * - Quick-copy extracted text
- * - Re-run with same settings (select entry)
+ * - Re-run with same settings (emits event for parent to rehydrate)
  * - Clear individual or all entries
  * - Keyboard accessible (Escape to close, Tab navigation)
  */
@@ -32,6 +33,7 @@ export function HistoryDrawer({
   onSelectEntry,
   onRemoveEntry,
   onClearAll,
+  onRerun,
   isLoading = false,
 }: HistoryDrawerProps) {
   const shouldReduceMotion = useSafeMotion();
@@ -130,6 +132,10 @@ export function HistoryDrawer({
                         onSelect={() => onSelectEntry(entry)}
                         onCopy={(e) => handleCopyText(entry.text, e)}
                         onRemove={(e) => handleRemove(entry.id, e)}
+                        onRerun={onRerun ? (e) => {
+                          e.stopPropagation();
+                          onRerun(entry);
+                        } : undefined}
                       />
                     ))}
                   </div>
@@ -159,9 +165,10 @@ interface HistoryCardProps {
   onSelect: () => void;
   onCopy: (e: React.MouseEvent) => void;
   onRemove: (e: React.MouseEvent) => void;
+  onRerun?: (e: React.MouseEvent) => void;
 }
 
-function HistoryCard({ entry, onSelect, onCopy, onRemove }: HistoryCardProps) {
+function HistoryCard({ entry, onSelect, onCopy, onRemove, onRerun }: HistoryCardProps) {
   const shouldReduceMotion = useSafeMotion();
 
   const formattedDate = new Date(entry.timestamp).toLocaleString(undefined, {
@@ -209,6 +216,19 @@ function HistoryCard({ entry, onSelect, onCopy, onRemove }: HistoryCardProps) {
           </p>
         </div>
         <div className="flex items-center gap-1 ml-2">
+          {/* Re-run button */}
+          {onRerun && (
+            <button
+              onClick={onRerun}
+              className="p-1.5 rounded hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-600 dark:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Re-run OCR with same settings"
+              title="Re-run OCR"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+              </svg>
+            </button>
+          )}
           {/* Copy button */}
           <button
             onClick={onCopy}
