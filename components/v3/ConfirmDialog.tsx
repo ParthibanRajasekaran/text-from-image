@@ -103,18 +103,6 @@ export function ConfirmDialog({
   }, [isOpen, onConfirm, onCancel]);
 
   // Prevent body scroll when open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
-
   const isDestructive = variant === 'destructive';
 
   return (
