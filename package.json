@@ -15,7 +15,8 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.5",
-    "tesseract.js": "^5.1.1"
+    "tesseract.js": "^5.1.1",
+    "web-vitals": "^5.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

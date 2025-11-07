@@ -5,6 +5,7 @@ import { useSafeMotion, motionTransition } from '../lib/motion';
 import { HistoryItem } from '../hooks/useLocalHistory';
 import { CopyIcon } from './icons/CopyIcon';
 import { XCircleIcon } from './icons/XCircleIcon';
+import { CardSkeleton } from './SkeletonLoader';
 
 interface HistoryDrawerProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface HistoryDrawerProps {
   onSelectEntry: (entry: HistoryItem) => void;
   onRemoveEntry: (id: string) => void;
   onClearAll: () => void;
+  isLoading?: boolean;
 }
 
 /**
@@ -30,6 +32,7 @@ export function HistoryDrawer({
   onSelectEntry,
   onRemoveEntry,
   onClearAll,
+  isLoading = false,
 }: HistoryDrawerProps) {
   const shouldReduceMotion = useSafeMotion();
 
@@ -103,7 +106,13 @@ export function HistoryDrawer({
 
             {/* Content */}
             <div className="flex flex-col h-[calc(100%-4rem)]">
-              {history.length === 0 ? (
+              {isLoading ? (
+                <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                  <CardSkeleton />
+                  <CardSkeleton />
+                  <CardSkeleton />
+                </div>
+              ) : history.length === 0 ? (
                 <div className="flex-1 flex items-center justify-center p-8 text-center text-gray-500">
                   <div>
                     <p className="text-lg font-medium mb-2">No history yet</p>

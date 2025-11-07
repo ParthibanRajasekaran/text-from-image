@@ -4,6 +4,12 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { AppRouter } from './router';
 import { isUXV2Enabled } from './utils/env';
+import { initWebVitals } from './utils/webVitals';
+
+// Initialize Web Vitals monitoring
+if (isUXV2Enabled()) {
+  initWebVitals();
+}
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
