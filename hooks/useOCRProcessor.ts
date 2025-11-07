@@ -49,7 +49,7 @@ export function useOCRProcessor(options: UseOCRProcessorOptions = {}) {
       setProgressStage('render');
       await new Promise(resolve => setTimeout(resolve, 200));
 
-      // Complete
+      // Complete - set text first, then stop processing
       setProgressStage('complete');
       setExtractedText(result.text);
       
