@@ -1,16 +1,10 @@
 import { IntentPage } from '../components/v3/IntentPage';
-import { isUXV3Enabled } from '../utils/env';
-import App from '../App';
 
 /**
  * Image to Text page
  * SEO-optimized route for /image-to-text
  */
 export default function ImageToText() {
-  if (!isUXV3Enabled()) {
-    return <App />;
-  }
-
   return (
     <IntentPage
       title="Image to Text Converter - Free Online OCR Tool"

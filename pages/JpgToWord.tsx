@@ -1,16 +1,10 @@
 import { IntentPage } from '../components/v3/IntentPage';
-import { isUXV3Enabled } from '../utils/env';
-import App from '../App';
 
 /**
  * JPG to Word page
  * SEO-optimized route for /jpg-to-word
  */
 export default function JpgToWord() {
-  if (!isUXV3Enabled()) {
-    return <App />;
-  }
-
   return (
     <IntentPage
       title="JPG to Word Converter - Extract Text to DOCX Format"

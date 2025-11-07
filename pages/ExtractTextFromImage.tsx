@@ -1,16 +1,10 @@
 import { IntentPage } from '../components/v3/IntentPage';
-import { isUXV3Enabled } from '../utils/env';
-import App from '../App';
 
 /**
  * Extract Text from Image page
  * SEO-optimized route for /extract-text-from-image
  */
 export default function ExtractTextFromImage() {
-  if (!isUXV3Enabled()) {
-    return <App />;
-  }
-
   return (
     <IntentPage
       title="Extract Text from Image - Free AI-Powered OCR"

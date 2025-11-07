@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { isUXV3Enabled } from '../utils/env';
 import { ROUTES } from '../router';
 
 /**
@@ -9,8 +8,6 @@ import { ROUTES } from '../router';
  * Dedicated error page for invalid routes with proper SEO metadata
  */
 export default function NotFound() {
-  const isV3 = isUXV3Enabled();
-
   // Set document title for SEO
   useEffect(() => {
     document.title = '404 - Page Not Found | Free Text From Image';
@@ -41,29 +38,6 @@ export default function NotFound() {
       }
     };
   }, []);
-
-  if (!isV3) {
-    // Legacy fallback for non-V3 users
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
-        <div className="text-center">
-          <h1 className="text-6xl font-bold text-gray-900 dark:text-white mb-4">404</h1>
-          <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-4">
-            Page Not Found
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md">
-            The page you're looking for doesn't exist or has been moved.
-          </p>
-          <Link
-            to={ROUTES.HOME}
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
-          >
-            Go Back Home
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   // V3 enhanced UI with glass-morphism and animations
   return (
