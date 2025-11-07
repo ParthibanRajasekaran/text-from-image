@@ -1,11 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { FileInput } from './components/FileInput';
+import { Dropzone } from './components/Dropzone';
 import { ResultDisplay } from './components/ResultDisplay';
+import { ResultToolbar } from './components/ResultToolbar';
 import { Toast } from './components/Toast';
 import { ThemeToggle } from './components/ThemeToggle';
+import { HistoryDrawer } from './components/HistoryDrawer';
 import { extractTextWithDetails } from './services/hybridService';
-import { ProgressBar } from './components/ProgressBar';
+import { ProgressBar, ProgressStage } from './components/ProgressBar';
 import { OCRError } from './utils/errorHandling';
+import { useLocalHistory } from './hooks/useLocalHistory';
+import { useShortcuts, getCommonShortcuts } from './hooks/useShortcuts';
+import { isUXV2Enabled } from './utils/env';
 
 type Theme = 'light' | 'dark';
 
@@ -19,6 +25,15 @@ function App() {
   const [hasProcessed, setHasProcessed] = useState<boolean>(false);
   const [processingStatus, setProcessingStatus] = useState<string>('');
   const [methodUsed, setMethodUsed] = useState<string>('');
+  const [progressStage, setProgressStage] = useState<ProgressStage>('idle');
+  const [progressPercent, setProgressPercent] = useState<number>(0);
+  const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
+
+  // Use UX v2 enhancements when flag is enabled
+  const useEnhancedUI = isUXV2Enabled();
+
+  // Local history hook
+  const { history, addToHistory, removeFromHistory, clearHistory } = useLocalHistory();
 
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -40,6 +55,33 @@ function App() {
     setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
   };
 
+  // Keyboard shortcuts
+  const shortcuts = getCommonShortcuts({
+    onCopy: extractedText ? async () => {
+      await navigator.clipboard.writeText(extractedText);
+    } : undefined,
+    onDownload: extractedText ? () => {
+      const blob = new Blob([extractedText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = imageFile?.name?.replace(/\.[^/.]+$/, '.txt') || 'extracted-text.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } : undefined,
+    onViewHistory: () => setIsHistoryOpen(true),
+    onClear: extractedText ? () => {
+      setImageFile(null);
+      setExtractedText('');
+      setError(null);
+      setHasProcessed(false);
+    } : undefined,
+  });
+
+  useShortcuts(shortcuts, useEnhancedUI);
+
   const handleFileChange = useCallback(async (file: File | null) => {
     setImageFile(file);
     setExtractedText('');
@@ -51,6 +93,9 @@ function App() {
 
     if (file) {
       setIsLoading(true);
+      setProgressStage('upload');
+      setProgressPercent(0);
+      
       try {
         // Use hybrid service with automatic fallback
         const result = await extractTextWithDetails(file, {
@@ -60,6 +105,15 @@ function App() {
             // Enhanced status messages to show fallback attempts
             const methodName = method === 'tesseract' ? 'Fast OCR' : 'AI Model';
             const progressPercent = Math.round(progress);
+            
+            // Update stage based on status
+            if (status.includes('Processing')) {
+              setProgressStage('ocr');
+            } else if (status.includes('Rendering')) {
+              setProgressStage('render');
+            }
+            
+            setProgressPercent(progressPercent);
             
             if (status.includes('fallback') || status.includes('trying AI')) {
               setProcessingStatus(`⚡ Trying advanced AI method... (${progressPercent}%)`);
@@ -72,6 +126,8 @@ function App() {
         });
 
         setExtractedText(result.text);
+        setProgressStage('complete');
+        setProgressPercent(100);
         
         // Show which method was used with clear indication of fallback
         const methodLabel = result.method === 'tesseract' ? '⚡ Fast OCR (Tesseract)' : '🤖 AI Model (Transformers)';
@@ -81,7 +137,19 @@ function App() {
         if (result.confidence) {
           setMethodUsed(prev => `${prev} • Confidence: ${Math.round(result.confidence!)}%`);
         }
+
+        // Add to history if UX v2 is enabled
+        if (useEnhancedUI && result.text) {
+          addToHistory({
+            filename: file.name,
+            text: result.text,
+            method: result.method,
+            confidence: result.confidence,
+          });
+        }
       } catch (e: any) {
+        setProgressStage('error');
+        
         // Handle OCRError with user-friendly messages and suggestions
         if (e instanceof OCRError) {
           setError(e.userMessage);
@@ -110,9 +178,15 @@ function App() {
         setIsLoading(false);
         setHasProcessed(true);
         setProcessingStatus('');
+        
+        // Reset progress after a delay
+        setTimeout(() => {
+          setProgressStage('idle');
+          setProgressPercent(0);
+        }, 1000);
       }
     }
-  }, []);
+  }, [useEnhancedUI, addToHistory]);
 
   useEffect(() => {
     if (!imageFile) {
@@ -176,16 +250,36 @@ function App() {
       <main className="container mx-auto p-4 md:p-8">
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div className="flex flex-col gap-6">
-            <h2 className="text-xl font-semibold text-center">1. Upload Image</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold">1. Upload Image</h2>
+              {useEnhancedUI && history.length > 0 && (
+                <button
+                  onClick={() => setIsHistoryOpen(true)}
+                  className="text-sm text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary rounded px-2 py-1"
+                  aria-label="View history"
+                >
+                  History ({history.length})
+                </button>
+              )}
+            </div>
             <p className="text-muted-foreground">
               Select an image file (PNG, JPG, WEBP) to extract text. We'll automatically use the best method for your image.
             </p>
-            <FileInput 
-              onFileChange={handleFileChange} 
-              previewUrl={previewUrl}
-              imageFile={imageFile}
-              isLoading={isLoading}
-            />
+            {useEnhancedUI ? (
+              <Dropzone 
+                onFiles={(files) => files[0] && handleFileChange(files[0])}
+                disabled={isLoading}
+                accept="image/*"
+                maxFiles={1}
+              />
+            ) : (
+              <FileInput 
+                onFileChange={handleFileChange} 
+                previewUrl={previewUrl}
+                imageFile={imageFile}
+                isLoading={isLoading}
+              />
+            )}
           </div>
           <div className="flex flex-col gap-6">
             <h2 className="text-xl font-semibold text-center">2. Extracted Text</h2>
@@ -195,7 +289,15 @@ function App() {
                   <p className="text-foreground font-medium text-center">
                     {processingStatus || 'Analyzing your image...'}
                   </p>
-                  <ProgressBar />
+                  {useEnhancedUI ? (
+                    <ProgressBar 
+                      stage={progressStage}
+                      percent={progressPercent}
+                      message={processingStatus}
+                    />
+                  ) : (
+                    <ProgressBar />
+                  )}
                   {processingStatus.includes('AI') && (
                     <p className="text-xs text-muted-foreground text-center italic mt-2">
                       ℹ️ Using advanced AI for better accuracy (this may take a moment)
@@ -206,6 +308,13 @@ function App() {
                 <p className="text-muted-foreground text-center">Extracted text will appear here once an image is processed.</p>
               ) : extractedText ? (
                 <div className="w-full flex flex-col gap-4">
+                  {useEnhancedUI && (
+                    <ResultToolbar 
+                      text={extractedText}
+                      onCopy={() => {}}
+                      onDownload={() => {}}
+                    />
+                  )}
                   <ResultDisplay text={extractedText} originalFilename={imageFile?.name || 'extracted-text.txt'} />
                   {methodUsed && (
                     <p className="text-xs text-muted-foreground text-center italic">
@@ -220,6 +329,26 @@ function App() {
           </div>
         </div>
       </main>
+
+      {/* History drawer (UX v2 only) */}
+      {useEnhancedUI && (
+        <HistoryDrawer
+          isOpen={isHistoryOpen}
+          onClose={() => setIsHistoryOpen(false)}
+          history={history}
+          onSelectEntry={(entry) => {
+            setExtractedText(entry.text);
+            setMethodUsed(entry.method ? `Extracted using ${entry.method}` : '');
+            setHasProcessed(true);
+            setIsHistoryOpen(false);
+          }}
+          onRemoveEntry={removeFromHistory}
+          onClearAll={() => {
+            clearHistory();
+            setIsHistoryOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }
