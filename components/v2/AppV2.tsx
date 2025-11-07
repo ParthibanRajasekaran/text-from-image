@@ -306,7 +306,7 @@ export function AppV2() {
             className="space-y-6"
           >
             <div>
-              <h2 className="text-lg font-semibold mb-2">1. Upload Image</h2>
+              <h2 className="text-lg font-semibold mb-2 text-center">1. Upload Image</h2>
               <p className="text-sm text-muted-foreground mb-4">
                 {metadata.description}
               </p>
@@ -329,11 +329,15 @@ export function AppV2() {
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">
-                      {selectedFile?.name || 'Image preview'}
+                      {imageFile?.name || 'Image preview'}
                     </span>
                     <button
                       onClick={() => {
-                        setSelectedFile(null);
+                        // Clean up blob URL
+                        if (previewUrl) {
+                          URL.revokeObjectURL(previewUrl);
+                        }
+                        setImageFile(null);
                         setPreviewUrl(null);
                         setExtractedText('');
                         setMethodUsed('');
@@ -381,7 +385,7 @@ export function AppV2() {
             className="space-y-6 min-h-[500px]"
           >
             <div>
-              <h2 className="text-lg font-semibold mb-2">2. Extracted Text</h2>
+              <h2 className="text-lg font-semibold mb-2 text-center">2. Extracted Text</h2>
               {methodUsed && (
                 <p className="text-sm text-muted-foreground italic">{methodUsed}</p>
               )}

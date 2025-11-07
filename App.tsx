@@ -250,7 +250,7 @@ function App() {
       <main className="container mx-auto p-4 md:p-8">
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col items-center gap-2">
               <h2 className="text-xl font-semibold">1. Upload Image</h2>
               {useEnhancedUI && history.length > 0 && (
                 <button
