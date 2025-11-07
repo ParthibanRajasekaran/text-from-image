@@ -58,7 +58,7 @@ describe('GlassResultCard', () => {
 
   it('calls onCopy callback when provided', async () => {
     const onCopy = jest.fn();
-    const { container } = render(<GlassResultCard text={mockText} onCopy={onCopy} />);
+    render(<GlassResultCard text={mockText} onCopy={onCopy} />);
     const copyButton = screen.getByLabelText('Copy text to clipboard');
     
     fireEvent.click(copyButton);
