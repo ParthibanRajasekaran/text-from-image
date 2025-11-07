@@ -12,6 +12,7 @@ const ImageToTextConverter = lazy(() => import('./pages/ImageToTextConverter'));
 const JpgToWord = lazy(() => import('./pages/JpgToWord'));
 const ImageToExcel = lazy(() => import('./pages/ImageToExcel'));
 const ExtractTextFromImage = lazy(() => import('./pages/ExtractTextFromImage'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Select home component based on feature flag
 const HomeComponent = isUXV3Enabled() ? HeroOCR : App;
@@ -54,7 +55,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <App />, // Fallback to home for 404s
+    element: <NotFound />,
   },
 ]);
 
