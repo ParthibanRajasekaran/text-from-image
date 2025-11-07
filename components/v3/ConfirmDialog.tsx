@@ -45,58 +45,62 @@ export function ConfirmDialog({
     }
   }, [isOpen]);
 
-  // Keyboard handling
+  // Keyboard handling and focus trap - combined for better performance
   useEffect(() => {
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Handle Escape key
       if (e.key === 'Escape') {
         e.preventDefault();
         onCancel();
-      } else if (e.key === 'Enter' && e.target === confirmButtonRef.current) {
-        e.preventDefault();
-        onConfirm();
+        return;
+      }
+
+      // Handle Enter key on any button
+      if (e.key === 'Enter') {
+        const target = e.target as HTMLElement;
+        if (target === cancelButtonRef.current) {
+          e.preventDefault();
+          onCancel();
+          return;
+        } else if (target === confirmButtonRef.current) {
+          e.preventDefault();
+          onConfirm();
+          return;
+        }
+      }
+
+      // Handle Tab for focus trapping
+      if (e.key === 'Tab') {
+        const focusableElements = dialogRef.current?.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+
+        if (!focusableElements || focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) {
+          // Shift + Tab
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          // Tab
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onConfirm, onCancel]);
-
-  // Focus trap
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleTab = (e: KeyboardEvent) => {
-      if (e.key !== 'Tab') return;
-
-      const focusableElements = dialogRef.current?.querySelectorAll<HTMLElement>(
-        'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
-
-      if (!focusableElements || focusableElements.length === 0) return;
-
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-
-      if (e.shiftKey) {
-        // Shift + Tab
-        if (document.activeElement === firstElement) {
-          e.preventDefault();
-          lastElement.focus();
-        }
-      } else {
-        // Tab
-        if (document.activeElement === lastElement) {
-          e.preventDefault();
-          firstElement.focus();
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleTab);
-    return () => window.removeEventListener('keydown', handleTab);
-  }, [isOpen]);
 
   // Prevent body scroll when open
   useEffect(() => {
