@@ -240,7 +240,7 @@ function App() {
       )}
       <header className="py-4 px-6 border-b border-border sticky top-0 bg-background/80 backdrop-blur-sm z-10">
         <div className="container mx-auto grid grid-cols-3 items-center">
-          <div /> {/* Empty cell for spacing */}
+          <div aria-hidden="true" /> {/* Empty cell for spacing */}
           <h1 className="text-2xl font-bold text-primary text-center">Extract Text from Image for Free</h1>
           <div className="flex justify-end">
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />

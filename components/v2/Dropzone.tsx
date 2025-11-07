@@ -198,7 +198,8 @@ export function Dropzone({
           onChange={handleChange}
           disabled={isLoading}
           className="sr-only"
-          aria-hidden="true"
+          tabIndex={-1}
+          aria-label="File upload input (use button to select files)"
         />
       </motion.div>
 

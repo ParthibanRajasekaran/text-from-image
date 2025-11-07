@@ -231,12 +231,15 @@ export function Dropzone({
                 exit={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
                 transition={{ duration: 0.15 }}
                 className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-md text-sm"
+                role="group"
+                aria-label={`Selected file: ${badge.file.name}, ${(badge.file.size / 1024).toFixed(1)}KB`}
               >
                 {badge.preview && (
                   <img 
                     src={badge.preview} 
-                    alt={badge.file.name}
+                    alt=""
                     className="w-6 h-6 object-cover rounded"
+                    aria-hidden="true"
                   />
                 )}
                 <span className="font-medium text-foreground truncate max-w-[150px]">
@@ -329,8 +332,8 @@ export function Dropzone({
           onChange={handleChange}
           disabled={disabled}
           className="sr-only"
-          aria-hidden="true"
           tabIndex={-1}
+          aria-label="File upload input (use button to select files)"
         />
       </motion.div>
 
