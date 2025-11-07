@@ -295,7 +295,7 @@ export function Dropzone({
             {isDragging ? 'Drop image here' : 'Drop image or click button to upload'}
           </p>
           <p className="text-sm text-muted-foreground">
-            PNG, JPG, WEBP up to 10MB
+            PNG, JPG, WEBP up to 20MB
           </p>
           <p className="text-xs text-muted-foreground">
             💡 Tip: You can also paste (Ctrl+V / Cmd+V)

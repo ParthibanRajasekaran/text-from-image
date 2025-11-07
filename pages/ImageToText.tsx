@@ -32,7 +32,7 @@ export default function ImageToText() {
         },
         {
           question: 'Is there a file size limit?',
-          answer: 'Images up to 10MB are supported. For best performance and accuracy, we recommend images between 500KB and 5MB.',
+          answer: 'Images up to 20MB are supported. For best performance and accuracy, we recommend images between 500KB and 5MB.',
         },
         {
           question: 'Can I extract text from multiple images?',
