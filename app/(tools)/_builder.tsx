@@ -140,7 +140,6 @@ export function makeNichePage(config: NichePageConfig) {
     const [progressStage, setProgressStage] = useState<ProgressStage>('idle');
     const [error, setError] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [extractionStartTime, setExtractionStartTime] = useState<number | null>(null);
 
     const progressRef = useRef<GlassProgressBarHandle>(null);
     const shouldReduceMotion = useReducedMotion();
