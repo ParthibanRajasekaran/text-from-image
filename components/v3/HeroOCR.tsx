@@ -107,7 +107,18 @@ export function HeroOCR() {
     onClear: extractedText ? handleClear : undefined,
   });
 
-  useShortcuts(shortcuts, true);
+  // Add theme toggle shortcut (T key)
+  const allShortcuts = [
+    ...shortcuts,
+    {
+      key: 't',
+      action: toggleTheme,
+      description: 'Toggle theme',
+      disabled: false,
+    },
+  ];
+
+  useShortcuts(allShortcuts, true);
 
   // Handle file upload with staged progress
   const handleFileSelect = useCallback(async (file: File) => {
@@ -155,6 +166,14 @@ export function HeroOCR() {
 
   return (
     <AuroraBackground>
+      {/* Skip to main content - Accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-accent focus:text-white focus:shadow-glow focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+      >
+        Skip to main content
+      </a>
+
       {/* Header */}
       <header className="sticky top-0 z-30 backdrop-blur-xl bg-background/80 border-b border-border/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -204,7 +223,7 @@ export function HeroOCR() {
       />
 
       {/* Hero Section */}
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+      <main id="main-content" className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
         <div className="max-w-4xl mx-auto">
           {/* Hero text */}
           <motion.div
