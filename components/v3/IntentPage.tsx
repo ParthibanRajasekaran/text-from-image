@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { HeroOCR } from './HeroOCR';
 import { motion } from 'framer-motion';
+import { InlineAdSlot } from '../AdSlot';
 
 export interface FAQItem {
   question: string;
@@ -108,6 +109,9 @@ export function IntentPage({
 
       {/* Main OCR Tool */}
       <HeroOCR customHeading={heading} customSubheading={subheading} />
+
+      {/* Ad Slot - Mid Content */}
+      <InlineAdSlot slot="rectangle" />
 
       {/* FAQ Section */}
       <section className="relative py-16 sm:py-20 overflow-hidden">
