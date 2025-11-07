@@ -127,13 +127,13 @@ export function ConfirmDialog({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: shouldReduceMotion ? 0.1 : 0.2 }}
-            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
+            className="fixed inset-0 z-[60] bg-background/80 backdrop-blur-sm"
             onClick={onCancel}
             aria-hidden="true"
           />
 
           {/* Dialog */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
             <motion.div
               ref={dialogRef}
               initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.95 }}
