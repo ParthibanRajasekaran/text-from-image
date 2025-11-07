@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { HeroOCR } from './HeroOCR';
 import { motion } from 'framer-motion';
 import { InlineAdSlot } from '../AdSlot';
@@ -39,7 +39,7 @@ export function IntentPage({
   canonicalUrl,
 }: IntentPageProps) {
   // Structured data for FAQ rich snippets
-  const faqSchema = {
+  const faqSchema = useMemo(() => ({
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: faq.map((item) => ({
@@ -50,7 +50,7 @@ export function IntentPage({
         text: item.answer,
       },
     })),
-  };
+  }), [faq]);
 
   // Update page metadata
   useEffect(() => {
