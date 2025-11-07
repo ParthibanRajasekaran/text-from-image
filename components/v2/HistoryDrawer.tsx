@@ -2,8 +2,6 @@ import React, { useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { XCircleIcon } from '../icons/XCircleIcon';
 import type { HistoryItem } from '../../hooks/useLocalHistory';
-import { formatTimestamp } from '../../utils/dateUtils';
-
 interface HistoryDrawerProps {
   isOpen: boolean;
   onClose: () => void;
