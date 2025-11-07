@@ -1,6 +1,9 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react';
+  import { useClipboard } from '../../hooks/useClipboard';
+import { useDragDrop } from '../../hooks/useDragDrop';
 import { motion, useReducedMotion } from 'framer-motion';
 import { UploadIcon } from '../icons/UploadIcon';
+import { validateImageFile } from '../../utils/fileValidation';
 
 interface GlassDropzoneProps {
   onFileSelect: (file: File) => void;
@@ -20,7 +23,20 @@ interface GlassDropzoneProps {
  * - < 200ms interaction time
  */
 export function GlassDropzone({ onFileSelect, isLoading = false, disabled = false, onError }: GlassDropzoneProps) {
-  const [isDragging, setIsDragging] = useState(false);
+  const {
+    isDragging,
+    handleDragEnter,
+    handleDragLeave,
+    handleDragOver,
+    handleDrop,
+  } = useDragDrop({
+    disabled,
+    isLoading,
+    onFiles: (files) => {
+      if (files.length > 0) handleFile(files[0]);
+    },
+    onError,
+  });
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const shouldReduceMotion = useReducedMotion();
@@ -28,44 +44,20 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
   const handleFile = useCallback(
     (file: File) => {
       if (disabled || isLoading) return;
-      if (!file.type.startsWith('image/')) {
-        onError?.(`Invalid file type: ${file.type || 'unknown'}. Please select an image file (PNG, JPG, WEBP).`);
+      
+      // Validate file using extracted validation utility (SRP)
+      const validation = validateImageFile(file);
+      if (!validation.valid) {
+        onError?.(validation.error!);
         return;
       }
+      
       onFileSelect(file);
     },
     [disabled, isLoading, onFileSelect, onError]
   );
 
-  // Drag handlers
-  const handleDragEnter = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!disabled && !isLoading) setIsDragging(true);
-  }, [disabled, isLoading]);
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-  }, []);
-
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  }, []);
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(false);
-
-      const files = Array.from(e.dataTransfer.files);
-      if (files.length > 0) handleFile(files[0]);
-    },
-    [handleFile]
-  );
+  // Drag & drop logic now handled by useDragDrop hook
 
   // File input change
   const handleChange = useCallback(
@@ -92,27 +84,13 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
     [handleClick]
   );
 
-  // Paste handler
-  useEffect(() => {
-    const handlePaste = (e: ClipboardEvent) => {
-      if (disabled || isLoading) return;
-      const items = e.clipboardData?.items;
-      if (!items) return;
-
-      for (const item of Array.from(items)) {
-        if (item.type.startsWith('image/')) {
-          const file = item.getAsFile();
-          if (file) {
-            handleFile(file);
-            e.preventDefault();
-          }
-        }
-      }
-    };
-
-    window.addEventListener('paste', handlePaste);
-    return () => window.removeEventListener('paste', handlePaste);
-  }, [disabled, isLoading, handleFile]);
+  // Clipboard paste logic now handled by useClipboard hook
+  useClipboard({
+    disabled: disabled || isLoading,
+    onFiles: (files) => {
+      if (files.length > 0) handleFile(files[0]);
+    },
+  });
 
   return (
     <motion.div

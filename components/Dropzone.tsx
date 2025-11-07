@@ -1,4 +1,6 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react';
+import { useDragDrop } from '../hooks/useDragDrop';
+import { useClipboard } from '../hooks/useClipboard';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { useSafeMotion, motionTransition } from '../lib/motion';
@@ -57,7 +59,6 @@ export function Dropzone({
   accept = 'image/png,image/jpeg,image/jpg,image/webp',
   maxFiles = 1,
 }: DropzoneProps) {
-  const [isDragging, setIsDragging] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<FileBadge[]>([]);
   const [isLoadingSample, setIsLoadingSample] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -71,10 +72,25 @@ export function Dropzone({
       id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       preview: URL.createObjectURL(file),
     }));
-    
     setSelectedFiles(badges);
     onFiles(validFiles);
   }, [maxFiles, onFiles]);
+
+  // Drag & drop logic now handled by useDragDrop hook
+  const {
+    isDragging,
+    handleDragEnter,
+    handleDragLeave,
+    handleDragOver,
+    handleDrop,
+  } = useDragDrop({
+    disabled,
+    isLoading: false,
+    onFiles: processFiles,
+    onError: (msg) => {
+      // Optionally handle drag-drop errors here
+    },
+  });
 
   // Remove file badge
   const removeFile = useCallback((id: string, e: React.MouseEvent) => {
@@ -116,37 +132,7 @@ export function Dropzone({
     };
   }, [selectedFiles]);
 
-  // Drag & drop handlers
-  const handleDragEnter = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!disabled) setIsDragging(true);
-  }, [disabled]);
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-  }, []);
-
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  }, []);
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(false);
-
-      if (disabled) return;
-
-      const { files } = e.dataTransfer;
-      processFiles(Array.from(files));
-    },
-    [disabled, processFiles]
-  );
+  // Drag & drop logic now handled by useDragDrop hook
 
   // File input change
   const handleChange = useCallback(
@@ -176,33 +162,11 @@ export function Dropzone({
     [disabled, handleClick]
   );
 
-  // Paste handler
-  useEffect(() => {
-    const handlePaste = (e: ClipboardEvent) => {
-      if (disabled) return;
-
-      const items = e.clipboardData?.items;
-      if (!items) return;
-
-      const files: File[] = [];
-      for (const item of Array.from(items)) {
-        if (item.type.startsWith('image/')) {
-          const file = item.getAsFile();
-          if (file) {
-            files.push(file);
-            e.preventDefault();
-          }
-        }
-      }
-
-      if (files.length > 0) {
-        processFiles(files);
-      }
-    };
-
-    window.addEventListener('paste', handlePaste);
-    return () => window.removeEventListener('paste', handlePaste);
-  }, [disabled, processFiles]);
+  // Clipboard paste logic now handled by useClipboard hook
+  useClipboard({
+    disabled,
+    onFiles: processFiles,
+  });
 
   // Load sample image
   const handleLoadSample = useCallback(

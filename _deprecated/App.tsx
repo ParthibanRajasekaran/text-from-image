@@ -1,0 +1,3 @@
+// Deprecated: Legacy App component. See SOLID_AUDIT_REPORT.md for details.
+
+// ...existing code...

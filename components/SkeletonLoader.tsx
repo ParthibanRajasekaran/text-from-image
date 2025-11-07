@@ -205,6 +205,7 @@ export function ListSkeleton({ items = 3, className }: ListSkeletonProps) {
   return (
     <div className={clsx('space-y-3', className)}>
       {Array.from({ length: items }).map((_, index) => (
+        // @ts-expect-error - key is a valid React prop
         <CardSkeleton key={index} />
       ))}
     </div>

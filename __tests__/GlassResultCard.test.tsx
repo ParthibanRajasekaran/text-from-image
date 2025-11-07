@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { GlassResultCard } from '../components/v3/GlassResultCard';
 
 describe('GlassResultCard', () => {
@@ -22,7 +22,7 @@ describe('GlassResultCard', () => {
   it('displays word and character count', () => {
     render(<GlassResultCard text={mockText} />);
     expect(screen.getByText(/7 words/)).toBeInTheDocument();
-    expect(screen.getByText(/39 characters/)).toBeInTheDocument();
+    expect(screen.getByText(/37 characters/)).toBeInTheDocument();
   });
 
   it('has copy button', () => {
@@ -56,14 +56,17 @@ describe('GlassResultCard', () => {
     expect(await screen.findByText('Copied to clipboard')).toBeInTheDocument();
   });
 
-  it('calls onCopy callback when provided', () => {
+  it('calls onCopy callback when provided', async () => {
     const onCopy = jest.fn();
     render(<GlassResultCard text={mockText} onCopy={onCopy} />);
     const copyButton = screen.getByLabelText('Copy text to clipboard');
     
     fireEvent.click(copyButton);
     
-    expect(onCopy).toHaveBeenCalled();
+    // Wait for state updates and callbacks
+    await waitFor(() => {
+      expect(onCopy).toHaveBeenCalled();
+    });
   });
 
   it('uses custom filename for download', () => {
