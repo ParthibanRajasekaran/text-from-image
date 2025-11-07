@@ -6,6 +6,7 @@ interface GlassDropzoneProps {
   onFileSelect: (file: File) => void;
   isLoading?: boolean;
   disabled?: boolean;
+  onError?: (message: string) => void;
 }
 
 
@@ -18,7 +19,7 @@ interface GlassDropzoneProps {
  * - Full keyboard accessibility
  * - < 200ms interaction time
  */
-export function GlassDropzone({ onFileSelect, isLoading = false, disabled = false }: GlassDropzoneProps) {
+export function GlassDropzone({ onFileSelect, isLoading = false, disabled = false, onError }: GlassDropzoneProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -27,10 +28,13 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
   const handleFile = useCallback(
     (file: File) => {
       if (disabled || isLoading) return;
-      if (!file.type.startsWith('image/')) return;
+      if (!file.type.startsWith('image/')) {
+        onError?.(`Invalid file type: ${file.type || 'unknown'}. Please select an image file (PNG, JPG, WEBP).`);
+        return;
+      }
       onFileSelect(file);
     },
-    [disabled, isLoading, onFileSelect]
+    [disabled, isLoading, onFileSelect, onError]
   );
 
   // Drag handlers

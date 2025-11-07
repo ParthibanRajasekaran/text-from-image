@@ -264,6 +264,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
                   onFileSelect={handleFileSelect}
                   isLoading={isProcessing}
                   disabled={isProcessing}
+                  onError={(message) => setError(message)}
                 />
               </div>
             </div>
