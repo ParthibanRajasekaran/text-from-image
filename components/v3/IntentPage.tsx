@@ -95,10 +95,11 @@ export function IntentPage({
     canonical.setAttribute('href', canonicalUrl);
 
     // Add FAQ structured data
-    let script = document.querySelector('script[type="application/ld+json"]');
+    let script = document.getElementById('faq-schema') as HTMLScriptElement;
     if (!script) {
       script = document.createElement('script');
       script.setAttribute('type', 'application/ld+json');
+      script.setAttribute('id', 'faq-schema');
       document.head.appendChild(script);
     }
     script.textContent = JSON.stringify(faqSchema);
