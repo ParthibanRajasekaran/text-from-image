@@ -92,8 +92,16 @@ export function getVitalsSummary() {
 }
 
 /**
- * Send vitals to analytics service (example)
- * Replace with your analytics implementation
+ * EXAMPLE IMPLEMENTATION: Send vitals to analytics service
+ * 
+ * This function is intentionally unused and serves as a template/example.
+ * To use it, uncomment the call in reportVital() (line 45) and customize
+ * the implementation below for your analytics provider.
+ * 
+ * Example integrations:
+ * - Google Analytics 4 (shown below)
+ * - Custom analytics endpoint (commented example)
+ * - Third-party services (Sentry, Datadog, etc.)
  */
 function sendToAnalytics(report: VitalsReport) {
   // Example: Google Analytics 4
