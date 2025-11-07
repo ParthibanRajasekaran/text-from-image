@@ -198,6 +198,7 @@ export function HistoryDrawer({
             {history.length > 0 && (
               <div className="p-4 border-t border-border/50">
                 <button
+                  type="button"
                   onClick={() => setShowConfirmDialog(true)}
                   className="w-full px-4 py-2 rounded-lg bg-destructive/10 hover:bg-destructive/20 border border-destructive/20 hover:border-destructive/40 text-destructive text-sm font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-2 focus:ring-offset-background"
                 >
