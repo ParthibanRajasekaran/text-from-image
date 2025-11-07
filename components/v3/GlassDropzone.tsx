@@ -8,20 +8,12 @@ interface GlassDropzoneProps {
   disabled?: boolean;
 }
 
-const SAMPLE_IMAGES = [
-  { id: 'receipt', name: 'Receipt', thumb: '📄' },
-  { id: 'doc', name: 'Document', thumb: '📃' },
-  { id: 'handwriting', name: 'Notes', thumb: '✍️' },
-  { id: 'chart', name: 'Chart', thumb: '📊' },
-  { id: 'table', name: 'Table', thumb: '📋' },
-  { id: 'code', name: 'Code', thumb: '💻' },
-];
+
 
 /**
  * Premium glass-morphism Dropzone with:
  * - Drag & drop with scale pulse animation
  * - Clipboard paste (Cmd/Ctrl+V)
- * - Sample image quick-select
  * - Dashed border glow on hover/drag
  * - Full keyboard accessibility
  * - < 200ms interaction time
@@ -119,9 +111,7 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
   }, [disabled, isLoading, handleFile]);
 
   return (
-    <div className="space-y-6">
-      {/* Main glass dropzone */}
-      <motion.div
+    <motion.div
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         onDragEnter={handleDragEnter}
@@ -205,32 +195,5 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
           aria-label="File upload input"
         />
       </motion.div>
-
-      {/* Sample images */}
-      <div className="space-y-3">
-        <p className="text-sm font-medium text-muted-foreground text-center">
-          Or try a sample:
-        </p>
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
-          {SAMPLE_IMAGES.map((sample) => (
-            <motion.button
-              key={sample.id}
-              onClick={() => {
-                // In production, load actual sample image
-                console.log('Load sample:', sample.id);
-              }}
-              whileHover={shouldReduceMotion ? {} : { scale: 1.05, y: -2 }}
-              whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
-              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-surface/60 backdrop-blur border border-border hover:border-accent/50 hover:shadow-glow-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
-              disabled={disabled || isLoading}
-              aria-label={`Try sample ${sample.name}`}
-            >
-              <span className="text-3xl">{sample.thumb}</span>
-              <span className="text-xs text-muted-foreground font-medium">{sample.name}</span>
-            </motion.button>
-          ))}
-        </div>
-      </div>
-    </div>
   );
 }
