@@ -95,8 +95,8 @@ export function getVitalsSummary() {
  * EXAMPLE IMPLEMENTATION: Send vitals to analytics service
  * 
  * This function is intentionally unused and serves as a template/example.
- * To use it, uncomment the call in reportVital() (line 45) and customize
- * the implementation below for your analytics provider.
+ * To use it, uncomment the sendToAnalytics() call in the reportVital() function
+ * above and customize the implementation below for your analytics provider.
  * 
  * Example integrations:
  * - Google Analytics 4 (shown below)
