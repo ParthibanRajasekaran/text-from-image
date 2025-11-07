@@ -52,15 +52,15 @@ export function useOCRProcessor(options: UseOCRProcessorOptions = {}) {
       // Complete - set text first, then stop processing
       setProgressStage('complete');
       setExtractedText(result.text);
-      setIsProcessing(false); // Move here to ensure UI updates correctly
       
       // Announce completion for accessibility
       progressRef.current?.announce('Text extraction completed successfully');
     } catch (err: any) {
       setError(err.message || 'Failed to extract text');
       setProgressStage('idle');
-      setIsProcessing(false); // Also set here for error case
       console.error('OCR Error:', err);
+    } finally {
+      setIsProcessing(false);
     }
   }, [options.minConfidence, options.minTextLength]);
 
