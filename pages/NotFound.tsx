@@ -35,7 +35,7 @@ export default function NotFound() {
     return () => {
       if (isNewElement && metaRobots.parentNode) {
         document.head.removeChild(metaRobots);
-      } else if (metaRobots) {
+      } else if (metaRobots && metaRobots.parentNode) {
         metaRobots.content = originalContent;
       }
     };
