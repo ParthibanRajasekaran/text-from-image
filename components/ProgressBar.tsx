@@ -77,7 +77,7 @@ export const ProgressBar = forwardRef<ProgressBarHandle, ProgressBarProps>(
   
   // If no percent provided, show indeterminate animation (backwards compatibility)
   const isIndeterminate = percent === undefined;
-  const displayPercent = isIndeterminate ? 100 : Math.min(100, Math.max(0, percent));
+  const displayPercent = isIndeterminate ? 0 : Math.min(100, Math.max(0, percent));
   const stageLabel = message || STAGE_LABELS[stage];
 
   // Simple mode (backwards compatible)
