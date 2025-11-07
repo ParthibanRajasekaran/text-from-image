@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useMemo } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 export type ProgressStage = 'idle' | 'upload' | 'ocr' | 'render' | 'complete' | 'error';
@@ -7,6 +7,18 @@ interface GlassProgressBarProps {
   stage: ProgressStage;
   percent?: number;
   message?: string;
+  /**
+   * Custom progress percentages for each stage.
+   * Defaults: idle: 0%, upload: 25%, ocr: 60%, render: 90%, complete: 100%, error: 0%
+   * The main workflow stages (upload, ocr, render) represent typical OCR timing:
+   * - Idle (0%): Initial state, no progress
+   * - Upload (25%): Quick file transfer
+   * - OCR (60%): Most time-intensive processing
+   * - Render (90%): Fast finalization
+   * - Complete (100%): Finished
+   * - Error (0%): Error state, no progress
+   */
+  stageProgress?: Partial<Record<ProgressStage, number>>;
 }
 
 export interface GlassProgressBarHandle {
@@ -22,7 +34,14 @@ const STAGE_LABELS: Record<ProgressStage, string> = {
   error: 'Error',
 };
 
-const STAGE_PROGRESS: Record<ProgressStage, number> = {
+/**
+ * Default progress percentages for each stage.
+ * These values represent typical OCR workflow timing:
+ * - Upload (25%): Quick file transfer
+ * - OCR (60%): Most time-intensive text extraction
+ * - Render (90%): Fast result finalization
+ */
+const DEFAULT_STAGE_PROGRESS: Record<ProgressStage, number> = {
   idle: 0,
   upload: 25,
   ocr: 60,
@@ -41,12 +60,18 @@ const STAGE_PROGRESS: Record<ProgressStage, number> = {
  * - < 200ms transitions
  */
 export const GlassProgressBar = forwardRef<GlassProgressBarHandle, GlassProgressBarProps>(
-  ({ stage, percent, message }, ref) => {
+  ({ stage, percent, message, stageProgress }, ref) => {
     const liveRegionRef = useRef<HTMLDivElement>(null);
     const rafRef = useRef<number>();
     const shouldReduceMotion = useReducedMotion();
 
-    const currentProgress = percent ?? STAGE_PROGRESS[stage];
+    // Merge custom stage progress with defaults
+    const effectiveStageProgress = useMemo(
+      () => ({ ...DEFAULT_STAGE_PROGRESS, ...stageProgress }),
+      [stageProgress]
+    );
+
+    const currentProgress = percent ?? effectiveStageProgress[stage];
     const currentLabel = message || STAGE_LABELS[stage];
 
     // Expose announce method for parent components
@@ -144,7 +169,7 @@ export const GlassProgressBar = forwardRef<GlassProgressBarHandle, GlassProgress
         <div className="flex items-center justify-between px-1">
           {(['upload', 'ocr', 'render'] as const).map((stageName, index) => {
             const stageNum = index + 1;
-            const isActive = STAGE_PROGRESS[stage] >= STAGE_PROGRESS[stageName];
+            const isActive = effectiveStageProgress[stage] >= effectiveStageProgress[stageName];
             const isCurrent = stage === stageName;
 
             return (
