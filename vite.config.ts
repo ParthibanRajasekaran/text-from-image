@@ -61,6 +61,12 @@ export default defineConfig(({ mode }) => {
                 return 'tesseract';
               }
               
+              // ONNX Runtime - used by Transformers, split separately
+              if (id.includes('node_modules/onnxruntime-web') ||
+                  id.includes('node_modules/onnxruntime-common')) {
+                return 'ort';
+              }
+              
               // Transformers - only loaded as fallback or when explicitly requested
               if (id.includes('node_modules/@xenova/transformers')) {
                 return 'transformers';

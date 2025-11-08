@@ -87,6 +87,67 @@ npm run build
 npm run preview
 ```
 
+## 🚀 Deployment
+
+### Deploy to Vercel (Production)
+
+Deploy your EXACT local code to production with zero drift:
+
+```bash
+# First time setup
+npm run vercel:link         # Link to your Vercel project
+npm run vercel:pull:prod    # Pull production environment variables
+
+# Deploy to production
+npm run deploy:prod
+```
+
+After deployment, verify the footer shows the correct commit SHA matching your local git commit.
+
+### GitHub Actions (Automated Deploys)
+
+This project uses controlled deployments to avoid accidental deploys:
+
+**Preview Deployments (Pull Requests):**
+- Only triggers when PR has `deploy:preview` label
+- Deploys to preview URL, posted as PR comment
+- Cancelled automatically when new commits pushed
+
+**Production Deployments (Main Branch):**
+- Automatically deploys on push to `main` branch
+- Skip with `[skip deploy]` in commit message
+- Only deploys if app files changed (not docs-only)
+
+**Manual Deployment:**
+- GitHub UI: Actions → Deploy to Vercel → Run workflow
+
+### Required GitHub Secrets
+
+Add these in **Settings → Secrets and variables → Actions**:
+
+| Secret | Where to get it |
+|--------|-----------------|
+| `VERCEL_TOKEN` | https://vercel.com/account/tokens |
+| `VERCEL_ORG_ID` | Run `vercel link`, check `.vercel/project.json` |
+| `VERCEL_PROJECT_ID` | Run `vercel link`, check `.vercel/project.json` |
+
+### Environment Variables (Vercel)
+
+Set these in **Vercel Dashboard → Project → Settings → Environment Variables**:
+
+```bash
+# Feature Flags (Production environment)
+VITE_UX_V2=true                    # Enable enhanced UI
+VITE_ANALYTICS_ENABLED=true        # Enable Web Vitals tracking
+VITE_OCR_MIN_CONFIDENCE=60         # Tesseract confidence threshold
+```
+
+📖 **Full deployment guide:** See [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) for:
+- Zero-drift deployment strategy
+- Bundle size monitoring
+- CI/CD setup
+- Troubleshooting common issues
+
 ## 🏗️ Architecture
 
 ### Hybrid OCR System
