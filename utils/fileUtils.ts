@@ -1,7 +1,4 @@
 
-// This declares the global jsPDF object from the script tag in index.html
-declare const jspdf: any;
-
 export const toBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -38,8 +35,14 @@ export const downloadDoc = (text: string, filename: string) => {
   document.body.removeChild(link);
 };
 
-export const downloadPdf = (text: string, filename: string) => {
-  const { jsPDF } = jspdf;
+/**
+ * Download text as PDF
+ * Now with dynamic import - jsPDF only loaded when user clicks "Download PDF"
+ */
+export const downloadPdf = async (text: string, filename: string) => {
+  // Lazy-load jsPDF library (only when user exports to PDF)
+  const { default: jsPDF } = await import('jspdf');
+  
   const doc = new jsPDF();
   
   const lines = doc.splitTextToSize(text, 180); // 180 is the width of the text block

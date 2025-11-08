@@ -19,14 +19,15 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ text, originalFile
     });
   }, [text]);
 
-  const handleDownload = (format: 'doc' | 'pdf') => {
+  const handleDownload = async (format: 'doc' | 'pdf') => {
     setIsDownloading(format);
     const baseFilename = originalFilename.split('.').slice(0, -1).join('.') || originalFilename;
     try {
       if (format === 'doc') {
         downloadDoc(text, `${baseFilename}.doc`);
       } else {
-        downloadPdf(text, `${baseFilename}.pdf`);
+        // downloadPdf is now async (dynamic import)
+        await downloadPdf(text, `${baseFilename}.pdf`);
       }
     } catch(e) {
       console.error("Download failed", e);

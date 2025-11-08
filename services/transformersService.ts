@@ -1,8 +1,10 @@
-import { pipeline, Pipeline } from '@xenova/transformers';
 import { OCRError, ErrorFactory, validateFile } from '../utils/errorHandling';
 
+// Type imports only (doesn't bundle the library)
+type Pipeline = any; // We'll get the actual type at runtime
+
 /**
- * Transformers.js + TrOCR Service (Enhanced with Error Handling)
+ * Transformers.js + TrOCR Service (Enhanced with Error Handling + Dynamic Loading)
  * 
  * Pros:
  * - AI-powered text extraction (transformer model)
@@ -11,6 +13,7 @@ import { OCRError, ErrorFactory, validateFile } from '../utils/errorHandling';
  * - Better with complex layouts than traditional OCR
  * - Handles handwritten text better than Tesseract
  * - Privacy-friendly (data stays local)
+ * - NOW: Loaded on-demand only when needed (huge bundle size savings!)
  * 
  * Cons:
  * - Large initial download (~100-200MB for models)
@@ -20,9 +23,20 @@ import { OCRError, ErrorFactory, validateFile } from '../utils/errorHandling';
  * - May be slower on low-end devices
  * 
  * Best for: Complex documents, handwritten notes, mixed layouts, when AI quality is needed
+ * 
+ * NEW: Dynamic import - @xenova/transformers (~800KB) only loaded when user needs AI fallback
  */
 
 let ocrPipeline: Pipeline | null = null;
+let transformersModule: typeof import('@xenova/transformers') | null = null;
+
+// Lazy-load transformers library
+async function getTransformers() {
+  if (!transformersModule) {
+    transformersModule = await import('@xenova/transformers');
+  }
+  return transformersModule;
+}
 
 const PROCESSING_MAX_SIZE_BYTES = 20 * 1024 * 1024; // 20 MB
 
@@ -40,6 +54,10 @@ const initPipeline = async (
   try {
     // Use TrOCR model for text recognition
     // Alternative models: 'Xenova/trocr-base-handwritten', 'Xenova/trocr-large-printed'
+    
+    // Lazy-load transformers library
+    const { pipeline } = await getTransformers();
+    
     ocrPipeline = await pipeline('image-to-text', 'Xenova/trocr-base-printed', {
       progress_callback: (progress: any) => {
         if (onProgress) {
@@ -205,6 +223,9 @@ export const extractHandwrittenText = async (
     if (onProgress) onProgress('Loading handwriting model...', 0);
     
     try {
+      // Lazy-load transformers library
+      const { pipeline } = await getTransformers();
+      
       pipe = await pipeline(
         'image-to-text',
         'Xenova/trocr-base-handwritten',

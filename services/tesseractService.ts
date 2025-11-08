@@ -1,9 +1,8 @@
-import Tesseract from 'tesseract.js';
 import { autoPreprocess, preprocessForOCR } from '../utils/imagePreprocessing';
 import { OCRError, ErrorFactory, validateFile } from '../utils/errorHandling';
 
 /**
- * Tesseract.js OCR Service (Enhanced with Preprocessing)
+ * Tesseract.js OCR Service (Enhanced with Preprocessing + Dynamic Loading)
  * 
  * Pros:
  * - Completely free, no API costs
@@ -12,6 +11,7 @@ import { OCRError, ErrorFactory, validateFile } from '../utils/errorHandling';
  * - Good accuracy for printed text (enhanced with preprocessing!)
  * - Supports 100+ languages
  * - Small library size (~2MB)
+ * - NOW: Loaded on-demand only when user starts OCR
  * 
  * Cons:
  * - Less intelligent than AI models
@@ -23,9 +23,20 @@ import { OCRError, ErrorFactory, validateFile } from '../utils/errorHandling';
  * Best for: Clean printed text, documents, screenshots, signs
  * 
  * NEW: Now with automatic image preprocessing to boost confidence by 20-35%!
+ * NEW: Dynamic import - Tesseract.js only loaded when user performs OCR
  */
 
 const PROCESSING_MAX_SIZE_BYTES = 20 * 1024 * 1024; // 20 MB
+
+// Lazy-load Tesseract.js only when needed
+let tesseractModule: typeof import('tesseract.js') | null = null;
+
+async function getTesseract() {
+  if (!tesseractModule) {
+    tesseractModule = await import('tesseract.js');
+  }
+  return tesseractModule;
+}
 
 export const extractTextFromImage = async (
   file: File,
@@ -48,11 +59,14 @@ export const extractTextFromImage = async (
       if (onProgress) onProgress(20);
     }
 
+    // Lazy-load Tesseract.js
+    const { recognize } = await getTesseract();
+
     // Create an image URL for Tesseract
     const imageUrl = URL.createObjectURL(processedFile);
 
     // Perform OCR with progress tracking
-    const result = await Tesseract.recognize(
+    const result = await recognize(
       imageUrl,
       'eng', // Language: English (you can add more: 'eng+spa+fra')
       {
@@ -122,9 +136,12 @@ export const extractTextWithConfidence = async (
       }
     }
 
+    // Lazy-load Tesseract.js
+    const { recognize } = await getTesseract();
+
     imageUrl = URL.createObjectURL(processedFile);
 
-    const result = await Tesseract.recognize(imageUrl, 'eng', {
+    const result = await recognize(imageUrl, 'eng', {
       logger: (info) => {
         if (info.status === 'recognizing text' && onProgress) {
           const adjustedProgress = usePreprocessing 
@@ -201,9 +218,12 @@ export const extractTextWithCustomPreprocessing = async (
     
     if (onProgress) onProgress(20);
 
+    // Lazy-load Tesseract.js
+    const { recognize } = await getTesseract();
+
     const imageUrl = URL.createObjectURL(processedFile);
 
-    const result = await Tesseract.recognize(imageUrl, 'eng', {
+    const result = await recognize(imageUrl, 'eng', {
       logger: (info) => {
         if (info.status === 'recognizing text' && onProgress) {
           onProgress(20 + Math.round(info.progress * 80));
