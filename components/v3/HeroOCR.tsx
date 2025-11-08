@@ -11,6 +11,7 @@ import { useOCRProcessor } from '../../hooks/useOCRProcessor';
 import { useLocalHistory, type HistoryItem } from '../../hooks/useLocalHistory';
 import { useShortcuts, getCommonShortcuts } from '../../hooks/useShortcuts';
 import { useLiveRegion } from '../../hooks/useLiveRegion';
+import { SEO, baseJsonLd } from '../SEO';
 
 interface HeroOCRProps {
   customHeading?: string;
@@ -127,6 +128,14 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
 
   return (
     <AuroraBackground>
+      <SEO
+        title="Free Online Image to Text Converter - OCR Tool"
+        description="Extract text from images instantly with our free OCR tool. Supports PNG, JPG, and WEBP. No signup required. Fast, secure, and accurate text extraction."
+        canonical="https://freetextfromimage.com/"
+        keywords="image to text, OCR, extract text from image, online OCR, free text extraction"
+        jsonLd={baseJsonLd}
+      />
+      
       {/* Skip to main content - Accessibility */}
       <a
         href="#main-content"

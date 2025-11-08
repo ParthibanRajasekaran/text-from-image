@@ -8,10 +8,9 @@
     "prebuild": "node scripts/validate-env.mjs",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:a11y": "jest __tests__/accessibility.test.tsx",
+    "test": "vitest run --reporter=default",
+    "test:watch": "vitest",
+    "test:a11y": "vitest run src/**/*.a11y.spec.tsx --reporter=default",
     "lint": "eslint . --max-warnings=0",
     "lint:a11y": "eslint . --max-warnings=0",
     "analyze": "ANALYZE=true npm run build",
@@ -59,5 +58,8 @@
     "ts-jest": "^29.4.5",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
+    ,
+    "vitest": "^1.2.2",
+    "jsdom": "^24.0.0"
   }
 }

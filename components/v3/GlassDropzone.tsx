@@ -1,9 +1,10 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react';
-  import { useClipboard } from '../../hooks/useClipboard';
+import { useClipboard } from '../../hooks/useClipboard';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import { motion, useReducedMotion } from 'framer-motion';
 import { UploadIcon } from '../icons/UploadIcon';
 import { validateImageFile } from '../../utils/fileValidation';
+import { useObjectUrl } from '../../hooks/useObjectUrl';
 
 interface GlassDropzoneProps {
   onFileSelect: (file: File) => void;
@@ -20,9 +21,13 @@ interface GlassDropzoneProps {
  * - Clipboard paste (Cmd/Ctrl+V)
  * - Dashed border glow on hover/drag
  * - Full keyboard accessibility
+ * - Image preview with fixed max-height (zero CLS)
  * - < 200ms interaction time
  */
 export function GlassDropzone({ onFileSelect, isLoading = false, disabled = false, onError }: GlassDropzoneProps) {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const previewUrl = useObjectUrl(selectedFile);
+  
   const {
     isDragging,
     handleDragEnter,
@@ -52,6 +57,7 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
         return;
       }
       
+      setSelectedFile(file);
       onFileSelect(file);
     },
     [disabled, isLoading, onFileSelect, onError]
@@ -80,7 +86,8 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
   });
 
   return (
-    <motion.label
+    <>
+      <motion.label
         htmlFor="glass-dropzone-file-input"
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
@@ -160,5 +167,25 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
           aria-labelledby="glass-dropzone-label"
         />
       </motion.label>
+
+      {/* Image preview - Fixed max-height prevents CLS */}
+      {previewUrl && (
+        <motion.figure
+          initial={shouldReduceMotion ? {} : { opacity: 0, y: 10 }}
+          animate={shouldReduceMotion ? {} : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          className="mt-4 rounded-lg border-2 border-border bg-muted/50 p-4 backdrop-blur-sm"
+        >
+          <img
+            src={previewUrl}
+            alt="Selected image preview"
+            className="w-full object-contain max-h-64 rounded"
+          />
+          <figcaption className="sr-only">
+            Preview of selected image for OCR processing
+          </figcaption>
+        </motion.figure>
+      )}
+    </>
   );
 }

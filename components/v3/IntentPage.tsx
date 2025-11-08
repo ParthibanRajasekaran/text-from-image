@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { HeroOCR } from './HeroOCR';
 import { motion } from 'framer-motion';
 import { InlineAdSlot } from '../AdSlot';
+import { SEO, baseJsonLd, createFAQJsonLd } from '../SEO';
 
 export interface FAQItem {
   question: string;
@@ -22,7 +23,7 @@ export interface IntentPageProps {
  * Intent-specific page wrapper for V3 UI
  * 
  * Features:
- * - Full SEO metadata with Helmet
+ * - Full SEO metadata with SEO component
  * - FAQ schema for rich snippets
  * - Canonical URLs
  * - Open Graph tags
@@ -39,74 +40,26 @@ export function IntentPage({
   canonicalUrl,
 }: IntentPageProps) {
   // Structured data for FAQ rich snippets
-  const faqSchema = useMemo(() => ({
+  const faqJsonLd = useMemo(() => createFAQJsonLd(faq), [faq]);
+  
+  // Combine base JSON-LD with FAQ schema
+  const combinedJsonLd = useMemo(() => ({
     '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faq.map((item) => ({
-      '@type': 'Question',
-      name: item.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: item.answer,
-      },
-    })),
-  }), [faq]);
-
-  // Update page metadata
-  useEffect(() => {
-    document.title = title;
-    
-    // Update or create meta tags
-    const updateMeta = (name: string, content: string) => {
-      let meta = document.querySelector(`meta[name="${name}"]`);
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('name', name);
-        document.head.appendChild(meta);
-      }
-      meta.setAttribute('content', content);
-    };
-
-    const updateProperty = (property: string, content: string) => {
-      let meta = document.querySelector(`meta[property="${property}"]`);
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('property', property);
-        document.head.appendChild(meta);
-      }
-      meta.setAttribute('content', content);
-    };
-
-    updateMeta('description', description);
-    updateMeta('keywords', keywords.join(', '));
-    updateProperty('og:title', title);
-    updateProperty('og:description', description);
-    updateProperty('og:url', canonicalUrl);
-    updateProperty('twitter:title', title);
-    updateProperty('twitter:description', description);
-
-    // Add canonical link
-    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
-    if (!canonical) {
-      canonical = document.createElement('link');
-      canonical.setAttribute('rel', 'canonical');
-      document.head.appendChild(canonical);
-    }
-    canonical.setAttribute('href', canonicalUrl);
-
-    // Add FAQ structured data
-    let script = document.getElementById('faq-schema') as HTMLScriptElement;
-    if (!script) {
-      script = document.createElement('script');
-      script.setAttribute('type', 'application/ld+json');
-      script.setAttribute('id', 'faq-schema');
-      document.head.appendChild(script);
-    }
-    script.textContent = JSON.stringify(faqSchema);
-  }, [title, description, keywords, canonicalUrl, faqSchema]);
+    '@graph': [
+      ...baseJsonLd['@graph'],
+      faqJsonLd,
+    ],
+  }), [faqJsonLd]);
 
   return (
     <>
+      <SEO
+        title={title}
+        description={description}
+        canonical={canonicalUrl}
+        keywords={keywords.join(', ')}
+        jsonLd={combinedJsonLd}
+      />
 
       {/* Main OCR Tool */}
       <HeroOCR customHeading={heading} customSubheading={subheading} />

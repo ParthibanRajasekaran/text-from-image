@@ -2,39 +2,23 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ROUTES } from '../router';
+import { SEO } from '../components/SEO';
 
 /**
  * 404 Not Found page
  * Dedicated error page for invalid routes with proper SEO metadata
  */
 export default function NotFound() {
-  // Set document title for SEO
+  // Add noindex meta to prevent indexing 404 pages
   useEffect(() => {
-    document.title = '404 - Page Not Found | Free Text From Image';
-    
-    // Add meta robots to prevent indexing 404 pages
-    // Check if robots meta tag already exists
-    let metaRobots = document.querySelector('meta[name="robots"]') as HTMLMetaElement;
-    let isNewElement = false;
-    
-    if (!metaRobots) {
-      metaRobots = document.createElement('meta');
-      metaRobots.name = 'robots';
-      isNewElement = true;
-    }
-    
-    const originalContent = metaRobots.content;
+    const metaRobots = document.createElement('meta');
+    metaRobots.name = 'robots';
     metaRobots.content = 'noindex, nofollow';
-    
-    if (isNewElement) {
-      document.head.appendChild(metaRobots);
-    }
+    document.head.appendChild(metaRobots);
 
     return () => {
-      if (isNewElement && metaRobots.parentNode) {
+      if (metaRobots.parentNode) {
         document.head.removeChild(metaRobots);
-      } else if (metaRobots && metaRobots.parentNode) {
-        metaRobots.content = originalContent;
       }
     };
   }, []);
@@ -42,6 +26,11 @@ export default function NotFound() {
   // V3 enhanced UI with glass-morphism and animations
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-indigo-950 dark:to-purple-950">
+      <SEO
+        title="404 - Page Not Found"
+        description="The page you're looking for doesn't exist. Return to our free image to text converter."
+        canonical="https://freetextfromimage.com/404"
+      />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

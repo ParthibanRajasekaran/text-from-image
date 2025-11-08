@@ -22,6 +22,12 @@ export default defineConfig(({ mode: _mode }) => {
         port: 3000,
         host: '0.0.0.0',
       },
+        test: {
+          environment: 'jsdom',
+          setupFiles: 'src/test/setupTests.ts',
+          globals: true,
+          include: ['src/**/*.spec.ts', 'src/**/*.spec.tsx', 'src/**/*.a11y.spec.tsx'],
+        },
       plugins: [
         react(),
         // Bundle analyzer - generates stats.html when ANALYZE=true
