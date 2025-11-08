@@ -104,6 +104,12 @@ jobs:
           elif [ -f yarn.lock ]; then yarn --frozen-lockfile
           else npm ci; fi
       
+      - name: Validate environment variables
+        if: steps.filter.outputs.app == 'true'
+        run: npm run validate:env
+        env:
+          CI: true
+      
       - name: Vercel auth & link
         if: steps.filter.outputs.app == 'true'
         run: |
@@ -203,6 +209,12 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then pnpm i --frozen-lockfile
           elif [ -f yarn.lock ]; then yarn --frozen-lockfile
           else npm ci; fi
+      
+      - name: Validate environment variables
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'
+        run: npm run validate:env
+        env:
+          CI: true
       
       - name: Vercel auth & link
         if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'

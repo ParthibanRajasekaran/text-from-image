@@ -2,63 +2,73 @@
 
 Additional documentation for the Extract Text From Image project.
 
-## 📖 Guides
+## 📖 Essential Guides
 
-### [Error Handling Guide](./ERROR_HANDLING_GUIDE.md)
-Comprehensive guide to the error handling system:
+### [GUARDRAILS.md](./GUARDRAILS.md) 🛡️ **NEW**
+**Environment variable guardrails** - Prevent production drift!
+- Build-time validation (fails if critical vars missing)
+- CI/CD checks in GitHub Actions
+- Pre-deploy and post-deploy verification
+- Clear error messages and fix instructions
+
+### [NO_DRIFT.md](./NO_DRIFT.md) 🔥
+**Production drift prevention system** - Read this first!
+- Environment variable management
+- Deploy and verify workflows
+- Troubleshooting production issues
+- One-command verification
+
+### [FEATURE_FLAGS_ANALYSIS.md](./FEATURE_FLAGS_ANALYSIS.md)
+Complete analysis of all feature flags and environment variables:
+- All 8 feature flags documented
+- 100+ usage locations mapped
+- Root cause analysis of drift issues
+- Refactoring recommendations
+
+### [IMPLEMENTATION_SUMMARY.md](./IMPLEMENTATION_SUMMARY.md)
+Summary of drift prevention implementation:
+- What was built and why
+- Before/after comparison
+- Success criteria verification
+
+### [ERROR_HANDLING_GUIDE.md](./ERROR_HANDLING_GUIDE.md)
+Comprehensive error handling system:
 - 13 error types and their meanings
 - Testing error scenarios
 - Recovery strategies
 - User-friendly error messages
 
-### [Improving Confidence](./IMPROVING_CONFIDENCE.md)
-Techniques to improve OCR accuracy:
-- 8 image preprocessing methods
-- When to use each technique
-- Expected confidence boosts
-- Best practices
-
-### [Hugging Face Models Analysis](./HUGGINGFACE_OCR_MODELS_ANALYSIS.md)
-Analysis of available OCR models:
-- Comparison of TrOCR variants
-- Model selection rationale
-- Performance vs size trade-offs
-- Alternative models
-
-## 🚀 Deployment & Planning
-
-### [Enhancement Plan](./ENHANCEMENT_PLAN.md)
-Roadmap for extracttextfromimage.co.uk:
-- UI/UX improvements
-- Monetization strategy
-- Legal compliance
-- Marketing plan
-
-### [Ready to Launch](./READY_TO_LAUNCH.md)
-Deployment checklist:
-- Domain setup
-- Hosting configuration
-- SEO optimization
-- Launch steps
-
-### [Error Handling Improvements](./ERROR_HANDLING_IMPROVEMENTS.md)
-Production error handling enhancements:
-- Error recovery strategies
-- User-friendly error messages
-- Edge case handling
-- Graceful degradation
-
-### [Vercel Limits](./VERCEL_LIMITS.md)
-Understanding Vercel free tier constraints:
-- Deployment limits
-- Build minutes
-- Rate limiting
-- Best practices
+### [DEPLOYMENT.md](./DEPLOYMENT.md)
+Complete deployment guide (archived from root):
+- One-time setup instructions
+- GitHub Actions configuration
+- Environment variable setup
+- Troubleshooting deployment issues
 
 ---
 
 ## 📂 Quick Links
 
 **Main Documentation:** [../README.md](../README.md)  
+**Environment Template:** [../.env.example](../.env.example)  
 **License:** [../LICENSE](../LICENSE)  
 **Source Code:** [GitHub Repository](https://github.com/ParthibanRajasekaran/text-from-image)
+
+## 🚀 Quick Start
+
+```bash
+# Setup environment
+cp ../.env.example ../.env.local
+# Edit .env.local and set VITE_UX_V2=1
+
+# Deploy to production
+npm run deploy:prod
+
+# Verify deployment
+npm run verify:full
+
+# Compare environments
+npm run env:diff
+```
+
+See **NO_DRIFT.md** for complete workflows.

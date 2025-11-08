@@ -32,7 +32,7 @@ const config: NichePageConfig = {
     {
       step: 1,
       title: 'Upload Your Image',
-      description: 'Drag and drop a photo of your handwritten note, or paste from clipboard. Supports JPG, PNG, and PDF files up to 10MB.',
+      description: 'Drag and drop a photo of your handwritten note, or paste from clipboard. Supports JPG, PNG, and PDF files up to 20MB.',
     },
     {
       step: 2,
@@ -133,7 +133,7 @@ const config: NichePageConfig = {
     },
     {
       question: 'What file formats are supported for handwriting images?',
-      answer: 'We support JPG, PNG, WEBP, and PDF files up to 10MB. For photos of handwritten notes, JPG or PNG work best. If you are scanning documents, make sure to save them at sufficient resolution (at least 300 DPI) for optimal text recognition.',
+      answer: 'We support JPG, PNG, WEBP, and PDF files up to 20MB. For photos of handwritten notes, JPG or PNG work best. If you are scanning documents, make sure to save them at sufficient resolution (at least 300 DPI) for optimal text recognition.',
     },
   ],
   

@@ -154,7 +154,7 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
               {isDragging ? 'Drop image here' : 'Drop image or click to upload'}
             </p>
             <p className="text-sm text-muted-foreground">
-              PNG, JPG, WEBP up to 10MB
+              PNG, JPG, WEBP up to 20MB
             </p>
             <p className="text-xs text-muted-foreground flex items-center justify-center gap-2">
               <kbd className="px-2 py-1 text-xs rounded bg-muted border border-border">⌘V</kbd>
