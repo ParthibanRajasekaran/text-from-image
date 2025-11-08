@@ -80,7 +80,7 @@ export const FileInput: React.FC<FileInputProps> = ({ onFileChange, previewUrl, 
       <div className="relative p-4 border border-border rounded-lg bg-card">
         <img 
             src={previewUrl} 
-            alt="Image preview" 
+            alt="Preview" 
             className={`max-h-60 w-full object-contain rounded-md mx-auto transition-opacity duration-300 ${isLoading ? 'opacity-50' : 'opacity-100'}`} 
         />
         {isLoading && (

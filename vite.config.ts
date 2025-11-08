@@ -13,7 +13,7 @@ function getCommitSHA() {
   }
 }
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode: _mode }) => {
     const commitSHA = getCommitSHA();
     const isAnalyze = process.env.ANALYZE === 'true';
     

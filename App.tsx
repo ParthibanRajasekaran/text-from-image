@@ -11,6 +11,7 @@ import { ProgressBar, ProgressStage } from './components/ProgressBar';
 import { OCRError } from './utils/errorHandling';
 import { useLocalHistory } from './hooks/useLocalHistory';
 import { useShortcuts, getCommonShortcuts } from './hooks/useShortcuts';
+import { useLiveRegion } from './hooks/useLiveRegion';
 import { isUXV2Enabled } from './utils/env';
 import { COMMIT } from './lib/version';
 
@@ -35,6 +36,9 @@ function App() {
 
   // Local history hook
   const { history, addToHistory, removeFromHistory, clearHistory } = useLocalHistory();
+
+  // Accessibility: Screen reader announcements for OCR status
+  const announceStatus = useLiveRegion('polite');
 
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -82,6 +86,18 @@ function App() {
   });
 
   useShortcuts(shortcuts, useEnhancedUI);
+
+  // Announce OCR status changes to screen readers
+  useEffect(() => {
+    if (isLoading) {
+      announceStatus('Processing image, please wait...');
+    } else if (hasProcessed && extractedText) {
+      const wordCount = extractedText.trim().split(/\s+/).filter(Boolean).length;
+      announceStatus(`Text extraction complete. ${wordCount} words extracted.`);
+    } else if (error) {
+      announceStatus(`Error: ${error}`);
+    }
+  }, [isLoading, hasProcessed, extractedText, error, announceStatus]);
 
   const handleFileChange = useCallback(async (file: File | null) => {
     setImageFile(file);
@@ -202,6 +218,14 @@ function App() {
 
   return (
     <div className="bg-background text-foreground min-h-screen font-sans">
+      {/* Skip to main content link - Accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-primary focus:text-primary-foreground focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      >
+        Skip to main content
+      </a>
+
       {error && (
         <Toast 
           message={error} 
@@ -248,7 +272,7 @@ function App() {
           </div>
         </div>
       </header>
-      <main className="container mx-auto p-4 md:p-8">
+      <main id="main-content" className="container mx-auto p-4 md:p-8" tabIndex={-1}>
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center gap-2">

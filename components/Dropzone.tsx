@@ -151,16 +151,7 @@ export function Dropzone({
     }
   }, [disabled]);
 
-  // Keyboard handler
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
-        e.preventDefault();
-        handleClick();
-      }
-    },
-    [disabled, handleClick]
-  );
+  // Note: Keyboard handler removed - native button behavior handles Enter/Space
 
   // Clipboard paste logic now handled by useClipboard hook
   useClipboard({
@@ -281,17 +272,17 @@ export function Dropzone({
         )}
         style={{ willChange: 'transform' }}
         role="region"
-        aria-label="File upload drop zone"
+        aria-labelledby="dropzone-heading"
       >
         <motion.div
           animate={isDragging ? { scale: shouldReduceMotion ? 1 : 1.1 } : { scale: 1 }}
           transition={{ duration: 0.2 }}
         >
-          <UploadIcon className="w-16 h-16 text-muted-foreground" />
+          <UploadIcon className="w-16 h-16 text-muted-foreground" aria-hidden="true" focusable="false" />
         </motion.div>
 
         <div className="text-center space-y-2">
-          <p className="text-lg font-medium text-foreground">
+          <p id="dropzone-heading" className="text-lg font-medium text-foreground">
             {isDragging ? 'Drop image here' : 'Drop image or click button to upload'}
           </p>
           <p className="text-sm text-muted-foreground">
@@ -302,7 +293,6 @@ export function Dropzone({
           </p>
           <button
             onClick={handleClick}
-            onKeyDown={handleKeyDown}
             disabled={disabled}
             className={clsx(
               'mt-4 px-6 py-2.5 bg-primary text-primary-foreground rounded-md font-medium',
@@ -312,6 +302,7 @@ export function Dropzone({
                 'opacity-50 cursor-not-allowed': disabled,
               }
             )}
+            aria-describedby="dropzone-heading"
           >
             Upload Image
           </button>
@@ -319,14 +310,14 @@ export function Dropzone({
 
         <input
           ref={inputRef}
+          id="dropzone-file-input"
           type="file"
           accept={accept}
           multiple={maxFiles > 1}
           onChange={handleChange}
           disabled={disabled}
           className="sr-only"
-          tabIndex={-1}
-          aria-label="File upload input (use button to select files)"
+          aria-label="File upload input"
         />
       </motion.div>
 

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { useSafeMotion, motionTransition } from '../lib/motion';
 import { HistoryItem } from '../hooks/useLocalHistory';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import { CopyIcon } from './icons/CopyIcon';
 import { XCircleIcon } from './icons/XCircleIcon';
 import { CardSkeleton } from './SkeletonLoader';
@@ -37,6 +38,9 @@ export function HistoryDrawer({
   isLoading = false,
 }: HistoryDrawerProps) {
   const shouldReduceMotion = useSafeMotion();
+  
+  // Accessibility: Focus trap to prevent tabbing to background elements
+  const drawerRef = useFocusTrap<HTMLElement>(isOpen, true, 'main, #root');
 
   // Close on Escape key
   React.useEffect(() => {
@@ -85,6 +89,7 @@ export function HistoryDrawer({
       <AnimatePresence>
         {isOpen && (
           <motion.aside
+            ref={drawerRef}
             initial={{ x: shouldReduceMotion ? 0 : '100%', opacity: shouldReduceMotion ? 0 : 1 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: shouldReduceMotion ? 0 : '100%', opacity: shouldReduceMotion ? 0 : 1 }}
@@ -92,17 +97,17 @@ export function HistoryDrawer({
             className="fixed right-0 top-0 h-full w-full sm:w-96 bg-white dark:bg-gray-900 shadow-2xl z-50 overflow-hidden"
             role="dialog"
             aria-modal="true"
-            aria-label="OCR History"
+            aria-labelledby="history-drawer-title"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
-              <h2 className="text-lg font-semibold">History</h2>
+              <h2 id="history-drawer-title" className="text-lg font-semibold">History</h2>
               <button
                 onClick={onClose}
                 className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
                 aria-label="Close history"
               >
-                <XCircleIcon className="w-5 h-5" />
+                <XCircleIcon className="w-5 h-5" aria-hidden="true" focusable="false" />
               </button>
             </div>
 
@@ -182,35 +187,31 @@ function HistoryCard({ entry, onSelect, onCopy, onRemove, onRerun }: HistoryCard
     <motion.div
       whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
       transition={{ duration: 0.15 }}
-      onClick={onSelect}
       className={clsx(
         'p-3 rounded-lg border border-gray-200 dark:border-gray-700',
-        'bg-gray-50 dark:bg-gray-800 cursor-pointer',
+        'bg-gray-50 dark:bg-gray-800',
         'hover:border-primary hover:bg-primary/5 transition-colors',
-        'focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2'
       )}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onSelect();
-        }
-      }}
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-2">
-        <div className="flex-1 min-w-0">
-          {entry.filename && (
-            <p className="text-xs font-medium text-gray-900 dark:text-gray-100 truncate mb-1">
-              {entry.filename}
+        <button
+          onClick={onSelect}
+          className="flex-1 min-w-0 text-left focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+          aria-label={`View OCR result from ${formattedDate}${entry.filename ? ` for ${entry.filename}` : ''}`}
+        >
+          <div>
+            {entry.filename && (
+              <p className="text-xs font-medium text-gray-900 dark:text-gray-100 truncate mb-1">
+                {entry.filename}
+              </p>
+            )}
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {formattedDate} · {entry.text.length.toLocaleString()} chars
+              {entry.method && <span className="ml-1">· {entry.method}</span>}
             </p>
-          )}
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            {formattedDate} · {entry.text.length.toLocaleString()} chars
-            {entry.method && <span className="ml-1">· {entry.method}</span>}
-          </p>
-        </div>
+          </div>
+        </button>
         <div className="flex items-center gap-1 ml-2">
           {/* Re-run button */}
           {onRerun && (
@@ -220,7 +221,7 @@ function HistoryCard({ entry, onSelect, onCopy, onRemove, onRerun }: HistoryCard
               aria-label="Re-run OCR with same settings"
               title="Re-run OCR"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
               </svg>
             </button>
@@ -232,7 +233,7 @@ function HistoryCard({ entry, onSelect, onCopy, onRemove, onRerun }: HistoryCard
             aria-label="Copy text"
             title="Copy text"
           >
-            <CopyIcon className="w-4 h-4" />
+            <CopyIcon className="w-4 h-4" aria-hidden="true" focusable="false" />
           </button>
           {/* Remove button */}
           <button
@@ -241,15 +242,21 @@ function HistoryCard({ entry, onSelect, onCopy, onRemove, onRerun }: HistoryCard
             aria-label="Remove entry"
             title="Remove entry"
           >
-            <XCircleIcon className="w-4 h-4" />
+            <XCircleIcon className="w-4 h-4" aria-hidden="true" focusable="false" />
           </button>
         </div>
       </div>
 
-      {/* Text preview */}
-      <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3">
-        {textPreview}
-      </p>
+      {/* Text preview - clickable area */}
+      <button
+        onClick={onSelect}
+        className="w-full text-left focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+        aria-label="View full text"
+      >
+        <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3">
+          {textPreview}
+        </p>
+      </button>
     </motion.div>
   );
 }

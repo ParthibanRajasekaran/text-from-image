@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AuroraBackground } from '../AuroraBackground';
 import { GlassDropzone } from './GlassDropzone';
@@ -10,6 +10,7 @@ import { useTheme } from '../../hooks/useTheme';
 import { useOCRProcessor } from '../../hooks/useOCRProcessor';
 import { useLocalHistory, type HistoryItem } from '../../hooks/useLocalHistory';
 import { useShortcuts, getCommonShortcuts } from '../../hooks/useShortcuts';
+import { useLiveRegion } from '../../hooks/useLiveRegion';
 
 interface HeroOCRProps {
   customHeading?: string;
@@ -51,8 +52,25 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
   } = useOCRProcessor();
   const { history, removeFromHistory, clearHistory } = useLocalHistory();
   
+  // Accessibility: Screen reader announcements for OCR status
+  const announceStatus = useLiveRegion('polite');
+  
   // Local UI state only
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+
+  // Announce OCR status changes to screen readers
+  useEffect(() => {
+    if (isProcessing) {
+      announceStatus('Processing image, please wait...');
+    } else if (extractedText && !error) {
+      const wordCount = extractedText.trim().split(/\s+/).filter(Boolean).length;
+      announceStatus(`Text extraction complete. ${wordCount} words extracted.`);
+    } else if (error) {
+      announceStatus(`Error: ${error}`);
+    } else {
+      announceStatus('Ready for image upload');
+    }
+  }, [isProcessing, extractedText, error, announceStatus]);
 
   // Handle restoring from history
   const handleRestore = useCallback((item: HistoryItem) => {

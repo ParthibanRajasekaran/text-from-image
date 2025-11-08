@@ -68,21 +68,8 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
     [handleFile]
   );
 
-  // Click to open file dialog
-  const handleClick = useCallback(() => {
-    if (!disabled && !isLoading) inputRef.current?.click();
-  }, [disabled, isLoading]);
-
-  // Keyboard: Enter/Space
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        handleClick();
-      }
-    },
-    [handleClick]
-  );
+  // Note: Click and keyboard handlers removed - native label behavior handles this
+  // The <label htmlFor="file-input"> automatically triggers the file picker
 
   // Clipboard paste logic now handled by useClipboard hook
   useClipboard({
@@ -93,23 +80,19 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
   });
 
   return (
-    <motion.div
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
+    <motion.label
+        htmlFor="glass-dropzone-file-input"
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        role="button"
-        tabIndex={disabled || isLoading ? -1 : 0}
-        aria-label="Upload image file. Drag and drop, click, or paste with Cmd+V or Ctrl+V"
-        aria-disabled={disabled || isLoading}
+        tabIndex={0}
         className={`
           group relative min-h-[320px] rounded-2xl cursor-pointer
           bg-surface/40 backdrop-blur-xl
-          border-2 border-dashed transition-all duration-200
+          border-2 border-dashed transition-all duration-200 block
           ${
             isDragging
               ? 'border-accent shadow-glow-sm scale-[1.02]'
@@ -145,12 +128,12 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
             }
             transition={{ duration: 0.15 }}
           >
-            <UploadIcon className="w-16 h-16 text-muted-foreground group-hover:text-accent transition-colors duration-200" />
+            <UploadIcon className="w-16 h-16 text-muted-foreground group-hover:text-accent transition-colors duration-200" aria-hidden="true" focusable="false" />
           </motion.div>
 
-          {/* Text content */}
+          {/* Text content - This is now the accessible name via label association */}
           <div className="text-center space-y-2">
-            <p className="text-xl font-semibold text-foreground">
+            <p className="text-xl font-semibold text-foreground" id="glass-dropzone-label">
               {isDragging ? 'Drop image here' : 'Drop image or click to upload'}
             </p>
             <p className="text-sm text-muted-foreground">
@@ -165,17 +148,17 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
           </div>
         </div>
 
-        {/* Hidden file input */}
+        {/* Hidden file input - connected via htmlFor on label */}
         <input
           ref={inputRef}
+          id="glass-dropzone-file-input"
           type="file"
           accept="image/*"
           onChange={handleChange}
           disabled={disabled || isLoading}
           className="sr-only"
-          tabIndex={-1}
-          aria-label="File upload input"
+          aria-labelledby="glass-dropzone-label"
         />
-      </motion.div>
+      </motion.label>
   );
 }

@@ -12,14 +12,15 @@ interface ThemeToggleProps {
 export const ThemeToggle: React.FC<ThemeToggleProps> = ({ theme, toggleTheme }) => {
   return (
     <button
+      type="button"
       onClick={toggleTheme}
       className="p-2 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background"
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
     >
       {theme === 'light' ? (
-        <MoonIcon className="w-6 h-6" />
+        <MoonIcon className="w-6 h-6" aria-hidden="true" focusable="false" />
       ) : (
-        <SunIcon className="w-6 h-6" />
+        <SunIcon className="w-6 h-6" aria-hidden="true" focusable="false" />
       )}
     </button>
   );

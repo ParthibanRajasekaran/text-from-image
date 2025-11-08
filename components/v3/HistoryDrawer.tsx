@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { XCircleIcon } from '../icons/XCircleIcon';
 import type { HistoryItem } from '../../hooks/useLocalHistory';
+import { useFocusTrap } from '../../hooks/useFocusTrap';
 import { ConfirmDialog } from './ConfirmDialog';
 import { formatTimestamp } from '../../utils/dateUtils';
 
@@ -37,6 +38,9 @@ export function HistoryDrawer({
 }: HistoryDrawerProps) {
   const shouldReduceMotion = useReducedMotion();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+
+  // Accessibility: Focus trap to prevent tabbing to background elements
+  const drawerRef = useFocusTrap<HTMLElement>(isOpen, true, 'main, #root');
 
   // Escape key to close
   useEffect(() => {
@@ -82,6 +86,7 @@ export function HistoryDrawer({
 
           {/* Drawer */}
           <motion.aside
+            ref={drawerRef}
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
@@ -106,7 +111,7 @@ export function HistoryDrawer({
                 className="p-2 rounded-lg hover:bg-surface/60 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
                 aria-label="Close history drawer"
               >
-                <XCircleIcon className="w-5 h-5 text-muted-foreground" />
+                <XCircleIcon className="w-5 h-5 text-muted-foreground" aria-hidden="true" focusable="false" />
               </button>
             </div>
 
