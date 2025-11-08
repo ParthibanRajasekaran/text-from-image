@@ -27,27 +27,6 @@
     <priority>0.9</priority>
   </url>
   
-  <url>
-    <loc>https://freetextfromimage.com/jpg-to-word</loc>
-    <lastmod>2025-11-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>https://freetextfromimage.com/image-to-text-converter</loc>
-    <lastmod>2025-11-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>https://freetextfromimage.com/image-to-excel</loc>
-    <lastmod>2025-11-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
   <!-- Niche OCR Tools -->
   <url>
     <loc>https://freetextfromimage.com/handwriting-to-text</loc>
@@ -119,4 +98,8 @@
     <priority>0.7</priority>
   </url>
 
+  <url><loc>https://ocr.parthiban.dev/</loc></url>
+  <url><loc>https://ocr.parthiban.dev/image-to-text</loc></url>
+  <url><loc>https://ocr.parthiban.dev/extract-text-from-image</loc></url>
+  <url><loc>https://ocr.parthiban.dev/copy-text-from-image</loc></url>
 </urlset>

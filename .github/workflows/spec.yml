@@ -1,0 +1,31 @@
+name: Spec Driven Development
+on:
+  pull_request:
+    paths:
+      - 'specs/**'
+      - 'scripts/validate-json.js'
+      - 'package.json'
+      - '.github/workflows/spec.yml'
+      - '.spectral.yaml'
+      - 'src/**'
+      - 'public/robots.txt'
+      - 'public/sitemap.xml'
+jobs:
+  spec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Spectral Lint
+        run: npm run spec:lint
+      - name: JSON Schema Validation
+        run: npm run spec:schemas
+      - name: BDD Tests
+        run: npm run spec:test
+      - name: OAS Diff
+        run: npm run spec:diff

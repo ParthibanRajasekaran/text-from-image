@@ -1,0 +1,39 @@
+openapi: 3.0.0
+info:
+  title: OCR API
+  version: 1.0.0
+paths:
+  /ocr:
+    post:
+      summary: Submit an image for OCR
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OCR result
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/ocr-result.schema.json'
+    get:
+      summary: Get OCR job status
+      parameters:
+        - name: jobId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OCR job status/result
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/ocr-result.schema.json'

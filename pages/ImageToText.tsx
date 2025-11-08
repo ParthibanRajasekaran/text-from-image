@@ -1,10 +1,16 @@
 import { IntentPage } from '../components/v3/IntentPage';
+import { useSEO } from '../src/seo';
 
 /**
  * Image to Text page
  * SEO-optimized route for /image-to-text
  */
 export default function ImageToText() {
+  useSEO({
+    title: "Image to Text Converter - Free Online OCR Tool",
+    description: "Convert any image to text instantly with our free AI-powered OCR tool. Extract text from JPG, PNG, WEBP, and PDF files with high accuracy. No signup required.",
+    canonical: "https://freetextfromimage.com/image-to-text"
+  });
   return (
     <IntentPage
       title="Image to Text Converter - Free Online OCR Tool"

@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://freetextfromimage.com/sitemap.xml
+Sitemap: https://ocr.parthiban.dev/sitemap.xml
 
 # Crawl-delay for courtesy (optional)
 Crawl-delay: 1

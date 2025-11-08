@@ -1,4 +1,4 @@
-import React from 'react';
+import { describe } from 'vitest';
 // If you have a modal component, import it here
 // import { Modal } from '../../components/Modal';
 
