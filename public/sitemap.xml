@@ -98,8 +98,4 @@
     <priority>0.7</priority>
   </url>
 
-  <url><loc>https://ocr.parthiban.dev/</loc></url>
-  <url><loc>https://ocr.parthiban.dev/image-to-text</loc></url>
-  <url><loc>https://ocr.parthiban.dev/extract-text-from-image</loc></url>
-  <url><loc>https://ocr.parthiban.dev/copy-text-from-image</loc></url>
 </urlset>
