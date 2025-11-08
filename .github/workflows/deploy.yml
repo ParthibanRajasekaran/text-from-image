@@ -1,0 +1,236 @@
+# Vercel Deployment Workflow (Gated)
+#
+# Strategy: Stop burning deploys by gating via GitHub Actions
+# - Preview deploys: Only when PR has 'deploy:preview' label
+# - Production deploys: Only on merge to main or manual trigger
+# - Path filters: Skip if only docs/non-app files changed
+# - Concurrency: Cancel superseded builds
+#
+# Requirements:
+# 1. GitHub Secrets (Settings → Secrets and variables → Actions):
+#    - VERCEL_TOKEN: Create at https://vercel.com/account/tokens
+#    - VERCEL_ORG_ID: Found in .vercel/project.json
+#    - VERCEL_PROJECT_ID: Found in .vercel/project.json
+#
+# 2. Vercel Project Settings:
+#    - DISABLE Git auto-deploy OR use vercel.json ignoreCommand
+#    - We control all deploys via this workflow
+#
+# Usage:
+# - Preview: Add 'deploy:preview' label to PR
+# - Skip: Add '[skip deploy]' to commit message or PR title  
+# - Manual: Actions → Deploy (Vercel-gated) → Run workflow
+#
+# Relevant docs:
+# - Vercel CLI in CI: https://vercel.com/docs/cli#ci-cd
+# - GitHub Actions: https://vercel.com/guides/how-can-i-use-github-actions-with-vercel
+
+name: Deploy (Vercel-gated)
+
+on:
+  pull_request:
+    types: [labeled, synchronize, reopened]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - preview
+
+jobs:
+  preview:
+    name: Deploy Preview
+    # Gate: Only deploy when PR has 'deploy:preview' label
+    if: >
+      github.event_name == 'pull_request' &&
+      contains(github.event.pull_request.labels.*.name, 'deploy:preview') &&
+      !contains(github.event.pull_request.title, '[skip deploy]')
+    
+    runs-on: ubuntu-latest
+    
+    # Cancel superseded preview builds for same PR
+    concurrency:
+      group: preview-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      
+      - name: Detect app changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            app:
+              - 'app/**'
+              - 'pages/**'
+              - 'components/**'
+              - 'lib/**'
+              - 'hooks/**'
+              - 'services/**'
+              - 'utils/**'
+              - 'types/**'
+              - 'public/**'
+              - 'index.html'
+              - '*.config.*'
+              - 'package.json'
+              - '*lock.yaml'
+              - '*lock.json'
+      
+      - name: Skip if docs-only
+        if: steps.filter.outputs.app != 'true'
+        run: |
+          echo "::notice::No app changes. Skipping preview."
+          exit 0
+      
+      - uses: actions/setup-node@v4
+        if: steps.filter.outputs.app == 'true'
+        with:
+          node-version: 20
+      
+      - name: Install deps
+        if: steps.filter.outputs.app == 'true'
+        run: |
+          corepack enable
+          if [ -f pnpm-lock.yaml ]; then pnpm i --frozen-lockfile
+          elif [ -f yarn.lock ]; then yarn --frozen-lockfile
+          else npm ci; fi
+      
+      - name: Vercel auth & link
+        if: steps.filter.outputs.app == 'true'
+        run: |
+          npm i -g vercel@latest
+          vercel link --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      
+      - name: Build
+        if: steps.filter.outputs.app == 'true'
+        run: |
+          if [ -f pnpm-lock.yaml ]; then pnpm build
+          elif [ -f yarn.lock ]; then yarn build
+          else npm run build; fi
+      
+      - name: Deploy preview
+        if: steps.filter.outputs.app == 'true'
+        id: deploy
+        run: |
+          URL=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} 2>&1 | tee /dev/stderr | tail -1)
+          echo "url=$URL" >> $GITHUB_OUTPUT
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      
+      - name: Comment PR
+        if: steps.filter.outputs.app == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `### 🚀 Preview Deployed\n\n✅ **URL:** ${{ steps.deploy.outputs.url }}\n\n**Commit:** \`${context.sha.substring(0, 7)}\``
+            })
+
+  production:
+    name: Deploy Production
+    # Gate: Only on push to main (without skip) or manual
+    if: >
+      (github.event_name == 'push' && 
+       github.ref == 'refs/heads/main' && 
+       !contains(github.event.head_commit.message, '[skip deploy]')) ||
+      github.event_name == 'workflow_dispatch'
+    
+    runs-on: ubuntu-latest
+    
+    concurrency:
+      group: production
+      cancel-in-progress: true
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      
+      - name: Detect app changes
+        if: github.event_name != 'workflow_dispatch'
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            app:
+              - 'app/**'
+              - 'pages/**'
+              - 'components/**'
+              - 'lib/**'
+              - 'hooks/**'
+              - 'services/**'
+              - 'utils/**'
+              - 'types/**'
+              - 'public/**'
+              - 'index.html'
+              - '*.config.*'
+              - 'package.json'
+              - '*lock.yaml'
+              - '*lock.json'
+      
+      - name: Skip if docs-only
+        if: github.event_name != 'workflow_dispatch' && steps.filter.outputs.app != 'true'
+        run: |
+          echo "::notice::No app changes. Skipping production deploy."
+          exit 0
+      
+      - uses: actions/setup-node@v4
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'
+        with:
+          node-version: 20
+      
+      - name: Install deps
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'
+        run: |
+          corepack enable
+          if [ -f pnpm-lock.yaml ]; then pnpm i --frozen-lockfile
+          elif [ -f yarn.lock ]; then yarn --frozen-lockfile
+          else npm ci; fi
+      
+      - name: Vercel auth & link
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'
+        run: |
+          npm i -g vercel@latest
+          vercel link --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      
+      - name: Build
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'
+        run: |
+          if [ -f pnpm-lock.yaml ]; then pnpm build
+          elif [ -f yarn.lock ]; then yarn build
+          else npm run build; fi
+      
+      - name: Deploy production
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'
+        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      
+      - name: Summary
+        if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'
+        run: |
+          echo "### 🚀 Production Deployed" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${GITHUB_SHA:0:7}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY

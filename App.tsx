@@ -12,6 +12,7 @@ import { OCRError } from './utils/errorHandling';
 import { useLocalHistory } from './hooks/useLocalHistory';
 import { useShortcuts, getCommonShortcuts } from './hooks/useShortcuts';
 import { isUXV2Enabled } from './utils/env';
+import { COMMIT } from './lib/version';
 
 type Theme = 'light' | 'dark';
 
@@ -349,6 +350,20 @@ function App() {
           }}
         />
       )}
+
+      {/* Footer with version info for deployment verification */}
+      <footer className="py-4 px-6 border-t border-border mt-8">
+        <div className="container mx-auto text-center text-xs text-muted-foreground">
+          <p>
+            © {new Date().getFullYear()} Extract Text From Image • Made with ❤️ for privacy
+            {COMMIT !== 'dev' && (
+              <span className="ml-2 opacity-50" title="Deployment version">
+                • v{COMMIT}
+              </span>
+            )}
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

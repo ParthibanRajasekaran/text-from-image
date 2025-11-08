@@ -220,6 +220,211 @@ text-from-image/
 - ✅ **No tracking** - Privacy-first design
 - ✅ **GDPR compliant** - No personal data processed
 
+## 🚀 Deployment
+
+### Branching Model (Deploy-Gate Strategy)
+
+We use a **label-gated deployment** model to prevent burning Vercel deploys:
+
+- **`main` branch** = Production (auto-deploys via GitHub Actions)
+- **Feature branches** (`feat/*`, etc.) = NO auto-deploy
+- **Preview deploys** = Only when PR has `deploy:preview` label
+- **Skip deploys** = Add `[skip deploy]` to commit message
+
+This ensures:
+- 🎯 Only intentional deploys happen
+- 💰 No wasted deploys on WIP commits
+- 🚀 Fast iteration without deploy limits
+
+### Quick Deployment Guide
+
+#### 1. Preview a Pull Request
+
+```bash
+# 1. Create PR from feature branch
+git checkout -b feat/my-feature
+git push origin feat/my-feature
+
+# 2. Add 'deploy:preview' label to PR in GitHub UI
+#    Go to PR → Labels → Select 'deploy:preview'
+
+# 3. GitHub Actions will deploy a preview
+#    Preview URL will be commented on the PR
+```
+
+#### 2. Deploy to Production
+
+**Option A: Merge to main** (recommended)
+```bash
+# Merge PR to main branch
+# GitHub Actions auto-deploys to production
+```
+
+**Option B: Manual CLI** (100/day limit)
+```bash
+# Install Vercel CLI (one-time)
+npm install -g vercel
+
+# Link to project (one-time)
+vercel link --yes
+
+# Pull production settings
+vercel pull --environment=production --yes
+
+# Deploy to production
+vercel --prod --confirm
+```
+
+#### 3. Skip Deployment
+
+To skip auto-deploy on push to main:
+```bash
+git commit -m "docs: update README [skip deploy]"
+git push origin main
+```
+
+### GitHub Actions Setup
+
+**Required GitHub Secrets** (Settings → Secrets and variables → Actions):
+
+1. **`VERCEL_TOKEN`**
+   - Create at: https://vercel.com/account/tokens
+   - Scope: Full Account
+   - Never commit this!
+
+2. **`VERCEL_ORG_ID`** and **`VERCEL_PROJECT_ID`**
+   - Get by running: `vercel link --yes`
+   - Found in: `.vercel/project.json`
+   ```json
+   {
+     "orgId": "your-org-id",
+     "projectId": "your-project-id"
+   }
+   ```
+
+**Workflow Features:**
+- ✅ Preview deploys only with `deploy:preview` label
+- ✅ Production deploys on merge to `main`
+- ✅ Path filters (skips docs-only changes)
+- ✅ Concurrency control (cancels superseded builds)
+- ✅ Manual trigger via Actions tab
+
+### Manual Deployment Commands
+
+For local development or testing:
+
+```bash
+# Setup (one-time)
+npm install -g vercel
+vercel link --yes
+
+# Pull production config
+vercel pull --environment=production --yes
+
+# Deploy preview (test)
+vercel
+
+# Deploy production
+vercel --prod --confirm
+
+# Check deployments
+vercel ls
+```
+
+### Vercel Project Configuration
+
+**Disable Git Auto-Deploy** (recommended):
+
+1. Go to: Vercel Dashboard → Project → Settings → Git
+2. Uncheck "Automatic Deployments from Git"
+3. Or: Use `vercel.json` `ignoreCommand` (already configured)
+
+This ensures ALL deploys go through GitHub Actions, giving you full control.
+
+### Deploy Workflow Examples
+
+**Example 1: Feature with Preview**
+```bash
+git checkout -b feat/new-feature
+# ... make changes ...
+git commit -m "feat: add new feature"
+git push origin feat/new-feature
+# Create PR, add 'deploy:preview' label
+# → Preview deployed automatically
+```
+
+**Example 2: Docs-only Change**
+```bash
+git checkout -b docs/update-readme
+# ... edit README ...
+git commit -m "docs: update installation steps"
+git push origin main
+# → NO deploy (path filter skips it)
+```
+
+**Example 3: Hotfix to Production**
+```bash
+git checkout main
+# ... fix critical bug ...
+git commit -m "fix: critical security issue"
+git push origin main
+# → Deploys to production immediately
+```
+
+**Example 4: Skip Deployment**
+```bash
+git commit -m "chore: update dependencies [skip deploy]"
+git push origin main
+# → Skips deployment
+```
+
+### Environment Variables
+
+Set in Vercel Project → Settings → Environment Variables:
+
+| Variable | Value | Environment | Description |
+|----------|-------|-------------|-------------|
+| `VITE_COMMIT` | Auto-set during build | All | Git commit SHA for version display |
+
+**Important:** If you use feature flags (like `VITE_UX_V2`), ensure they're set to the same value in both:
+- Local: `.env.local` file
+- Vercel: Project Settings → Environment Variables → Production
+
+### Troubleshooting Deployment
+
+**Problem:** Production shows old version after deploying
+
+**Solutions:**
+1. **Clear browser cache** - Hard refresh (Cmd+Shift+R / Ctrl+F5)
+2. **Check commit SHA** - Footer should show correct version
+3. **Verify deployment** - Run `npm run verify:prod`
+4. **Check Vercel Dashboard** - Ensure latest deployment is assigned to production domain
+5. **CDN cache** - Can take 1-2 minutes to propagate globally
+
+**Problem:** Different behavior between dev and prod
+
+**Solutions:**
+1. **Check environment variables** - Ensure same values locally and on Vercel
+2. **Remove feature flags** - Don't use `process.env.NODE_ENV` checks that change behavior
+3. **Test production build locally** - Run `npm run build && npm run preview`
+4. **Check build logs** - Vercel Dashboard → Deployments → View build logs
+
+**Problem:** Build fails on Vercel but works locally
+
+**Solutions:**
+1. **Check Node version** - Vercel uses Node 18+ by default
+2. **Install correct dependencies** - Vercel runs `npm ci` (strict lock file)
+3. **Check build command** - Verify `vercel.json` has correct `buildCommand`
+4. **Environment variables** - Ensure required env vars are set in Vercel
+
+### Relevant Docs
+
+- [Vercel CLI Documentation](https://vercel.com/docs/cli)
+- [Vercel Git Integration](https://vercel.com/docs/concepts/git)
+- [Vercel Environment Variables](https://vercel.com/docs/concepts/projects/environment-variables)
+- [Vercel Build Step](https://vercel.com/docs/build-step)
+- [GitHub Actions with Vercel](https://vercel.com/guides/how-can-i-use-github-actions-with-vercel)
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.

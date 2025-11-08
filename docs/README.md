@@ -41,6 +41,20 @@ Deployment checklist:
 - SEO optimization
 - Launch steps
 
+### [Error Handling Improvements](./ERROR_HANDLING_IMPROVEMENTS.md)
+Production error handling enhancements:
+- Error recovery strategies
+- User-friendly error messages
+- Edge case handling
+- Graceful degradation
+
+### [Vercel Limits](./VERCEL_LIMITS.md)
+Understanding Vercel free tier constraints:
+- Deployment limits
+- Build minutes
+- Rate limiting
+- Best practices
+
 ---
 
 ## 📂 Quick Links

@@ -1,0 +1,31 @@
+{
+  // Explicit build command ensures consistent builds
+  // Docs: https://vercel.com/docs/build-step#build-command
+  "buildCommand": "npm run build",
+  
+  // Output directory for Vite builds
+  "outputDirectory": "dist",
+  
+  // Set to null to use custom Vite config
+  // Docs: https://vercel.com/docs/frameworks
+  "framework": null,
+  
+  // SPA fallback routing for client-side React Router
+  // All routes fallback to index.html for client-side routing
+  // Docs: https://vercel.com/docs/projects/project-configuration#rewrites
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  
+  // OPTIONAL: Disable auto-deploys for specific branches
+  // Uncomment to prevent automatic deployments
+  // Docs: https://vercel.com/docs/concepts/git#ignored-build-step
+  // "git": {
+  //   "deploymentEnabled": {
+  //     "dev": false
+  //   }
+  // }
+}
