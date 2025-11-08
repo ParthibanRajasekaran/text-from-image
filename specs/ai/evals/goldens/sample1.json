@@ -1,4 +1,5 @@
 {
-  "image": "sample1.png",
-  "expectedText": "Hello World!"
+  "text": "Hello World!",
+  "confidence": 1.0,
+  "regions": []
 }
