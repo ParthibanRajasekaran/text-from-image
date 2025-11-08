@@ -28,7 +28,7 @@ jobs:
       - name: Install Spectral
         run: npm install -g @stoplight/spectral
       - name: Spectral Lint
-        run: spectral lint specs/api/openapi.yml -c .spectral.yaml
+        run: spectral lint specs/api/openapi.yml -r .spectral.yaml
       - name: JSON Schema Validation
         run: npm run spec:schemas
       - name: BDD Tests
