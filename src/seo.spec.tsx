@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { useSEO } from './seo';
 import { render } from '@testing-library/react';
 
-function TestSEO(props) {
+function TestSEO(props: Parameters<typeof useSEO>[0]) {
   useSEO(props);
   return null;
 }
