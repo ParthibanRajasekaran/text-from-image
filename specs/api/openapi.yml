@@ -3,6 +3,9 @@ info:
   title: OCR API
   version: 1.0.0
   description: OCR API for extracting text from images.
+tags:
+  - name: OCR
+    description: Operations related to Optical Character Recognition
 servers:
   - url: https://api.example.com
 paths:
