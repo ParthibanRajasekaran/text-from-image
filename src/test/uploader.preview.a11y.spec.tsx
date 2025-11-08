@@ -32,7 +32,7 @@ describe('Uploader accessibility and preview', () => {
 
   it('axe: no major violations', async () => {
     const { container } = customRender(<GlassDropzone onFileSelect={vi.fn()} />);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+  const results = await axe(container);
+  expect(results.violations.length).toBe(0);
   });
 });
