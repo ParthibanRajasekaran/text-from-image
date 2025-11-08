@@ -86,10 +86,10 @@ This repo uses Spec-Driven Development for reliability and accessibility. All fe
 - Use BDD runner and schema guard helpers for validation
 
 ### PR Checklist
-        [ ] If spec changed, update tests & ADR
-        [ ] BDD passing
-        [ ] Schema/contract diffs clean
-        [ ] No SEO/a11y regressions
+- [ ] If spec changed, update tests & ADR
+- [ ] BDD passing
+- [ ] Schema/contract diffs clean
+- [ ] No SEO/a11y regressions
 
 ### CI Gates
 - `npm run spec:lint` — Spectral lint for OpenAPI
