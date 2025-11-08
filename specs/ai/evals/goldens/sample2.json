@@ -1,4 +1,6 @@
 {
   "image": "sample2.png",
-  "expectedText": "Quick brown fox"
+  "text": "Quick brown fox",
+  "confidence": 1.0,
+  "regions": []
 }
