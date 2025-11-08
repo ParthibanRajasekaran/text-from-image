@@ -35,7 +35,9 @@ jobs:
         run: npm install -D playwright
       - name: Install Playwright Browsers
         run: npx playwright install
+      - name: Unit Tests
+        run: npm run test
       - name: BDD Tests
-        run: npm run spec:test
+        run: npx playwright test specs/product/
       - name: OAS Diff
         run: npm run spec:diff
