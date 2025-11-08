@@ -1,4 +1,4 @@
-extends: ["spectral:oas", "spectral:recommended"]
+extends: ["spectral:oas"]
 rules:
   info-contact: off
   info-license: off
