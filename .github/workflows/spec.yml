@@ -1,0 +1,48 @@
+name: Spec Driven Development
+on:
+  pull_request:
+    paths:
+      - 'specs/**'
+      - 'scripts/validate-json.js'
+      - 'package.json'
+      - '.github/workflows/spec.yml'
+      - '.spectral.yaml'
+      - 'src/**'
+      - 'public/robots.txt'
+      - 'public/sitemap.xml'
+jobs:
+  spec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: List dotfiles
+        run: ls -al
+      - name: Remove .spectral.js if present
+        run: rm -f .spectral.js
+      - name: Install Spectral
+        run: npm install -g @stoplight/spectral
+      - name: Spectral Lint
+        run: spectral lint specs/api/openapi.yml -r .spectral.yml --verbose
+      - name: JSON Schema Validation
+        run: npm run spec:schemas
+      - name: Install Playwright
+        run: npm install -D playwright
+      - name: Install Playwright Browsers
+        run: npx playwright install
+      - name: Unit Tests
+        run: npm run test
+      - name: BDD Tests (skip if none)
+        run: |
+          if ls specs/product/*.spec.ts 1> /dev/null 2>&1; then
+            npx playwright test specs/product/
+          else
+            echo "No Playwright test files found, skipping BDD step."
+          fi
+      - name: OAS Diff
+        run: npm run spec:diff

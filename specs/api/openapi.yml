@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  title: OCR API
+  version: 1.0.0
+  description: OCR API for extracting text from images.
+tags:
+  - name: OCR
+    description: Operations related to Optical Character Recognition
+servers:
+  - url: https://api.example.com
+paths:
+  /ocr:
+    post:
+      summary: Submit an image for OCR
+      description: Submit an image for OCR processing.
+      tags: [OCR]
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OCR result
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/ocr-result.schema.json'
+    get:
+      summary: Get OCR job status
+      description: Get OCR job status/result.
+      tags: [OCR]
+      parameters:
+        - name: jobId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OCR job status/result
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas/ocr-result.schema.json'

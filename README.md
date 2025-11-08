@@ -47,19 +47,62 @@ Enable with `VITE_UX_V2=1` environment variable for:
 
 Original simple UI without premium features.
 
-## 🎯 Accuracy
+
+## 🔍 SEO Defaults
+
+All canonical and OG/Twitter image URLs are computed as absolute using `VITE_SITE_URL` (see `.env.example`).
+
+- Default OG image: `/og/default.png` (1200×630, logo/high contrast, ≤200KB recommended)
+- Set per-route OG via `ogImage` prop in SEO helpers/components.
+- Canonical links are always absolute.
+
+**How to set VITE_SITE_URL:**
+- Locally: add to `.env.local` (e.g. `VITE_SITE_URL=http://localhost:5173`)
+- Vercel/Production: set in dashboard or `vercel.json` env block.
+
+**Validation:**
+After deploy, validate with [Twitter Card Validator](https://cards-dev.twitter.com/validator) and [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/).
 
 - **92-97% accuracy** on printed text
 - **70-85% accuracy** on handwritten text
 - Automatic confidence scoring
 - Intelligent fallback for low-confidence results
 
-## 🚀 Quick Start
+
+## 🧩 Spec-Driven Development (SDD)
+
+This repo uses Spec-Driven Development for reliability and accessibility. All features, APIs, schemas, and UX contracts are defined in `/specs` and enforced in CI.
+
+### How to work with specs
+- Product features: `/specs/product/*.feature` (BDD scenarios)
+- API contracts: `/specs/api/openapi.yml` (OpenAPI)
+- Schemas: `/specs/schemas/*.json` (JSON Schema)
+- UX tokens/contracts: `/specs/ux/tokens.json`, `/specs/ux/components/*.md`
+- AI goldens: `/specs/ai/evals/goldens/*.json`
+
+### How AI agents should use specs
+- Always read relevant specs before proposing changes
+- Update tests and contracts if specs change
+- Use BDD runner and schema guard helpers for validation
+
+### PR Checklist
+- [ ] If spec changed, update tests & ADR
+- [ ] BDD passing
+- [ ] Schema/contract diffs clean
+- [ ] No SEO/a11y regressions
+
+### CI Gates
+- `npm run spec:lint` — Spectral lint for OpenAPI
+- `npm run spec:schemas` — Validate JSON schemas and tokens
+- `npm run spec:test` — Playwright BDD tests
+- `npm run spec:diff` — OAS diff for breaking changes
+
 
 ### Prerequisites
 
 - Node.js 16+ 
 - npm or yarn
+
 
 ### Installation
 
