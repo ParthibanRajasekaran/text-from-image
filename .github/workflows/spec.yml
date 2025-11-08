@@ -31,6 +31,10 @@ jobs:
         run: spectral lint specs/api/openapi.yml -r .spectral.yml --verbose
       - name: JSON Schema Validation
         run: npm run spec:schemas
+      - name: Install Playwright
+        run: npm install -D playwright
+      - name: Install Playwright Browsers
+        run: npx playwright install
       - name: BDD Tests
         run: npm run spec:test
       - name: OAS Diff
