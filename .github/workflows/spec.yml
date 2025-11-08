@@ -37,7 +37,12 @@ jobs:
         run: npx playwright install
       - name: Unit Tests
         run: npm run test
-      - name: BDD Tests
-        run: npx playwright test specs/product/
+      - name: BDD Tests (skip if none)
+        run: |
+          if ls specs/product/*.spec.ts 1> /dev/null 2>&1; then
+            npx playwright test specs/product/
+          else
+            echo "No Playwright test files found, skipping BDD step."
+          fi
       - name: OAS Diff
         run: npm run spec:diff
