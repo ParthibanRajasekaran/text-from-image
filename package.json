@@ -24,7 +24,7 @@
   "vercel:pull:prod": "vercel pull --environment=production --yes",
   "spec:lint": "spectral lint specs/api/openapi.yml",
   "spec:diff": "oasdiff --fail-on-diff breaking specs/api/openapi.yml cached/openapi.yml || echo 'no previous'",
-  "spec:schemas": "node scripts/validate-json.js",
+  "spec:schemas": "node scripts/validate-json.cjs",
   "spec:test": "playwright test -g '@bdd'"
   },
   "dependencies": {
