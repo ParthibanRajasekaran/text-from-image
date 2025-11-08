@@ -21,6 +21,6 @@ describe('SEO head tags', () => {
     expect(canonical).toBeTruthy();
     expect(canonical?.getAttribute('href')).toBe('https://freetextfromimage.com/test');
   const results = await axe(document.head);
-  expect(results.violations.length).toBe(0);
+  expect(results).toHaveNoViolations();
   });
 });
