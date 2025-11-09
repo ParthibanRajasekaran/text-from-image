@@ -1,3 +1,20 @@
+# Site verification nuance
+
+- We load the AdSense script in Production when a pub ID is set so Google can verify the site.
+- Ad slot rendering remains consent-gated (Consent Mode v2 compliant).
+- Check with Tag Assistant: consent default(denied) on first paint, script present, slots inactive until consent.
+
+### Vercel Production env vars (reminder)
+
+```
+VITE_SITE_URL=https://freetextfromimage.com
+VITE_UX_V2=true
+VITE_ADSENSE_PUB_ID=ca-pub-xxxxxxxxxxxxxxxx
+```
+(Set after signup/approval if you prefer; script presence is ok for verification)
+
+Note: No slots render without consent even if script is present.
+
 # AdSense Submission Guide
 
 ## Steps for Approval
