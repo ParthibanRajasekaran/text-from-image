@@ -193,7 +193,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
       />
 
       {/* Hero Section */}
-      <main id="main-content" className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+      <section id="main-content" className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20" aria-label="Main content">
         <div className="max-w-4xl mx-auto">
           {/* Hero text */}
           <motion.div
@@ -300,7 +300,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
             )}
           </AnimatePresence>
         </div>
-      </main>
+      </section>
     </AuroraBackground>
   );
 }

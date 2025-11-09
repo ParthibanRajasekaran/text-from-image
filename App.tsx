@@ -120,7 +120,7 @@ function App() {
           minTextLength: 3,  // Need at least 3 characters
           onProgress: (status, progress, method) => {
             // Enhanced status messages to show fallback attempts
-            const methodName = method === 'tesseract' ? 'Fast OCR' : 'AI Model';
+            // Removed unused variable 'methodName'
             const progressPercent = Math.round(progress);
             
             // Update stage based on status
@@ -266,13 +266,35 @@ function App() {
       <header className="py-4 px-6 border-b border-border sticky top-0 bg-background/80 backdrop-blur-sm z-10">
         <div className="container mx-auto grid grid-cols-3 items-center">
           <div aria-hidden="true" /> {/* Empty cell for spacing */}
-          <h1 className="text-2xl font-bold text-primary text-center">Extract Text from Image for Free</h1>
+          <h2 className="text-2xl font-bold text-primary text-center">Extract Text from Image for Free</h2>
           <div className="flex justify-end">
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           </div>
         </div>
+        {/* Guides nav section - compact, collapses to dropdown on small screens */}
+        <nav className="mt-2 flex justify-center gap-4 text-sm">
+          <div className="hidden sm:flex gap-3">
+            <a href="/image-to-text" className="hover:underline">Image to Text</a>
+            <a href="/extract-text-from-image" className="hover:underline">Extract Text from Image</a>
+            <a href="/copy-text-from-image" className="hover:underline">Copy Text from Image</a>
+            <a href="/jpg-to-word" className="hover:underline">JPG to Word</a>
+            <a href="/jpg-to-excel" className="hover:underline">JPG to Excel</a>
+          </div>
+          <div className="sm:hidden relative">
+            <details className="inline-block">
+              <summary className="cursor-pointer px-3 py-1 rounded bg-muted text-foreground hover:bg-muted/80 focus:outline-none">Guides</summary>
+              <div className="absolute left-0 mt-2 w-40 rounded shadow-lg bg-popover z-20 border border-border">
+                <a href="/image-to-text" className="block px-4 py-2 hover:bg-muted">Image to Text</a>
+                <a href="/extract-text-from-image" className="block px-4 py-2 hover:bg-muted">Extract Text from Image</a>
+                <a href="/copy-text-from-image" className="block px-4 py-2 hover:bg-muted">Copy Text from Image</a>
+                <a href="/jpg-to-word" className="block px-4 py-2 hover:bg-muted">JPG to Word</a>
+                <a href="/jpg-to-excel" className="block px-4 py-2 hover:bg-muted">JPG to Excel</a>
+              </div>
+            </details>
+          </div>
+        </nav>
       </header>
-      <main id="main-content" className="container mx-auto p-4 md:p-8" tabIndex={-1}>
+  <main id="main-content" className="container mx-auto p-4 md:p-8" tabIndex={-1} aria-label="Main content">
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center gap-2">
@@ -377,15 +399,38 @@ function App() {
 
       {/* Footer with version info for deployment verification */}
       <footer className="py-4 px-6 border-t border-border mt-8">
-        <div className="container mx-auto text-center text-xs text-muted-foreground">
-          <p>
-            © {new Date().getFullYear()} Extract Text From Image • Made with ❤️ for privacy
-            {COMMIT !== 'dev' && (
-              <span className="ml-2 opacity-50" title="Deployment version">
-                • v{COMMIT}
-              </span>
-            )}
-          </p>
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 text-xs text-muted-foreground">
+          {/* Resources column */}
+          <div>
+            <h4 className="font-semibold mb-2 text-foreground">Resources</h4>
+            <nav className="flex flex-col gap-1">
+              <a href="/image-to-text" className="hover:underline">Image to Text</a>
+              <a href="/extract-text-from-image" className="hover:underline">Extract Text from Image</a>
+              <a href="/copy-text-from-image" className="hover:underline">Copy Text from Image</a>
+              <a href="/jpg-to-word" className="hover:underline">JPG to Word</a>
+              <a href="/jpg-to-excel" className="hover:underline">JPG to Excel</a>
+            </nav>
+          </div>
+          {/* Legal column */}
+          <div>
+            <h4 className="font-semibold mb-2 text-foreground">Legal</h4>
+            <nav className="flex flex-col gap-1">
+              <a href="/privacy-policy" className="hover:underline">Privacy Policy</a>
+              <a href="/terms" className="hover:underline">Terms</a>
+              <a href="/about" className="hover:underline">About</a>
+              <a href="/contact" className="hover:underline" rel="nofollow">Contact</a>
+            </nav>
+          </div>
+          <div className="md:col-span-2 text-center mt-4">
+            <p>
+               {new Date().getFullYear()} Extract Text From Image  Made with  for privacy
+              {COMMIT !== 'dev' && (
+                <span className="ml-2 opacity-50" title="Deployment version">
+                   v{COMMIT}
+                </span>
+              )}
+            </p>
+          </div>
         </div>
       </footer>
     </div>

@@ -31,7 +31,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { shouldShowAds } from '../ads/shouldShowAds';
+import { shouldShowAds } from '@/src/ads/shouldShowAds';
 
 
 const consentDenied = { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' };

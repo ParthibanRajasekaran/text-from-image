@@ -314,7 +314,7 @@ export function makeNichePage(config: NichePageConfig) {
             </div>
           </header>
 
-          <main id="main-content" className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <section id="main-content" className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20" aria-label="Tool content">
             <div className="max-w-4xl mx-auto space-y-16">
               {/* Hero Section */}
               <motion.section
@@ -606,7 +606,7 @@ export function makeNichePage(config: NichePageConfig) {
                 </section>
               )}
             </div>
-          </main>
+          </section>
         </AuroraBackground>
       </>
     );

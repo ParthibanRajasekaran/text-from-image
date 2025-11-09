@@ -10,6 +10,7 @@
   "preview": "vite preview",
   "test": "vitest run --reporter=default",
   "test:watch": "vitest",
+  "sitemap": "node scripts/build-sitemap.mjs",
   "test:a11y": "vitest run src/**/*.a11y.spec.tsx --reporter=default",
   "lint": "eslint . --max-warnings=0",
   "lint:a11y": "eslint . --max-warnings=0",

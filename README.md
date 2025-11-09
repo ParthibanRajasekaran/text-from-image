@@ -630,6 +630,43 @@ const { default: jsPDF } = await import('jspdf');
 
 ---
 
+## 💸 Monetization (AdSense)
+
+To apply for AdSense and enable monetization:
+
+1. Go to AdSense “Sites” and add `https://freetextfromimage.com`.
+2. Ensure the site has live policy pages (`/privacy-policy`, `/terms`, `/about`, `/contact`) and helpful guides (`/image-to-text`, etc.).
+3. Add a Google-certified CMP and wire its callback to `updateConsent()` in `src/consent/consent.ts`.
+   - Consent Mode v2 must fire before any ad scripts load.
+4. Set `VITE_ADSENSE_PUB_ID` in Vercel (Production) **after approval**.
+5. Add your publisher ID to `/public/ads.txt`.
+6. Use Search Console to submit your sitemap and fix Page Indexing/Core Web Vitals issues.
+7. Placement rules:
+   - No ads near upload/CTA areas; avoid accidental clicks.
+   - All ad slots reserve space to prevent CLS.
+   - Ads only load after consent and in Production.
+
+**Testing:**
+- Run `npm run sitemap` to generate `/public/sitemap.xml`.
+- Run `npm run build && npm run test` to verify build and ad readiness.
+
+**CMP Integration:**
+- See comments in `src/consent/consent.ts` for wiring a certified CMP callback.
+- Verify Consent Mode v2 fires before ads script loads.
+
+**AdSense Approval:**
+- Update `/public/ads.txt` with your real publisher ID after approval.
+- Use AdSense dashboard for auto ad configuration.
+
+**SEO:**
+- All pages have unique meta tags and canonical URLs.
+- Guides and policy pages are crawlable and linked from Home/footer.
+- robots.txt and sitemap.xml are present.
+
+**Performance:**
+- Ad slots use fixed min-height to prevent layout shift.
+- No OCR/UX regressions; light/dark mode consistent.
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
