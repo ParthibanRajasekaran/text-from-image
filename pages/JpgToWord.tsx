@@ -1,10 +1,16 @@
 import { IntentPage } from '../components/v3/IntentPage';
+import { useSEO } from '../src/seo';
 
 /**
  * JPG to Word page
  * SEO-optimized route for /jpg-to-word
  */
 export default function JpgToWord() {
+  useSEO({
+    title: "JPG to Word Converter - Extract Text to DOCX Format",
+    description: "Convert JPG images to Word documents instantly. Extract text from photos and save as editable DOCX files. Free online JPG to Word converter with OCR.",
+    canonical: "https://freetextfromimage.com/jpg-to-word",
+  });
   return (
     <IntentPage
       title="JPG to Word Converter - Extract Text to DOCX Format"

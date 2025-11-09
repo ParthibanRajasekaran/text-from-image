@@ -1,10 +1,16 @@
 import { IntentPage } from '../components/v3/IntentPage';
+import { useSEO } from '../src/seo';
 
 /**
  * Extract Text from Image page
  * SEO-optimized route for /extract-text-from-image
  */
 export default function ExtractTextFromImage() {
+  useSEO({
+    title: "Extract Text from Image - Free AI-Powered OCR",
+    description: "Extract text from any image online for free. Advanced AI OCR with 95%+ accuracy. Supports JPG, PNG, WEBP. No signup required.",
+    canonical: "https://freetextfromimage.com/extract-text-from-image",
+  });
   return (
     <IntentPage
       title="Extract Text from Image - Free AI-Powered OCR"

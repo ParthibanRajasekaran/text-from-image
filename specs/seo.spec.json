@@ -1,0 +1,9 @@
+{
+  "requiredTags": [
+    "title",
+    "description",
+    "canonical",
+    "og:image",
+    "twitter:card"
+  ]
+}

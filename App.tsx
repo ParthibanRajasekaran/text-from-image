@@ -186,13 +186,13 @@ function App() {
       <header className="py-4 px-6 border-b border-border sticky top-0 bg-background/80 backdrop-blur-sm z-10">
         <div className="container mx-auto grid grid-cols-3 items-center">
           <div aria-hidden="true" /> {/* Empty cell for spacing */}
-          <h2 className="text-2xl font-bold text-primary text-center">Extract Text from Image for Free</h2>
+          <h1 className="text-2xl font-bold text-primary text-center">Extract Text from Image for Free</h1>
           <div className="flex justify-end">
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           </div>
         </div>
         {/* Guides nav section - compact, collapses to dropdown on small screens */}
-        <nav className="mt-2 flex justify-center gap-4 text-sm">
+        <nav aria-label="Guides" className="mt-2 flex justify-center gap-4 text-sm">
           <div className="hidden sm:flex gap-3">
             <a href="/image-to-text" className="hover:underline">Image to Text</a>
             <a href="/extract-text-from-image" className="hover:underline">Extract Text from Image</a>
@@ -319,8 +319,8 @@ function App() {
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 text-xs text-muted-foreground">
           {/* Resources column */}
           <div>
-            <h4 className="font-semibold mb-2 text-foreground">Resources</h4>
-            <nav className="flex flex-col gap-1">
+            <h3 className="text-sm font-semibold mb-2 text-foreground">Resources</h3>
+            <nav aria-label="Resources" className="flex flex-col gap-1">
               <a href="/image-to-text" className="hover:underline">Image to Text</a>
               <a href="/extract-text-from-image" className="hover:underline">Extract Text from Image</a>
               <a href="/copy-text-from-image" className="hover:underline">Copy Text from Image</a>
@@ -330,8 +330,8 @@ function App() {
           </div>
           {/* Legal column */}
           <div>
-            <h4 className="font-semibold mb-2 text-foreground">Legal</h4>
-            <nav className="flex flex-col gap-1">
+            <h3 className="text-sm font-semibold mb-2 text-foreground">Legal</h3>
+            <nav aria-label="Legal" className="flex flex-col gap-1">
               <a href="/privacy-policy" className="hover:underline">Privacy Policy</a>
               <a href="/terms" className="hover:underline">Terms</a>
               <a href="/about" className="hover:underline">About</a>

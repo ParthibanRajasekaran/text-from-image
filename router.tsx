@@ -1,7 +1,5 @@
 import { lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import App from './App';
-import { isUXV3Enabled } from './utils/env';
 
 // V3: Futuristic Hero UI (feature-gated)
 import { HeroOCR } from './components/v3/HeroOCR';
@@ -13,6 +11,8 @@ const JpgToWord = lazy(() => import('./pages/JpgToWord'));
 const ImageToExcel = lazy(() => import('./pages/ImageToExcel'));
 const ExtractTextFromImage = lazy(() => import('./pages/ExtractTextFromImage'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const CopyTextFromImageGuide = lazy(() => import('./pages/CopyTextFromImageGuide'));
+const JpgToExcelGuide = lazy(() => import('./pages/JpgToExcelGuide'));
 
 // Route path constants - single source of truth for all route paths
 export const ROUTES = {
@@ -22,6 +22,8 @@ export const ROUTES = {
   JPG_TO_WORD: '/jpg-to-word',
   IMAGE_TO_EXCEL: '/image-to-excel',
   EXTRACT_TEXT_FROM_IMAGE: '/extract-text-from-image',
+  COPY_TEXT_FROM_IMAGE: '/copy-text-from-image',
+  JPG_TO_EXCEL: '/jpg-to-excel',
 } as const;
 
 // Always use HeroOCR as the home component
@@ -62,6 +64,14 @@ export const router = createBrowserRouter([
   {
     path: ROUTES.EXTRACT_TEXT_FROM_IMAGE,
     element: <ExtractTextFromImage />,
+  },
+  {
+    path: ROUTES.COPY_TEXT_FROM_IMAGE,
+    element: <CopyTextFromImageGuide />,
+  },
+  {
+    path: ROUTES.JPG_TO_EXCEL,
+    element: <JpgToExcelGuide />,
   },
   {
     path: '*',
