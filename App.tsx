@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { FileInput } from './components/FileInput';
 import { Dropzone } from './components/Dropzone';
-// import { ResultDisplay } from './components/ResultDisplay';
 import { ResultToolbar } from './components/ResultToolbar';
-import { Toast } from './components/Toast';
 import { ThemeToggle } from './components/ThemeToggle';
 import { HistoryDrawer } from './components/HistoryDrawer';
 import { extractTextWithDetails } from './services/hybridService';
@@ -14,16 +12,34 @@ import { useShortcuts, getCommonShortcuts } from './hooks/useShortcuts';
 import { useLiveRegion } from './hooks/useLiveRegion';
 import { isUXV2Enabled } from './utils/env';
 import { COMMIT } from './lib/version';
-
-type Theme = 'light' | 'dark';
+import { AutoAds } from './src/ads/AutoAds';
 
 function App() {
+  // Accessibility: Add skip link and enhanced error handling
+  const handleError = useCallback((e: any) => {
+    if (e instanceof OCRError) {
+      setError(e.userMessage);
+      console.error('OCR Error Details:', {
+        code: e.code,
+        message: e.userMessage,
+        technical: e.technicalDetails,
+        recoverable: e.recoverable,
+        bothMethodsAttempted: e.technicalDetails?.bothMethodsAttempted || false,
+      });
+      if (e.technicalDetails?.bothMethodsAttempted) {
+        console.warn('⚠️ Both OCR methods were attempted but failed:');
+        console.warn('  1. Fast OCR (Tesseract):', e.technicalDetails.tesseractError);
+        console.warn('  2. AI Model (Transformers):', e.technicalDetails.transformersError);
+      }
+    } else {
+      setError('An unexpected error occurred during text extraction. Please try again or reload the page.');
+      console.error('Unexpected error:', e);
+    }
+  }, []);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [extractedText, setExtractedText] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [errorSuggestions, setErrorSuggestions] = useState<string[]>([]);
   const [hasProcessed, setHasProcessed] = useState<boolean>(false);
   const [processingStatus, setProcessingStatus] = useState<string>('');
   const [methodUsed, setMethodUsed] = useState<string>('');
@@ -31,18 +47,13 @@ function App() {
   const [progressPercent, setProgressPercent] = useState<number>(0);
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
 
-  // Use UX v2 enhancements when flag is enabled
   const useEnhancedUI = isUXV2Enabled();
-
-  // Local history hook
   const { history, addToHistory, removeFromHistory, clearHistory } = useLocalHistory();
-
-  // Accessibility: Screen reader announcements for OCR status
   const announceStatus = useLiveRegion('polite');
 
-  const [theme, setTheme] = useState<Theme>(() => {
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
-      const storedTheme = window.localStorage.getItem('theme') as Theme | null;
+      const storedTheme = window.localStorage.getItem('theme') as 'light' | 'dark' | null;
       if (storedTheme) return storedTheme;
       if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         return 'dark';
@@ -60,7 +71,6 @@ function App() {
     setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
   };
 
-  // Keyboard shortcuts
   const shortcuts = getCommonShortcuts({
     onCopy: extractedText ? async () => {
       await navigator.clipboard.writeText(extractedText);
@@ -87,7 +97,6 @@ function App() {
 
   useShortcuts(shortcuts, useEnhancedUI);
 
-  // Announce OCR status changes to screen readers
   useEffect(() => {
     if (isLoading) {
       announceStatus('Processing image, please wait...');
@@ -103,7 +112,6 @@ function App() {
     setImageFile(file);
     setExtractedText('');
     setError(null);
-    setErrorSuggestions([]);
     setHasProcessed(false);
     setProcessingStatus('');
     setMethodUsed('');
@@ -112,26 +120,18 @@ function App() {
       setIsLoading(true);
       setProgressStage('upload');
       setProgressPercent(0);
-      
       try {
-        // Use hybrid service with automatic fallback
         const result = await extractTextWithDetails(file, {
-          minConfidence: 60, // If Tesseract confidence < 60%, fallback to Transformers
-          minTextLength: 3,  // Need at least 3 characters
-          onProgress: (status, progress, method) => {
-            // Enhanced status messages to show fallback attempts
-            // Removed unused variable 'methodName'
+          minConfidence: 60,
+          minTextLength: 3,
+          onProgress: (status, progress) => {
             const progressPercent = Math.round(progress);
-            
-            // Update stage based on status
             if (status.includes('Processing')) {
               setProgressStage('ocr');
             } else if (status.includes('Rendering')) {
               setProgressStage('render');
             }
-            
             setProgressPercent(progressPercent);
-            
             if (status.includes('fallback') || status.includes('trying AI')) {
               setProcessingStatus(`⚡ Trying advanced AI method... (${progressPercent}%)`);
             } else if (status.includes('failed')) {
@@ -141,21 +141,15 @@ function App() {
             }
           },
         });
-
         setExtractedText(result.text);
         setProgressStage('complete');
         setProgressPercent(100);
-        
-        // Show which method was used with clear indication of fallback
         const methodLabel = result.method === 'tesseract' ? '⚡ Fast OCR (Tesseract)' : '🤖 AI Model (Transformers)';
         const fallbackNote = result.fallbackUsed ? ' - Used advanced AI after initial attempt' : '';
         setMethodUsed(`Extracted using ${methodLabel}${fallbackNote}`);
-        
         if (result.confidence) {
           setMethodUsed(prev => `${prev} • Confidence: ${Math.round(result.confidence!)}%`);
         }
-
-        // Add to history if UX v2 is enabled
         if (useEnhancedUI && result.text) {
           addToHistory({
             filename: file.name,
@@ -166,103 +160,29 @@ function App() {
         }
       } catch (e: any) {
         setProgressStage('error');
-        
-        // Handle OCRError with user-friendly messages and suggestions
-        if (e instanceof OCRError) {
-          setError(e.userMessage);
-          setErrorSuggestions(e.suggestions);
-          
-          // Enhanced error logging with fallback information
-          console.error('OCR Error Details:', {
-            code: e.code,
-            message: e.userMessage,
-            technical: e.technicalDetails,
-            recoverable: e.recoverable,
-            bothMethodsAttempted: e.technicalDetails?.bothMethodsAttempted || false,
-          });
-          
-          // Log to help debug which method failed
-          if (e.technicalDetails?.bothMethodsAttempted) {
-            console.warn('⚠️ Both OCR methods were attempted but failed:');
-            console.warn('  1. Fast OCR (Tesseract):', e.technicalDetails.tesseractError);
-            console.warn('  2. AI Model (Transformers):', e.technicalDetails.transformersError);
-          }
-        } else {
-          setError(e.message || 'An unknown error occurred during text extraction.');
-          console.error('Unexpected error:', e);
-        }
+        handleError(e);
       } finally {
         setIsLoading(false);
         setHasProcessed(true);
         setProcessingStatus('');
-        
-        // Reset progress after a delay
         setTimeout(() => {
           setProgressStage('idle');
           setProgressPercent(0);
         }, 1000);
       }
     }
-  }, [useEnhancedUI, addToHistory]);
-
-  useEffect(() => {
-    if (!imageFile) {
-        setPreviewUrl(null);
-        return;
-    }
-    const objectUrl = URL.createObjectURL(imageFile);
-    setPreviewUrl(objectUrl);
-
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [imageFile]);
+  }, [useEnhancedUI, addToHistory, handleError]);
 
   return (
-    <div className="bg-background text-foreground min-h-screen font-sans">
-      {/* Skip to main content link - Accessibility */}
+    <div className={useEnhancedUI ? 'uxv2' : ''}>
+      {/* Accessibility skip link for main content */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-primary focus:text-primary-foreground focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
       >
         Skip to main content
       </a>
-
-      {error && (
-        <Toast 
-          message={error} 
-          onClose={() => {
-            setError(null);
-            setErrorSuggestions([]);
-          }} 
-        />
-      )}
-      {errorSuggestions.length > 0 && error && (
-        <div className="fixed top-28 right-4 bg-card border-2 border-primary/30 rounded-lg shadow-xl p-5 max-w-md z-50 animate-slide-in">
-          <div className="flex items-start gap-2 mb-3">
-            <span className="text-2xl">💡</span>
-            <div>
-              <h3 className="font-bold text-base text-primary">How to Fix This</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Try these suggestions to improve results:</p>
-            </div>
-          </div>
-          <ul className="text-sm text-foreground space-y-2">
-            {errorSuggestions.map((suggestion, index) => (
-              <li key={index} className="flex items-start gap-2">
-                <span className="text-primary mt-0.5">•</span>
-                <span className="flex-1">{suggestion}</span>
-              </li>
-            ))}
-          </ul>
-          <button
-            onClick={() => {
-              setError(null);
-              setErrorSuggestions([]);
-            }}
-            className="mt-4 w-full py-2 px-4 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors text-sm font-medium"
-          >
-            Got it, I'll try again
-          </button>
-        </div>
-      )}
+      <AutoAds />
       <header className="py-4 px-6 border-b border-border sticky top-0 bg-background/80 backdrop-blur-sm z-10">
         <div className="container mx-auto grid grid-cols-3 items-center">
           <div aria-hidden="true" /> {/* Empty cell for spacing */}
@@ -294,7 +214,7 @@ function App() {
           </div>
         </nav>
       </header>
-  <main id="main-content" className="container mx-auto p-4 md:p-8" tabIndex={-1} aria-label="Main content">
+      <main id="main-content" className="container mx-auto p-4 md:p-8" tabIndex={-1} aria-label="Main content">
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col items-center gap-2">
@@ -322,7 +242,6 @@ function App() {
             ) : (
               <FileInput 
                 onFileChange={handleFileChange} 
-                previewUrl={previewUrl}
                 imageFile={imageFile}
                 isLoading={isLoading}
               />
@@ -376,7 +295,6 @@ function App() {
           </div>
         </div>
       </main>
-
       {/* History drawer (UX v2 only) */}
       {useEnhancedUI && (
         <HistoryDrawer
@@ -396,7 +314,6 @@ function App() {
           }}
         />
       )}
-
       {/* Footer with version info for deployment verification */}
       <footer className="py-4 px-6 border-t border-border mt-8">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 text-xs text-muted-foreground">
@@ -423,10 +340,10 @@ function App() {
           </div>
           <div className="md:col-span-2 text-center mt-4">
             <p>
-               {new Date().getFullYear()} Extract Text From Image  Made with  for privacy
+              &copy; {new Date().getFullYear()} Extract Text From Image &mdash; Made with &hearts; for privacy
               {COMMIT !== 'dev' && (
                 <span className="ml-2 opacity-50" title="Deployment version">
-                   v{COMMIT}
+                  v{COMMIT}
                 </span>
               )}
             </p>
