@@ -59,6 +59,11 @@ jobs:
       group: preview-${{ github.event.pull_request.number }}
       cancel-in-progress: true
     
+    env:
+      VITE_UX_V2: '1'
+      VITE_ANALYTICS_ENABLED: 'true'
+      CI: 'true'
+    
     steps:
       - uses: actions/checkout@v4
         with:
@@ -107,9 +112,6 @@ jobs:
       - name: Validate environment variables
         if: steps.filter.outputs.app == 'true'
         run: npm run validate:env
-        env:
-          CI: true
-          VITE_UX_V2: '1'
       
       - name: Vercel auth & link
         if: steps.filter.outputs.app == 'true'
@@ -127,8 +129,6 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then pnpm build
           elif [ -f yarn.lock ]; then yarn build
           else npm run build; fi
-        env:
-          VITE_UX_V2: '1'
       
       - name: Deploy preview
         if: steps.filter.outputs.app == 'true'
@@ -166,6 +166,11 @@ jobs:
     concurrency:
       group: production
       cancel-in-progress: true
+    
+    env:
+      VITE_UX_V2: '1'
+      VITE_ANALYTICS_ENABLED: 'true'
+      CI: 'true'
     
     steps:
       - uses: actions/checkout@v4
@@ -216,9 +221,6 @@ jobs:
       - name: Validate environment variables
         if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'
         run: npm run validate:env
-        env:
-          CI: true
-          VITE_UX_V2: '1'
       
       - name: Vercel auth & link
         if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'
@@ -236,8 +238,6 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then pnpm build
           elif [ -f yarn.lock ]; then yarn build
           else npm run build; fi
-        env:
-          VITE_UX_V2: '1'
       
       - name: Deploy production
         if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'
