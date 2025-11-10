@@ -58,7 +58,7 @@ export default function About() {
       <Glass className="overflow-hidden">
         <figure className="mb-4">
           <img
-            src="/images/headshot.jpg"
+            src="images/headshot.jpg"
             alt="Parthiban Rajasekaran, founder of TextFromImage"
             width={480}
             height={600}
