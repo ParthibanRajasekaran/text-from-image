@@ -6,6 +6,7 @@ import { ThemeToggle } from '../components/ThemeToggle';
 import { useTheme } from '../hooks/useTheme';
 import { ScrollNav, type ScrollNavSection } from '../components/ui/ScrollNav';
 import { AnchorSection } from '../components/a11y/AnchorSection';
+import { CONTACT_EMAIL } from '../src/config';
 
 export default function Contact() {
   const { theme, toggleTheme } = useTheme();
@@ -41,7 +42,7 @@ export default function Contact() {
         '@type': 'ContactPoint',
         telephone: '',
         contactType: 'Customer Support',
-        email: 'hello@freetextfromimage.com',
+        email: CONTACT_EMAIL,
       },
       sameAs: [
         'https://github.com/ParthibanRajasekaran/text-from-image',
@@ -127,10 +128,10 @@ export default function Contact() {
                               For general inquiries, bug reports, and feature requests:
                             </p>
                             <a
-                              href="mailto:hello@freetextfromimage.com"
+                              href={`mailto:${CONTACT_EMAIL}`}
                               className="inline-flex items-center gap-2 text-accent hover:text-accent-2 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background rounded px-2 py-1 font-medium"
                             >
-                              hello@freetextfromimage.com
+                              {CONTACT_EMAIL}
                               <span aria-hidden="true">→</span>
                             </a>
                           </div>
@@ -226,13 +227,13 @@ export default function Contact() {
                         <div className="p-4 rounded-lg bg-accent/5 border border-accent/20">
                           <h3 className="font-semibold text-foreground mb-2">Security Issues</h3>
                           <p className="text-sm text-foreground/80 mb-3">
-                            Found a security vulnerability? Email us directly at hello@freetextfromimage.com. Please don't open a public issue.
+                            Found a security vulnerability? Email us directly at {CONTACT_EMAIL}. Please don't open a public issue.
                           </p>
                         </div>
                         <div className="p-4 rounded-lg bg-accent/5 border border-accent/20">
                           <h3 className="font-semibold text-foreground mb-2">Privacy & DMCA</h3>
                           <p className="text-sm text-foreground/80 mb-3">
-                            Have privacy concerns or DMCA requests? Email hello@freetextfromimage.com. We prioritize these within 24 hours.
+                            Have privacy concerns or DMCA requests? Email {CONTACT_EMAIL}. We prioritize these within 24 hours.
                           </p>
                         </div>
                       </div>
@@ -245,7 +246,7 @@ export default function Contact() {
                         <h2 className="text-2xl font-semibold text-foreground mb-4">Ready?</h2>
                       <div className="flex flex-col sm:flex-row gap-4">
                         <a
-                          href="mailto:hello@freetextfromimage.com"
+                          href={`mailto:${CONTACT_EMAIL}`}
                           className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-accent via-accent-2 to-primary text-background font-semibold rounded-lg hover:shadow-glow transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
                         >
                           Send us an Email

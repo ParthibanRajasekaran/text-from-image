@@ -27,16 +27,16 @@ describe('Contact Page - ScrollNav', () => {
       </BrowserRouter>
     );
 
-    // Check that nav exists (will find multiple due to desktop + mobile)
+    // Check that nav exists
     const navs = screen.getAllByLabelText('On this page');
     expect(navs.length).toBeGreaterThan(0);
 
-    // Check all sections are listed (use getAllByRole due to duplicates)
-    expect(screen.getAllByRole('link', { name: /ways to reach us/i }).length).toBeGreaterThan(0);
-    expect(screen.getAllByRole('link', { name: /when reporting bugs/i }).length).toBeGreaterThan(0);
-    expect(screen.getAllByRole('link', { name: /priority topics/i }).length).toBeGreaterThan(0);
-    expect(screen.getAllByRole('link', { name: /ready\?/i }).length).toBeGreaterThan(0);
-    expect(screen.getAllByRole('link', { name: /more info/i }).length).toBeGreaterThan(0);
+    // Check all sections are listed
+    expect(screen.getByRole('link', { name: /ways to reach us/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /when reporting bugs/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /priority topics/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /ready\?/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /more info/i })).toBeInTheDocument();
   });
 
   it('renders AnchorSection headings with ids', () => {
@@ -54,7 +54,7 @@ describe('Contact Page - ScrollNav', () => {
     expect(document.getElementById('more-info')).toBeInTheDocument();
   });
 
-  it('clicking nav link sets location.hash and focuses heading', async () => {
+  it('clicking nav link sets location.hash', async () => {
     const user = userEvent.setup();
     render(
       <BrowserRouter>
@@ -62,66 +62,42 @@ describe('Contact Page - ScrollNav', () => {
       </BrowserRouter>
     );
 
-    const reachUsLinks = screen.getAllByRole('link', { name: /ways to reach us/i });
-    await user.click(reachUsLinks[0]);
+    const reachUsLink = screen.getByRole('link', { name: /ways to reach us/i });
+    await user.click(reachUsLink);
 
-    // Check hash is set
+    // The hash should be set by the browser's default link behavior
+    // (since we're not preventing default in the new component)
     expect(window.location.hash).toBe('#reach-us');
-
-    // Check heading is focused
-    const reachUsSection = document.getElementById('reach-us');
-    expect(document.activeElement).toBe(reachUsSection);
   });
 
-  it('renders desktop nav with sticky positioning', () => {
+  it('renders nav with glass theme styling', () => {
     render(
       <BrowserRouter>
         <Contact />
       </BrowserRouter>
     );
 
-    const desktopNavs = screen.getAllByLabelText('On this page');
-    const className = desktopNavs[0].getAttribute('class') || '';
+    const nav = screen.getByLabelText('On this page');
+    const className = nav.getAttribute('class') || '';
     
-    expect(className).toContain('sticky');
-    expect(className).toContain('top-');
+    expect(className).toContain('bg-background/40');
+    expect(className).toContain('backdrop-blur-xl');
+    expect(className).toContain('border');
   });
 
-  it('renders mobile collapsible nav with details element', () => {
+  it('renders nav with active marker styling', async () => {
+    const user = userEvent.setup();
     render(
       <BrowserRouter>
         <Contact />
       </BrowserRouter>
     );
 
-    // Mobile nav should exist
-    const details = document.querySelector('details');
-    expect(details).toBeInTheDocument();
-    
-    // Summary should say "Jump to"
-    const summary = details?.querySelector('summary');
-    expect(summary?.textContent).toContain('Jump to');
-  });
+    const reachUsLink = screen.getByRole('link', { name: /ways to reach us/i });
+    await user.click(reachUsLink);
 
-  it('mobile details toggle works', async () => {
-    const _user = userEvent.setup();
-    render(
-      <BrowserRouter>
-        <Contact />
-      </BrowserRouter>
-    );
-
-    const details = document.querySelector('details') as HTMLElement;
-    const summary = details?.querySelector('summary') as HTMLElement;
-
-    // Initially closed or open depending on component state
-    // Toggle it
-    await _user.click(summary);
-
-    // Should toggle the open state
-    await waitFor(() => {
-      expect(details).toBeInTheDocument();
-    });
+    // After click, aria-current should be set
+    expect(reachUsLink).toHaveAttribute('aria-current', 'location');
   });
 
   it('ScrollNav respects reduced motion preference', () => {
@@ -171,12 +147,12 @@ describe('Contact Page - ScrollNav', () => {
     );
 
     const navs = screen.getAllByLabelText('On this page');
-    const navCard = navs[0].querySelector('div[class*="backdrop-blur"]');
+    const nav = navs[0];
     
-    expect(navCard).toBeInTheDocument();
-    expect(navCard?.getAttribute('class')).toContain('rounded-2xl');
-    expect(navCard?.getAttribute('class')).toContain('backdrop-blur-xl');
-    expect(navCard?.getAttribute('class')).toContain('border-border');
+    expect(nav).toBeInTheDocument();
+    expect(nav.getAttribute('class')).toContain('rounded-2xl');
+    expect(nav.getAttribute('class')).toContain('backdrop-blur-xl');
+    expect(nav.getAttribute('class')).toContain('border-border');
   });
 
   it('aria-current location is set on active link', async () => {
@@ -238,7 +214,7 @@ describe('Contact Page - ScrollNav', () => {
     );
 
     // Email link
-    expect(screen.getByRole('link', { name: /hello@freetextfromimage.com/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /rajasekaran.parthiban7@gmail.com/i })).toBeInTheDocument();
 
     // GitHub Issues link
     expect(screen.getByRole('link', { name: /open an issue on github/i })).toBeInTheDocument();

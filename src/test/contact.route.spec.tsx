@@ -40,9 +40,9 @@ describe('Contact Page', () => {
         <Contact />
       </BrowserRouter>
     );
-    const emailLink = screen.getByRole('link', { name: /hello@freetextfromimage.com/i });
+    const emailLink = screen.getByRole('link', { name: /rajasekaran.parthiban7@gmail.com/i });
     expect(emailLink).toBeInTheDocument();
-    expect(emailLink).toHaveAttribute('href', 'mailto:hello@freetextfromimage.com');
+    expect(emailLink).toHaveAttribute('href', 'mailto:rajasekaran.parthiban7@gmail.com');
   });
 
   it('renders GitHub Issues link with rel="nofollow"', () => {
@@ -94,7 +94,7 @@ describe('Contact Page', () => {
       expect(data['@type']).toBe('ContactPage');
       expect(data.mainEntity['@type']).toBe('Organization');
       expect(data.mainEntity.contactPoint).toBeDefined();
-      expect(data.mainEntity.contactPoint.email).toBe('hello@freetextfromimage.com');
+      expect(data.mainEntity.contactPoint.email).toBe('rajasekaran.parthiban7@gmail.com');
     }
   });
 

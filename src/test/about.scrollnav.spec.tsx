@@ -161,8 +161,8 @@ describe('About Page', () => {
     const contactLink = screen.getByRole('link', { name: /Contact us/ });
     expect(contactLink).toHaveAttribute('href', '/contact');
 
-    const emailLink = screen.getByRole('link', { name: /hello@freetextfromimage.com/ });
-    expect(emailLink).toHaveAttribute('href', 'mailto:hello@freetextfromimage.com');
+    const emailLink = screen.getByRole('link', { name: /rajasekaran.parthiban7@gmail.com/ });
+    expect(emailLink).toHaveAttribute('href', 'mailto:rajasekaran.parthiban7@gmail.com');
   });
 
   it('renders footer links (Privacy, Terms, GitHub)', () => {

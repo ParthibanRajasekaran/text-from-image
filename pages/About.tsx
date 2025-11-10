@@ -6,6 +6,7 @@ import { ContentLayout } from '../components/layouts/ContentLayout';
 import { Glass } from '../components/ui/Glass';
 import { PillarCard } from '../components/ui/PillarCard';
 import { ScrollNav, type ScrollNavSection } from '../components/ui/ScrollNav';
+import { CONTACT_EMAIL } from '../src/config';
 
 export default function About() {
   const { theme, toggleTheme } = useTheme();
@@ -49,6 +50,11 @@ export default function About() {
           'https://github.com/ParthibanRajasekaran',
         ],
       },
+      contactPoint: [{
+        '@type': 'ContactPoint',
+        email: CONTACT_EMAIL,
+        contactType: 'customer support'
+      }],
     },
   };
 
@@ -264,10 +270,10 @@ export default function About() {
           <p className="text-foreground/90">
             Or email:{' '}
             <a
-              href="mailto:hello@freetextfromimage.com"
+              href={`mailto:${CONTACT_EMAIL}`}
               className="text-accent hover:text-accent-2 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded px-1"
             >
-              hello@freetextfromimage.com
+              {CONTACT_EMAIL}
             </a>
           </p>
         </Glass>
