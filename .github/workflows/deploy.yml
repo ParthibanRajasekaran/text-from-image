@@ -65,6 +65,11 @@ jobs:
       CI: 'true'
     
     steps:
+      - name: Set environment variables for prebuild
+        run: |
+          echo "VITE_UX_V2=1" >> $GITHUB_ENV
+          echo "VITE_ANALYTICS_ENABLED=true" >> $GITHUB_ENV
+      
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
@@ -173,6 +178,11 @@ jobs:
       CI: 'true'
     
     steps:
+      - name: Set environment variables for prebuild
+        run: |
+          echo "VITE_UX_V2=1" >> $GITHUB_ENV
+          echo "VITE_ANALYTICS_ENABLED=true" >> $GITHUB_ENV
+      
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
