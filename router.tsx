@@ -15,6 +15,7 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 const CopyTextFromImageGuide = lazy(() => import('./pages/CopyTextFromImageGuide'));
 const JpgToExcelGuide = lazy(() => import('./pages/JpgToExcelGuide'));
 const About = lazy(() => import('./pages/About'));
+const Contact = lazy(() => import('./pages/Contact'));
 
 // Route path constants - single source of truth for all route paths
 export const ROUTES = {
@@ -27,6 +28,7 @@ export const ROUTES = {
   COPY_TEXT_FROM_IMAGE: '/copy-text-from-image',
   JPG_TO_EXCEL: '/jpg-to-excel',
   ABOUT: '/about',
+  CONTACT: '/contact',
 } as const;
 
 // Always use HeroOCR as the home component
@@ -41,6 +43,7 @@ const HomeComponent = HeroOCR;
  * - /image-to-excel
  * - /extract-text-from-image
  * - /about
+ * - /contact
  * 
  * All routes use same OCR component with different metadata
  */
@@ -80,6 +83,10 @@ export const router = createBrowserRouter([
   {
     path: ROUTES.ABOUT,
     element: <About />,
+  },
+  {
+    path: ROUTES.CONTACT,
+    element: <Contact />,
   },
   {
     path: '*',

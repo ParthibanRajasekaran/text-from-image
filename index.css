@@ -41,6 +41,12 @@
     }
   }
   
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+  
   /* Custom scrollbar styling */
   .scrollbar-thin {
     scrollbar-width: thin;
@@ -68,6 +74,9 @@
 
 /* Define CSS variables for light and dark themes - OKLCH for consistent contrast */
 :root {
+  /* Layout */
+  --header-h: 80px;
+  
   /* Base */
   --bg: 0 0% 99%;
   --surface: 0 0% 98%;
