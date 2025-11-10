@@ -109,6 +109,7 @@ jobs:
         run: npm run validate:env
         env:
           CI: true
+          VITE_UX_V2: '1'
       
       - name: Vercel auth & link
         if: steps.filter.outputs.app == 'true'
@@ -126,6 +127,8 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then pnpm build
           elif [ -f yarn.lock ]; then yarn build
           else npm run build; fi
+        env:
+          VITE_UX_V2: '1'
       
       - name: Deploy preview
         if: steps.filter.outputs.app == 'true'
@@ -215,6 +218,7 @@ jobs:
         run: npm run validate:env
         env:
           CI: true
+          VITE_UX_V2: '1'
       
       - name: Vercel auth & link
         if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'
@@ -232,6 +236,8 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then pnpm build
           elif [ -f yarn.lock ]; then yarn build
           else npm run build; fi
+        env:
+          VITE_UX_V2: '1'
       
       - name: Deploy production
         if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'
