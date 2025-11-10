@@ -22,11 +22,27 @@ export default defineConfig(({ mode: _mode }) => {
         port: 3000,
         host: '0.0.0.0',
       },
+      // Configure workers for code splitting
+      worker: {
+        format: 'es', // Use ES modules for workers in code-splitting builds
+      },
         test: {
           environment: 'jsdom',
           setupFiles: 'src/test/setupTests.ts',
           globals: true,
-          include: ['src/**/*.spec.ts', 'src/**/*.spec.tsx', 'src/**/*.a11y.spec.tsx'],
+          include: [
+            // Core unit & integration tests
+            'src/**/*.spec.ts',
+            'src/**/*.spec.tsx',
+            // Accessibility tests
+            'src/**/*.a11y.spec.tsx',
+            // Spec-driven tests
+            'src/**/*.spec.json',
+            // __tests__ directory tests
+            '__tests__/**/*.spec.ts',
+            '__tests__/**/*.spec.tsx',
+            '__tests__/**/*.a11y.spec.tsx',
+          ],
         },
       plugins: [
         react(),
@@ -49,44 +65,47 @@ export default defineConfig(({ mode: _mode }) => {
         'import.meta.env.VITE_BUILD_TIME': JSON.stringify(new Date().toISOString()),
       },
       build: {
-        // Increase chunk size warning limit since we're splitting properly
-        chunkSizeWarningLimit: 600,
+        // Disable Vite's built-in compression reporting (we use check-budgets.mjs instead)
+        reportCompressedSize: false,
+        // Conservative chunk size warning limit (600–800k range)
+        chunkSizeWarningLimit: 900, // Increased to accommodate split OCR vendors
         rollupOptions: {
           output: {
             // Manual chunk splitting for better caching and lazy loading
             manualChunks: (id) => {
-              // React vendor chunk - loaded on every page
+              // React vendor chunk - core framework (loaded on every page)
               if (id.includes('node_modules/react') || 
                   id.includes('node_modules/react-dom') ||
                   id.includes('node_modules/react-router-dom')) {
                 return 'react-vendor';
               }
               
-              // Tesseract.js - only loaded when user starts OCR
-              if (id.includes('node_modules/tesseract.js')) {
-                return 'tesseract';
-              }
-              
-              // ONNX Runtime - used by Transformers, split separately
+              // Split heavy OCR dependencies into separate lazy-loaded chunks
+              // Each chunk loads only when user performs OCR on tool pages
               if (id.includes('node_modules/onnxruntime-web') ||
                   id.includes('node_modules/onnxruntime-common')) {
-                return 'ort';
+                return 'onnx-vendor';
               }
               
-              // Transformers - only loaded as fallback or when explicitly requested
+              if (id.includes('node_modules/tesseract.js')) {
+                return 'tesseract-vendor';
+              }
+              
               if (id.includes('node_modules/@xenova/transformers')) {
-                return 'transformers';
+                return 'transformers-vendor';
               }
               
-              // Framer Motion - loaded for animations
+              // Editor & UI vendor chunk - framer-motion for animations
               if (id.includes('node_modules/framer-motion')) {
-                return 'framer-motion';
+                return 'motion-vendor';
               }
               
-              // Keep other vendor dependencies in a shared chunk
+              // Other vendor dependencies in shared chunk
               if (id.includes('node_modules')) {
                 return 'vendor';
               }
+              
+              // Default: let Rollup decide for app code
             },
           },
         },

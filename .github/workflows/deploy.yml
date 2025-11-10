@@ -59,7 +59,17 @@ jobs:
       group: preview-${{ github.event.pull_request.number }}
       cancel-in-progress: true
     
+    env:
+      VITE_UX_V2: '1'
+      VITE_ANALYTICS_ENABLED: 'true'
+      CI: 'true'
+    
     steps:
+      - name: Set environment variables for prebuild
+        run: |
+          echo "VITE_UX_V2=1" >> $GITHUB_ENV
+          echo "VITE_ANALYTICS_ENABLED=true" >> $GITHUB_ENV
+      
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
@@ -107,8 +117,6 @@ jobs:
       - name: Validate environment variables
         if: steps.filter.outputs.app == 'true'
         run: npm run validate:env
-        env:
-          CI: true
       
       - name: Vercel auth & link
         if: steps.filter.outputs.app == 'true'
@@ -126,6 +134,9 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then pnpm build
           elif [ -f yarn.lock ]; then yarn build
           else npm run build; fi
+        env:
+          VITE_UX_V2: '1'
+          VITE_ANALYTICS_ENABLED: 'true'
       
       - name: Deploy preview
         if: steps.filter.outputs.app == 'true'
@@ -164,7 +175,17 @@ jobs:
       group: production
       cancel-in-progress: true
     
+    env:
+      VITE_UX_V2: '1'
+      VITE_ANALYTICS_ENABLED: 'true'
+      CI: 'true'
+    
     steps:
+      - name: Set environment variables for prebuild
+        run: |
+          echo "VITE_UX_V2=1" >> $GITHUB_ENV
+          echo "VITE_ANALYTICS_ENABLED=true" >> $GITHUB_ENV
+      
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
@@ -213,8 +234,6 @@ jobs:
       - name: Validate environment variables
         if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'
         run: npm run validate:env
-        env:
-          CI: true
       
       - name: Vercel auth & link
         if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'
@@ -232,6 +251,9 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then pnpm build
           elif [ -f yarn.lock ]; then yarn build
           else npm run build; fi
+        env:
+          VITE_UX_V2: '1'
+          VITE_ANALYTICS_ENABLED: 'true'
       
       - name: Deploy production
         if: github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true'

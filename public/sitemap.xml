@@ -1,101 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-  
-  <!-- Homepage / Main OCR Tool -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://freetextfromimage.com/</loc>
-    <lastmod>2025-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- Alternative Routes (if using routing) -->
-  <url>
-    <loc>https://freetextfromimage.com/extract-text-from-image</loc>
-    <lastmod>2025-11-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
   <url>
     <loc>https://freetextfromimage.com/image-to-text</loc>
-    <lastmod>2025-11-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <!-- Niche OCR Tools -->
-  <url>
-    <loc>https://freetextfromimage.com/handwriting-to-text</loc>
-    <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://freetextfromimage.com/cursive-to-text</loc>
-    <lastmod>2025-01-15</lastmod>
+    <loc>https://freetextfromimage.com/extract-text-from-image</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+  <url>
+    <loc>https://freetextfromimage.com/copy-text-from-image</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/jpg-to-word</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
     <loc>https://freetextfromimage.com/jpg-to-excel</loc>
-    <lastmod>2025-01-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>https://freetextfromimage.com/math-to-latex</loc>
-    <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://freetextfromimage.com/handwritten-math-to-latex</loc>
-    <lastmod>2025-01-15</lastmod>
+    <loc>https://freetextfromimage.com/image-to-excel</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://freetextfromimage.com/receipt-to-csv</loc>
-    <lastmod>2025-01-15</lastmod>
+    <loc>https://freetextfromimage.com/privacy-policy</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/terms</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/about</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://freetextfromimage.com/tamil-image-to-text</loc>
-    <lastmod>2025-01-15</lastmod>
+    <loc>https://freetextfromimage.com/contact</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-  
-  <url>
-    <loc>https://freetextfromimage.com/arabic-image-to-text</loc>
-    <lastmod>2025-01-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>https://freetextfromimage.com/whiteboard-to-text</loc>
-    <lastmod>2025-01-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>https://freetextfromimage.com/offline-image-to-text</loc>
-    <lastmod>2025-01-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
 </urlset>

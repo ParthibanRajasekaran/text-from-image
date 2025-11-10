@@ -1,0 +1,15 @@
+{
+  "mustExist": [
+    "/",
+    "/image-to-text",
+    "/extract-text-from-image",
+    "/copy-text-from-image",
+    "/jpg-to-word",
+    "/jpg-to-excel",
+    "/image-to-excel",
+    "/privacy-policy",
+    "/terms",
+    "/about",
+    "/contact"
+  ]
+}

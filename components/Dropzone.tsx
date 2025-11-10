@@ -1,3 +1,9 @@
+/**
+ * @deprecated Dropzone is deprecated. Use GlassDropzone from components/v3/GlassDropzone.tsx instead.
+ * This component is used in V2 UI. V3 uses the glass-morphism variant.
+ * Will be removed in v2.x. See docs/DEPRECATED.md for migration guide.
+ */
+
 import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { useDragDrop } from '../hooks/useDragDrop';
 import { useClipboard } from '../hooks/useClipboard';

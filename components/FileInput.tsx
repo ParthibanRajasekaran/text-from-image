@@ -1,3 +1,9 @@
+/**
+ * @deprecated FileInput is deprecated. Use GlassDropzone from components/v3/GlassDropzone.tsx instead.
+ * This component is only used in legacy UI (when VITE_UX_V2 is disabled).
+ * Will be removed in v2.x. See docs/DEPRECATED.md for migration guide.
+ */
+
 import React, { useState, useCallback } from 'react';
 import { UploadIcon } from './icons/UploadIcon';
 import { XCircleIcon } from './icons/XCircleIcon';

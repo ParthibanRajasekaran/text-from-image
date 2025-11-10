@@ -169,9 +169,15 @@ function getEnvironment() {
     return 'vercel';
   }
   
-  // Check if running in CI
+  // Check if running in CI deploy mode (has Vercel secrets = deploy workflow)
+  if ((process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true') &&
+      (process.env.VERCEL_TOKEN || process.env.VERCEL_ORG_ID)) {
+    return 'ci-deploy';
+  }
+  
+  // Check if running in regular CI (test/quality workflows)
   if (process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true') {
-    return 'ci';
+    return 'ci-test';
   }
   
   // Local development
@@ -181,7 +187,7 @@ function getEnvironment() {
 function loadEnvVars() {
   const env = getEnvironment();
   
-  if (env === 'vercel' || env === 'ci') {
+  if (env === 'vercel' || env === 'ci-deploy' || env === 'ci-test') {
     // In CI/Vercel, use process.env directly
     return process.env;
   } else {
@@ -196,22 +202,29 @@ function loadEnvVars() {
 // VALIDATION FUNCTIONS
 // ═══════════════════════════════════════════════════════════════════════════
 
-function validateCriticalVars(env) {
+function validateCriticalVars(env, environment) {
   const errors = [];
+  
+  // Only enforce critical variables in deploy/production environments
+  // In test/local environments, use defaults
+  const enforceStrict = environment === 'vercel' || environment === 'ci-deploy';
   
   CRITICAL_VARS.forEach(varDef => {
     const value = env[varDef.name];
     
     // Check if variable is set
     if (!value || value === '' || value === 'undefined') {
-      errors.push({
-        variable: varDef.name,
-        error: 'NOT SET',
-        description: varDef.description,
-        impact: varDef.impact,
-        defaultBehavior: varDef.defaultBehavior,
-        recommendation: varDef.recommendation
-      });
+      if (enforceStrict) {
+        // In strict mode (deploy), errors must be fixed
+        errors.push({
+          variable: varDef.name,
+          error: 'NOT SET',
+          description: varDef.description,
+          impact: varDef.impact,
+          defaultBehavior: varDef.defaultBehavior,
+          recommendation: varDef.recommendation
+        });
+      }
       return;
     }
     
@@ -311,7 +324,7 @@ function main() {
   // Validate Critical Variables
   // ─────────────────────────────────────────────────────────────────────────
   
-  const criticalErrors = validateCriticalVars(env);
+  const criticalErrors = validateCriticalVars(env, environment);
   
   if (criticalErrors.length > 0) {
     log('🚨 CRITICAL ERRORS - BUILD BLOCKED', 'red');

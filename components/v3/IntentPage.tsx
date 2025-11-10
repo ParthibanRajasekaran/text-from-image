@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 import { HeroOCR } from './HeroOCR';
 import { motion } from 'framer-motion';
-import { InlineAdSlot } from '../AdSlot';
 import { SEO, baseJsonLd, createFAQJsonLd } from '../SEO';
+import { InArticle } from '../../src/ads/InArticle';
+import type { ConsentState } from '../../src/consent/consent';
 
 export interface FAQItem {
   question: string;
@@ -39,17 +40,45 @@ export function IntentPage({
   faq,
   canonicalUrl,
 }: IntentPageProps) {
+  // Env flag checks for ad slot gating
+  const isPreview = import.meta.env.MODE === "preview";
+  const allowPreview = import.meta.env.VITE_ENABLE_ADS_IN_PREVIEW === "true";
+  const slotsEnabled = (isPreview && allowPreview) || import.meta.env.VITE_ADS_SLOTS_ENABLED === "true";
+  const consent: ConsentState = { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' };
+
   // Structured data for FAQ rich snippets
   const faqJsonLd = useMemo(() => createFAQJsonLd(faq), [faq]);
   
-  // Combine base JSON-LD with FAQ schema
-  const combinedJsonLd = useMemo(() => ({
-    '@context': 'https://schema.org',
-    '@graph': [
-      ...baseJsonLd['@graph'],
+  // Combine base JSON-LD with Breadcrumb, Article and FAQ schema
+  const combinedJsonLd = useMemo(() => {
+    const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+    const breadcrumb = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Guides', item: `${SITE_URL}/guides` },
+        { '@type': 'ListItem', position: 3, name: title, item: canonicalUrl },
+      ],
+    };
+
+    const article = {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description,
+      dateModified: new Date().toISOString(),
+      author: { '@type': 'Person', name: 'TextFromImage' },
+      mainEntityOfPage: canonicalUrl,
+    };
+
+    return [
+      ...baseJsonLd,
+      breadcrumb,
+      article,
       faqJsonLd,
-    ],
-  }), [faqJsonLd]);
+    ];
+  }, [faqJsonLd, title, description, canonicalUrl]);
 
   return (
     <>
@@ -65,7 +94,7 @@ export function IntentPage({
       <HeroOCR customHeading={heading} customSubheading={subheading} />
 
       {/* Ad Slot - Mid Content */}
-      <InlineAdSlot slot="rectangle" />
+      {slotsEnabled && <InArticle consent={consent} />}
 
       {/* FAQ Section */}
       <section className="relative py-16 sm:py-20 overflow-hidden">

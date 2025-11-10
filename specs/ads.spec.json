@@ -1,0 +1,14 @@
+{
+  "toolRoutesNoAds": [
+    "/",
+    "/image-to-text-converter",
+    "/image-to-excel"
+  ],
+  "guideRoutesOneSlot": [
+    "/image-to-text",
+    "/extract-text-from-image",
+    "/copy-text-from-image",
+    "/jpg-to-word",
+    "/jpg-to-excel"
+  ]
+}

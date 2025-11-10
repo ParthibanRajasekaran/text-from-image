@@ -1,6 +1,6 @@
 # 📸 Extract Text From Image
 
-> Free, private, AI-powered OCR tool running entirely in your browser
+> **Free, private, AI-powered OCR tool running entirely in your browser** — Extract text from images with 92-97% accuracy, zero API costs, and 100% data privacy.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react)](https://reactjs.org/)
@@ -100,34 +100,27 @@ This repo uses Spec-Driven Development for reliability and accessibility. All fe
 
 ### Prerequisites
 
-- Node.js 16+ 
-- npm or yarn
+- Node.js 20+
+- npm 10+ or yarn 4+
 
 
-### Installation
+### Quick Start (Development)
 
 ```bash
-# Clone the repository
+# Clone and setup
 git clone https://github.com/ParthibanRajasekaran/text-from-image.git
 cd text-from-image
-
-# Install dependencies
 npm install
 
-# Create .env.local file for V3 UI (optional)
-echo "VITE_UX_V2=1" > .env.local
-
-# Start development server
+# Start dev server
 npm run dev
-```
+# Visit http://localhost:5173
 
-Visit `http://localhost:5173` to see the app.
+# Run tests
+npm run test
 
-### Build for Production
-
-```bash
+# Build for production
 npm run build
-npm run preview
 ```
 
 ## 🚀 Deployment
@@ -193,87 +186,71 @@ VITE_OCR_MIN_CONFIDENCE=60         # Tesseract confidence threshold
 
 ## 🏗️ Architecture
 
-### Hybrid OCR System
+### Application Structure
 
 ```
-User uploads image
-        ↓
-┌──────────────────┐
-│ File Validation  │ (Type, size, browser compatibility)
-└──────────────────┘
-        ↓
-┌──────────────────┐
-│ Image Preprocessing │ (Optional: 8 enhancement techniques)
-└──────────────────┘
-        ↓
-┌──────────────────┐
-│ Tesseract OCR    │ (Fast: 2-5s, 90-95% accuracy)
-└──────────────────┘
-        ↓
-    Confidence ≥ 60%?
-        ├─ Yes → Return result ✓
-        └─ No  → Fallback ↓
-                ┌──────────────────┐
-                │ TrOCR AI Model   │ (Slower: 5-10s, 95-98% accuracy)
-                └──────────────────┘
-                        ↓
-                   Return result ✓
+pages/               # SEO-optimized route pages (lazy-loaded)
+  ├── ImageToText.tsx
+  ├── ExtractTextFromImage.tsx
+  └── ...
+    
+components/         # Reusable React components
+  ├── v3/           # Premium UI (Aurora, Glass, History)
+  ├── AdSlot.tsx    # AdSense slot containers
+  └── ...
+
+hooks/              # Custom React hooks (useShortcuts, useLocalHistory, etc.)
+
+lib/                # Business logic
+  ├── consent.ts    # Consent Mode v2 management
+  ├── analytics.ts  # Web Vitals tracking
+  └── config/       # Feature flags & env guards
+
+services/           # OCR engines (Tesseract, TrOCR)
+
+__tests__/          # Test suite (routes, SEO, a11y, deprecation)
+```
+
+### Request Flow: Image Upload → OCR → Result
+
+```
+User Upload
+    ↓
+File Validation (type, size)
+    ↓
+Image Preprocessing (optional)
+    ↓
+Tesseract OCR (fast, 2-5s)
+    ├─ Confidence ≥ 60%? → Return ✓
+    └─ Fallback → TrOCR AI (5-10s) → Return ✓
+    ↓
+Result Display + Copy/Download
 ```
 
 ### Tech Stack
 
-- **Frontend:** React 19.2 + TypeScript
-- **Build Tool:** Vite 6.2
-- **OCR Engines:**
-  - Tesseract.js 5.1.1 (traditional OCR)
-  - @xenova/transformers 2.17.2 (AI-powered TrOCR)
-- **Image Processing:** HTML5 Canvas API
-- **State Management:** React Hooks
-- **Styling:** CSS with custom properties
+| Layer | Technology |
+|-------|-----------|
+| **UI** | React 19.2 + TypeScript 5.8 |
+| **Build** | Vite 6.2 + Rollup (code splitting) |
+| **OCR** | Tesseract.js 5.1 + TrOCR (AI) |
+| **Styling** | CSS + Tailwind + Custom properties |
+| **State** | React Hooks (useReducer, Context) |
+| **Testing** | Vitest + Testing Library |
+| **Deployment** | Vercel (automated via GitHub Actions) |
 
-## 📂 Project Structure
+### Feature Flags & Configuration
 
-```
-text-from-image/
-├── components/          # React components
-│   ├── v3/             # V3 Premium UI components
-│   │   ├── AuroraBackground.tsx
-│   │   ├── GlassDropzone.tsx
-│   │   ├── GlassProgressBar.tsx
-│   │   ├── GlassResultCard.tsx
-│   │   ├── HistoryDrawer.tsx
-│   │   ├── HeroOCR.tsx
-│   │   └── IntentPage.tsx
-│   ├── FileInput.tsx
-│   ├── ResultDisplay.tsx
-│   ├── ThemeToggle.tsx
-│   ├── ProgressBar.tsx
-│   ├── Skeleton.tsx
-│   ├── AdSlot.tsx
-│   └── Toast.tsx
-├── services/           # OCR services
-│   ├── tesseractService.ts
-│   ├── transformersService.ts
-│   └── hybridService.ts
-├── hooks/             # Custom React hooks
-│   ├── useLocalHistory.ts
-│   ├── useShortcuts.ts
-│   └── useWebVitals.ts
-├── pages/             # Route pages (lazy-loaded)
-│   ├── ImageToText.tsx
-│   ├── JpgToWord.tsx
-│   ├── ImageToExcel.tsx
-│   └── ExtractTextFromImage.tsx
-├── utils/             # Utilities
-│   ├── imagePreprocessing.ts
-│   ├── errorHandling.ts
-│   ├── webVitals.ts
-│   └── fileUtils.ts
-├── __tests__/         # Test files
-├── App.tsx            # Main app component
-├── router.tsx         # React Router config
-└── index.tsx          # Entry point
-```
+See `.env.example` for all available flags:
+
+| Flag | Purpose | Default |
+|------|---------|---------|
+| `VITE_UX_V2` | Enable premium UI (Aurora/Glass) | `false` |
+| `VITE_ADSENSE_PUB_ID` | AdSense publisher ID (prod only) | unset |
+| `VITE_SITE_URL` | Canonical domain for SEO | computed |
+| `VITE_OCR_MIN_CONFIDENCE` | Tesseract confidence threshold | `60` |
+
+**See also:** [Env Guards](./lib/env-guards.ts) for runtime validation.
 
 ## 🛠️ How It Works
 
@@ -326,208 +303,38 @@ text-from-image/
 
 ## 🚀 Deployment
 
-### Branching Model (Deploy-Gate Strategy)
+### How We Deploy
 
-We use a **label-gated deployment** model to prevent burning Vercel deploys:
+This project uses **GitHub Actions for automated CI/CD** with **label-gated preview deploys** to avoid waste:
 
-- **`main` branch** = Production (auto-deploys via GitHub Actions)
-- **Feature branches** (`feat/*`, etc.) = NO auto-deploy
-- **Preview deploys** = Only when PR has `deploy:preview` label
-- **Skip deploys** = Add `[skip deploy]` to commit message
-
-This ensures:
-- 🎯 Only intentional deploys happen
-- 💰 No wasted deploys on WIP commits
-- 🚀 Fast iteration without deploy limits
-
-### Quick Deployment Guide
-
-#### 1. Preview a Pull Request
-
-```bash
-# 1. Create PR from feature branch
-git checkout -b feat/my-feature
-git push origin feat/my-feature
-
-# 2. Add 'deploy:preview' label to PR in GitHub UI
-#    Go to PR → Labels → Select 'deploy:preview'
-
-# 3. GitHub Actions will deploy a preview
-#    Preview URL will be commented on the PR
+```
+Feature Branch → PR → [add deploy:preview label] → Preview Deploy ✓
+          ↓
+Main Branch → Push → Auto-Production Deploy ✓
 ```
 
-#### 2. Deploy to Production
+**Key principles:**
+- ✅ All code changes go through tests first
+- ✅ Production deploys only from `main` branch
+- ✅ Preview deploys opt-in (require `deploy:preview` label)
+- ✅ Skip deploys with `[skip deploy]` in commit message
 
-**Option A: Merge to main** (recommended)
-```bash
-# Merge PR to main branch
-# GitHub Actions auto-deploys to production
-```
+**Deployment workflow:** `.github/workflows/deploy.yml`  
+**Environment config:** [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) (setup, troubleshooting, env vars)
 
-**Option B: Manual CLI** (100/day limit)
-```bash
-# Install Vercel CLI (one-time)
-npm install -g vercel
-
-# Link to project (one-time)
-vercel link --yes
-
-# Pull production settings
-vercel pull --environment=production --yes
-
-# Deploy to production
-vercel --prod --confirm
-```
-
-#### 3. Skip Deployment
-
-To skip auto-deploy on push to main:
-```bash
-git commit -m "docs: update README [skip deploy]"
-git push origin main
-```
-
-### GitHub Actions Setup
-
-**Required GitHub Secrets** (Settings → Secrets and variables → Actions):
-
-1. **`VERCEL_TOKEN`**
-   - Create at: https://vercel.com/account/tokens
-   - Scope: Full Account
-   - Never commit this!
-
-2. **`VERCEL_ORG_ID`** and **`VERCEL_PROJECT_ID`**
-   - Get by running: `vercel link --yes`
-   - Found in: `.vercel/project.json`
-   ```json
-   {
-     "orgId": "your-org-id",
-     "projectId": "your-project-id"
-   }
-   ```
-
-**Workflow Features:**
-- ✅ Preview deploys only with `deploy:preview` label
-- ✅ Production deploys on merge to `main`
-- ✅ Path filters (skips docs-only changes)
-- ✅ Concurrency control (cancels superseded builds)
-- ✅ Manual trigger via Actions tab
-
-### Manual Deployment Commands
-
-For local development or testing:
+### Local Deployment (Testing)
 
 ```bash
 # Setup (one-time)
 npm install -g vercel
 vercel link --yes
 
-# Pull production config
-vercel pull --environment=production --yes
-
-# Deploy preview (test)
+# Deploy preview locally
 vercel
 
-# Deploy production
+# Deploy production locally
 vercel --prod --confirm
-
-# Check deployments
-vercel ls
 ```
-
-### Vercel Project Configuration
-
-**Disable Git Auto-Deploy** (recommended):
-
-1. Go to: Vercel Dashboard → Project → Settings → Git
-2. Uncheck "Automatic Deployments from Git"
-3. Or: Use `vercel.json` `ignoreCommand` (already configured)
-
-This ensures ALL deploys go through GitHub Actions, giving you full control.
-
-### Deploy Workflow Examples
-
-**Example 1: Feature with Preview**
-```bash
-git checkout -b feat/new-feature
-# ... make changes ...
-git commit -m "feat: add new feature"
-git push origin feat/new-feature
-# Create PR, add 'deploy:preview' label
-# → Preview deployed automatically
-```
-
-**Example 2: Docs-only Change**
-```bash
-git checkout -b docs/update-readme
-# ... edit README ...
-git commit -m "docs: update installation steps"
-git push origin main
-# → NO deploy (path filter skips it)
-```
-
-**Example 3: Hotfix to Production**
-```bash
-git checkout main
-# ... fix critical bug ...
-git commit -m "fix: critical security issue"
-git push origin main
-# → Deploys to production immediately
-```
-
-**Example 4: Skip Deployment**
-```bash
-git commit -m "chore: update dependencies [skip deploy]"
-git push origin main
-# → Skips deployment
-```
-
-### Environment Variables
-
-Set in Vercel Project → Settings → Environment Variables:
-
-| Variable | Value | Environment | Description |
-|----------|-------|-------------|-------------|
-| `VITE_COMMIT` | Auto-set during build | All | Git commit SHA for version display |
-
-**Important:** If you use feature flags (like `VITE_UX_V2`), ensure they're set to the same value in both:
-- Local: `.env.local` file
-- Vercel: Project Settings → Environment Variables → Production
-
-### Troubleshooting Deployment
-
-**Problem:** Production shows old version after deploying
-
-**Solutions:**
-1. **Clear browser cache** - Hard refresh (Cmd+Shift+R / Ctrl+F5)
-2. **Check commit SHA** - Footer should show correct version
-3. **Verify deployment** - Run `npm run verify:prod`
-4. **Check Vercel Dashboard** - Ensure latest deployment is assigned to production domain
-5. **CDN cache** - Can take 1-2 minutes to propagate globally
-
-**Problem:** Different behavior between dev and prod
-
-**Solutions:**
-1. **Check environment variables** - Ensure same values locally and on Vercel
-2. **Remove feature flags** - Don't use `process.env.NODE_ENV` checks that change behavior
-3. **Test production build locally** - Run `npm run build && npm run preview`
-4. **Check build logs** - Vercel Dashboard → Deployments → View build logs
-
-**Problem:** Build fails on Vercel but works locally
-
-**Solutions:**
-1. **Check Node version** - Vercel uses Node 18+ by default
-2. **Install correct dependencies** - Vercel runs `npm ci` (strict lock file)
-3. **Check build command** - Verify `vercel.json` has correct `buildCommand`
-4. **Environment variables** - Ensure required env vars are set in Vercel
-
-### Relevant Docs
-
-- [Vercel CLI Documentation](https://vercel.com/docs/cli)
-- [Vercel Git Integration](https://vercel.com/docs/concepts/git)
-- [Vercel Environment Variables](https://vercel.com/docs/concepts/projects/environment-variables)
-- [Vercel Build Step](https://vercel.com/docs/build-step)
-- [GitHub Actions with Vercel](https://vercel.com/guides/how-can-i-use-github-actions-with-vercel)
 
 ---
 
@@ -630,15 +437,58 @@ const { default: jsPDF } = await import('jspdf');
 
 ---
 
+## 💸 Monetization (AdSense)
+
+To apply for AdSense and enable monetization:
+
+1. Go to AdSense “Sites” and add `https://freetextfromimage.com`.
+2. Ensure the site has live policy pages (`/privacy-policy`, `/terms`, `/about`, `/contact`) and helpful guides (`/image-to-text`, etc.).
+3. Add a Google-certified CMP and wire its callback to `updateConsent()` in `src/consent/consent.ts`.
+   - Consent Mode v2 must fire before any ad scripts load.
+4. Set `VITE_ADSENSE_PUB_ID` in Vercel (Production) **after approval**.
+5. Add your publisher ID to `/public/ads.txt`.
+6. Use Search Console to submit your sitemap and fix Page Indexing/Core Web Vitals issues.
+7. Placement rules:
+   - No ads near upload/CTA areas; avoid accidental clicks.
+   - All ad slots reserve space to prevent CLS.
+   - Ads only load after consent and in Production.
+
+**Testing:**
+- Run `npm run sitemap` to generate `/public/sitemap.xml`.
+- Run `npm run build && npm run test` to verify build and ad readiness.
+
+**CMP Integration:**
+- See comments in `src/consent/consent.ts` for wiring a certified CMP callback.
+- Verify Consent Mode v2 fires before ads script loads.
+
+**AdSense Approval:**
+- Update `/public/ads.txt` with your real publisher ID after approval.
+- Use AdSense dashboard for auto ad configuration.
+
+**SEO:**
+- All pages have unique meta tags and canonical URLs.
+- Guides and policy pages are crawlable and linked from Home/footer.
+- robots.txt and sitemap.xml are present.
+
+**Performance:**
+- Ad slots use fixed min-height to prevent layout shift.
+- No OCR/UX regressions; light/dark mode consistent.
+
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for:
+- Code standards & TypeScript conventions
+- Accessibility (a11y) requirements
+- Testing & how to run the test suite
+- Commit message conventions
+- PR process & deprecation policy
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+**Quick checklist before submitting PR:**
+```bash
+npm run lint        # Fix linting issues
+npm run test        # Run full test suite
+npm run build       # Verify production build
+```
 
 ## 📄 License
 
