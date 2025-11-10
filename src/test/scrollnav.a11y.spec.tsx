@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ScrollNav } from '../../components/ui/ScrollNav';
@@ -14,6 +14,12 @@ describe('ScrollNav - A11y & UX', () => {
   beforeEach(() => {
     // Reset scroll position
     window.scrollY = 0;
+    // Mock scrollIntoView for jsdom
+    Element.prototype.scrollIntoView = vi.fn();
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
   });
 
   it('renders with section links', () => {

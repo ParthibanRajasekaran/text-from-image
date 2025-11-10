@@ -82,7 +82,7 @@ describe('About Page', () => {
 
     const headshot = screen.getByAltText(/Parthiban Rajasekaran, founder of TextFromImage/);
     expect(headshot).toBeInTheDocument();
-    expect(headshot).toHaveAttribute('src', '/images/headshot.jpg');
+    expect(headshot).toHaveAttribute('src', 'images/headshot.jpg');
     expect(headshot).toHaveAttribute('width', '480');
     expect(headshot).toHaveAttribute('height', '600');
     expect(headshot).toHaveAttribute('loading', 'lazy');
