@@ -1,229 +1,243 @@
-# Site verification nuance
+# AdSense Readiness & Submission Guide
 
-- We load the AdSense script in Production when a pub ID is set so Google can verify the site.
-- Ad slot rendering remains consent-gated (Consent Mode v2 compliant).
-- Check with Tag Assistant: consent default(denied) on first paint, script present, slots inactive until consent.
+## ✅ Checklist Before Applying
 
-### Vercel Production env vars (reminder)
+- [ ] **Consent Mode v2** - CMP wired correctly (see below)
+- [ ] **Policy Pages Live** - `/privacy-policy`, `/terms`, `/about`, `/contact` indexable
+- [ ] **Guide Pages** - 5 SEO routes with FAQ rich snippets, all discoverable
+- [ ] **Sitemap** - Auto-generated at `/sitemap.xml`, submitted to Search Console
+- [ ] **robots.txt** - Present and references sitemap
+- [ ] **Core Web Vitals** - Lighthouse score ≥90, CLS < 0.1 (on all pages)
+- [ ] **No policy violations** - Harmful content, invalid traffic, etc. (Google policy check)
 
+---
+
+## Current Implementation Steps
+
+### 1. Consent Mode v2 + CMP
+
+**Status:** ✅ Implemented with fallback
+
+- **File:** `lib/consent.ts` (manages `gtag.consent` state)
+- **Integration:** Wire your CMP (OneTrust, CookieBot, etc.) to call `updateConsent({ ad_storage, ad_user_data, ad_personalization })`
+- **Defaults:** Consent mode starts as `'denied'` on page load
+- **Mapping:**
+  - Purpose 1 (Storage/Cookies) → `ad_storage`
+  - Purposes 7/8/9/10 (Targeting/Profiling) → `ad_user_data`, `ad_personalization`
+
+**Example CMP integration:**
+```typescript
+// lib/consent.ts
+export function initCMP() {
+  // Get consent from your CMP
+  const userConsent = await getCMPConsent(); // Your CMP library call
+  
+  // Update Google Consent Mode v2
+  updateConsent({
+    ad_storage: userConsent.purposes[1] ? 'granted' : 'denied',
+    ad_user_data: userConsent.purposes[7] ? 'granted' : 'denied',
+    ad_personalization: userConsent.purposes[10] ? 'granted' : 'denied',
+  });
+}
 ```
-VITE_SITE_URL=https://freetextfromimage.com
-VITE_UX_V2=true
-VITE_ADSENSE_PUB_ID=ca-pub-xxxxxxxxxxxxxxxx
+
+### 2. Policy Pages
+
+All required policy pages must be:
+- ✅ Live and indexable (not behind login)
+- ✅ Linked from footer or navigation
+- ✅ Have canonical absolute URLs
+- ✅ Included in sitemap
+
+**Routes (auto-generated):**
+- `/privacy-policy` — Privacy Policy
+- `/terms` — Terms of Service
+- `/about` — About Us
+- `/contact` — Contact Page
+
+### 3. SEO Guide Pages
+
+These 5 intent-specific pages are the core of your SEO strategy:
+
+| Route | Title | FAQ | Indexed |
+|-------|-------|-----|---------|
+| `/image-to-text` | Extract text from any image | ✅ 6 FAQs | ✅ |
+| `/extract-text-from-image` | Extract text guide | ✅ 5 FAQs | ✅ |
+| `/copy-text-from-image` | Copy text from image | ✅ 4 FAQs | ✅ |
+| `/jpg-to-word` | Convert JPG to Word | ✅ 5 FAQs | ✅ |
+| `/jpg-to-excel` | JPG to Excel conversion | ✅ 5 FAQs | ✅ |
+
+Each guide has:
+- Unique title & meta description
+- Absolute canonical URL
+- OG image (1200×630px)
+- FAQ schema (JSON-LD)
+- Internal links to related guides
+- Accessibility (WCAG 2.1 AA)
+
+### 4. Sitemap Generation & Submission
+
+**Generate sitemap:**
+```bash
+npm run sitemap
+# Outputs: /public/sitemap.xml (auto-deployed)
 ```
-(Set after signup/approval if you prefer; script presence is ok for verification)
 
-Note: No slots render without consent even if script is present.
+**Includes (11 routes):**
+- Home `/`
+- 5 guide pages
+- 4 policy pages
+- Auto-priority based on importance
 
-# AdSense Submission Guide
+**Submit to Google Search Console:**
+1. Go to [search.google.com/search-console](https://search.google.com/search-console)
+2. Select your site property
+3. Sitemaps → Add new sitemap
+4. Enter: `https://freetextfromimage.com/sitemap.xml`
+5. Request indexing for each guide page
 
-## Steps for Approval
+### 5. Tag Assistant Verification
 
-1. **CMP + Consent Mode v2**
-   - Implement a Consent Management Platform (CMP) with IAB TCF v2.2 support.
-   - Wire CMP to Google Consent Mode v2 using the provided mapping:
-     - Purpose 1 → `ad_storage`
-     - Purposes 7/8/9/10 → `ad_user_data`, `ad_personalization`
-   - See `src/consent/consent.ts` for a safe wiring example.
+Use [Google Tag Assistant](https://chrome.google.com/webstore/detail/tag-assistant/knlekepgipnigpmalhapjepnkglfdebg) to verify:
 
-2. **Google Search Console**
-   - Verify site ownership in Search Console.
-   - Submit sitemap for indexing.
+**On page load (should see):**
+```javascript
+{
+  ad_storage: 'denied',           // ✓ Default denied
+  ad_user_data: 'denied',
+  ad_personalization: 'denied'
+}
+```
 
-3. **Sitemap**
-   - Ensure all key routes are listed:
-     `/`, `/image-to-text`, `/extract-text-from-image`, `/copy-text-from-image`, `/jpg-to-word`, `/jpg-to-excel`, `/privacy-policy`, `/terms`, `/about`, `/contact`
-   - See `scripts/build-sitemap.mjs`.
+**Checks:**
+- ✅ Google Ads script present (if `VITE_ADSENSE_PUB_ID` set)
+- ✅ Consent defaults to `'denied'`
+- ✅ No `<ins class="adsbygoogle">` slots rendered initially
+- ✅ Ad slots reserve space with `min-h-[280px]`
 
-4. **How to Apply**
-   - Apply via AdSense dashboard.
-   - Wait for approval email.
+**After user grants consent:**
+```javascript
+{
+  ad_storage: 'granted',          // ✓ User updated this
+  ad_user_data: 'granted',
+  ad_personalization: 'granted'
+}
+```
 
-5. **ads.txt**
-   - After approval, add your ads.txt file to `/public/ads.txt`.
+- ✅ `<ins class="adsbygoogle">` elements now mount
+- ✅ Ads begin loading (may take 5-10 seconds)
 
-6. **Set VITE_ADSENSE_PUB_ID**
-   - Add your publisher ID to `.env` or Vercel environment settings.
+### 6. Core Web Vitals Requirements
 
-7. **Tag Assistant Checks**
-   - In development, verify consent state logs and AdSense tags using Tag Assistant.
-   - No logs in production.
+**Lighthouse target:** ≥90 overall score  
+**CLS (Cumulative Layout Shift):** < 0.1 (required for AdSense)
 
-8. **Lighthouse CLS Target**
-   - Ensure Cumulative Layout Shift (CLS) is below 0.1 for AdSense compliance.
+**All ad slots must reserve space:**
+```tsx
+// ✅ Good: Reserved space prevents layout shift
+<div className="min-h-[280px]">
+  <AdSlot slot="ca-pub-xxx" />
+</div>
+
+// ❌ Bad: Dynamic height causes CLS violation
+<div>
+  <AdSlot slot="ca-pub-xxx" />
+</div>
+```
+
+**Check CLS locally:**
+```bash
+npm run build
+npm run preview
+# Open Lighthouse in DevTools → Measure
+```
 
 ---
 
 ## Environment Configuration Matrix
 
-To avoid Vercel deployment spam and ensure proper flag configuration across environments:
-
 ### Local Development
 ```bash
-# .env.local (not committed)
-VITE_SITE_URL=http://localhost:3000
+# .env.local (NOT committed)
+VITE_SITE_URL=http://localhost:5173
 VITE_UX_V2=true
-# No ad flags - ads disabled by default
+# Ads disabled (no pub ID set)
 ```
+
+**Behavior:**
+- AdSense script NOT loaded
+- Ad slots NOT rendered
+- Policy pages accessible for testing
 
 ### Preview Deployments (Vercel)
 ```bash
-# Vercel Preview Environment Variables
+# Vercel Dashboard → Environment Variables → Preview
 VITE_SITE_URL=https://freetextfromimage.com
 VITE_UX_V2=true
-VITE_ENABLE_ADS_IN_PREVIEW=true              # Enable AutoAds script in preview
-VITE_ADS_SLOTS_ENABLED=true                  # Optional: enable InArticle slots for testing
-# VITE_ADSENSE_PUB_ID not set in preview (or use test ID)
+VITE_ENABLE_ADS_IN_PREVIEW=true
+VITE_ADS_SLOTS_ENABLED=true
+# VITE_ADSENSE_PUB_ID=ca-pub-test-id (optional, for testing)
 ```
 
-**Preview Behavior:**
-- AutoAds script loads when `VITE_ENABLE_ADS_IN_PREVIEW=true`
-- InArticle slots render when `VITE_ADS_SLOTS_ENABLED=true`
-- Slots remain consent-gated (no ads without user consent)
-- Use for testing ad layout/CLS without affecting production
+**Behavior:**
+- AdSense script loads (test pub ID or none)
+- InArticle slots render with reserved space
+- Consent gating active (ads blocked until granted)
+- Use for testing ad layout, CLS, consent flow
 
 ### Production Deployment (Vercel)
 ```bash
-# Vercel Production Environment Variables
+# Vercel Dashboard → Environment Variables → Production
 VITE_SITE_URL=https://freetextfromimage.com
 VITE_UX_V2=true
-VITE_ADSENSE_PUB_ID=ca-pub-XXXXXXXXXXXX      # Your actual publisher ID
-VITE_ADS_SLOTS_ENABLED=false                 # Start with false; enable after CMP integration
+VITE_ADSENSE_PUB_ID=ca-pub-XXXXXXXXXXXX     # Real publisher ID
+VITE_ADS_SLOTS_ENABLED=true                  # Enable after Google approval
 ```
 
-**Production Behavior:**
-- AutoAds script loads automatically when `VITE_ADSENSE_PUB_ID` is set
-- InArticle slots only render when `VITE_ADS_SLOTS_ENABLED=true`
-- All slots are consent-gated via Consent Mode v2
-- Script presence allows Google to verify site ownership
+**Behavior:**
+- AdSense script loads with real pub ID
+- InArticle slots render with reserved space
+- Consent Mode v2 gates ad loading
+- Script presence allows Google to verify site during review
 
 ---
 
-## Tag Assistant Verification Steps
+## Post-Approval: ads.txt & Enabling Slots
 
-### 1. Install Google Tag Assistant
-- Add the [Tag Assistant Chrome extension](https://tagassistant.google.com/)
-- Open your site (preview or production)
-- Click the Tag Assistant icon
+### Step 1: Update ads.txt
 
-### 2. Verify Consent Mode v2 Default State
-**On page load (before user interaction):**
-- Check consent state should show:
-  ```javascript
-  {
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied'
-  }
-  ```
-- AdSense script present in `<head>` (if pub ID set)
-- InArticle slots render reserved space (min-height: 280px)
-- No `<ins class="adsbygoogle">` elements mounted
+After receiving AdSense approval email:
 
-### 3. Verify Consent Mode v2 Granted State
-**After user grants consent:**
-- Check consent state should update to:
-  ```javascript
-  {
-    ad_storage: 'granted',
-    ad_user_data: 'granted',
-    ad_personalization: 'granted'
-  }
-  ```
-- `<ins class="adsbygoogle">` elements mount inside slots
-- `adsbygoogle.push()` calls execute
-- Ads begin loading (may take a few seconds)
-
-### 4. Common Issues
-- **Script not loading:** Check `VITE_ADSENSE_PUB_ID` is set and MODE is 'production' or preview flag enabled
-- **Slots not showing:** Verify `VITE_ADS_SLOTS_ENABLED=true` or route is in guide list
-- **Ads load without consent:** Bug! Consent gating failed - review `InArticle.tsx`
-- **CLS violations:** Check all slots have `min-h-[280px]` reserved space
-
----
-
-## Google Search Console Setup
-
-### 1. Verify Site Ownership
-- Go to [Google Search Console](https://search.google.com/search-console)
-- Add property: `https://freetextfromimage.com`
-- Verify via HTML file upload, DNS, or Google Analytics
-
-### 2. Submit Sitemap
-- In Search Console, go to **Sitemaps** → **Add a new sitemap**
-- Submit: `https://freetextfromimage.com/sitemap.xml`
-- Wait for Google to crawl (usually 24-48 hours)
-
-### 3. Request Indexing for Guide Pages
-Prioritize these URLs for faster indexing:
-- `https://freetextfromimage.com/image-to-text`
-- `https://freetextfromimage.com/extract-text-from-image`
-- `https://freetextfromimage.com/copy-text-from-image`
-- `https://freetextfromimage.com/jpg-to-word`
-- `https://freetextfromimage.com/jpg-to-excel`
-
-**Steps:**
-1. Go to **URL Inspection** tool
-2. Enter guide URL
-3. Click **Request Indexing**
-4. Repeat for all 5 guides
-
-### 4. Monitor Coverage
-- Check **Coverage** report weekly
-- Ensure all 11 routes are indexed (6 guides + home + 4 legal pages)
-- Fix any errors (404s, redirect chains, etc.)
-
----
-
-## ads.txt Configuration
-
-### During AdSense Review (Before Approval)
-Use a placeholder `ads.txt` to signal intent:
-
-```txt
-# /public/ads.txt
-# AdSense application pending review
-# Will be updated with publisher ID after approval
-google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
-```
-
-### After AdSense Approval
-Replace with your actual publisher ID:
-
-```txt
+```bash
 # /public/ads.txt
 google.com, pub-XXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
 ```
 
-**Important:**
-- Use your real publisher ID from AdSense dashboard
-- Deploy immediately after approval
-- Verify at: `https://freetextfromimage.com/ads.txt`
-- Google will re-crawl within 24 hours
+**Deploy immediately:**
+```bash
+npm run build && npm run deploy:prod
+```
 
----
+Verify at: `https://freetextfromimage.com/ads.txt`
 
-## Deployment Checklist
+### Step 2: Enable Ad Slots
 
-**Before applying to AdSense:**
-- ✅ All 11 routes render without errors
-- ✅ Sitemap includes all routes with absolute URLs
-- ✅ robots.txt references sitemap
-- ✅ Privacy policy and terms pages are live
-- ✅ CLS < 0.1 on all pages (Lighthouse)
-- ✅ All ad slots have reserved space (min-height: 280px)
+In Vercel dashboard (after ad provisioning):
 
-**During AdSense review:**
-- ✅ VITE_ADSENSE_PUB_ID set in production
-- ✅ Placeholder ads.txt deployed
-- ✅ Tag Assistant confirms Consent Mode v2 default denied
-- ✅ No ads load without user consent
+```bash
+# Vercel → Settings → Environment Variables → Production
+VITE_ADS_SLOTS_ENABLED=true
+```
 
-**After AdSense approval:**
-- ✅ Update ads.txt with real publisher ID
-- ✅ Set VITE_ADS_SLOTS_ENABLED=true when ready for live ads
-- ✅ Monitor IVT (invalid traffic) reports in AdSense
-- ✅ Track CLS/UX metrics in production
+Redeploy:
+```bash
+npm run deploy:prod
+```
+
+**Verify in Tag Assistant:**
+- `<ins class="adsbygoogle">` slots mount after consent granted
+- Ads load within 5-10 seconds
+- No CLS violations
 
 ---
 

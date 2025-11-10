@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Pre-push hook: Run tests before push
+# This hook runs `npm run test` and aborts the push if tests fail
+
+set -e
+
+echo "🔍 Running tests before push…"
+npm run test
+status=$?
+
+if [ $status -ne 0 ]; then
+  echo "❌ Tests failed. Push aborted."
+  exit $status
+fi
+
+echo "✅ Tests passed. Proceeding with push."
+exit 0

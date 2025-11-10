@@ -44,7 +44,7 @@ export default function CopyTextFromImageGuide() {
   const isPreview = import.meta.env.MODE === "preview";
   const allowPreview = import.meta.env.VITE_ENABLE_ADS_IN_PREVIEW === "true";
   const slotsEnabled = (isPreview && allowPreview) || import.meta.env.VITE_ADS_SLOTS_ENABLED === "true";
-  const consent = { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' };
+  const consent = { ad_storage: 'denied' as const, ad_user_data: 'denied' as const, ad_personalization: 'denied' as const };
   const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
   const canonicalPath = '/copy-text-from-image';
   const canonicalAbsolute = new URL(canonicalPath, SITE_URL).toString();
@@ -96,41 +96,227 @@ export default function CopyTextFromImageGuide() {
       <FAQSchema faqs={faqs} />
       <GuideLayout
         title="Copy Text from Image"
-        subtitle="Instantly extract and copy text from images using secure, browser-based OCR"
+        description="Instantly extract and copy text from images using secure, browser-based OCR"
       >
       <section className="mb-6">
         <p>
-          Copying text from images lets you instantly reuse information from photos, scans, or screenshots. Our tool makes it simple, private, and fast—no registration required.
+          Copying text from images is a common need in modern workflows. Whether you're digitizing handwritten notes, extracting quotes from screenshots, or repurposing text from scanned documents, having a reliable method to convert visual text into editable content saves time and reduces errors from manual retyping.
+        </p>
+        <p className="mt-3">
+          Our browser-based OCR tool processes images entirely on your device, ensuring your documents remain private while delivering fast, accurate text extraction. No account creation, no file uploads to external servers, and no usage limits—just straightforward optical character recognition whenever you need it.
         </p>
       </section>
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">How it works</h2>
-        <p>
-          The app uses browser-based OCR to detect and extract text from images. Once processed, you can copy the text to your clipboard with a single click. All operations are performed locally for maximum privacy.
+
+      <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-3">Who Should Use This Tool</h2>
+        <p className="mb-3">
+          This guide is designed for anyone who regularly encounters text locked inside images. Common use cases include:
         </p>
-      </section>
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">Step-by-step: Copying text</h2>
-        <ol className="list-decimal ml-6 space-y-2">
-          <li>Go to the <Link to="/copy-text-from-image" className="text-primary hover:text-primary/80">Copy Text from Image</Link> page.</li>
-          <li>Drop, paste, or upload your image file.</li>
-          <li>Preview the image and confirm selection.</li>
-          <li>Click "Extract" to process the image.</li>
-          <li>Click "Copy" to send the extracted text to your clipboard.</li>
-        </ol>
-        <p className="mt-2">
-          For exporting text, see our <Link to="/jpg-to-word" className="text-primary hover:text-primary/80">JPG to Word</Link> and <Link to="/jpg-to-excel" className="text-primary hover:text-primary/80">JPG to Excel</Link> guides.
-        </p>
-      </section>
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">Tips for best accuracy</h2>
-        <ul className="list-disc ml-6 space-y-1">
-          <li>Use clear, high-resolution images.</li>
-          <li>Good lighting and minimal glare help.</li>
-          <li>Printed text is most reliable; handwriting varies.</li>
-          <li>Crop unnecessary borders for better results.</li>
-          <li>Check for blurry or distorted text before uploading.</li>
+        <ul className="list-disc ml-6 space-y-2 mb-3">
+          <li><strong>Students and researchers:</strong> Extract quotes from textbook photos, lecture slides, or research papers to include in notes or citations.</li>
+          <li><strong>Business professionals:</strong> Copy text from business cards, receipts, invoices, or presentation screenshots for expense tracking or client databases.</li>
+          <li><strong>Content creators:</strong> Repurpose text from social media images, infographics, or competitor materials for analysis or inspiration.</li>
+          <li><strong>Remote workers:</strong> Digitize whiteboard photos from brainstorming sessions or capture action items from meeting screenshots.</li>
+          <li><strong>Legal and compliance teams:</strong> Extract text from document scans for contract review, compliance audits, or evidence documentation.</li>
         </ul>
+        <p>
+          If you frequently find yourself manually retyping text visible in photos or screenshots, this tool eliminates that tedious work in seconds.
+        </p>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-3">How Our OCR Technology Works</h2>
+        <p className="mb-3">
+          Optical Character Recognition (OCR) technology analyzes the shapes, patterns, and structures within an image to identify individual characters and words. Our implementation uses two complementary approaches:
+        </p>
+        <div className="mb-4">
+          <h3 className="text-xl font-medium mb-2">Fast OCR Engine (Tesseract)</h3>
+          <p className="mb-2">
+            For clean, printed text with standard fonts, our primary engine delivers results in under 2 seconds. This method excels at:
+          </p>
+          <ul className="list-disc ml-6 space-y-1">
+            <li>Typed documents and digital screenshots</li>
+            <li>Book pages and magazine scans</li>
+            <li>Business cards with printed text</li>
+            <li>Computer-generated images containing text</li>
+          </ul>
+        </div>
+        <div className="mb-4">
+          <h3 className="text-xl font-medium mb-2">AI-Powered Fallback (Transformers)</h3>
+          <p className="mb-2">
+            When the fast engine encounters challenges—such as unusual fonts, poor lighting, or handwritten content—our system automatically switches to an advanced AI model. This backup method handles:
+          </p>
+          <ul className="list-disc ml-6 space-y-1">
+            <li>Handwritten notes and annotations</li>
+            <li>Stylized or decorative fonts</li>
+            <li>Low-quality or compressed images</li>
+            <li>Text with background noise or watermarks</li>
+          </ul>
+        </div>
+        <p className="mt-3">
+          Both engines run entirely in your browser using WebAssembly and client-side JavaScript. No image data ever leaves your device, ensuring complete privacy.
+        </p>
+      </section>
+      <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-3">Step-by-Step: Copying Text from Images</h2>
+        <p className="mb-4">
+          Follow these detailed instructions to extract text from any image using our tool. The entire process typically takes less than 10 seconds.
+        </p>
+        
+        <div className="space-y-4">
+          <div>
+            <h3 className="text-xl font-medium mb-2">Step 1: Upload Your Image</h3>
+            <p className="mb-2">
+              Navigate to the home page where you'll find the upload area. You have three convenient options:
+            </p>
+            <ul className="list-disc ml-6 space-y-1">
+              <li><strong>Drag and drop:</strong> Simply drag your image file from your desktop or file manager directly onto the upload zone.</li>
+              <li><strong>Click to browse:</strong> Click the "Upload Image" button to open your system's file picker and select an image (PNG, JPG, WEBP supported).</li>
+              <li><strong>Paste from clipboard:</strong> If you've just taken a screenshot (Cmd+Shift+4 on Mac, Win+Shift+S on Windows), press Cmd+V or Ctrl+V to paste it directly.</li>
+            </ul>
+            <p className="mt-2">
+              The tool accepts images up to 20MB in size, which accommodates even high-resolution document scans.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-medium mb-2">Step 2: Preview and Confirm</h3>
+            <p>
+              After selecting your image, you'll see a preview thumbnail. This allows you to verify you've chosen the correct file before processing begins. If the wrong image appears, simply click "Clear" or "Remove" and upload the correct one.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-medium mb-2">Step 3: Automatic OCR Processing</h3>
+            <p className="mb-2">
+              The moment your image loads, our OCR engine begins analyzing it. You'll see:
+            </p>
+            <ul className="list-disc ml-6 space-y-1">
+              <li>A progress indicator showing the current processing stage</li>
+              <li>Real-time status updates (e.g., "Analyzing image structure..." or "Extracting text...")</li>
+              <li>The OCR method being used (Fast OCR or AI Model)</li>
+            </ul>
+            <p className="mt-2">
+              Most images complete processing in 1-3 seconds. Complex or low-quality images may take up to 10 seconds when the AI fallback engages.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-medium mb-2">Step 4: Review Extracted Text</h3>
+            <p>
+              Once processing completes, the extracted text appears in the results panel on the right side of your screen. Scan through it to verify accuracy. The tool displays:
+            </p>
+            <ul className="list-disc ml-6 space-y-1">
+              <li>The full extracted text with preserved line breaks</li>
+              <li>Confidence score (when available) indicating OCR accuracy</li>
+              <li>Word count for quick reference</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-medium mb-2">Step 5: Copy to Clipboard</h3>
+            <p className="mb-2">
+              To copy the extracted text, you have two options:
+            </p>
+            <ul className="list-disc ml-6 space-y-1">
+              <li><strong>Click the Copy button:</strong> Located at the top of the results panel, this copies all extracted text to your clipboard instantly.</li>
+              <li><strong>Use keyboard shortcut:</strong> Press Cmd+C (Mac) or Ctrl+C (Windows) while the results panel is focused.</li>
+            </ul>
+            <p className="mt-2">
+              You'll see a brief confirmation message ("Copied!") to indicate success. The text is now ready to paste into any application—email, document editor, spreadsheet, or note-taking app.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-medium mb-2">Step 6: Optional - Download as Text File</h3>
+            <p>
+              If you prefer to save the extracted text for later use, click the "Download" button. This generates a .txt file named after your original image (e.g., "receipt-photo.txt") and saves it to your default downloads folder.
+            </p>
+          </div>
+        </div>
+
+        <p className="mt-4 p-4 bg-accent/10 rounded-lg border border-accent/20">
+          <strong>Pro Tip:</strong> For batch processing multiple images, extract text from each one, then paste all results into a single document before copying. Our tool maintains your history during the session, allowing you to switch between previously processed images without re-uploading.
+        </p>
+      </section>
+      <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-3">Maximizing OCR Accuracy: Best Practices</h2>
+        <p className="mb-4">
+          While our OCR engine handles a wide variety of image conditions, following these guidelines significantly improves extraction accuracy and reduces errors.
+        </p>
+
+        <div className="space-y-4">
+          <div>
+            <h3 className="text-xl font-medium mb-2">Image Resolution and DPI</h3>
+            <p className="mb-2">
+              Higher resolution images yield better results. Aim for these minimum specifications:
+            </p>
+            <ul className="list-disc ml-6 space-y-1">
+              <li><strong>Scanned documents:</strong> 300 DPI or higher recommended (200 DPI minimum)</li>
+              <li><strong>Digital photos:</strong> At least 1920×1080 pixels (Full HD) for text-heavy content</li>
+              <li><strong>Screenshots:</strong> Use your device's native resolution; avoid downscaling before upload</li>
+            </ul>
+            <p className="mt-2">
+              If you're scanning physical documents, avoid the "fast scan" or "draft" settings on your scanner or smartphone scanning app. These typically produce 150 DPI images, which may cause character recognition errors.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-medium mb-2">Lighting and Contrast</h3>
+            <p className="mb-2">
+              Good contrast between text and background is crucial. Follow these tips:
+            </p>
+            <ul className="list-disc ml-6 space-y-1">
+              <li><strong>Even lighting:</strong> Ensure the entire document is uniformly lit; avoid shadows across text areas</li>
+              <li><strong>Reduce glare:</strong> When photographing glossy pages, angle your camera to minimize reflections</li>
+              <li><strong>Background separation:</strong> Dark text on light backgrounds (or vice versa) works best; avoid low-contrast combinations like light gray text on white</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-medium mb-2">Image Orientation and Alignment</h3>
+            <p className="mb-2">
+              Properly oriented images dramatically improve recognition rates:
+            </p>
+            <ul className="list-disc ml-6 space-y-1">
+              <li><strong>Straighten skewed text:</strong> If your image is tilted, use your phone's built-in photo editor or a desktop app to rotate it before uploading</li>
+              <li><strong>Correct orientation:</strong> Ensure text reads left-to-right and top-to-bottom (for Latin scripts)</li>
+              <li><strong>Crop unnecessary areas:</strong> Remove borders, backgrounds, or other content that doesn't contain text you want to extract</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-medium mb-2">Font Considerations</h3>
+            <p className="mb-2">
+              OCR performs best with certain text characteristics:
+            </p>
+            <ul className="list-disc ml-6 space-y-1">
+              <li><strong>Font size:</strong> Text smaller than 10pt may cause errors; 12pt or larger is ideal</li>
+              <li><strong>Font style:</strong> Standard fonts (Arial, Times New Roman, Helvetica) work better than highly decorative or script fonts</li>
+              <li><strong>Text weight:</strong> Normal and bold weights are reliable; very thin or extra-bold text may confuse the engine</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-medium mb-2">Handling Handwritten Text</h3>
+            <p className="mb-2">
+              Handwriting recognition is inherently more challenging than printed text, but you can improve results:
+            </p>
+            <ul className="list-disc ml-6 space-y-1">
+              <li><strong>Legibility matters:</strong> Clear, well-spaced handwriting yields better results than cursive or cramped text</li>
+              <li><strong>Use dark ink:</strong> Black or dark blue ink on white paper provides the best contrast</li>
+              <li><strong>Write larger:</strong> Handwriting that's too small often causes misrecognition</li>
+              <li><strong>Try the AI model:</strong> If the fast engine struggles, our AI-powered fallback often handles handwriting better</li>
+            </ul>
+            <p className="mt-2">
+              For critical handwritten documents, always review extracted text carefully and correct any errors before using it.
+            </p>
+          </div>
+        </div>
+
+        <p className="mt-4 p-4 bg-muted/40 rounded-lg">
+          <strong>When to re-scan:</strong> If your initial OCR results show significant errors (more than 10% of words incorrect), it's usually faster to re-scan or re-photograph the document with better lighting and alignment than to manually correct extensive OCR mistakes.
+        </p>
       </section>
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-3">Privacy note</h2>
@@ -191,15 +377,19 @@ export default function CopyTextFromImageGuide() {
           ))}
         </ul>
       </section>
-      <nav className="mt-8 pt-6 border-t border-border/40">
-        <div className="flex flex-wrap gap-4 justify-center text-sm">
-          <Link to="/extract-text-from-image" className="text-primary hover:text-primary/80">Extract Text from Image Guide</Link>
-          <span className="text-muted-foreground">|</span>
-          <Link to="/jpg-to-word" className="text-primary hover:text-primary/80">JPG to Word Guide</Link>
-          <span className="text-muted-foreground">|</span>
-          <Link to="/jpg-to-excel" className="text-primary hover:text-primary/80">JPG to Excel Guide</Link>
-        </div>
-      </nav>
+      
+      <section className="mt-8 pt-6 border-t border-border/40">
+        <h2 className="text-xl font-semibold mb-4 text-center">Related Guides</h2>
+        <nav>
+          <div className="flex flex-wrap gap-4 justify-center text-sm">
+            <Link to="/extract-text-from-image" className="text-primary hover:text-primary/80">Extract Text from Image Guide</Link>
+            <span className="text-muted-foreground">|</span>
+            <Link to="/jpg-to-word" className="text-primary hover:text-primary/80">JPG to Word Guide</Link>
+            <span className="text-muted-foreground">|</span>
+            <Link to="/jpg-to-excel" className="text-primary hover:text-primary/80">JPG to Excel Guide</Link>
+          </div>
+        </nav>
+      </section>
       </GuideLayout>
     </>
   );

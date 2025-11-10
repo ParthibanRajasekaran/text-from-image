@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AuroraBackground } from '../AuroraBackground';
 import { GlassDropzone } from './GlassDropzone';
@@ -157,7 +158,20 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
                 TextFromImage
               </h1>
             </motion.div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3 sm:gap-4">
+              {/* Navigation links */}
+              <Link
+                to="/about"
+                className="text-sm font-medium text-foreground hover:text-accent transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded px-2 py-1"
+              >
+                About
+              </Link>
+              <Link
+                to="/contact"
+                className="text-sm font-medium text-foreground hover:text-accent transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded px-2 py-1"
+              >
+                Contact
+              </Link>
               {/* History button */}
               {history.length > 0 && (
                 <motion.button

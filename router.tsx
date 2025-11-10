@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { HeroOCR } from './components/v3/HeroOCR';
 
 // Lazy load feature pages for code splitting
+// See pages/_structure.md for organization
 const ImageToText = lazy(() => import('./pages/ImageToText'));
 const ImageToTextConverter = lazy(() => import('./pages/ImageToTextConverter'));
 const JpgToWord = lazy(() => import('./pages/JpgToWord'));

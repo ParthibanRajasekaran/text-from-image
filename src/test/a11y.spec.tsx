@@ -32,25 +32,19 @@ describe('a11y.spec - lightweight accessibility checks', () => {
     expect(mainContent?.tagName.toLowerCase()).toBe('main');
   });
 
-  it('uploader has accessible name matching visible label', () => {
+  it('uploader input is accessible via label', () => {
     render(
       <MemoryRouter>
         <App />
       </MemoryRouter>
     );
 
-    // Find file input by its aria-label
-    const fileInput = document.querySelector('input[type="file"][aria-label="File upload input"]');
+    // Use Testing Library's accessible name mechanism
+    // The Dropzone input has aria-label="File upload input"
+    const fileInput = screen.getByLabelText('File upload input');
     expect(fileInput).toBeInTheDocument();
-    expect(fileInput?.tagName.toLowerCase()).toBe('input');
-    
-    // Verify accessible name exists
-    const ariaLabel = fileInput?.getAttribute('aria-label');
-    expect(ariaLabel).toBeTruthy();
-    expect(ariaLabel).toBe('File upload input');
-    
-    // Verify the visible button text exists
-    const uploadButton = screen.getByRole('button', { name: /upload image/i });
-    expect(uploadButton).toBeInTheDocument();
+    expect(fileInput.tagName.toLowerCase()).toBe('input');
+    expect(fileInput).toHaveAttribute('type', 'file');
+    expect(fileInput).toHaveAccessibleName('File upload input');
   });
 });

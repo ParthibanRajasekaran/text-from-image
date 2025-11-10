@@ -1,3 +1,9 @@
+/**
+ * @deprecated ProgressBar is deprecated. Use GlassProgressBar from components/v3/GlassProgressBar.tsx instead.
+ * This component is used in legacy UI. V3 uses a glass-morphism variant.
+ * Will be removed in v2.x. See docs/DEPRECATED.md for migration guide.
+ */
+
 import React, { useRef, useImperativeHandle, forwardRef } from 'react';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';

@@ -1,3 +1,9 @@
+/**
+ * @deprecated App is deprecated. Use HeroOCR from components/v3/HeroOCR.tsx instead.
+ * This component is only used when VITE_UX_V2 is disabled (legacy UI).
+ * Will be removed in v2.x. See docs/DEPRECATED.md for migration guide.
+ */
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { FileInput } from './components/FileInput';
 import { Dropzone } from './components/Dropzone';
