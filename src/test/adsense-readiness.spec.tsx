@@ -31,11 +31,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import type { ConsentState } from '../consent/consent';
 import { shouldShowAds } from '@/src/ads/shouldShowAds';
 import adsSpec from '../../specs/ads.spec.json';
 
-const consentDenied = { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' };
-const consentGranted = { ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted' };
+const consentDenied: ConsentState = { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' };
+const consentGranted: ConsentState = { ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted' };
 
 describe('AutoAds', () => {
   beforeEach(() => {
@@ -85,28 +86,19 @@ describe('InArticle', () => {
     vi.stubEnv('VITE_ADSENSE_PUB_ID', 'ca-pub-TEST');
   });
 
-  it('with disabled=true → no slot rendered', async () => {
-    const { InArticle } = await import('../ads/InArticle');
-    const { container } = render(<InArticle consent={consentGranted} disabled={true} />);
-    // When disabled, InArticle still renders the container but won't inject <ins>
-    expect(container.querySelector('[data-testid="inarticle-slot"]')).toBeInTheDocument();
-    expect(container.querySelector('ins.adsbygoogle')).not.toBeInTheDocument();
-    vi.unstubAllEnvs();
-  });
-
-  it('slot exists, min-h-[280px], no ad push without consent', async () => {
+  it('slot exists with min-h-[280px], no ad push without consent', async () => {
     const { InArticle } = await import('../ads/InArticle');
     const src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-TEST';
     
     // Consent denied - reserves height but no <ins>
-    const { container: container1 } = render(<InArticle consent={consentDenied} disabled={false} />);
+    const { container: container1 } = render(<InArticle consent={consentDenied} />);
     const slot1 = container1.querySelector('[data-testid="inarticle-slot"]');
     expect(slot1).toBeInTheDocument();
     expect(slot1).toHaveClass('min-h-[280px]');
     expect(container1.querySelector('ins.adsbygoogle')).not.toBeInTheDocument();
     
     // Consent granted but no script - reserves height but no <ins>
-    const { container: container2 } = render(<InArticle consent={consentGranted} disabled={false} />);
+    const { container: container2 } = render(<InArticle consent={consentGranted} />);
     const slot2 = container2.querySelector('[data-testid="inarticle-slot"]');
     expect(slot2).toBeInTheDocument();
     expect(slot2).toHaveClass('min-h-[280px]');
@@ -116,7 +108,7 @@ describe('InArticle', () => {
     const script = document.createElement('script');
     script.src = src;
     document.head.appendChild(script);
-    const { container: container3 } = render(<InArticle consent={consentGranted} disabled={false} />);
+    const { container: container3 } = render(<InArticle consent={consentGranted} />);
     const slot3 = container3.querySelector('[data-testid="inarticle-slot"]');
     expect(slot3).toBeInTheDocument();
     expect(slot3).toHaveClass('min-h-[280px]');

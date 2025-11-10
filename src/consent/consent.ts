@@ -1,92 +1,67 @@
-// Minimal CMP wiring example for AdSense Consent Mode v2
-// This pseudo-code shows how to connect a CMP (IAB TCF v2.2) to updateConsent()
-// Do NOT import a vendor SDK. Use window.__tcfapi if present.
-// Purpose mapping:
-//   - Purpose 1 (Storage and access of information): maps to 'ad_storage'
-//   - Purposes 7,8,9,10 (Measurement, Personalization, Ad selection, Content selection): map to 'ad_user_data', 'ad_personalization'
-// See: https://support.google.com/adsense/answer/10000040
-
-export type ConsentState = {
-  ad_storage: boolean;
-  ad_user_data: boolean;
-  ad_personalization: boolean;
-};
-
-export let consentState: ConsentState = {
-  ad_storage: false,
-  ad_user_data: false,
-  ad_personalization: false,
-};
-
-export function updateConsent(newState: Partial<ConsentState>) {
-  consentState = { ...consentState, ...newState };
-  // Tag Assistant self-check: log consent state in development only
-  if (process.env.NODE_ENV === 'development') {
-    // eslint-disable-next-line no-console
-    console.log('[CMP] Consent state updated:', consentState);
-  }
+// Google Consent Mode v2 — single source of truth for consent state.
+// Values match what Google expects: 'granted' | 'denied'.
+export type ConsentValue = 'granted' | 'denied';
+export interface ConsentState {
+  ad_storage: ConsentValue;
+  ad_user_data: ConsentValue;
+  ad_personalization: ConsentValue;
 }
 
-// Example: connectCMP() hooks __tcfapi to updateConsent()
-export function connectCMP() {
-  // Pseudo-code: listen for TCF v2.2 consent changes
-  if (typeof window !== 'undefined' && typeof window.__tcfapi === 'function') {
-    window.__tcfapi('addEventListener', 2, (tcData: any) => {
-      // Map TCF purposes to Consent Mode
-      // Purpose 1: Storage and access of information
-      // Purposes 7-10: Measurement, Personalization, Ad selection, Content selection
-      const ad_storage = tcData.purpose.consents['1'] === true;
-      const ad_user_data = ['7','8','9','10'].some(p => tcData.purpose.consents[p] === true);
-      const ad_personalization = ['8','9','10'].some(p => tcData.purpose.consents[p] === true);
-      updateConsent({ ad_storage, ad_user_data, ad_personalization });
-    });
-  }
-  // Initial log in development
-  if (process.env.NODE_ENV === 'development') {
-    // eslint-disable-next-line no-console
-    console.log('[CMP] Initial consent state:', consentState);
-  }
-}// Consent Mode v2 hook for AdSense readiness
-// Default: denied. Wire a Google-certified CMP here (see comments).
-
-export type ConsentState = {
-  ad_storage: 'granted' | 'denied';
-  ad_user_data: 'granted' | 'denied';
-  ad_personalization: 'granted' | 'denied';
+// Safe-by-default.
+let consentState: ConsentState = {
+  ad_storage: 'denied',
+  ad_user_data: 'denied',
+  ad_personalization: 'denied',
 };
 
-export function injectDefaultConsentScript() {
-  if (typeof window === 'undefined' || process.env.NODE_ENV !== 'production') return;
-  if (document.getElementById('consent-default')) return;
-  const script = document.createElement('script');
-  script.id = 'consent-default';
-  script.innerHTML = `
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'default', {
-      'ad_storage': 'denied',
-      'ad_user_data': 'denied',
-      'ad_personalization': 'denied'
-    });
-  `;
-  document.head.prepend(script);
+// Idempotent gtag shim: pushes into dataLayer.
+function gtag(..._args: any[]) {
+  (window as any).dataLayer = (window as any).dataLayer || [];
+  (window as any).dataLayer.push(arguments);
 }
 
-export function updateConsent(state: ConsentState) {
-  // Call this from your CMP callback (e.g., __tcfapi or vendor API)
-  // Example mapping TCF purposes to Google consent types:
-  // TCF Purpose 1 → ad_storage
-  // TCF Purpose 7 → ad_user_data
-  // TCF Purpose 4 → ad_personalization
-  if (typeof window === 'undefined') return;
-  // Declare window.dataLayer for TypeScript
-  if (!('dataLayer' in window)) {
-    (window as any).dataLayer = [];
-  }
-  function gtag(...args: any[]) {
-    (window as any).dataLayer.push(args);
-  }
-  gtag('consent', 'update', state);
+/**
+ * Apply default consent (denied) at page start.
+ * Call once in the app shell (Production only) before any Google tags.
+ */
+export function applyDefaultConsent(): void {
+  gtag('consent', 'default', { ...consentState });
 }
 
-// TODO: Wire a Google-certified CMP callback here and call updateConsent()
+/**
+ * Merge and notify Google of updated consent after CMP returns a decision.
+ * Accepts a partial update of ConsentState.
+ */
+export function updateConsent(update: Partial<ConsentState>): void {
+  consentState = { ...consentState, ...update };
+  gtag('consent', 'update', { ...consentState });
+}
+
+/** Read-only snapshot for UI/tests. */
+export function getConsent(): ConsentState {
+  return { ...consentState };
+}
+
+/** Convenience: returns true if ad_storage is granted. */
+export function isAdStorageGranted(): boolean {
+  return consentState.ad_storage === 'granted';
+}
+
+/**
+ * Example mapper from a TCF v2.2 CMP payload → ConsentState.
+ * Wire your CMP callback to call updateConsent(mapTcfToConsent(tcf)).
+ */
+export function mapTcfToConsent(tcf: {
+  purpose?: Record<string, { consent?: boolean }>;
+}): ConsentState {
+  const p1  = tcf?.purpose?.['1']?.consent ? 'granted' : 'denied'; // Storage/access
+  const p7  = tcf?.purpose?.['7']?.consent ? 'granted' : 'denied'; // Measurement
+  const p8  = tcf?.purpose?.['8']?.consent ? 'granted' : 'denied'; // Content selection
+  const p9  = tcf?.purpose?.['9']?.consent ? 'granted' : 'denied'; // Ad selection/delivery/reporting
+  const p10 = tcf?.purpose?.['10']?.consent ? 'granted' : 'denied'; // Content measurement
+  return {
+    ad_storage: p1,
+    ad_user_data: p7, // Adjust mapping to your CMP needs
+    ad_personalization: (p9 === 'granted' || p8 === 'granted' || p10 === 'granted') ? 'granted' : 'denied',
+  };
+}

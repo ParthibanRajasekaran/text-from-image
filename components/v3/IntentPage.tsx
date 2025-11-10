@@ -3,6 +3,7 @@ import { HeroOCR } from './HeroOCR';
 import { motion } from 'framer-motion';
 import { SEO, baseJsonLd, createFAQJsonLd } from '../SEO';
 import { InArticle } from '../../src/ads/InArticle';
+import type { ConsentState } from '../../src/consent/consent';
 
 export interface FAQItem {
   question: string;
@@ -43,7 +44,7 @@ export function IntentPage({
   const isPreview = import.meta.env.MODE === "preview";
   const allowPreview = import.meta.env.VITE_ENABLE_ADS_IN_PREVIEW === "true";
   const slotsEnabled = (isPreview && allowPreview) || import.meta.env.VITE_ADS_SLOTS_ENABLED === "true";
-  const consent = { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' };
+  const consent: ConsentState = { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' };
 
   // Structured data for FAQ rich snippets
   const faqJsonLd = useMemo(() => createFAQJsonLd(faq), [faq]);
