@@ -6,9 +6,9 @@
  * Non-blocking warning — doesn't fail CI but alerts developers.
  */
 
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import { execSync } from 'child_process';
 
 // Get changed files in this PR (only works in GitHub Actions)
 function getChangedFiles() {
