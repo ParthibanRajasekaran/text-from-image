@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import 'jest-axe/extend-expect';
 import { cleanup } from '@testing-library/react';
-import { afterEach } from '@jest/globals';
+import { afterEach, vi } from 'vitest';
 import { TextEncoder, TextDecoder } from 'util';
 
 // Extend Jest matchers for jest-axe
@@ -25,40 +25,40 @@ afterEach(() => {
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation((query) => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   })),
 });
 
 // Mock IntersectionObserver
-global.IntersectionObserver = class IntersectionObserver {
-  constructor() {}
-  disconnect() {}
-  observe() {}
-  takeRecords() {
-    return [];
-  }
-  unobserve() {}
-} as any;
+global.IntersectionObserver = vi.fn(function IntersectionObserver() {
+  return {
+    disconnect: vi.fn(),
+    observe: vi.fn(),
+    takeRecords: vi.fn(() => []),
+    unobserve: vi.fn(),
+  };
+}) as any;
 
 // Mock ResizeObserver
-global.ResizeObserver = class ResizeObserver {
-  constructor() {}
-  disconnect() {}
-  observe() {}
-  unobserve() {}
-} as any;
+global.ResizeObserver = vi.fn(function ResizeObserver() {
+  return {
+    disconnect: vi.fn(),
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+  };
+}) as any;
 
 // Mock URL.createObjectURL and revokeObjectURL
-global.URL.createObjectURL = jest.fn(() => 'blob:mock-url');
-global.URL.revokeObjectURL = jest.fn();
+global.URL.createObjectURL = vi.fn(() => 'blob:mock-url');
+global.URL.revokeObjectURL = vi.fn();
 
 // Mock ClipboardEvent
 global.ClipboardEvent = class ClipboardEvent extends Event {
