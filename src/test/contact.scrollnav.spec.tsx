@@ -5,11 +5,11 @@ import userEvent from '@testing-library/user-event';
 import Contact from '../../pages/Contact';
 
 // Mock IntersectionObserver
-global.IntersectionObserver = vi.fn(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-})) as any;
+global.IntersectionObserver = vi.fn(function (this: any) {
+  this.observe = vi.fn();
+  this.unobserve = vi.fn();
+  this.disconnect = vi.fn();
+}) as any;
 
 // Mock scrollIntoView for DOM elements
 Element.prototype.scrollIntoView = vi.fn();

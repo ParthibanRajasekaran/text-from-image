@@ -4,11 +4,11 @@ import userEvent from '@testing-library/user-event';
 import { ScrollNav } from '../../components/ui/ScrollNav';
 
 // Mock IntersectionObserver for jsdom
-global.IntersectionObserver = vi.fn(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-})) as any;
+global.IntersectionObserver = vi.fn(function (this: any) {
+  this.observe = vi.fn();
+  this.unobserve = vi.fn();
+  this.disconnect = vi.fn();
+}) as any;
 
 describe('ScrollNav - A11y & UX', () => {
   beforeEach(() => {

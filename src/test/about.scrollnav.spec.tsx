@@ -4,11 +4,11 @@ import { BrowserRouter } from 'react-router-dom';
 import About from '../../pages/About';
 
 // Mock IntersectionObserver for scroll spy
-global.IntersectionObserver = vi.fn(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-})) as any;
+global.IntersectionObserver = vi.fn(function (this: any) {
+  this.observe = vi.fn();
+  this.unobserve = vi.fn();
+  this.disconnect = vi.fn();
+}) as any;
 
 // Mock scrollIntoView
 Element.prototype.scrollIntoView = vi.fn();

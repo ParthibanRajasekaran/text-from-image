@@ -17,12 +17,8 @@ import { expect } from 'vitest';
 expect.extend({ toHaveNoViolations });
 
 // Polyfill URL.createObjectURL / URL.revokeObjectURL for jsdom
-if (!window.URL.createObjectURL) {
-  window.URL.createObjectURL = globalThis.vi?.fn?.(() => 'blob:mock-url') || (() => 'blob:mock-url');
-}
-if (!window.URL.revokeObjectURL) {
-  window.URL.revokeObjectURL = globalThis.vi?.fn?.() || (() => {});
-}
+window.URL.createObjectURL = globalThis.vi?.fn?.(() => 'blob:mock-url') || (() => 'blob:mock-url');
+window.URL.revokeObjectURL = globalThis.vi?.fn?.(() => {}) || (() => {});
 
 // Silence noisy React errors during tests
 const originalError = console.error;
