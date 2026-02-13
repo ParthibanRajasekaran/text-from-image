@@ -1,11 +1,19 @@
 import React from 'react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { customRender, createMockFile } from './utils';
 import { screen, fireEvent } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { GlassDropzone } from '../../components/v3/GlassDropzone';
 
 describe('Uploader accessibility and preview', () => {
+  beforeEach(() => {
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('mock-blob-url');
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
   it('has correct accessible name', () => {
     customRender(<GlassDropzone onFileSelect={vi.fn()} />);
     const label = screen.getByLabelText('Drop image or click to upload');
