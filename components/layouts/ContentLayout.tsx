@@ -61,7 +61,7 @@ export function ContentLayout({
           </header>
         )}
 
-        <main id="main-content" className="relative min-h-screen py-12 sm:py-16">
+        <div id="main-content" className="relative min-h-screen py-12 sm:py-16" role="main">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
               {/* Breadcrumb */}
@@ -113,7 +113,7 @@ export function ContentLayout({
               </div>
             </div>
           </div>
-        </main>
+        </div>
       </AuroraBackground>
     </>
   );

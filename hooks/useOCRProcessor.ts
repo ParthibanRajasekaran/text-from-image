@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react';
 import type { GlassProgressBarHandle, ProgressStage } from '../components/v3/GlassProgressBar';
+import { sanitizeOcrText } from '../utils/sanitizeOcrText';
 
 interface UseOCRProcessorOptions {
   minConfidence?: number;
@@ -109,7 +110,7 @@ export function useOCRProcessor(_options: UseOCRProcessorOptions = {}) {
 
       // Complete - set text first, then stop processing
       setProgressStage('complete');
-      setExtractedText(result);
+      setExtractedText(sanitizeOcrText(result));
       
       // Announce completion for accessibility
       progressRef.current?.announce('Text extraction completed successfully');

@@ -160,7 +160,7 @@ export default function About() {
           <PillarCard
             icon="♿"
             title="Accessible"
-            body="Built for everyone. WCAG 2.1 AA, keyboard navigation, screen reader support, focus visible."
+            body="Built for everyone. Keyboard navigation, screen reader support, and semantic HTML structure."
           />
         </div>
       </section>
@@ -228,7 +228,7 @@ export default function About() {
             <li className="flex gap-2">
               <span className="text-accent">✓</span>
               <span>
-                <strong>Accessibility:</strong> WCAG 2.1 AA compliant
+                <strong>Accessibility:</strong> Keyboard accessible, screen reader tested, semantic HTML
               </span>
             </li>
             <li className="flex gap-2">
@@ -246,7 +246,7 @@ export default function About() {
             <li className="flex gap-2">
               <span className="text-accent">✓</span>
               <span>
-                <strong>Security:</strong> HTTPS, CSP headers, no cross-site cookies
+                <strong>Security:</strong> HTTPS only, no third-party cookies, no cross-site tracking
               </span>
             </li>
           </ul>
