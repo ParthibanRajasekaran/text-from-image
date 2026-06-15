@@ -1,18 +1,16 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AuroraBackground } from '../AuroraBackground';
 import { GlassDropzone } from './GlassDropzone';
 import { GlassProgressBar } from './GlassProgressBar';
 import { GlassResultCard } from './GlassResultCard';
 import { HistoryDrawer } from './HistoryDrawer';
-import { ThemeToggle } from '../ThemeToggle';
-import { useTheme } from '../../hooks/useTheme';
 import { useOCRProcessor } from '../../hooks/useOCRProcessor';
 import { useLocalHistory, type HistoryItem } from '../../hooks/useLocalHistory';
 import { useShortcuts, getCommonShortcuts } from '../../hooks/useShortcuts';
 import { useLiveRegion } from '../../hooks/useLiveRegion';
 import { SEO, baseJsonLd } from '../SEO';
+import { ROUTES } from '../../router';
 
 interface HeroOCRProps {
   customHeading?: string;
@@ -39,7 +37,6 @@ interface HeroOCRProps {
  */
 export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) {
   // Separate concerns into individual hooks (SRP)
-  const { theme, toggleTheme } = useTheme();
   const {
     imageFile,
     extractedText,
@@ -53,10 +50,10 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
     clear: handleClear,
   } = useOCRProcessor();
   const { history, removeFromHistory, clearHistory } = useLocalHistory();
-  
+
   // Accessibility: Screen reader announcements for OCR status
   const announceStatus = useLiveRegion('polite');
-  
+
   // Local UI state only
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
@@ -114,18 +111,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
     onClear: extractedText ? handleClear : undefined,
   });
 
-  // Add theme toggle shortcut (T key)
-  const allShortcuts = [
-    ...shortcuts,
-    {
-      key: 't',
-      action: toggleTheme,
-      description: 'Toggle theme',
-      disabled: false,
-    },
-  ];
-
-  useShortcuts(allShortcuts, true);
+  useShortcuts(shortcuts, true);
 
   return (
     <AuroraBackground>
@@ -136,65 +122,6 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
         keywords="image to text, OCR, extract text from image, online OCR, free text extraction"
         jsonLd={baseJsonLd}
       />
-      
-      {/* Skip to main content - Accessibility */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-accent focus:text-white focus:shadow-glow focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
-      >
-        Skip to main content
-      </a>
-
-      {/* Header */}
-      <header className="sticky top-0 z-30 backdrop-blur-xl bg-background/80 border-b border-border/50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <h1 className="text-xl font-bold bg-gradient-to-r from-accent via-primary to-accent-2 bg-clip-text text-transparent">
-                TextFromImage
-              </h1>
-            </motion.div>
-            <div className="flex items-center gap-3 sm:gap-4">
-              {/* Navigation links */}
-              <Link
-                to="/about"
-                className="text-sm font-medium text-foreground hover:text-accent transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded px-2 py-1"
-              >
-                About
-              </Link>
-              <Link
-                to="/contact"
-                className="text-sm font-medium text-foreground hover:text-accent transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded px-2 py-1"
-              >
-                Contact
-              </Link>
-              {/* History button */}
-              {history.length > 0 && (
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  onClick={() => setIsHistoryOpen(true)}
-                  className="px-3 py-1.5 rounded-lg bg-surface/60 hover:bg-surface/80 border border-border/50 hover:border-border text-sm font-medium text-foreground transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
-                  aria-label="View history"
-                >
-                  <span className="hidden sm:inline">History</span>
-                  <span className="sm:hidden">📚</span>
-                  {history.length > 0 && (
-                    <span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-accent/20 text-accent text-xs font-semibold">
-                      {history.length}
-                    </span>
-                  )}
-                </motion.button>
-              )}
-              <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-            </div>
-          </div>
-        </div>
-      </header>
 
       {/* History Drawer */}
       <HistoryDrawer
@@ -219,13 +146,44 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
               {customHeading || (
                 <>
-                  Image → <span className="bg-gradient-to-r from-accent via-accent-2 to-primary bg-clip-text text-transparent">Text</span>, instantly.
+                  Verify what <span className="bg-gradient-to-r from-accent via-accent-2 to-primary bg-clip-text text-transparent">AI-generated UI</span> actually shows
                 </>
               )}
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-              {customSubheading || 'AI-powered OCR that respects your privacy. Extract text from images in seconds, no signup required.'}
+              {customSubheading ||
+                'RenderCheck uses privacy-first OCR to test screenshots, documents, and rendered interfaces — helping teams catch visible text failures that DOM checks and code reviews miss.'}
             </p>
+          </motion.div>
+
+          {/* 4-Step Visual Flow */}
+          <motion.div
+            className="mb-12 p-6 sm:p-8 rounded-2xl bg-surface/40 backdrop-blur-xl border border-white/10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-center flex-1">
+                <div className="text-3xl font-bold text-accent mb-2">1</div>
+                <p className="text-sm text-muted-foreground">Take screenshot</p>
+              </div>
+              <div className="hidden sm:block text-2xl text-muted-foreground/40">→</div>
+              <div className="text-center flex-1">
+                <div className="text-3xl font-bold text-accent mb-2">2</div>
+                <p className="text-sm text-muted-foreground">Pass to verify()</p>
+              </div>
+              <div className="hidden sm:block text-2xl text-muted-foreground/40">→</div>
+              <div className="text-center flex-1">
+                <div className="text-3xl font-bold text-accent mb-2">3</div>
+                <p className="text-sm text-muted-foreground">Get results</p>
+              </div>
+              <div className="hidden sm:block text-2xl text-muted-foreground/40">→</div>
+              <div className="text-center flex-1">
+                <div className="text-3xl font-bold text-accent mb-2">4</div>
+                <p className="text-sm text-muted-foreground">Assert in test</p>
+              </div>
+            </div>
           </motion.div>
 
           {/* Glass card with Dropzone */}
@@ -234,11 +192,12 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mb-8"
+            data-dropzone-scroll
           >
             <div className="relative rounded-2xl bg-surface/40 backdrop-blur-xl border border-white/10 shadow-glow p-6 sm:p-8">
               {/* Inner glow effect */}
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent/10 via-transparent to-accent-2/10 pointer-events-none" />
-              
+
               <div className="relative">
                 <GlassDropzone
                   onFileSelect={handleFileSelect}
@@ -255,13 +214,13 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex flex-wrap items-center justify-center gap-4"
+            className="flex flex-wrap items-center justify-center gap-4 mb-8"
           >
             {[
-              { icon: '🔒', text: 'No signup required' },
-              { icon: '⚡', text: 'Lightning fast' },
-              { icon: '🛡️', text: 'HTTPS secure' },
-              { icon: '🎯', text: 'AI-powered' },
+              { icon: '🔒', text: 'Browser OCR runs locally' },
+              { icon: '🔐', text: 'No image or text persistence' },
+              { icon: '🛡️', text: 'HTTPS only' },
+              { icon: '⌨️', text: 'Keyboard accessible' },
             ].map((chip, index) => (
               <motion.div
                 key={chip.text}
@@ -274,6 +233,36 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
                 <span className="font-medium">{chip.text}</span>
               </motion.div>
             ))}
+          </motion.div>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center mb-8 items-center"
+          >
+            <button
+              onClick={() => {
+                const dropzone = document.querySelector('[data-dropzone-scroll]');
+                dropzone?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }}
+              className="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-[hsl(220_89%_35%)] transition-colors"
+            >
+              Try RenderCheck
+            </button>
+            <a
+              href={ROUTES.VERIFY_DEBT_SCORE}
+              className="px-6 py-3 border border-primary text-primary rounded-lg font-medium hover:bg-primary/5 transition-colors"
+            >
+              Take Verification Debt Score
+            </a>
+            <a
+              href={ROUTES.LABS}
+              className="px-6 py-3 text-foreground hover:bg-muted/50 rounded-lg font-medium transition-colors"
+            >
+              Explore Labs
+            </a>
           </motion.div>
 
           {/* Progress Bar */}

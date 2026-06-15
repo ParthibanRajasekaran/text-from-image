@@ -30,6 +30,8 @@ const CaseStudies = lazy(() => import('./pages/CaseStudies'));
 // Phase 5: X-Factor Loop (Labs)
 const AIUIBugGallery = lazy(() => import('./pages/AIUIBugGallery'));
 const OcrChallengeLab = lazy(() => import('./pages/OcrChallengeLab'));
+const Labs = lazy(() => import('./pages/Labs'));
+const Changelog = lazy(() => import('./pages/Changelog'));
 
 // Route path constants - single source of truth for all route paths
 export const ROUTES = {
@@ -144,7 +146,7 @@ export const router = createBrowserRouter([
         path: 'labs',
         element: (
           <Suspense fallback={<div className="p-8">Loading...</div>}>
-            <div>Labs page (placeholder for PR 6)</div>
+            <Labs />
           </Suspense>
         ),
       },
@@ -168,7 +170,7 @@ export const router = createBrowserRouter([
         path: 'changelog',
         element: (
           <Suspense fallback={<div className="p-8">Loading...</div>}>
-            <div>Changelog page (placeholder for PR 6)</div>
+            <Changelog />
           </Suspense>
         ),
       },
