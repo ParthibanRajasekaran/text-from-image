@@ -42,6 +42,16 @@ export interface AdEventParams {
   pagePath?: string;
 }
 
+export interface ToolEventParams {
+  toolName: string;      // e.g., 'verification-debt-score'
+  pagePath?: string;
+}
+
+export interface ToolCompletedParams extends ToolEventParams {
+  riskLevel?: string;    // e.g., 'low', 'medium', 'high'
+  duration?: number;     // Time in milliseconds
+}
+
 /**
  * Track when a file is added to the dropzone
  */
@@ -200,6 +210,42 @@ export function trackFAQOpened(params: ContentInteractionParams): void {
 }
 
 /**
+ * Track when a user starts using a tool
+ */
+export function trackToolStarted(params: ToolEventParams): void {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', 'tool_started', {
+      event_category: 'Tool Usage',
+      tool_name: params.toolName,
+      page_path: params.pagePath || window.location.pathname,
+    });
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[Analytics] tool_started:', params);
+  }
+}
+
+/**
+ * Track when a user completes using a tool
+ */
+export function trackToolCompleted(params: ToolCompletedParams): void {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', 'tool_completed', {
+      event_category: 'Tool Usage',
+      tool_name: params.toolName,
+      risk_level: params.riskLevel,
+      duration_ms: params.duration,
+      page_path: params.pagePath || window.location.pathname,
+    });
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[Analytics] tool_completed:', params);
+  }
+}
+
+/**
  * Batch track multiple events at once (useful for initial page setup)
  */
 export function trackEvents(events: Array<{ name: string; params: any }>): void {
@@ -231,6 +277,12 @@ export function trackEvents(events: Array<{ name: string; params: any }>): void 
         break;
       case 'faq_opened':
         trackFAQOpened(params);
+        break;
+      case 'tool_started':
+        trackToolStarted(params);
+        break;
+      case 'tool_completed':
+        trackToolCompleted(params);
         break;
       default:
         console.warn('[Analytics] Unknown event:', name);
