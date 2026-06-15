@@ -84,7 +84,7 @@ vi.mock('../../hooks/useOCRProcessor', () => ({
 }));
 
 describe('SEO, A11y & Performance Tests', () => {
-  describe('Main Landmark - Exactly One <main> Per Page', () => {
+  describe('Main Landmark - Exactly One Main Per Page', () => {
     it('App.tsx (uploader route) should have exactly one <main>', () => {
       const { container } = render(
         <MemoryRouter initialEntries={['/']}>
@@ -97,59 +97,59 @@ describe('SEO, A11y & Performance Tests', () => {
       expect(mainElements[0]).toHaveAttribute('id', 'main-content');
     });
 
-    it('CopyTextFromImageGuide should have exactly one <main>', () => {
+    it('CopyTextFromImageGuide should have exactly one main landmark', () => {
       const { container } = render(
         <BrowserRouter>
           <CopyTextFromImageGuide />
         </BrowserRouter>
       );
 
-      const mainElements = container.querySelectorAll('main');
-      expect(mainElements.length).toBe(1);
+      const mainLandmarks = container.querySelectorAll('[role="main"]');
+      expect(mainLandmarks.length).toBe(1);
     });
 
-    it('ImageToText guide should have exactly one <main>', () => {
+    it('ImageToText guide should have exactly one main landmark', () => {
       const { container } = render(
         <BrowserRouter>
           <ImageToText />
         </BrowserRouter>
       );
 
-      const mainElements = container.querySelectorAll('main');
-      expect(mainElements.length).toBe(1);
+      const mainLandmarks = container.querySelectorAll('[role="main"]');
+      expect(mainLandmarks.length).toBe(1);
     });
 
-    it('ExtractTextFromImage guide should have exactly one <main>', () => {
+    it('ExtractTextFromImage guide should have exactly one main landmark', () => {
       const { container } = render(
         <BrowserRouter>
           <ExtractTextFromImage />
         </BrowserRouter>
       );
 
-      const mainElements = container.querySelectorAll('main');
-      expect(mainElements.length).toBe(1);
+      const mainLandmarks = container.querySelectorAll('[role="main"]');
+      expect(mainLandmarks.length).toBe(1);
     });
 
-    it('JpgToExcelGuide should have exactly one <main>', () => {
+    it('JpgToExcelGuide should have exactly one main landmark', () => {
       const { container } = render(
         <BrowserRouter>
           <JpgToExcelGuide />
         </BrowserRouter>
       );
 
-      const mainElements = container.querySelectorAll('main');
-      expect(mainElements.length).toBe(1);
+      const mainLandmarks = container.querySelectorAll('[role="main"]');
+      expect(mainLandmarks.length).toBe(1);
     });
 
-    it('JpgToWord guide should have exactly one <main>', () => {
+    it('JpgToWord guide should have exactly one main landmark', () => {
       const { container } = render(
         <BrowserRouter>
           <JpgToWord />
         </BrowserRouter>
       );
 
-      const mainElements = container.querySelectorAll('main');
-      expect(mainElements.length).toBe(1);
+      const mainLandmarks = container.querySelectorAll('[role="main"]');
+      expect(mainLandmarks.length).toBe(1);
     });
   });
 

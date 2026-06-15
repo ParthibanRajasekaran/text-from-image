@@ -49,6 +49,36 @@ export default {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
+        status: {
+          live: {
+            DEFAULT: "hsl(var(--status-live))",
+            bg: "hsl(var(--status-live) / 0.1)",
+            border: "hsl(var(--status-live) / 0.3)",
+          },
+          beta: {
+            DEFAULT: "hsl(var(--status-beta))",
+            bg: "hsl(var(--status-beta) / 0.1)",
+            border: "hsl(var(--status-beta) / 0.3)",
+          },
+          planned: {
+            DEFAULT: "hsl(var(--status-planned))",
+            bg: "hsl(var(--status-planned) / 0.1)",
+            border: "hsl(var(--status-planned) / 0.3)",
+          },
+          "evidence-pending": {
+            DEFAULT: "hsl(var(--status-evidence-pending))",
+            bg: "hsl(var(--status-evidence-pending) / 0.1)",
+            border: "hsl(var(--status-evidence-pending) / 0.3)",
+          },
+        },
+        code: {
+          bg: "hsl(var(--code-bg))",
+          border: "hsl(var(--code-border))",
+          text: "hsl(var(--code-text))",
+        },
+      },
+      fontFamily: {
+        mono: ['JetBrains Mono', 'Fira Code', 'ui-monospace', 'monospace'],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -60,6 +90,9 @@ export default {
       boxShadow: {
         'glow': '0 0 20px var(--glow-color), 0 0 40px var(--glow-color)',
         'glow-sm': '0 0 10px var(--glow-color)',
+        'elevation-1': '0 2px 4px rgba(0, 0, 0, 0.08)',
+        'elevation-2': '0 4px 8px rgba(0, 0, 0, 0.12)',
+        'elevation-3': '0 8px 16px rgba(0, 0, 0, 0.16)',
       },
       keyframes: {
         "slide-in": {
@@ -70,10 +103,25 @@ export default {
           "0%, 100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
         },
+        "fade-up": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        "scale-in": {
+          "0%": { opacity: "0", transform: "scale(0.95)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
       },
       animation: {
         "slide-in": "slide-in 0.3s ease-out",
         "aurora": "aurora 20s ease infinite",
+        "fade-up": "fade-up 0.4s ease-out",
+        "fade-in": "fade-in 0.3s ease-out",
+        "scale-in": "scale-in 0.3s ease-out",
       },
     },
   },

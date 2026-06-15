@@ -1,5 +1,8 @@
-import { lazy } from 'react';
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+// Global shell
+import { AppShell } from './components/shell/AppShell';
 
 // V3: Futuristic Hero UI (feature-gated)
 import { HeroOCR } from './components/v3/HeroOCR';
@@ -35,82 +38,136 @@ export const ROUTES = {
   CONTACT: '/contact',
   VERIFY_DEBT_SCORE: '/verify-debt-score',
   RENDERCHECK: '/rendercheck',
+  DEVELOPERS: '/developers',
+  ACCESS: '/access',
+  CASE_STUDIES: '/case-studies',
+  LABS: '/labs',
+  CHANGELOG: '/changelog',
 } as const;
 
 // Always use HeroOCR as the home component
 const HomeComponent = HeroOCR;
 
 /**
- * App router with SEO-friendly paths
- * - / (home) - Uses V3 HeroOCR if VITE_UX_V2=1, otherwise legacy App
- * - /image-to-text
- * - /image-to-text-converter
- * - /jpg-to-word
- * - /image-to-excel
- * - /extract-text-from-image
- * - /about
- * - /contact
- * 
- * All routes use same OCR component with different metadata
+ * App router with nested layout routes
+ * - AppShell wraps all routes (provides global header, footer, main landmark)
+ * - All child routes render within AppShell's main element
+ * - No route paths have leading slash (relative routing within AppShell)
  */
 export const router = createBrowserRouter([
   {
     path: ROUTES.HOME,
-    element: <HomeComponent />,
-  },
-  {
-    path: ROUTES.IMAGE_TO_TEXT,
-    element: <ImageToText />,
-  },
-  {
-    path: ROUTES.IMAGE_TO_TEXT_CONVERTER,
-    element: <ImageToTextConverter />,
-  },
-  {
-    path: ROUTES.JPG_TO_WORD,
-    element: <JpgToWord />,
-  },
-  {
-    path: ROUTES.IMAGE_TO_EXCEL,
-    element: <ImageToExcel />,
-  },
-  {
-    path: ROUTES.EXTRACT_TEXT_FROM_IMAGE,
-    element: <ExtractTextFromImage />,
-  },
-  {
-    path: ROUTES.COPY_TEXT_FROM_IMAGE,
-    element: <CopyTextFromImageGuide />,
-  },
-  {
-    path: ROUTES.JPG_TO_EXCEL,
-    element: <JpgToExcelGuide />,
-  },
-  {
-    path: ROUTES.ABOUT,
-    element: <About />,
-  },
-  {
-    path: ROUTES.CONTACT,
-    element: <Contact />,
-  },
-  {
-    path: ROUTES.VERIFY_DEBT_SCORE,
-    element: <VerificationDebtScore />,
-  },
-  {
-    path: ROUTES.RENDERCHECK,
-    element: <RenderCheck />,
-  },
-  {
-    path: '*',
-    element: <NotFound />,
+    element: <AppShell />,
+    children: [
+      {
+        index: true,
+        element: <HomeComponent />,
+      },
+      {
+        path: 'image-to-text',
+        element: <ImageToText />,
+      },
+      {
+        path: 'image-to-text-converter',
+        element: <ImageToTextConverter />,
+      },
+      {
+        path: 'jpg-to-word',
+        element: <JpgToWord />,
+      },
+      {
+        path: 'image-to-excel',
+        element: <ImageToExcel />,
+      },
+      {
+        path: 'extract-text-from-image',
+        element: <ExtractTextFromImage />,
+      },
+      {
+        path: 'copy-text-from-image',
+        element: <CopyTextFromImageGuide />,
+      },
+      {
+        path: 'jpg-to-excel',
+        element: <JpgToExcelGuide />,
+      },
+      {
+        path: 'about',
+        element: <About />,
+      },
+      {
+        path: 'contact',
+        element: <Contact />,
+      },
+      {
+        path: 'verify-debt-score',
+        element: <VerificationDebtScore />,
+      },
+      {
+        path: 'rendercheck',
+        element: <RenderCheck />,
+      },
+      {
+        path: 'developers',
+        element: (
+          <Suspense fallback={<div className="p-8">Loading...</div>}>
+            <div>Developers page (placeholder for PR 3)</div>
+          </Suspense>
+        ),
+      },
+      {
+        path: 'access',
+        element: (
+          <Suspense fallback={<div className="p-8">Loading...</div>}>
+            <div>Access page (placeholder for PR 3)</div>
+          </Suspense>
+        ),
+      },
+      {
+        path: 'case-studies',
+        element: (
+          <Suspense fallback={<div className="p-8">Loading...</div>}>
+            <div>Case Studies page (placeholder for PR 3)</div>
+          </Suspense>
+        ),
+      },
+      {
+        path: 'labs',
+        element: (
+          <Suspense fallback={<div className="p-8">Loading...</div>}>
+            <div>Labs page (placeholder for PR 5)</div>
+          </Suspense>
+        ),
+      },
+      {
+        path: 'changelog',
+        element: (
+          <Suspense fallback={<div className="p-8">Loading...</div>}>
+            <div>Changelog page (placeholder for PR 6)</div>
+          </Suspense>
+        ),
+      },
+      {
+        path: '*',
+        element: <NotFound />,
+      },
+    ],
   },
 ]);
 
 /**
- * Router wrapper component
+ * Router wrapper component with Suspense boundary
  */
 export function AppRouter() {
-  return <RouterProvider router={router} />;
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-muted-foreground">Loading...</div>
+        </div>
+      }
+    >
+      <RouterProvider router={router} />
+    </Suspense>
+  );
 }

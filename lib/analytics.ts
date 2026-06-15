@@ -246,6 +246,84 @@ export function trackToolCompleted(params: ToolCompletedParams): void {
 }
 
 /**
+ * Track form submission
+ */
+export function trackFormSubmit(params: { formId: string; pagePath?: string }): void {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', 'form_submit', {
+      event_category: 'Form Interactions',
+      form_id: params.formId,
+      page_path: params.pagePath || window.location.pathname,
+    });
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[Analytics] form_submit:', params);
+  }
+}
+
+/**
+ * Track form error
+ */
+export function trackFormError(params: {
+  formId: string;
+  error: string;
+  pagePath?: string;
+}): void {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', 'form_error', {
+      event_category: 'Form Interactions',
+      form_id: params.formId,
+      error: params.error,
+      page_path: params.pagePath || window.location.pathname,
+    });
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[Analytics] form_error:', params);
+  }
+}
+
+/**
+ * Track CTA click
+ */
+export function trackCTAClicked(params: {
+  ctaId: string;
+  label: string;
+  pagePath?: string;
+}): void {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', 'cta_clicked', {
+      event_category: 'CTA Interactions',
+      cta_id: params.ctaId,
+      label: params.label,
+      page_path: params.pagePath || window.location.pathname,
+    });
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[Analytics] cta_clicked:', params);
+  }
+}
+
+/**
+ * Track code block copy
+ */
+export function trackCodeBlockCopied(params: { filename?: string; pagePath?: string }): void {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', 'code_block_copied', {
+      event_category: 'Developer Content',
+      filename: params.filename,
+      page_path: params.pagePath || window.location.pathname,
+    });
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[Analytics] code_block_copied:', params);
+  }
+}
+
+/**
  * Batch track multiple events at once (useful for initial page setup)
  */
 export function trackEvents(events: Array<{ name: string; params: any }>): void {

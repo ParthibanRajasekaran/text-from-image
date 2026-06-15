@@ -91,13 +91,13 @@
   --popover: var(--surface);
   --popover-foreground: var(--text);
   
-  /* Accent colors - vibrant cyan/blue aurora */
-  --primary: 210 89% 43%;
+  /* Primary - enterprise navy */
+  --primary: 220 89% 40%;
   --primary-foreground: 210 40% 98%;
   --accent: 195 95% 58%;
   --accent-foreground: 220 84% 5%;
   --accent-2: 270 85% 65%;
-  
+
   /* Supporting */
   --secondary: 210 40% 96%;
   --secondary-foreground: 210 40% 10%;
@@ -105,7 +105,18 @@
   --muted-foreground: 215 16% 47%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 210 40% 98%;
-  
+
+  /* Status badges */
+  --status-live: 142 71% 45%;
+  --status-beta: 38 92% 50%;
+  --status-planned: 220 14% 60%;
+  --status-evidence-pending: 25 95% 53%;
+
+  /* Code block (always dark) */
+  --code-bg: 215 28% 9%;
+  --code-border: 215 14% 18%;
+  --code-text: 210 17% 82%;
+
   /* Borders & UI */
   --border: 214 32% 91%;
   --input: 214 32% 91%;
@@ -119,11 +130,11 @@
 
 .dark {
   /* Base */
-  --bg: 222 84% 5%;
-  --surface: 220 40% 8%;
+  --bg: 228 39% 6%;
+  --surface: 228 32% 9%;
   --text: 210 40% 98%;
   --text-muted: 215 20% 65%;
-  
+
   /* Legacy compat */
   --background: var(--bg);
   --foreground: var(--text);
@@ -131,14 +142,14 @@
   --card-foreground: var(--text);
   --popover: var(--surface);
   --popover-foreground: var(--text);
-  
-  /* Accent colors - aurora glow */
-  --primary: 208 83% 53%;
+
+  /* Primary - enterprise navy (lighter for dark mode) */
+  --primary: 220 83% 58%;
   --primary-foreground: 210 40% 98%;
   --accent: 195 95% 58%;
   --accent-foreground: 220 84% 98%;
   --accent-2: 270 85% 65%;
-  
+
   /* Supporting */
   --secondary: 217 33% 18%;
   --secondary-foreground: 210 40% 98%;
@@ -146,7 +157,18 @@
   --muted-foreground: 215 20% 65%;
   --destructive: 0 63% 31%;
   --destructive-foreground: 210 40% 98%;
-  
+
+  /* Status badges (same across themes) */
+  --status-live: 142 71% 45%;
+  --status-beta: 38 92% 50%;
+  --status-planned: 220 14% 60%;
+  --status-evidence-pending: 25 95% 53%;
+
+  /* Code block (same dark across themes) */
+  --code-bg: 215 28% 9%;
+  --code-border: 215 14% 18%;
+  --code-text: 210 17% 82%;
+
   /* Borders & UI */
   --border: 217 33% 18%;
   --input: 217 33% 18%;

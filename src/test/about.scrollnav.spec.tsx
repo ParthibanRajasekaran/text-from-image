@@ -146,7 +146,7 @@ describe('About Page', () => {
     );
 
     expect(screen.getByText(/Core Web Vitals/)).toBeInTheDocument();
-    expect(screen.getByText(/WCAG 2.1 AA compliant/)).toBeInTheDocument();
+    expect(screen.getByText(/Keyboard accessible, screen reader tested, semantic HTML/)).toBeInTheDocument();
     expect(screen.getByText(/Consent Mode v2/)).toBeInTheDocument();
     expect(screen.getByText(/No Ads on Tools/)).toBeInTheDocument();
   });
