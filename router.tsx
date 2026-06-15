@@ -17,6 +17,9 @@ const JpgToExcelGuide = lazy(() => import('./pages/JpgToExcelGuide'));
 const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
 
+// Phase 5.9 pages
+const VerificationDebtScore = lazy(() => import('./pages/VerificationDebtScore'));
+
 // Route path constants - single source of truth for all route paths
 export const ROUTES = {
   HOME: '/',
@@ -29,6 +32,7 @@ export const ROUTES = {
   JPG_TO_EXCEL: '/jpg-to-excel',
   ABOUT: '/about',
   CONTACT: '/contact',
+  VERIFY_DEBT_SCORE: '/verify-debt-score',
 } as const;
 
 // Always use HeroOCR as the home component
@@ -87,6 +91,10 @@ export const router = createBrowserRouter([
   {
     path: ROUTES.CONTACT,
     element: <Contact />,
+  },
+  {
+    path: ROUTES.VERIFY_DEBT_SCORE,
+    element: <VerificationDebtScore />,
   },
   {
     path: '*',
