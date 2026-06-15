@@ -19,6 +19,7 @@ const Contact = lazy(() => import('./pages/Contact'));
 
 // Phase 5.9 pages
 const VerificationDebtScore = lazy(() => import('./pages/VerificationDebtScore'));
+const RenderCheck = lazy(() => import('./pages/RenderCheck'));
 
 // Route path constants - single source of truth for all route paths
 export const ROUTES = {
@@ -33,6 +34,7 @@ export const ROUTES = {
   ABOUT: '/about',
   CONTACT: '/contact',
   VERIFY_DEBT_SCORE: '/verify-debt-score',
+  RENDERCHECK: '/rendercheck',
 } as const;
 
 // Always use HeroOCR as the home component
@@ -95,6 +97,10 @@ export const router = createBrowserRouter([
   {
     path: ROUTES.VERIFY_DEBT_SCORE,
     element: <VerificationDebtScore />,
+  },
+  {
+    path: ROUTES.RENDERCHECK,
+    element: <RenderCheck />,
   },
   {
     path: '*',
