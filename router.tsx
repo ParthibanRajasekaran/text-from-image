@@ -20,9 +20,16 @@ const JpgToExcelGuide = lazy(() => import('./pages/JpgToExcelGuide'));
 const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
 
-// Phase 5.9 pages
+// Phase 5: Product pages
 const VerificationDebtScore = lazy(() => import('./pages/VerificationDebtScore'));
 const RenderCheck = lazy(() => import('./pages/RenderCheck'));
+const Developers = lazy(() => import('./pages/Developers'));
+const Access = lazy(() => import('./pages/Access'));
+const CaseStudies = lazy(() => import('./pages/CaseStudies'));
+
+// Phase 5: X-Factor Loop (Labs)
+const AIUIBugGallery = lazy(() => import('./pages/AIUIBugGallery'));
+const OcrChallengeLab = lazy(() => import('./pages/OcrChallengeLab'));
 
 // Route path constants - single source of truth for all route paths
 export const ROUTES = {
@@ -42,6 +49,8 @@ export const ROUTES = {
   ACCESS: '/access',
   CASE_STUDIES: '/case-studies',
   LABS: '/labs',
+  AI_UI_BUG_GALLERY: '/ai-ui-bug-gallery',
+  OCR_CHALLENGE_LAB: '/ocr-challenge-lab',
   CHANGELOG: '/changelog',
 } as const;
 
@@ -111,7 +120,7 @@ export const router = createBrowserRouter([
         path: 'developers',
         element: (
           <Suspense fallback={<div className="p-8">Loading...</div>}>
-            <div>Developers page (placeholder for PR 3)</div>
+            <Developers />
           </Suspense>
         ),
       },
@@ -119,7 +128,7 @@ export const router = createBrowserRouter([
         path: 'access',
         element: (
           <Suspense fallback={<div className="p-8">Loading...</div>}>
-            <div>Access page (placeholder for PR 3)</div>
+            <Access />
           </Suspense>
         ),
       },
@@ -127,7 +136,7 @@ export const router = createBrowserRouter([
         path: 'case-studies',
         element: (
           <Suspense fallback={<div className="p-8">Loading...</div>}>
-            <div>Case Studies page (placeholder for PR 3)</div>
+            <CaseStudies />
           </Suspense>
         ),
       },
@@ -135,7 +144,23 @@ export const router = createBrowserRouter([
         path: 'labs',
         element: (
           <Suspense fallback={<div className="p-8">Loading...</div>}>
-            <div>Labs page (placeholder for PR 5)</div>
+            <div>Labs page (placeholder for PR 6)</div>
+          </Suspense>
+        ),
+      },
+      {
+        path: 'ai-ui-bug-gallery',
+        element: (
+          <Suspense fallback={<div className="p-8">Loading...</div>}>
+            <AIUIBugGallery />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'ocr-challenge-lab',
+        element: (
+          <Suspense fallback={<div className="p-8">Loading...</div>}>
+            <OcrChallengeLab />
           </Suspense>
         ),
       },

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSEO } from '../src/seo';
-import { useTheme } from '../hooks/useTheme';
 import { AuroraBackground } from '../components/AuroraBackground';
 import { Glass } from '../components/ui/Glass';
 import { trackToolStarted, trackToolCompleted } from '../lib/analytics';
 
-type RiskLevel = 'low' | 'medium' | 'high';
+type RiskBand = 'low' | 'moderate' | 'high' | 'critical';
 
 interface Question {
   id: string;
@@ -36,7 +35,7 @@ const QUESTIONS: Question[] = [
   },
   {
     id: 'pdfs',
-    text: 'Do you verify generated PDFs, reports, or documents?',
+    text: 'Do you verify generated PDFs, reports, or documents before sending to users?',
     options: [
       { label: 'Yes, with automated checks', points: 0 },
       { label: 'Yes, manual review only', points: 3 },
@@ -70,37 +69,84 @@ const QUESTIONS: Question[] = [
       { label: 'No, we trust the tests', points: 6 },
     ],
   },
+  {
+    id: 'locale',
+    text: 'Do your AI coding tools generate locale-specific text (dates, currency, addresses)?',
+    options: [
+      { label: 'Yes, and we verify it', points: 0 },
+      { label: 'Yes, but minimal testing', points: 3 },
+      { label: 'Yes, and we often miss it', points: 7 },
+      { label: 'No, single locale only', points: 2 },
+    ],
+  },
+  {
+    id: 'shipped-wrong',
+    text: 'Have you ever shipped wrong visible text that all tests passed?',
+    options: [
+      { label: 'Never', points: 0 },
+      { label: 'Once or twice', points: 4 },
+      { label: 'Yes, multiple times', points: 8 },
+      { label: 'Not sure / just started', points: 3 },
+    ],
+  },
+  {
+    id: 'truncation',
+    text: 'How often do you find truncated or wrapped text in shipped features?',
+    options: [
+      { label: 'Never, we test thoroughly', points: 0 },
+      { label: 'Occasionally (1-2 per quarter)', points: 3 },
+      { label: 'Regularly (monthly or more)', points: 6 },
+    ],
+  },
 ];
 
 function calculateScore(answers: Record<string, number>): number {
   return Object.values(answers).reduce((sum, points) => sum + points, 0);
 }
 
-function getRiskLevel(score: number): RiskLevel {
-  if (score <= 15) return 'low';
-  if (score <= 30) return 'medium';
-  return 'high';
+function getScoreBand(score: number): RiskBand {
+  if (score <= 25) return 'low';
+  if (score <= 50) return 'moderate';
+  if (score <= 75) return 'high';
+  return 'critical';
 }
 
-function getRiskColor(risk: RiskLevel): string {
-  switch (risk) {
+function getScoreBandColor(band: RiskBand): string {
+  switch (band) {
     case 'low':
       return 'bg-green-500/20 border-green-500/30 text-green-300';
-    case 'medium':
-      return 'bg-amber-500/20 border-amber-500/30 text-amber-300';
+    case 'moderate':
+      return 'bg-blue-500/20 border-blue-500/30 text-blue-300';
     case 'high':
+      return 'bg-amber-500/20 border-amber-500/30 text-amber-300';
+    case 'critical':
       return 'bg-red-500/20 border-red-500/30 text-red-300';
   }
 }
 
-function getRiskLabel(risk: RiskLevel): string {
-  switch (risk) {
+function getScoreBandLabel(band: RiskBand): string {
+  switch (band) {
     case 'low':
-      return '✓ Low Risk';
-    case 'medium':
-      return '⚠ Medium Risk';
+      return '✓ Low (0-25)';
+    case 'moderate':
+      return '~ Moderate (26-50)';
     case 'high':
-      return '✗ High Risk';
+      return '⚠ High (51-75)';
+    case 'critical':
+      return '✗ Critical (76-100)';
+  }
+}
+
+function getScoreBandAdvice(band: RiskBand): string {
+  switch (band) {
+    case 'low':
+      return 'Your workflow is verification-aware. Continue focusing on visual assertions alongside DOM tests.';
+    case 'moderate':
+      return 'AI delivery is creating gaps. Start with RenderCheck in one Playwright test to catch visible text bugs.';
+    case 'high':
+      return 'Rendered output is largely unverified. Multiple failure points exist. Prioritize visual assertions in CI.';
+    case 'critical':
+      return 'AI-generated UI is shipping without rendered-output checks. This is a high-risk workflow. Implement OCR assertions immediately.';
   }
 }
 
@@ -126,26 +172,20 @@ export default function VerificationDebtScore() {
     if (currentQuestion < QUESTIONS.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
+      const finalScore = Object.values(newAnswers).reduce((sum, p) => sum + p, 0);
+      const finalBand = getScoreBand(finalScore);
       trackToolStarted({ toolName: 'verification-debt-score' });
-      trackToolCompleted({ toolName: 'verification-debt-score', durationMs: 0 });
+      trackToolCompleted({ toolName: 'verification-debt-score', riskLevel: finalBand, duration: 0 });
       setShowResult(true);
     }
   };
 
   const score = calculateScore(answers);
-  const risk = getRiskLevel(score);
+  const band = getScoreBand(score);
   const progress = ((currentQuestion + (showResult ? 1 : 0)) / QUESTIONS.length) * 100;
 
   return (
     <AuroraBackground>
-      <header className="sticky top-0 z-30 backdrop-blur-xl bg-background/80 border-b border-border/50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <a href="/" className="text-lg font-bold bg-gradient-to-r from-accent via-primary to-accent-2 bg-clip-text text-transparent">
-            FreeTextFromImage
-          </a>
-        </div>
-      </header>
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.section
           initial={{ opacity: 0, y: 20 }}
@@ -217,13 +257,11 @@ export default function VerificationDebtScore() {
             >
               {/* Score Card */}
               <Glass>
-                <div className={`p-8 space-y-4 border-l-4 ${getRiskColor(risk)}`}>
+                <div className={`p-8 space-y-4 border-l-4 ${getScoreBandColor(band)}`}>
                   <div className="text-5xl font-bold">{score}</div>
-                  <div className="text-2xl font-semibold">{getRiskLabel(risk)}</div>
+                  <div className="text-2xl font-semibold">{getScoreBandLabel(band)}</div>
                   <p className="text-sm text-muted-foreground">
-                    {risk === 'low' && 'Your team has strong verification practices. Keep it up!'}
-                    {risk === 'medium' && 'Your team has moderate verification gaps. Visual text assertions are missing.'}
-                    {risk === 'high' && 'Your team has significant verification debt. AI-generated UI tests are incomplete.'}
+                    {getScoreBandAdvice(band)}
                   </p>
                 </div>
               </Glass>
@@ -258,21 +296,23 @@ export default function VerificationDebtScore() {
                 <div className="p-8 space-y-4">
                   <h3 className="font-semibold text-white">Share your score</h3>
                   <div className="bg-black/40 p-4 rounded border border-border/50 text-sm text-muted-foreground">
-                    <p>My Verification Debt Score: {score}/50 ({getRiskLabel(risk)})</p>
-                    <p className="text-xs mt-2">Assessed at: {new Date().toLocaleDateString()}</p>
+                    <p>My Verification Debt Score: {band} ({score}/100)</p>
+                    <p className="text-xs mt-2">Main risk: {band === 'low' && 'Keep visual assertions strong'}</p>
+                    {band !== 'low' && <p className="text-xs mt-2">Recommended: RenderCheck in Playwright CI</p>}
                     <p className="text-xs text-accent mt-2 hover:underline cursor-pointer">
                       {SITE_URL}/verify-debt-score
                     </p>
                   </div>
                   <button
                     onClick={() => {
+                      const riskText = band === 'low' ? 'Keep visual assertions strong' : 'RenderCheck in Playwright CI';
                       navigator.clipboard.writeText(
-                        `My Verification Debt Score: ${score}/50 (${getRiskLabel(risk)})\n\n${SITE_URL}/verify-debt-score`
+                        `My Verification Debt Score: ${band} (${score}/100)\nMain risk: ${riskText}\n\n${SITE_URL}/verify-debt-score`
                       );
                     }}
                     className="w-full px-4 py-2 bg-accent/10 hover:bg-accent/20 text-accent border border-accent/30 rounded transition-all"
                   >
-                    Copy to share
+                    Copy result
                   </button>
                 </div>
               </Glass>
