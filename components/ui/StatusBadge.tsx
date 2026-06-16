@@ -1,11 +1,12 @@
 import React from 'react';
 
-type StatusVariant = 'live' | 'developer-beta' | 'planned' | 'coming-soon' | 'evidence-pending';
+export type StatusVariant = 'live' | 'developer-beta' | 'planned' | 'coming-soon' | 'evidence-pending';
 
 interface StatusBadgeProps {
   variant: StatusVariant;
   label?: string;
   size?: 'sm' | 'md';
+  pulse?: boolean;
   className?: string;
 }
 
@@ -46,18 +47,18 @@ export function StatusBadge({
   variant,
   label,
   size = 'sm',
+  pulse = false,
   className = '',
 }: StatusBadgeProps) {
   const config = statusConfig[variant];
   const sizeClasses = size === 'sm' ? 'px-2 py-1 text-xs' : 'px-3 py-1.5 text-sm';
-  const showPulse = variant === 'live' || variant === 'developer-beta';
 
   return (
     <span
       className={`inline-flex items-center gap-1 rounded-full font-semibold border ${config.bg} ${config.text} border-status-live/20 dark:border-status-live/30 ${sizeClasses} ${className}`}
       aria-label={`${config.label}${label ? ': ' + label : ''}`}
     >
-      {showPulse && (
+      {pulse && (
         <span className={`inline-block w-1.5 h-1.5 rounded-full ${config.text} animate-pulse-slow`} />
       )}
       {label || config.label}

@@ -1,12 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useSEO } from '../../src/seo';
-import { AuroraBackground } from '../AuroraBackground';
 import { GlassDropzone } from '../v3/GlassDropzone';
 import { GlassResultCard } from '../v3/GlassResultCard';
 import { GlassProgressBar } from '../v3/GlassProgressBar';
 import { HistoryDrawer } from '../v3/HistoryDrawer';
 import { StatusBadge } from '../ui/StatusBadge';
+import type { StatusVariant } from '../ui/StatusBadge';
 import { ROUTES } from '../../router';
 import { useOCRProcessor } from '../../hooks/useOCRProcessor';
 import { useLocalHistory, type HistoryItem } from '../../hooks/useLocalHistory';
@@ -73,7 +73,7 @@ export function HomepageMinimalPremium() {
   }, [extractedText, setExtractedText]);
 
   return (
-    <AuroraBackground>
+    <div className="min-h-screen bg-background">
       <HistoryDrawer
         isOpen={isHistoryOpen}
         onClose={() => setIsHistoryOpen(false)}
@@ -94,7 +94,7 @@ export function HomepageMinimalPremium() {
               transition={{ duration: 0.4, delay: 0.1 }}
               className="inline-block"
             >
-              <StatusBadge variant="developer-beta" label="Developer Beta" size="md" />
+              <StatusBadge variant="developer-beta" label="Developer Beta" size="md" pulse={true} />
             </motion.div>
 
             {/* Headline */}
@@ -128,7 +128,7 @@ export function HomepageMinimalPremium() {
             >
               <a
                 href={`#ocr-tool`}
-                className="px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold hover:shadow-elevation-2 hover:-translate-y-0.5 transition-all duration-200"
+                className="px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold hover:shadow-elevation-2 transition-all duration-200"
               >
                 Try RenderCheck
               </a>
@@ -153,9 +153,9 @@ export function HomepageMinimalPremium() {
           >
             <div className="bg-surface rounded-2xl border border-border/50 p-8 sm:p-12 space-y-8">
               <div>
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
                   How RenderCheck Works
-                </h3>
+                </p>
               </div>
 
               {/* Product Proof Panel */}
@@ -348,7 +348,7 @@ expect(result.outcome).toBe('pass');`}
                     <h3 className="font-semibold">{item.feature}</h3>
                     <p className="text-sm text-foreground/80 mt-1">{item.desc}</p>
                   </div>
-                  <StatusBadge variant={item.status === 'live' ? 'live' : item.status === 'developer-beta' ? 'developer-beta' : 'planned'} size="sm" />
+                  <StatusBadge variant={item.status === 'live' ? 'live' : item.status === 'developer-beta' ? 'developer-beta' : 'planned'} size="sm" pulse={false} />
                 </div>
               ))}
             </div>
@@ -482,33 +482,33 @@ expect(result.outcome).toBe('pass');`}
             <h2 className="text-3xl sm:text-4xl font-bold">Get Access</h2>
 
             <div className="grid sm:grid-cols-3 gap-6">
-              {[
+              {([
                 {
                   title: 'Browser OCR',
-                  status: 'live',
+                  status: 'live' as const,
                   points: ['Free', 'No signup', 'Runs locally'],
                   cta: 'Try Above',
                   href: '#ocr-tool',
                 },
                 {
                   title: 'Developer Beta',
-                  status: 'developer-beta',
+                  status: 'developer-beta' as const,
                   points: ['1,000 calls/month', 'Request access', 'Early pricing'],
                   cta: 'Request Access',
                   href: ROUTES.ACCESS,
                 },
                 {
                   title: 'Public Interest',
-                  status: 'live',
+                  status: 'developer-beta' as const,
                   points: ['NGOs & healthcare', 'Education & research', 'Free tier'],
                   cta: 'Apply',
                   href: ROUTES.ACCESS,
                 },
-              ].map((tier) => (
+              ] as const).map((tier) => (
                 <div key={tier.title} className="border border-border rounded-2xl p-6 space-y-6">
                   <div className="space-y-2">
                     <h3 className="text-lg font-semibold">{tier.title}</h3>
-                    <StatusBadge variant={tier.status as any} size="sm" />
+                    <StatusBadge variant={tier.status} size="sm" pulse={false} />
                   </div>
 
                   <ul className="space-y-2 text-sm text-foreground/80">
@@ -532,6 +532,6 @@ expect(result.outcome).toBe('pass');`}
           </motion.div>
         </section>
       </div>
-    </AuroraBackground>
+    </div>
   );
 }
