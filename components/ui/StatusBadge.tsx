@@ -39,7 +39,7 @@ const statusConfig: Record<StatusVariant, { bg: string; text: string; label: str
 
 /**
  * StatusBadge: Visual indicator for feature state
- * Used across product pages to label features as Live, Beta, Planned, etc.
+ * Live and Beta badges have subtle pulsing dot
  * WCAG AA accessible with explicit dark: classes
  */
 export function StatusBadge({
@@ -50,12 +50,16 @@ export function StatusBadge({
 }: StatusBadgeProps) {
   const config = statusConfig[variant];
   const sizeClasses = size === 'sm' ? 'px-2 py-1 text-xs' : 'px-3 py-1.5 text-sm';
+  const showPulse = variant === 'live' || variant === 'developer-beta';
 
   return (
     <span
-      className={`inline-flex items-center rounded-full font-semibold border ${config.bg} ${config.text} border-status-live/20 dark:border-status-live/30 ${sizeClasses} ${className}`}
+      className={`inline-flex items-center gap-1 rounded-full font-semibold border ${config.bg} ${config.text} border-status-live/20 dark:border-status-live/30 ${sizeClasses} ${className}`}
       aria-label={`${config.label}${label ? ': ' + label : ''}`}
     >
+      {showPulse && (
+        <span className={`inline-block w-1.5 h-1.5 rounded-full ${config.text} animate-pulse-slow`} />
+      )}
       {label || config.label}
     </span>
   );

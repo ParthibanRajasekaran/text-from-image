@@ -15,11 +15,11 @@ interface ButtonProps
 
 const variantClasses: Record<ButtonVariant, string> = {
   solid:
-    'bg-primary text-primary-foreground hover:bg-[hsl(220_89%_35%)] dark:hover:bg-[hsl(220_83%_53%)] shadow-elevation-1 hover:shadow-elevation-2',
+    'bg-primary text-primary-foreground shadow-elevation-1 hover:shadow-elevation-2 hover:-translate-y-0.5 transition-all duration-200',
   outline:
-    'border border-border text-foreground hover:bg-muted/50 dark:border-border dark:hover:bg-muted/50',
+    'border-2 border-border text-foreground hover:border-primary/60 hover:bg-muted/30 transition-all duration-200',
   ghost:
-    'text-foreground hover:bg-muted/50 dark:hover:bg-muted/50',
+    'text-foreground hover:bg-muted/40 transition-all duration-200',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {

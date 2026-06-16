@@ -47,9 +47,13 @@ export function CodeBlock({
           <button
             onClick={handleCopy}
             aria-label={copied ? 'Copied!' : 'Copy code'}
-            className="text-code-text/50 hover:text-code-text text-sm px-2 py-1 rounded transition-colors"
+            className={`text-sm px-3 py-1.5 rounded transition-all duration-200 font-medium ${
+              copied
+                ? 'text-status-live bg-status-live/10'
+                : 'text-code-text/60 hover:text-code-text hover:bg-code-border/50'
+            }`}
           >
-            {copied ? '✓ Copied' : 'Copy'}
+            {copied ? '✓ Copied!' : 'Copy'}
           </button>
         </div>
       )}
