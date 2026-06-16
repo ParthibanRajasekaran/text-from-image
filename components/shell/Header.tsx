@@ -63,8 +63,8 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
     <header
       className={`sticky top-0 z-40 transition-all duration-300 ${
         isScrolled
-          ? 'bg-background/90 dark:bg-background/95 backdrop-blur-xl border-b border-border/50 shadow-elevation-1'
-          : 'bg-transparent'
+          ? 'bg-background/95 dark:bg-background/95 backdrop-blur-2xl border-b border-border/30 shadow-elevation-2'
+          : 'bg-transparent border-b border-transparent'
       }`}
       style={{ height: 'var(--header-h)' }}
     >
@@ -73,8 +73,8 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
         aria-label="Main navigation"
       >
         {/* Logo + Badge */}
-        <Link to={ROUTES.HOME} className="flex items-center gap-2 group">
-          <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent group-hover:from-primary/80 group-hover:to-accent/80 transition-colors">
+        <Link to={ROUTES.HOME} className="flex items-center gap-3 group">
+          <span className="text-xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">
             RenderCheck
           </span>
           <StatusBadge variant="developer-beta" size="sm" />
