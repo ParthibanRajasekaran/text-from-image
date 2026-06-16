@@ -42,14 +42,14 @@ export function EnterpriseLayout({
 
       <div
         id="enterprise-content"
-        className={`relative min-h-screen py-12 sm:py-16 bg-background ${className}`}
+        className={`relative min-h-screen py-16 sm:py-20 lg:py-24 bg-background ${className}`}
         role="main"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             {/* Breadcrumb */}
             {breadcrumb && breadcrumb.length > 0 && (
-              <nav aria-label="Breadcrumb" className="mb-6">
+              <nav aria-label="Breadcrumb" className="mb-8">
                 <ol className="flex items-center gap-2 text-sm text-muted-foreground">
                   {breadcrumb.map((item, idx) => (
                     <React.Fragment key={idx}>
@@ -62,7 +62,7 @@ export function EnterpriseLayout({
                             {item.label}
                           </a>
                         ) : (
-                          <span className="text-foreground font-medium" aria-current="page">
+                          <span className="text-foreground font-semibold" aria-current="page">
                             {item.label}
                           </span>
                         )}
@@ -75,7 +75,7 @@ export function EnterpriseLayout({
             )}
 
             {/* Content grid */}
-            <div className="grid lg:grid-cols-12 gap-8 items-start">
+            <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
               {/* Main content */}
               <div className={sidebar ? 'lg:col-span-9' : 'lg:col-span-12'}>
                 {children}
@@ -83,7 +83,7 @@ export function EnterpriseLayout({
 
               {/* Optional sidebar */}
               {sidebar && (
-                <aside className="lg:col-span-3 flex flex-col gap-8 sticky top-[calc(var(--header-h)+2rem)]">
+                <aside className="lg:col-span-3 flex flex-col gap-8 sticky top-[calc(var(--header-h)+3rem)]">
                   {sidebar}
                 </aside>
               )}
