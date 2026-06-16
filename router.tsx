@@ -4,8 +4,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 // Global shell
 import { AppShell } from './components/shell/AppShell';
 
-// V3: Futuristic Hero UI (feature-gated)
-import { HeroOCR } from './components/v3/HeroOCR';
+// V3: Futuristic Hero UI (feature-gated) — now replaced by minimal-premium homepage
+import { HomepageMinimalPremium } from './components/home/HomepageMinimalPremium';
 
 // Lazy load feature pages for code splitting
 // See pages/_structure.md for organization
@@ -56,8 +56,8 @@ export const ROUTES = {
   CHANGELOG: '/changelog',
 } as const;
 
-// Always use HeroOCR as the home component
-const HomeComponent = HeroOCR;
+// Always use HomepageMinimalPremium as the home component (minimal-premium redesign)
+const HomeComponent = HomepageMinimalPremium;
 
 /**
  * App router with nested layout routes
