@@ -2,7 +2,6 @@ import { describe, expect, it, afterEach } from 'vitest';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-// @ts-expect-error plain ESM script without types
 import { escapeData, escapeProperty, main, readRecords, repoPath, summaryMarkdown, toAnnotation } from '../action/annotate.mjs';
 
 const rec = {

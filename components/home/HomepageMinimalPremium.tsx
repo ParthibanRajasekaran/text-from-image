@@ -31,7 +31,6 @@ export function HomepageMinimalPremium() {
     description:
       'RenderCheck uses privacy-first OCR to test screenshots, documents, and rendered interfaces, helping teams catch visible text failures that DOM checks and code reviews can miss.',
     canonical: canonicalAbsolute,
-    keywords: 'AI verification, OCR testing, Playwright, Cypress, rendered output verification',
   });
 
   // OCR state
