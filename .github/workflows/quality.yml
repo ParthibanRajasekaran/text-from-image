@@ -73,3 +73,73 @@ jobs:
           echo "- Build: ✅ Passed" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "📎 [View full workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+
+  # End-to-end tests run against the production build, served with the real headers from
+  # vercel.json (including the CSP). They cover: every route loads with no console or CSP errors,
+  # OCR runs on a test PNG with self-hosted assets and no off-origin request, the hero demo and its
+  # offline proof, axe-core on every route in light and dark, and the 390px layout.
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run end-to-end tests
+        run: npm run test:e2e
+        env:
+          CI: 'true'
+
+      - name: Upload Playwright traces on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7
+
+  # The SDK: unit tests, the Playwright example suite, the Cypress example suite, and the check that
+  # nothing in it needs a network.
+  rendercheck-sdk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: packages/rendercheck
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Build
+        run: npm run build
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Unit tests with the network removed
+        run: npm run test:offline
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Playwright example suite
+        run: npm run test:example
+
+      - name: Cypress example suite
+        run: npx --yes cypress@13 run --project examples/cypress --browser electron

@@ -114,13 +114,13 @@ function getScoreBand(score: number): RiskBand {
 function getScoreBandColor(band: RiskBand): string {
   switch (band) {
     case 'low':
-      return 'bg-green-500/20 border-green-500/30 text-green-300';
+      return 'bg-green-500/20 border-green-500/30 text-green-800 dark:text-green-300';
     case 'moderate':
       return 'bg-blue-500/20 border-blue-500/30 text-blue-300';
     case 'high':
-      return 'bg-amber-500/20 border-amber-500/30 text-amber-300';
+      return 'bg-amber-500/20 border-amber-500/30 text-amber-800 dark:text-amber-300';
     case 'critical':
-      return 'bg-red-500/20 border-red-500/30 text-red-300';
+      return 'bg-red-500/20 border-red-500/30 text-red-800 dark:text-red-300';
   }
 }
 

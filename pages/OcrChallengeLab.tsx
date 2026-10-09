@@ -29,7 +29,7 @@ const CURRENT_CHALLENGE: Challenge = {
   teaches: 'Locale-specific number and date formats, currency symbol placement',
   expectedText:
     'Gesamtbetrag CHF 89.50 Datum: 15.06.2026 19:45 Uhr MwSt 7.7% EUR 6.81',
-  imageUrl: 'https://via.placeholder.com/600x400?text=Swiss+Receipt+Challenge',
+  imageUrl: '/challenges/swiss-receipt.png',
   description:
     'A Swiss receipt rendered in German (de-CH locale). Verify that the date format (DD.MM.YYYY), currency format (CHF notation and number separator), and VAT calculation all match expected German/Swiss conventions.',
 };
@@ -42,7 +42,7 @@ const PAST_CHALLENGES: Challenge[] = [
     difficulty: 'medium',
     teaches: 'Currency symbol placement, decimal separator consistency',
     expectedText: '€1.234,56 (European format with comma)',
-    imageUrl: 'https://via.placeholder.com/600x400?text=EUR+Invoice+Challenge',
+    imageUrl: '/challenges/eur-invoice.png',
     description:
       'Invoice generated for US user but rendered with EUR currency and European number formatting. Spot the mismatch.',
   },
@@ -52,7 +52,7 @@ const PAST_CHALLENGES: Challenge[] = [
     difficulty: 'hard',
     teaches: 'RTL text handling, overflow detection',
     expectedText: 'مرحبا بك في المتجر',
-    imageUrl: 'https://via.placeholder.com/600x400?text=RTL+Challenge',
+    imageUrl: '/challenges/rtl-truncation.png',
     description:
       'Product description in Arabic (RTL) is truncated because layout assumes LTR text width. Verify the full phrase appears.',
   },
@@ -109,10 +109,10 @@ export default function OcrChallengeLab() {
             <span
               className={`text-xs px-3 py-1 rounded font-medium ${
                 CURRENT_CHALLENGE.difficulty === 'easy'
-                  ? 'bg-green-500/20 text-green-300'
+                  ? 'bg-green-500/20 text-green-800 dark:text-green-300'
                   : CURRENT_CHALLENGE.difficulty === 'medium'
-                    ? 'bg-amber-500/20 text-amber-300'
-                    : 'bg-red-500/20 text-red-300'
+                    ? 'bg-amber-500/20 text-amber-800 dark:text-amber-300'
+                    : 'bg-red-500/20 text-red-800 dark:text-red-300'
               }`}
             >
               {CURRENT_CHALLENGE.difficulty.charAt(0).toUpperCase() + CURRENT_CHALLENGE.difficulty.slice(1)}
@@ -142,13 +142,13 @@ export default function OcrChallengeLab() {
           <div className="flex gap-3">
             <button
               onClick={() => handleChallengeComplete(true)}
-              className="flex-1 px-4 py-3 bg-green-500/20 text-green-300 border border-green-500/30 rounded-lg font-medium hover:bg-green-500/30 transition-colors"
+              className="flex-1 px-4 py-3 bg-green-500/20 text-green-800 dark:text-green-300 border border-green-500/30 rounded-lg font-medium hover:bg-green-500/30 transition-colors"
             >
               ✓ I found all the text
             </button>
             <button
               onClick={() => handleChallengeComplete(false)}
-              className="flex-1 px-4 py-3 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-lg font-medium hover:bg-amber-500/30 transition-colors"
+              className="flex-1 px-4 py-3 bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30 rounded-lg font-medium hover:bg-amber-500/30 transition-colors"
             >
               ✗ Text is missing or wrong
             </button>
@@ -230,10 +230,10 @@ export default function OcrChallengeLab() {
                 <span
                   className={`text-xs px-2 py-1 rounded flex-shrink-0 ${
                     challenge.difficulty === 'easy'
-                      ? 'bg-green-500/20 text-green-300'
+                      ? 'bg-green-500/20 text-green-800 dark:text-green-300'
                       : challenge.difficulty === 'medium'
-                        ? 'bg-amber-500/20 text-amber-300'
-                        : 'bg-red-500/20 text-red-300'
+                        ? 'bg-amber-500/20 text-amber-800 dark:text-amber-300'
+                        : 'bg-red-500/20 text-red-800 dark:text-red-300'
                   }`}
                 >
                   {challenge.difficulty}

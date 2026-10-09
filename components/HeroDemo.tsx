@@ -499,7 +499,7 @@ export function HeroDemo({ className = '', createEngine, readPixels = readImageD
               value={expected}
               onChange={(e) => setExpected(e.target.value)}
               placeholder="e.g. Total: $14.00"
-              className="mt-1 w-full rounded-md border border-white/15 bg-black/40 px-3 py-2 text-sm placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-sky-400"
+              className="mt-1 min-h-11 w-full rounded-md border border-white/15 bg-black/40 px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-sky-400"
             />
             <p className="mt-1 text-xs text-zinc-400">If the closest line differs, its words turn rose and the difference is shown.</p>
           </div>
@@ -539,7 +539,7 @@ export function HeroDemo({ className = '', createEngine, readPixels = readImageD
                 </ul>
               </details>
             )}
-            <label className="mt-3 flex cursor-pointer items-start gap-2 text-sm">
+            <label className="mt-3 flex min-h-11 cursor-pointer items-center gap-2 text-sm">
               <input
                 data-testid="hero-demo-offline-toggle"
                 type="checkbox"
@@ -555,7 +555,7 @@ export function HeroDemo({ className = '', createEngine, readPixels = readImageD
                 </span>
               </span>
             </label>
-            <p className="mt-2 text-xs text-zinc-500">
+            <p className="mt-2 text-xs text-zinc-400">
               Watched: this page and the OCR worker. The bundled Tesseract worker is not instrumented; this site's
               Content-Security-Policy (<code>connect-src 'self'</code>) stops it contacting other origins.
             </p>
@@ -605,7 +605,7 @@ export function HeroDemo({ className = '', createEngine, readPixels = readImageD
                 );
               })}
             </ul>
-            <p className="mt-2 text-xs text-zinc-500">
+            <p className="mt-2 text-xs text-zinc-400">
               {analysis.result.metrics.durationMs} ms in the OCR engine. Click a line, or a box on the image, to
               build the assertion for it.
             </p>

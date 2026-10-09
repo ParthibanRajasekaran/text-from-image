@@ -41,7 +41,7 @@ export function CodeBlock({
           <div className="flex items-center gap-2">
             {filename && <span className="text-code-text/70 text-sm">{filename}</span>}
             {language && (
-              <span className="text-code-text/50 text-xs uppercase">{language}</span>
+              <span className="text-code-text/70 text-xs uppercase">{language}</span>
             )}
           </div>
           <button

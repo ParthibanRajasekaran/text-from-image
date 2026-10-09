@@ -289,7 +289,7 @@ test('checkout shows the correct total', async ({ page }) => {
             </a>
             <a
               href={ROUTES.HOME}
-              className="inline-flex px-6 py-3 border border-primary text-primary rounded-lg font-medium hover:bg-primary/5 transition-colors"
+              className="inline-flex px-6 py-3 border border-primary bg-background text-primary rounded-lg font-medium hover:bg-primary/5 transition-colors"
             >
               Try Browser Tool
             </a>

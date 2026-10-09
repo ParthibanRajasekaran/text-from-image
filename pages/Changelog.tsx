@@ -40,7 +40,7 @@ const ENTRIES: ChangelogEntry[] = [
     status: 'live',
     category: 'Labs',
     description:
-      'Educational gallery showing 50+ synthetic examples of AI-generated UI bugs that pass code tests but fail visible verification. Categorized by type with Playwright test patterns for each.',
+      'Educational gallery of synthetic examples of AI-generated UI bugs that pass code tests but fail visible verification. Categorized by type with Playwright test patterns for each.',
   },
   {
     date: '2026-06-15',

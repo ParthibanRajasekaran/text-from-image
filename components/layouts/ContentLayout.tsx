@@ -91,7 +91,7 @@ export function ContentLayout({
               {/* 12-col grid layout */}
               <div className="grid lg:grid-cols-12 gap-8 items-start">
                 {/* Main content (9 cols or full width) */}
-                <div className={side ? 'lg:col-span-9' : 'lg:col-span-12'}>
+                <div className={`min-w-0 ${side ? 'lg:col-span-9' : 'lg:col-span-12'}`}>
                   {/* Title section */}
                   {title && (
                     <section className="mb-8">

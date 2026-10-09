@@ -263,7 +263,7 @@ export function HomepageMinimalPremium() {
                   <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary">
                     {step.num}
                   </div>
-                  <div className="pt-2">
+                  <div className="pt-2 min-w-0 break-words">
                     <h3 className="font-semibold text-lg">{step.label}</h3>
                     <p className="text-foreground/80 text-sm mt-1">{step.desc}</p>
                   </div>
@@ -296,7 +296,7 @@ export function HomepageMinimalPremium() {
                 },
                 {
                   title: 'AI UI Bug Gallery',
-                  desc: 'Learn from 50+ patterns of AI-generated UI failures',
+                  desc: 'Worked examples of AI-generated UI failures that DOM tests miss',
                   href: ROUTES.AI_UI_BUG_GALLERY,
                 },
                 {

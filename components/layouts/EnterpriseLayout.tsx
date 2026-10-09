@@ -77,7 +77,7 @@ export function EnterpriseLayout({
             {/* Content grid */}
             <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
               {/* Main content */}
-              <div className={sidebar ? 'lg:col-span-9' : 'lg:col-span-12'}>
+              <div className={`min-w-0 ${sidebar ? 'lg:col-span-9' : 'lg:col-span-12'}`}>
                 {children}
               </div>
 

@@ -33,7 +33,7 @@ export default function Labs() {
       id: 'ai-ui-bug-gallery',
       title: 'AI UI Bug Gallery',
       status: 'live' as const,
-      description: 'Learn from 50+ synthetic examples of AI-generated UI bugs that pass code tests but fail visible verification. Categorized by type: wrong currency, missing confirmations, truncated text, invisible text, and localisation failures.',
+      description: 'Learn from worked examples of AI-generated UI bugs that pass code tests but fail visible verification. Categorized by type: wrong currency, missing confirmations, truncated text, invisible text, and localisation failures.',
       href: ROUTES.AI_UI_BUG_GALLERY,
       teaches: 'Real-world patterns that DOM tests can\'t catch',
     },

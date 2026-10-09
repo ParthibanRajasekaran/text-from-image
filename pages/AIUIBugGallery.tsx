@@ -85,8 +85,8 @@ export default function AIUIBugGallery() {
   const canonicalAbsolute = new URL('/ai-ui-bug-gallery', SITE_URL).toString();
 
   useSEO({
-    title: 'AI UI Bug Gallery — 50 Ways AI-Generated UI Can Fail Visual Verification',
-    description: 'Real-world examples of AI-generated UI bugs that pass code tests but fail visible-output verification. Learn what RenderCheck catches.',
+    title: 'AI UI Bug Gallery — How AI-Generated UI Fails Visual Verification',
+    description: 'Synthetic examples of AI-generated UI bugs that pass code tests but fail visible-output verification, with the RenderCheck assertion that catches each.',
     canonical: canonicalAbsolute,
   });
 
@@ -113,10 +113,20 @@ export default function AIUIBugGallery() {
           <StatusBadge variant="live" />
         </div>
         <p className="text-lg text-muted-foreground max-w-2xl">
-          Real-world examples of AI-generated UI bugs that pass all code tests but fail visible-output verification.
+          {EXAMPLES.length} worked examples of the UI bugs that pass code tests but fail visible-output verification,
+          each with the assertion that catches it.
         </p>
         <p className="text-sm text-muted-foreground mt-4 max-w-2xl">
-          All examples are synthetic and educational. Not real customer incidents.
+          All examples are synthetic and educational, not real customer incidents. A larger set of 50 is in the{' '}
+          <a
+            href="https://github.com/ParthibanRajasekaran/text-from-image/tree/main/dataset/ai-ui-verification"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 underline"
+          >
+            open dataset
+          </a>
+          .
         </p>
       </section>
 
@@ -167,10 +177,10 @@ export default function AIUIBugGallery() {
                   <span
                     className={`text-xs px-2 py-1 rounded ${
                       example.difficulty === 'easy'
-                        ? 'bg-green-500/20 text-green-300'
+                        ? 'bg-green-500/20 text-green-800 dark:text-green-300'
                         : example.difficulty === 'medium'
-                          ? 'bg-amber-500/20 text-amber-300'
-                          : 'bg-red-500/20 text-red-300'
+                          ? 'bg-amber-500/20 text-amber-800 dark:text-amber-300'
+                          : 'bg-red-500/20 text-red-800 dark:text-red-300'
                     }`}
                   >
                     {example.difficulty.charAt(0).toUpperCase() + example.difficulty.slice(1)}

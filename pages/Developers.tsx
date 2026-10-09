@@ -55,7 +55,7 @@ export default function Developers() {
               <p>
                 <strong>Package:</strong>
                 <br />
-                <code className="text-code-text">@freetextfromimage/rendercheck</code>
+                <code className="text-foreground">@freetextfromimage/rendercheck</code>
               </p>
               <p>
                 <strong>License:</strong>
@@ -72,7 +72,7 @@ export default function Developers() {
                   href="https://github.com/ParthibanRajasekaran/text-from-image"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:text-primary/80"
+                  className="inline-flex items-center min-h-11 text-primary hover:text-primary/80"
                 >
                   GitHub Repository →
                 </a>
@@ -121,7 +121,7 @@ export default function Developers() {
             </div>
             <p className="text-sm text-muted-foreground">
               npm package for Playwright and Cypress. OCR runs on your machine: no API key, no upload, no network
-              calls. The Cypress integration has not yet been run inside a real Cypress.
+              calls. The Cypress integration has been run in Cypress 13 only (Electron, Linux).
             </p>
           </div>
 
@@ -314,8 +314,8 @@ cy.get('#total').matchText('Total: $14.00');`}
           className="mb-4"
         />
         <p className="text-sm text-muted-foreground mb-6">
-          The Cypress integration is covered by unit tests with a fake <code>cy</code>, but has not been run inside a
-          real Cypress yet.
+          Tested in Cypress 13.17 (Electron, Linux) with 5 specs, including the failing cases. Other Cypress versions
+          and browsers are untested.
         </p>
       </section>
 
@@ -390,7 +390,7 @@ cy.get('#total').matchText('Total: $14.00');`}
             </a>
             <a
               href={ROUTES.HOME}
-              className="inline-flex px-6 py-3 border border-primary text-primary rounded-lg font-medium hover:bg-primary/5 transition-colors"
+              className="inline-flex px-6 py-3 border border-primary bg-background text-primary rounded-lg font-medium hover:bg-primary/5 transition-colors"
             >
               Try Browser OCR
             </a>
