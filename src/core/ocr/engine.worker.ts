@@ -7,7 +7,10 @@
  *
  * Protocol (see types.ts). Every request carries an `id`; the reply carries the same `id`.
  *   INIT       { lang? }   load the engine and language data (idempotent for the same lang)
- *   RECOGNIZE  { image }   run OCR; initialises with 'eng' first if INIT was not sent
+ *   RECOGNIZE  { image, offline? }  run OCR; initialises with 'eng' first if INIT was not sent.
+ *              The reply carries `network`: what the worker itself requested during the run.
+ *              With offline: true, fetch / XHR in the worker are refused for the run, which only
+ *              succeeds if INIT already loaded everything.
  *   TERMINATE              free the engine; the worker can be INIT-ed again afterwards
  * While recognising, `PROGRESS` messages (same id) report { status, progress 0-1 }.
  *
@@ -18,6 +21,7 @@
  * worker global, so it can be unit-tested with a fake recogniser.
  */
 
+import { startNetworkProof } from '../privacy/networkProof';
 import { getTesseractWorkerOptions } from './tesseractConfig';
 import type {
   BBox,
@@ -148,14 +152,22 @@ export function createEngineController(
         }
         case 'RECOGNIZE': {
           const r = await ensure(lang ?? 'eng');
+          const proof = startNetworkProof({ offline: request.offline === true });
           const t0 = now();
-          const { data } = await r.recognize(request.image);
+          let data: RawData;
+          try {
+            ({ data } = await r.recognize(request.image));
+          } finally {
+            proof.stop(); // always restore fetch / XHR, even if recognition threw
+          }
           const durationMs = Math.round(now() - t0);
+          const network = proof.getAudit();
           post({
             id: request.id,
             action: 'RECOGNIZE',
             ok: true,
             result: toOCRResult(data, durationMs, heapBytes()),
+            network,
           });
           return;
         }

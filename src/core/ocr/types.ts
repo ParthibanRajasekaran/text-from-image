@@ -1,3 +1,5 @@
+import type { NetworkAudit } from '../privacy/networkProof';
+
 /**
  * Shared types for the local OCR pipeline (src/core/ocr).
  *
@@ -40,11 +42,24 @@ export type OCRImageInput = Blob | ArrayBuffer | Uint8Array;
 
 export type EngineRequest =
   | { id: number; action: 'INIT'; lang?: string }
-  | { id: number; action: 'RECOGNIZE'; image: OCRImageInput }
+  | {
+      id: number;
+      action: 'RECOGNIZE';
+      image: OCRImageInput;
+      /** Refuse fetch / XHR / sendBeacon inside the worker for this run (see networkProof.ts). */
+      offline?: boolean;
+    }
   | { id: number; action: 'TERMINATE' };
 
 export type EngineResponse =
   | { id: number; action: 'INIT' | 'TERMINATE'; ok: true }
-  | { id: number; action: 'RECOGNIZE'; ok: true; result: OCRResult }
+  | {
+      id: number;
+      action: 'RECOGNIZE';
+      ok: true;
+      result: OCRResult;
+      /** Requests the worker itself made during the run. The nested Tesseract worker is not covered. */
+      network: NetworkAudit;
+    }
   | { id: number; action: EngineRequest['action']; ok: false; error: string }
   | { id: number; action: 'PROGRESS'; ok: true; status: string; progress: number };

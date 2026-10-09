@@ -87,6 +87,36 @@ describe('createEngineController', () => {
     expect(res.result.words).toHaveLength(2);
   });
 
+  it('RECOGNIZE reports what the worker requested, and restores fetch afterwards', async () => {
+    const before = globalThis.fetch;
+    const { c, out } = setup(async () => ({
+      recognize: async () => {
+        await globalThis.fetch('data:text/plain,hi').catch(() => undefined);
+        return { data: fakeData() };
+      },
+      terminate: async () => undefined,
+    }));
+    await c.handle({ id: 1, action: 'RECOGNIZE', image });
+    const res = out[0];
+    if (res.action !== 'RECOGNIZE' || !res.ok) throw new Error('unexpected');
+    expect(res.network.requests.map((r) => r.method)).toContain('GET');
+    expect(globalThis.fetch).toBe(before);
+  });
+
+  it('offline: true makes the worker refuse network calls during the run', async () => {
+    let error = '';
+    const { c, out } = setup(async () => ({
+      recognize: async () => {
+        await globalThis.fetch('https://example.test/x').catch((e: Error) => (error = e.message));
+        return { data: fakeData() };
+      },
+      terminate: async () => undefined,
+    }));
+    await c.handle({ id: 1, action: 'RECOGNIZE', image, offline: true });
+    expect(error).toMatch(/offline mode/);
+    expect(out[0]).toMatchObject({ ok: true });
+  });
+
   it('RECOGNIZE initialises by itself if INIT was skipped', async () => {
     const { c, out, make } = setup();
     await c.handle({ id: 1, action: 'RECOGNIZE', image });
