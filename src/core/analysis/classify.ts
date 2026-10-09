@@ -12,6 +12,10 @@
 
 import type { OCRLine, OCRWord } from '../ocr/types';
 import type { ContrastResult } from './contrast';
+import { normalizeText, similarity } from '../../../packages/rendercheck/src/core/text';
+
+// One implementation of text comparison, shared with the Playwright / Cypress matchers.
+export { normalizeText, similarity };
 
 export const LOW_CONFIDENCE = 80;
 
@@ -31,26 +35,6 @@ export interface TargetMatch {
   similarity: number;
   /** The expected text occurs verbatim (after normalisation) in the line. */
   contained: boolean;
-}
-
-/** Lowercase and collapse whitespace. Everything else (currency symbols, punctuation) is kept. */
-export const normalizeText = (s: string): string => s.toLowerCase().replace(/\s+/g, ' ').trim();
-
-/** 1 - editDistance / longerLength on normalised text. */
-export function similarity(a: string, b: string): number {
-  const x = normalizeText(a);
-  const y = normalizeText(b);
-  if (x === y) return 1;
-  if (!x.length || !y.length) return 0;
-  let prev = Array.from({ length: y.length + 1 }, (_, j) => j);
-  for (let i = 1; i <= x.length; i++) {
-    const cur = [i];
-    for (let j = 1; j <= y.length; j++) {
-      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (x[i - 1] === y[j - 1] ? 0 : 1));
-    }
-    prev = cur;
-  }
-  return 1 - prev[y.length] / Math.max(x.length, y.length);
 }
 
 /**

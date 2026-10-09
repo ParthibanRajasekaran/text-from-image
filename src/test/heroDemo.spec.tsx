@@ -135,7 +135,7 @@ describe('<HeroDemo />', () => {
     fireEvent.change(screen.getByTestId('hero-demo-expected'), { target: { value: 'Total: $14.00' } });
     await waitFor(() =>
       expect(screen.getByTestId('hero-demo-status').textContent).toContain(
-        'Expected to find text "Total: $14.00" but OCR read "Total: €14.00" (Confidence: 96%)'
+        'Expected to find text "[Total: $14.00]" but OCR read "[Total: €14.00]" (Confidence: 96%)'
       )
     );
     const total = screen.getAllByTestId('hero-demo-box').find((b) => b.getAttribute('data-text') === 'Total:')!;

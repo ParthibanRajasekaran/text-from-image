@@ -281,7 +281,7 @@ export function HeroDemo({ className = '', createEngine, readPixels = readImageD
     if (phase === 'done') {
       const base = `${words.length} words: ${counts.pass} passed, ${counts['low-confidence']} low confidence, ${counts.fail} failed.`;
       if (mismatch)
-        return `${base} Expected to find text "${expected.trim()}" but OCR read "${mismatch.line.text.trim()}" (Confidence: ${Math.round(mismatch.line.confidence)}%).`;
+        return `${base} Expected to find text "[${expected.trim()}]" but OCR read "[${mismatch.line.text.trim()}]" (Confidence: ${Math.round(mismatch.line.confidence)}%).`;
       if (expected.trim() && !target) return `${base} The expected text was not found in the image.`;
       return base;
     }

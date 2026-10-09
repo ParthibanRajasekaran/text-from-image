@@ -96,10 +96,10 @@ export default function RenderCheck() {
               <strong>1. Take a screenshot</strong> — Use `page.screenshot()` in Playwright or `cy.screenshot()` in Cypress
             </li>
             <li>
-              <strong>2. Pass to verify()</strong> — Call RenderCheck with the image and expected text
+              <strong>2. Assert with toShowText()</strong> — RenderCheck reads the screenshot locally and compares it with the expected text
             </li>
             <li>
-              <strong>3. Get results</strong> — `outcome: 'pass'` if all expected text found, `'fail'` if not
+              <strong>3. Get results</strong> — the assertion passes, or fails with what OCR read and how it differs
             </li>
             <li>
               <strong>4. Assert</strong> — `expect(result.outcome).toBe('pass')` in your test
@@ -189,7 +189,7 @@ export default function RenderCheck() {
             className="mb-4"
           />
           <p className="text-sm text-foreground/90">
-            Available on npm as <code className="bg-code-bg text-code-text px-1 rounded">@freetextfromimage/rendercheck</code>. Requires Node ≥18.
+            Package: <code className="bg-code-bg text-code-text px-1 rounded">@freetextfromimage/rendercheck</code>. Runs OCR locally: no API key, no upload, no network calls. Requires Node ≥18 and Playwright or Cypress.
           </p>
         </section>
 
@@ -197,20 +197,21 @@ export default function RenderCheck() {
         <section id="quick-start" className="border-t pt-8 scroll-mt-24">
           <h2 className="text-2xl font-bold text-foreground mb-6">Quick Start</h2>
           <CodeBlock
-            code={`import { verify } from '@freetextfromimage/rendercheck';
+            code={`import { test } from '@playwright/test';
+import { expect } from '@freetextfromimage/rendercheck/playwright';
 
-test('checkout shows correct currency', async ({ page }) => {
+test('checkout shows the correct total', async ({ page }) => {
   await page.goto('https://example.com/checkout');
-  const screenshot = await page.screenshot();
 
-  const result = await verify({
-    imageBuffer: screenshot,
-    expectedText: 'Total: £99.99',
-    apiKey: process.env.RENDERCHECK_API_KEY,
+  await expect(page).toShowText('Total: $14.00', {
+    minConfidence: 85,
+    minContrastRatio: 4.5,
   });
+});
 
-  expect(result.outcome).toBe('pass');
-});`}
+// If the page shows "Total: €14.00" instead:
+//   Expected to find text "[Total: $14.00]" but OCR read "[Total: €14.00]" (Confidence: 96%)
+//     Diff: Total: [$]14.00  →  Total: [€]14.00`}
             language="typescript"
             filename="checkout.spec.ts"
           />
@@ -221,21 +222,18 @@ test('checkout shows correct currency', async ({ page }) => {
           <h2 className="text-2xl font-bold text-foreground mb-6">API Reference</h2>
 
           <CodeBlock
-            code={`interface VerifyOptions {
-  imagePath?: string;           // Path to image file
-  imageBuffer?: Buffer;         // Raw image buffer
-  expectedText: string;         // Text you expect to find
-  apiKey?: string;              // Optional API key for API mode
-}
+            code={`await expect(page | locator).toShowText(expected: string, options?: {
+  region?: { x: number; y: number; width: number; height: number };
+  minConfidence?: number;     // OCR confidence 0-100 (default 80)
+  minContrastRatio?: number;  // WCAG contrast, e.g. 4.5 (off unless set)
+  exact?: boolean;            // whole region text must equal expected
+  ignoreCase?: boolean;       // default false
+  dom?: boolean;              // locator only: also compare with innerText (default true)
+  timeout?: number;           // retry window in ms (default 5000)
+});
 
-interface VerificationResult {
-  outcome: 'pass' | 'fail' | 'partial';
-  foundWords: string[];         // Words found in image
-  missingWords: string[];       // Words not found
-  extractedText: string;        // Full extracted text
-  confidence: number;           // OCR confidence (0-1)
-  message: string;              // Human-readable result
-}`}
+// Cypress: cy.matchText(expected, options)
+// Any runner: verifyText({ image, expected, options }) from '@freetextfromimage/rendercheck/core'`}
             language="typescript"
             filename="types.ts"
             className="mb-6"
@@ -243,16 +241,19 @@ interface VerificationResult {
 
           <div className="space-y-4">
             <div>
-              <h3 className="font-semibold text-foreground mb-2">Return Value Meanings</h3>
+              <h3 className="font-semibold text-foreground mb-2">Why an assertion fails</h3>
               <ul className="space-y-2 text-sm text-foreground/90">
                 <li>
-                  <strong>pass:</strong> All expected words found
+                  <strong>Text not found:</strong> says what OCR read instead, with a character-level diff
                 </li>
                 <li>
-                  <strong>partial:</strong> Some expected words found
+                  <strong>Low confidence:</strong> the text was found but OCR was not sure of it
                 </li>
                 <li>
-                  <strong>fail:</strong> No expected words found or error
+                  <strong>Insufficient contrast:</strong> the text was read, but is too faint (WCAG)
+                </li>
+                <li>
+                  <strong>DOM mismatch:</strong> the pixels and the element's DOM text disagree
                 </li>
               </ul>
             </div>
@@ -264,7 +265,7 @@ interface VerificationResult {
           <h2 className="text-2xl font-bold text-foreground mb-6">Limitations</h2>
           <div className="space-y-3">
             <p className="text-foreground/90">
-              <strong>Verifies visible text only.</strong> Does not check layout, colour, spacing, or accessibility.
+              <strong>Verifies visible text, and its contrast.</strong> Does not check layout or spacing.
             </p>
             <p className="text-foreground/90">
               <strong>OCR accuracy depends on image quality.</strong> High-contrast, clear text yields best results.

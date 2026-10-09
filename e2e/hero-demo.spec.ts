@@ -58,7 +58,7 @@ test.describe('RenderCheck hero demo', () => {
 
     await page.getByTestId('hero-demo-expected').fill('Total: $14.00');
     const status = page.getByTestId('hero-demo-status');
-    await expect(status).toContainText('Expected to find text "Total: $14.00" but OCR read');
+    await expect(status).toContainText('Expected to find text "[Total: $14.00]" but OCR read "[Total: €14.00]"');
     test.info().annotations.push({ type: 'status', description: (await status.innerText()) });
     const mismatches = await page.locator('[data-testid="hero-demo-box"][data-reason="mismatch"]').count();
     expect(mismatches).toBeGreaterThan(0);
