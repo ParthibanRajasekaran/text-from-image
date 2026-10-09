@@ -74,6 +74,7 @@
     "test:example": "playwright test -c examples/playwright/playwright.config.ts",
     "test:cypress": "cypress run --project examples/cypress --browser electron",
     "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build",
     "test:offline": "unshare -rn env RENDERCHECK_EXPECT_NO_NETWORK=1 vitest run __tests__/offline.spec.ts"
   },
   "dependencies": {

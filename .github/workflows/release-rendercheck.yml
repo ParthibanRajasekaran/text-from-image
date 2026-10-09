@@ -1,0 +1,50 @@
+name: Release RenderCheck SDK
+
+# Publishes @freetextfromimage/rendercheck to npm with no stored token, using npm trusted publishing (OIDC).
+# One-time setup on npmjs.com: package -> Settings -> Trusted Publisher -> GitHub Actions ->
+#   owner ParthibanRajasekaran, repository text-from-image, workflow file release-rendercheck.yml.
+# Release: bump packages/rendercheck/package.json, merge, then push a tag:  git tag rendercheck-v0.2.1 && git push --tags
+
+on:
+  push:
+    tags: ['rendercheck-v*']
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  id-token: write # lets npm verify this workflow's identity
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: packages/rendercheck
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x # npm 11.5.1+ is required for trusted publishing
+          registry-url: https://registry.npmjs.org
+
+      - name: Tag matches package.json
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          want="rendercheck-v$(node -p "require('./package.json').version")"
+          [ "$GITHUB_REF_NAME" = "$want" ] || { echo "Tag $GITHUB_REF_NAME does not match package.json ($want)"; exit 1; }
+
+      - run: npm ci --legacy-peer-deps
+      - run: npm run build
+      - run: npm test
+
+      - name: Tarball contains types and every entry point
+        run: |
+          npm pack --dry-run --json > pack.json
+          for f in dist/core/index.d.ts dist/playwright/index.d.ts dist/cypress/index.d.ts dist/cypress/plugin.d.ts dist/core/index.js dist/playwright/index.js dist/cypress/index.js dist/cypress/plugin.js; do
+            node -e "const f=require('./pack.json')[0].files.map(x=>x.path); process.exit(f.includes('$f')?0:1)" || { echo "missing $f"; exit 1; }
+          done
+
+      - name: Publish
+        run: npm publish --access public --provenance
