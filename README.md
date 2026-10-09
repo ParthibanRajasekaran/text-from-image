@@ -345,7 +345,7 @@ vercel --prod --confirm
 This project uses **aggressive code splitting** to minimize initial load time:
 
 - ✅ **Dynamic Imports** - Heavy libraries loaded only when needed
-- ✅ **Vendor Chunking** - React, Tesseract, Transformers in separate chunks
+- ✅ **Vendor Chunking** - React, Tesseract, motion in separate chunks
 - ✅ **Lazy Loading** - OCR engines loaded on-demand, not upfront
 - ✅ **Tree Shaking** - Unused code automatically removed
 
@@ -388,16 +388,7 @@ import Tesseract from 'tesseract.js';
 const { recognize } = await import('tesseract.js');
 ```
 
-**2. Transformers** (199 KB)
-```typescript
-// ❌ Before: Loaded upfront
-import { pipeline } from '@xenova/transformers';
-
-// ✅ After: Loaded only as fallback or when requested
-const { pipeline } = await import('@xenova/transformers');
-```
-
-**3. jsPDF** (40 KB)
+**2. jsPDF** (40 KB)
 ```typescript
 // ❌ Before: CDN script tag in index.html
 <script src="https://cdn.../jspdf.umd.min.js"></script>
@@ -497,7 +488,6 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 ### Third-Party Licenses
 
 - Tesseract.js - Apache 2.0
-- @xenova/transformers - Apache 2.0
 - React - MIT
 - Vite - MIT
 
@@ -506,8 +496,6 @@ All dependencies are compatible with commercial use.
 ## 🙏 Acknowledgments
 
 - [Tesseract.js](https://github.com/naptha/tesseract.js) - Traditional OCR engine
-- [Transformers.js](https://github.com/xenova/transformers.js) - Browser-based AI models
-- [Microsoft TrOCR](https://huggingface.co/microsoft/trocr-base-printed) - AI OCR model
 
 ## 📮 Contact
 

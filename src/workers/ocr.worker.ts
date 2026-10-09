@@ -3,7 +3,7 @@
  * 
  * Offloads heavy OCR library imports and processing to a separate worker thread.
  * This keeps the main thread responsive and defers loading of onnxruntime-web,
- * tesseract.js, and @xenova/transformers until user actually performs OCR.
+ * and tesseract.js until the user actually performs OCR.
  * 
  * Message Protocol:
  * Main → Worker: { type: 'RUN', payload: File }

@@ -135,7 +135,7 @@ export interface HistoryItem {
   filename: string;
   text: string;
   timestamp?: number;
-  method?: 'tesseract' | 'transformers';
+  method?: 'tesseract';
   confidence?: number;
 }
 

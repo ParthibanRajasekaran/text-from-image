@@ -127,7 +127,7 @@ export default function CopyTextFromImageGuide() {
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-3">How Our OCR Technology Works</h2>
         <p className="mb-3">
-          Optical Character Recognition (OCR) technology analyzes the shapes, patterns, and structures within an image to identify individual characters and words. Our implementation uses two complementary approaches:
+          Optical Character Recognition (OCR) technology analyzes the shapes, patterns, and structures within an image to identify individual characters and words. Our implementation runs the open-source Tesseract engine:
         </p>
         <div className="mb-4">
           <h3 className="text-xl font-medium mb-2">Fast OCR Engine (Tesseract)</h3>
@@ -141,20 +141,8 @@ export default function CopyTextFromImageGuide() {
             <li>Computer-generated images containing text</li>
           </ul>
         </div>
-        <div className="mb-4">
-          <h3 className="text-xl font-medium mb-2">AI-Powered Fallback (Transformers)</h3>
-          <p className="mb-2">
-            When the fast engine encounters challenges—such as unusual fonts, poor lighting, or handwritten content—our system automatically switches to an advanced AI model. This backup method handles:
-          </p>
-          <ul className="list-disc ml-6 space-y-1">
-            <li>Handwritten notes and annotations</li>
-            <li>Stylized or decorative fonts</li>
-            <li>Low-quality or compressed images</li>
-            <li>Text with background noise or watermarks</li>
-          </ul>
-        </div>
         <p className="mt-3">
-          Both engines run entirely in your browser using WebAssembly and client-side JavaScript. No image data ever leaves your device, ensuring complete privacy.
+          The OCR engine runs entirely in your browser using WebAssembly and client-side JavaScript. No image data ever leaves your device, ensuring complete privacy.
         </p>
       </section>
       <section className="mb-8">

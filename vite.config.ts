@@ -82,17 +82,8 @@ export default defineConfig(({ mode: _mode }) => {
               
               // Split heavy OCR dependencies into separate lazy-loaded chunks
               // Each chunk loads only when user performs OCR on tool pages
-              if (id.includes('node_modules/onnxruntime-web') ||
-                  id.includes('node_modules/onnxruntime-common')) {
-                return 'onnx-vendor';
-              }
-              
               if (id.includes('node_modules/tesseract.js')) {
                 return 'tesseract-vendor';
-              }
-              
-              if (id.includes('node_modules/@xenova/transformers')) {
-                return 'transformers-vendor';
               }
               
               // Editor & UI vendor chunk - framer-motion for animations

@@ -122,7 +122,7 @@ function generateReport() {
   const expectedChunks = [
     { pattern: 'react-vendor', description: 'React framework' },
     { pattern: 'editor-vendor', description: 'Framer Motion animations' },
-    { pattern: 'ocr-vendor', description: 'Tesseract + ONNX + Transformers (lazy-loaded)' },
+    { pattern: 'ocr-vendor', description: 'Tesseract (lazy-loaded)' },
     { pattern: 'vendor', description: 'Other dependencies' },
     { pattern: 'index-', description: 'Entry point' },
   ];
