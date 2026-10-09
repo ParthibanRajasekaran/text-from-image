@@ -196,7 +196,6 @@ pages/               # SEO-optimized route pages (lazy-loaded)
     
 components/         # Reusable React components
   ├── v3/           # Premium UI (Aurora, Glass, History)
-  ├── AdSlot.tsx    # AdSense slot containers
   └── ...
 
 hooks/              # Custom React hooks (useShortcuts, useLocalHistory, etc.)
@@ -246,7 +245,6 @@ See `.env.example` for all available flags:
 | Flag | Purpose | Default |
 |------|---------|---------|
 | `VITE_UX_V2` | Enable premium UI (Aurora/Glass) | `false` |
-| `VITE_ADSENSE_PUB_ID` | AdSense publisher ID (prod only) | unset |
 | `VITE_SITE_URL` | Canonical domain for SEO | computed |
 | `VITE_OCR_MIN_CONFIDENCE` | Tesseract confidence threshold | `60` |
 
@@ -428,33 +426,13 @@ const { default: jsPDF } = await import('jspdf');
 
 ---
 
-## 💸 Monetization (AdSense)
+## 🔒 No ads, no third-party scripts
 
-To apply for AdSense and enable monetization:
+The site ships no advertising and loads nothing from a third party at runtime. This is deliberate:
 
-1. Go to AdSense “Sites” and add `https://freetextfromimage.com`.
-2. Ensure the site has live policy pages (`/privacy-policy`, `/terms`, `/about`, `/contact`) and helpful guides (`/image-to-text`, etc.).
-3. Add a Google-certified CMP and wire its callback to `updateConsent()` in `src/consent/consent.ts`.
-   - Consent Mode v2 must fire before any ad scripts load.
-4. Set `VITE_ADSENSE_PUB_ID` in Vercel (Production) **after approval**.
-5. Add your publisher ID to `/public/ads.txt`.
-6. Use Search Console to submit your sitemap and fix Page Indexing/Core Web Vitals issues.
-7. Placement rules:
-   - No ads near upload/CTA areas; avoid accidental clicks.
-   - All ad slots reserve space to prevent CLS.
-   - Ads only load after consent and in Production.
-
-**Testing:**
-- Run `npm run sitemap` to generate `/public/sitemap.xml`.
-- Run `npm run build && npm run test` to verify build and ad readiness.
-
-**CMP Integration:**
-- See comments in `src/consent/consent.ts` for wiring a certified CMP callback.
-- Verify Consent Mode v2 fires before ads script loads.
-
-**AdSense Approval:**
-- Update `/public/ads.txt` with your real publisher ID after approval.
-- Use AdSense dashboard for auto ad configuration.
+- The Content-Security-Policy in `vercel.json` is `script-src 'self' 'wasm-unsafe-eval'` and `connect-src 'self'`, so the OCR worker and WebAssembly run from the site's own origin and cannot be interfered with.
+- RenderCheck's pitch is that nothing leaves the browser. An ad network would fill the network panel with requests that make that claim hard to believe.
+- `e2e/no-third-party.spec.ts` fails if any route requests another origin or if the policy allows an ad host.
 
 **SEO:**
 - All pages have unique meta tags and canonical URLs.

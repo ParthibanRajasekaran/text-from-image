@@ -5,7 +5,6 @@ import { FAQSchema } from "../components/FAQSchema";
 import { Link } from "react-router-dom";
 import { GuideLayout } from "../src/layouts/GuideLayout";
 import { TableWrap } from "../src/components/TableWrap";
-import { InArticle } from "../src/ads/InArticle";
 
 const faqs = [
   {
@@ -41,10 +40,6 @@ const faqs = [
 // FAQSchema returns a <script> tag with FAQPage JSON-LD
 
 export default function CopyTextFromImageGuide() {
-  const isPreview = import.meta.env.MODE === "preview";
-  const allowPreview = import.meta.env.VITE_ENABLE_ADS_IN_PREVIEW === "true";
-  const slotsEnabled = (isPreview && allowPreview) || import.meta.env.VITE_ADS_SLOTS_ENABLED === "true";
-  const consent = { ad_storage: 'denied' as const, ad_user_data: 'denied' as const, ad_personalization: 'denied' as const };
   const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
   const canonicalPath = '/copy-text-from-image';
   const canonicalAbsolute = new URL(canonicalPath, SITE_URL).toString();
@@ -352,7 +347,6 @@ export default function CopyTextFromImageGuide() {
         </TableWrap>
       </section>
 
-      {slotsEnabled && <InArticle consent={consent} />}
 
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-3">FAQs</h2>

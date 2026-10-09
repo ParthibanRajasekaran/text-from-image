@@ -18,7 +18,6 @@ import { useShortcuts, getCommonShortcuts } from './hooks/useShortcuts';
 import { useLiveRegion } from './hooks/useLiveRegion';
 import { isUXV2Enabled } from './utils/env';
 import { COMMIT } from './lib/version';
-import { AutoAds } from './src/ads/AutoAds';
 
 function App() {
   // Accessibility: Add skip link and enhanced error handling
@@ -181,7 +180,6 @@ function App() {
       >
         Skip to main content
       </a>
-      <AutoAds />
       <header className="py-4 px-6 border-b border-border sticky top-0 bg-background/80 backdrop-blur-sm z-10">
         <div className="container mx-auto grid grid-cols-3 items-center">
           <div aria-hidden="true" /> {/* Empty cell for spacing */}
