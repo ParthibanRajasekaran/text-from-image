@@ -17,6 +17,7 @@
     "vendor:ocr": "node scripts/vendor-ocr-assets.mjs",
     "vendor:ocr:check": "node scripts/vendor-ocr-assets.mjs --check",
     "test:a11y": "vitest run src/**/*.a11y.spec.tsx --reporter=default",
+    "test:e2e": "playwright test",
     "lint": "eslint . --max-warnings=0",
     "lint:a11y": "eslint . --max-warnings=0",
     "analyze": "ANALYZE=true npm run build",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "@axe-core/react": "^4.11.0",
+    "@playwright/test": "^1.56.1",
     "@tesseract.js-data/eng": "^1.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
