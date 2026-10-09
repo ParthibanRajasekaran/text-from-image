@@ -34,6 +34,7 @@ export default defineConfig(({ mode: _mode }) => {
             // Core unit & integration tests
             'src/**/*.spec.ts',
             'src/**/*.spec.tsx',
+            'components/**/*.spec.tsx',
             // Accessibility tests
             'src/**/*.a11y.spec.tsx',
             // Spec-driven tests

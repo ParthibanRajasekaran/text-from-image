@@ -38,6 +38,7 @@ const AIUIBugGallery = lazy(() => import('./pages/AIUIBugGallery'));
 const OcrChallengeLab = lazy(() => import('./pages/OcrChallengeLab'));
 const Labs = lazy(() => import('./pages/Labs'));
 const Changelog = lazy(() => import('./pages/Changelog'));
+const RedactImage = lazy(() => import('./pages/RedactImage'));
 
 // Route path constants - single source of truth for all route paths
 export const ROUTES = {
@@ -63,6 +64,7 @@ export const ROUTES = {
   AI_UI_BUG_GALLERY: '/ai-ui-bug-gallery',
   OCR_CHALLENGE_LAB: '/ocr-challenge-lab',
   CHANGELOG: '/changelog',
+  REDACT_IMAGE: '/redact-image',
 } as const;
 
 // Always use HomepageMinimalPremium as the home component (minimal-premium redesign)
@@ -191,6 +193,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div className="p-8">Loading...</div>}>
             <OcrChallengeLab />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'redact-image',
+        element: (
+          <Suspense fallback={<div className="p-8">Loading...</div>}>
+            <RedactImage />
           </Suspense>
         ),
       },

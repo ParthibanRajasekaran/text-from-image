@@ -17,6 +17,7 @@ const ROUTES = [
   '/access',
   '/verify-debt-score',
   '/verify-debt-score#r=012200000', // a finished result: radar, share buttons
+  '/redact-image',
   '/ai-ui-bug-gallery',
   '/ocr-challenge-lab',
   '/changelog',

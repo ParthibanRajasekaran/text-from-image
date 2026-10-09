@@ -45,6 +45,14 @@ export default function Labs() {
       href: ROUTES.OCR_CHALLENGE_LAB,
       teaches: 'Practical verification skills and confidence',
     },
+    {
+      id: 'redact-image',
+      title: 'Redact an image',
+      status: 'live' as const,
+      description: 'Cover emails, card numbers, IBANs, IDs and API keys in a screenshot before you share it. Runs in your browser; the image is never uploaded.',
+      href: ROUTES.REDACT_IMAGE,
+      teaches: 'How local OCR can protect what you share',
+    },
   ];
 
   return (
