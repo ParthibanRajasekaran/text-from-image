@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useSEO } from '../src/seo';
 import { EnterpriseLayout } from '../components/layouts/EnterpriseLayout';
 import { ScrollNav } from '../components/ui/ScrollNav';
 import { CodeBlock } from '../components/ui/CodeBlock';
 import { StatusBadge } from '../components/ui/StatusBadge';
 import { ROUTES } from '../router';
+
+// Loaded on demand: the demo pulls in the OCR client and analysis code.
+const HeroDemo = React.lazy(() => import('../components/HeroDemo'));
 
 const sections = [
   { id: 'problem', label: 'The Problem' },
@@ -56,6 +59,10 @@ export default function RenderCheck() {
           Verify what users actually see in AI-generated UI.
         </p>
       </section>
+
+      <Suspense fallback={<div className="mb-12 h-64 rounded-2xl border border-white/10 bg-[#0B0D12]" aria-hidden="true" />}>
+        <HeroDemo className="mb-12" />
+      </Suspense>
 
       <div className="space-y-12">
         {/* Problem */}

@@ -4,7 +4,10 @@ import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { RouteErrorBoundary, summariseRouteError } from '../../components/RouteErrorBoundary';
 import { router } from '../../router';
 
-function Boom(): JSX.Element {
+// The data router exposes routes as AgnosticDataRouteObject, which omits React-only fields.
+type RouteWithElement = { errorElement?: unknown };
+
+function Boom(): never {
   throw new ReferenceError('useTheme is not defined');
 }
 
@@ -43,7 +46,7 @@ describe('RouteErrorBoundary', () => {
 describe('router error boundaries', () => {
   it('has an errorElement on the root route', () => {
     const root = router.routes[0];
-    expect(root.errorElement).toBeTruthy();
+    expect((root as RouteWithElement).errorElement).toBeTruthy();
   });
 
   it('wraps every child route in a layout route that has an errorElement', () => {
@@ -52,7 +55,7 @@ describe('router error boundaries', () => {
     expect(children).toHaveLength(1);
     const layout = children[0];
     expect(layout.path).toBeUndefined();
-    expect(layout.errorElement).toBeTruthy();
+    expect((layout as RouteWithElement).errorElement).toBeTruthy();
     // And it really does contain the application routes.
     const paths = (layout.children ?? []).map((c) => c.path).filter(Boolean);
     expect(paths).toEqual(

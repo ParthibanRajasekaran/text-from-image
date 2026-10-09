@@ -1,4 +1,5 @@
-import { test, expect, type BrowserContext, type Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
+import { record, cspViolations } from './helpers';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -23,49 +24,6 @@ const FIXTURE = path.join(
   'ocr-sample.png'
 );
 const EXPECTED_TEXT = 'RenderCheck verifies visible text Total: $14.00';
-
-// The only third-party hosts the CSP allows (web fonts). They are answered locally so the
-// tests do not depend on the network, and they are excluded from the OCR-run assertions.
-const FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
-
-interface Recorder {
-  problems: string[];
-  requests: Array<{ url: string; method: string; at: number }>;
-}
-
-async function record(context: BrowserContext, page: Page): Promise<Recorder> {
-  const rec: Recorder = { problems: [], requests: [] };
-
-  // Console messages from the page AND from its workers.
-  context.on('console', (msg) => {
-    if (msg.type() === 'error') rec.problems.push(`console.error: ${msg.text()}`);
-  });
-  page.on('pageerror', (err) => rec.problems.push(`pageerror: ${err.message}`));
-  context.on('request', (req) => {
-    rec.requests.push({ url: req.url(), method: req.method(), at: Date.now() });
-  });
-
-  // Catch CSP violations raised in the page itself, even if they are not logged.
-  await page.addInitScript(() => {
-    document.addEventListener('securitypolicyviolation', (e) => {
-      (window as unknown as { __csp: string[] }).__csp ??= [];
-      (window as unknown as { __csp: string[] }).__csp.push(
-        `${e.violatedDirective} blocked ${e.blockedURI}`
-      );
-    });
-  });
-
-  for (const host of FONT_HOSTS) {
-    await context.route(`https://${host}/**`, (route) =>
-      route.fulfill({ status: 200, contentType: host.includes('googleapis') ? 'text/css' : 'font/woff2', body: '' })
-    );
-  }
-  return rec;
-}
-
-async function cspViolations(page: Page): Promise<string[]> {
-  return page.evaluate(() => (window as unknown as { __csp?: string[] }).__csp ?? []);
-}
 
 /** Character similarity in [0, 1]: 1 - editDistance / longerLength, ignoring case and spacing. */
 function similarity(a: string, b: string): number {

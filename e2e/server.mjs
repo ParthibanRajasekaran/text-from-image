@@ -12,6 +12,7 @@
  * Only the `(.*)` wildcard is supported in `source`, which is all vercel.json uses. Any
  * other pattern throws, so a change to vercel.json cannot be silently ignored.
  */
+/* global process, URL, console */
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -39,7 +40,7 @@ const MIME = {
 };
 
 function sourceToRegExp(source) {
-  const unsupported = source.replace(/\(\.\*\)/g, '').match(/[()*+?\[\]{}|\\]/);
+  const unsupported = source.replace(/\(\.\*\)/g, '').match(/[()*+?[\]{}|\\]/);
   if (unsupported) throw new Error(`e2e/server.mjs does not support this vercel.json source: ${source}`);
   const escaped = source.split('(.*)').map((part) => part.replace(/[.]/g, '\\.'));
   return new RegExp(`^${escaped.join('.*')}$`);
