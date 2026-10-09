@@ -56,13 +56,16 @@ function resolveFile(pathname) {
   const candidate = path.normalize(path.join(dist, decoded));
   if (!candidate.startsWith(dist)) return null; // path traversal
   if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate;
+  const index = path.join(candidate, 'index.html'); // prerendered route, as on Vercel
+  if (fs.existsSync(index) && fs.statSync(index).isFile()) return index;
   return null;
 }
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   let file = resolveFile(url.pathname);
-  if (!file) file = path.join(dist, 'index.html'); // SPA rewrite, same as vercel.json
+  if (!file) file = path.join(dist, '_shell.html'); // SPA rewrite, same as vercel.json (falls back to index.html when not prerendered)
+  if (!fs.existsSync(file)) file = path.join(dist, 'index.html');
 
   for (const rule of headerRules) {
     if (rule.match.test(url.pathname)) {

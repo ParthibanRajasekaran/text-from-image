@@ -8,7 +8,7 @@
     "dev": "vite",
     "prebuild": "node scripts/validate-env.mjs",
     "build": "vite build",
-    "postbuild": "node scripts/bundle-report.mjs",
+    "postbuild": "node scripts/prerender.mjs && node scripts/bundle-report.mjs",
     "check:budgets": "node scripts/check-budgets.mjs",
     "preview": "vite preview",
     "test": "vitest run --reporter=default",

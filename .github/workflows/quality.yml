@@ -99,6 +99,8 @@ jobs:
         run: npm run test:e2e
         env:
           CI: 'true'
+          # In CI a route that fails to prerender is an error; on the host it only falls back to the SPA.
+          PRERENDER_REQUIRED: '1'
 
       - name: Upload Playwright traces on failure
         if: failure()

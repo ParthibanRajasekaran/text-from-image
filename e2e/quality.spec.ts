@@ -28,6 +28,8 @@ const require = createRequire(import.meta.url);
 const AXE_SOURCE = readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 
 async function runAxe(page: Page) {
+  // Contrast is measured on what is painted, so let entrance animations stop changing first.
+  await page.evaluate(async () => { const snap = () => [...document.querySelectorAll('[style*="opacity"]')].map((e) => getComputedStyle(e).opacity).join(','); let prev = snap(); for (let i = 0; i < 40; i++) { await new Promise((r) => setTimeout(r, 250)); const cur = snap(); if (cur === prev) return true; prev = cur; } return false; });
   await page.evaluate(AXE_SOURCE);
   return page.evaluate(async () => {
     // @ts-expect-error axe is injected above

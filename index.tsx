@@ -1,6 +1,6 @@
 import './index.css';
 import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import App from './App';
 import { AppRouter } from './router';
 import { isUXV2Enabled } from './utils/env';
@@ -28,9 +28,20 @@ const AppComponent = isUXV2Enabled() ? (
   </Suspense>
 ) : <App />;
 
-const root = ReactDOM.createRoot(rootElement);
-root.render(
+const tree = (
   <React.StrictMode>
     {AppComponent}
   </React.StrictMode>
 );
+
+// A prerendered page (scripts/prerender.mjs) already has its markup in #root. Hydrate it so the content
+// stays on screen while the route's code loads, instead of being cleared for a spinner.
+if (rootElement.querySelector('h1')) {
+  hydrateRoot(rootElement, tree, {
+    // A mismatch (for example a timestamp) makes React re-render that part on the client. That is
+    // recoverable and expected here, so it is not reported as an error.
+    onRecoverableError: () => {},
+  });
+} else {
+  createRoot(rootElement).render(tree);
+}

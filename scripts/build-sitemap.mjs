@@ -1,24 +1,14 @@
 // Build sitemap.xml from route list
-import { writeFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 
 // Use VITE_SITE_URL from env or fallback
 const siteUrl = process.env.VITE_SITE_URL || 'https://freetextfromimage.com';
 
-// All public routes (guides + legal pages)
-const routes = [
-  '/',
-  '/image-to-text',
-  '/extract-text-from-image',
-  '/copy-text-from-image',
-  '/jpg-to-word',
-  '/jpg-to-excel',
-  '/image-to-excel',
-  '/privacy-policy',
-  '/terms',
-  '/security',
-  '/about',
-  '/contact'
-];
+// Every route the app prerenders (ROUTES in router.tsx), so the sitemap cannot drift from the site.
+const routerSource = readFileSync(new URL('../router.tsx', import.meta.url), 'utf8');
+const block = routerSource.match(/export const ROUTES = \{([\s\S]*?)\} as const/);
+if (!block) throw new Error('Could not find ROUTES in router.tsx');
+const routes = [...block[1].matchAll(/:\s*'(\/[^']*)'/g)].map((m) => m[1]);
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

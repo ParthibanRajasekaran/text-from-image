@@ -1,11 +1,11 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "(npx playwright install chromium || true) && npm run build",
   "outputDirectory": "dist",
   "framework": null,
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "/_shell.html"
     }
   ],
   "ignoreCommand": "node scripts/should-build.mjs",
