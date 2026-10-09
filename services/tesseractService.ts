@@ -1,5 +1,6 @@
 import { autoPreprocess, preprocessForOCR } from '../utils/imagePreprocessing';
 import { OCRError, ErrorFactory, validateFile } from '../utils/errorHandling';
+import { recognizeLocal } from '../src/core/ocr/tesseractConfig';
 
 /**
  * Tesseract.js OCR Service (Enhanced with Preprocessing + Dynamic Loading)
@@ -28,16 +29,6 @@ import { OCRError, ErrorFactory, validateFile } from '../utils/errorHandling';
 
 const PROCESSING_MAX_SIZE_BYTES = 20 * 1024 * 1024; // 20 MB
 
-// Lazy-load Tesseract.js only when needed
-let tesseractModule: typeof import('tesseract.js') | null = null;
-
-async function getTesseract() {
-  if (!tesseractModule) {
-    tesseractModule = await import('tesseract.js');
-  }
-  return tesseractModule;
-}
-
 export const extractTextFromImage = async (
   file: File,
   onProgress?: (progress: number) => void,
@@ -59,14 +50,12 @@ export const extractTextFromImage = async (
       if (onProgress) onProgress(20);
     }
 
-    // Lazy-load Tesseract.js
-    const { recognize } = await getTesseract();
 
     // Create an image URL for Tesseract
     const imageUrl = URL.createObjectURL(processedFile);
 
     // Perform OCR with progress tracking
-    const result = await recognize(
+    const result = await recognizeLocal(
       imageUrl,
       'eng', // Language: English (you can add more: 'eng+spa+fra')
       {
@@ -136,12 +125,10 @@ export const extractTextWithConfidence = async (
       }
     }
 
-    // Lazy-load Tesseract.js
-    const { recognize } = await getTesseract();
 
     imageUrl = URL.createObjectURL(processedFile);
 
-    const result = await recognize(imageUrl, 'eng', {
+    const result = await recognizeLocal(imageUrl, 'eng', {
       logger: (info) => {
         if (info.status === 'recognizing text' && onProgress) {
           const adjustedProgress = usePreprocessing 
@@ -218,12 +205,10 @@ export const extractTextWithCustomPreprocessing = async (
     
     if (onProgress) onProgress(20);
 
-    // Lazy-load Tesseract.js
-    const { recognize } = await getTesseract();
 
     const imageUrl = URL.createObjectURL(processedFile);
 
-    const result = await recognize(imageUrl, 'eng', {
+    const result = await recognizeLocal(imageUrl, 'eng', {
       logger: (info) => {
         if (info.status === 'recognizing text' && onProgress) {
           onProgress(20 + Math.round(info.progress * 80));

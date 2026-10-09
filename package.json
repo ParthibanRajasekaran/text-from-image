@@ -14,6 +14,8 @@
     "test": "vitest run --reporter=default",
     "test:watch": "vitest",
     "sitemap": "node scripts/build-sitemap.mjs",
+    "vendor:ocr": "node scripts/vendor-ocr-assets.mjs",
+    "vendor:ocr:check": "node scripts/vendor-ocr-assets.mjs --check",
     "test:a11y": "vitest run src/**/*.a11y.spec.tsx --reporter=default",
     "lint": "eslint . --max-warnings=0",
     "lint:a11y": "eslint . --max-warnings=0",
@@ -45,6 +47,7 @@
   },
   "devDependencies": {
     "@axe-core/react": "^4.11.0",
+    "@tesseract.js-data/eng": "^1.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
