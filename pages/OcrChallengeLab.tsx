@@ -3,80 +3,38 @@ import { useSEO } from '../src/seo';
 import { EnterpriseLayout } from '../components/layouts/EnterpriseLayout';
 import { ScrollNav } from '../components/ui/ScrollNav';
 import { StatusBadge } from '../components/ui/StatusBadge';
+import { ChallengePlayer } from '../components/ChallengePlayer';
+import { CHALLENGES, challengeForDate, weekStart } from '../src/core/challenge/challenges';
 import { ROUTES } from '../router';
 
 const sections = [
   { id: 'challenge-of-week', label: 'Challenge of the Week' },
   { id: 'how-it-works', label: 'How It Works' },
-  { id: 'past-challenges', label: 'Past Challenges' },
+  { id: 'past-challenges', label: 'Practice' },
 ];
 
-interface Challenge {
-  id: string;
-  title: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  teaches: string;
-  expectedText: string;
-  imageUrl: string;
-  description: string;
-}
-
-// Current challenge (updated weekly/monthly)
-const CURRENT_CHALLENGE: Challenge = {
-  id: 'swiss-receipt-de',
-  title: 'Swiss receipt with German locale',
-  difficulty: 'hard',
-  teaches: 'Locale-specific number and date formats, currency symbol placement',
-  expectedText:
-    'Gesamtbetrag CHF 89.50 Datum: 15.06.2026 19:45 Uhr MwSt 7.7% EUR 6.81',
-  imageUrl: '/challenges/swiss-receipt.png',
-  description:
-    'A Swiss receipt rendered in German (de-CH locale). Verify that the date format (DD.MM.YYYY), currency format (CHF notation and number separator), and VAT calculation all match expected German/Swiss conventions.',
-};
-
-// Past challenges for reference
-const PAST_CHALLENGES: Challenge[] = [
-  {
-    id: 'us-invoice-eur',
-    title: 'US invoice with EUR currency',
-    difficulty: 'medium',
-    teaches: 'Currency symbol placement, decimal separator consistency',
-    expectedText: '€1.234,56 (European format with comma)',
-    imageUrl: '/challenges/eur-invoice.png',
-    description:
-      'Invoice generated for US user but rendered with EUR currency and European number formatting. Spot the mismatch.',
-  },
-  {
-    id: 'rtl-truncation',
-    title: 'Arabic text truncation',
-    difficulty: 'hard',
-    teaches: 'RTL text handling, overflow detection',
-    expectedText: 'مرحبا بك في المتجر',
-    imageUrl: '/challenges/rtl-truncation.png',
-    description:
-      'Product description in Arabic (RTL) is truncated because layout assumes LTR text width. Verify the full phrase appears.',
-  },
-];
+const DIFFICULTY_STYLE = {
+  easy: 'bg-green-500/20 text-green-800 dark:text-green-300',
+  medium: 'bg-amber-500/20 text-amber-800 dark:text-amber-300',
+  hard: 'bg-red-500/20 text-red-800 dark:text-red-300',
+} as const;
 
 export default function OcrChallengeLab() {
   const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
   const canonicalAbsolute = new URL('/ocr-challenge-lab', SITE_URL).toString();
 
   useSEO({
-    title: 'OCR Challenge Lab — Weekly Verification Challenges',
-    description: 'Test your OCR and verification skills with weekly challenges. Verify rendered output under real-world conditions.',
+    title: 'OCR Challenge Lab: Spot the Bug in a Screenshot, Graded',
+    description:
+      'A new screenshot with hidden bugs every week: wrong currency, swapped dates, cut-off text. Find them, rewrite them, and get a real score. Graded in your browser.',
     canonical: canonicalAbsolute,
   });
 
-  const [shareCardVisible, setShareCardVisible] = useState(false);
-  const [challengeCompleted, setChallengeCompleted] = useState(false);
-
-  const handleChallengeComplete = (success: boolean) => {
-    setChallengeCompleted(success);
-    if (success) {
-      setShareCardVisible(true);
-    }
-  };
+  const thisWeek = challengeForDate(new Date());
+  const [selectedId, setSelectedId] = useState(thisWeek.id);
+  const selected = CHALLENGES.find((c) => c.id === selectedId) ?? thisWeek;
+  const isThisWeek = selected.id === thisWeek.id;
+  const started = weekStart(new Date()).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 
   return (
     <EnterpriseLayout
@@ -87,179 +45,107 @@ export default function OcrChallengeLab() {
         { label: 'OCR Challenge Lab' },
       ]}
     >
-      {/* Hero */}
       <section className="mb-12">
-        <div className="flex items-center gap-3 mb-4">
-          <h1 className="text-4xl sm:text-5xl font-bold text-foreground">OCR Challenge Lab</h1>
+        <div className="mb-4 flex items-center gap-3">
+          <h1 className="text-4xl font-bold text-foreground sm:text-5xl">OCR Challenge Lab</h1>
           <StatusBadge variant="live" />
         </div>
-        <p className="text-lg text-muted-foreground max-w-2xl">
-          Test your OCR and visual verification skills with real-world challenges. A new challenge appears every week.
+        <p className="max-w-2xl text-lg text-muted-foreground">
+          Every week there is a screenshot with something wrong in it. Find the bugs, rewrite them, and get a real score. The kind of bug a DOM test lets through.
         </p>
       </section>
 
-      {/* Challenge of the Week */}
-      <section id="challenge-of-week" className="mb-12 border border-border rounded-lg p-8 bg-muted/30">
+      <section id="challenge-of-week" className="mb-12 rounded-lg border border-border bg-muted/30 p-6 sm:p-8">
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h2 className="text-2xl font-bold text-foreground">Challenge of the Week</h2>
-              <p className="text-sm text-muted-foreground mt-1">Published: {new Date().toLocaleDateString()}</p>
+              <h2 className="text-2xl font-bold text-foreground">{isThisWeek ? 'Challenge of the Week' : 'Practice challenge'}</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {isThisWeek ? `Week of ${started}` : 'An earlier challenge'}
+              </p>
             </div>
-            <span
-              className={`text-xs px-3 py-1 rounded font-medium ${
-                CURRENT_CHALLENGE.difficulty === 'easy'
-                  ? 'bg-green-500/20 text-green-800 dark:text-green-300'
-                  : CURRENT_CHALLENGE.difficulty === 'medium'
-                    ? 'bg-amber-500/20 text-amber-800 dark:text-amber-300'
-                    : 'bg-red-500/20 text-red-800 dark:text-red-300'
-              }`}
-            >
-              {CURRENT_CHALLENGE.difficulty.charAt(0).toUpperCase() + CURRENT_CHALLENGE.difficulty.slice(1)}
+            <span className={`rounded px-3 py-1 text-xs font-medium ${DIFFICULTY_STYLE[selected.difficulty]}`}>
+              {selected.difficulty.charAt(0).toUpperCase() + selected.difficulty.slice(1)}
             </span>
           </div>
-
           <div>
-            <h3 className="text-xl font-semibold text-foreground">{CURRENT_CHALLENGE.title}</h3>
-            <p className="text-sm text-muted-foreground mt-2">{CURRENT_CHALLENGE.teaches}</p>
+            <h3 className="text-xl font-semibold text-foreground">{selected.title}</h3>
+            <p className="mt-1 text-sm text-muted-foreground">You will practise: {selected.teaches}</p>
           </div>
-
-          <div className="space-y-2">
-            <p className="text-sm text-foreground/80">
-              <strong>Your task:</strong> {CURRENT_CHALLENGE.description}
-            </p>
-            <div className="bg-code-bg border border-code-border rounded p-3 mt-3">
-              <p className="font-mono text-xs text-code-text break-all">{CURRENT_CHALLENGE.expectedText}</p>
-            </div>
-          </div>
-
-          <img
-            src={CURRENT_CHALLENGE.imageUrl}
-            alt={CURRENT_CHALLENGE.title}
-            className="rounded-lg border border-border max-h-96 w-full object-cover"
-          />
-
-          <div className="flex gap-3">
-            <button
-              onClick={() => handleChallengeComplete(true)}
-              className="flex-1 px-4 py-3 bg-green-500/20 text-green-800 dark:text-green-300 border border-green-500/30 rounded-lg font-medium hover:bg-green-500/30 transition-colors"
-            >
-              ✓ I found all the text
-            </button>
-            <button
-              onClick={() => handleChallengeComplete(false)}
-              className="flex-1 px-4 py-3 bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30 rounded-lg font-medium hover:bg-amber-500/30 transition-colors"
-            >
-              ✗ Text is missing or wrong
-            </button>
-          </div>
-
-          {shareCardVisible && (
-            <div className="bg-black/40 border border-border rounded-lg p-4 space-y-3">
-              <p className="text-sm text-foreground">I passed this week's RenderCheck challenge!</p>
-              <div className="bg-code-bg rounded p-3 border border-code-border">
-                <p className="text-xs text-code-text font-mono">{CURRENT_CHALLENGE.title}</p>
-                <p className="text-xs text-code-text/70 font-mono mt-1">Difficulty: {CURRENT_CHALLENGE.difficulty}</p>
-              </div>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(
-                    `I passed this week's RenderCheck challenge: ${CURRENT_CHALLENGE.title}\n${SITE_URL}/ocr-challenge-lab`
-                  );
-                }}
-                className="w-full px-3 py-2 bg-accent/10 hover:bg-accent/20 text-accent border border-accent/30 rounded transition-all text-sm"
-              >
-                Copy result to share
-              </button>
-            </div>
-          )}
+          <React.Fragment key={selected.id}>
+            <ChallengePlayer challenge={selected} siteUrl={SITE_URL} />
+          </React.Fragment>
         </div>
       </section>
 
-      {/* How It Works */}
       <section id="how-it-works" className="mb-12 border-t pt-8">
-        <h2 className="text-2xl font-bold text-foreground mb-6">How It Works</h2>
-        <div className="space-y-4">
-          <div className="flex gap-4">
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-primary font-semibold">
-              1
-            </div>
-            <div>
-              <h3 className="font-semibold text-foreground">View the challenge image</h3>
-              <p className="text-sm text-foreground/80 mt-1">
-                A screenshot or document with rendered text. Your job: extract what you see.
-              </p>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-primary font-semibold">
-              2
-            </div>
-            <div>
-              <h3 className="font-semibold text-foreground">Match the expected text</h3>
-              <p className="text-sm text-foreground/80 mt-1">
-                We show you what should appear on screen. If you found it all, you passed.
-              </p>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-primary font-semibold">
-              3
-            </div>
-            <div>
-              <h3 className="font-semibold text-foreground">Learn from the gap</h3>
-              <p className="text-sm text-foreground/80 mt-1">
-                If you missed text, that's exactly what RenderCheck catches in CI.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Past Challenges */}
-      <section id="past-challenges" className="border-t pt-8">
-        <h2 className="text-2xl font-bold text-foreground mb-6">Past Challenges</h2>
-        <div className="space-y-4">
-          {PAST_CHALLENGES.map((challenge) => (
-            <div key={challenge.id} className="border border-border rounded-lg p-4 hover:bg-muted/20 transition-colors">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <h3 className="font-semibold text-foreground">{challenge.title}</h3>
-                  <p className="text-sm text-foreground/80 mt-1">{challenge.teaches}</p>
-                </div>
-                <span
-                  className={`text-xs px-2 py-1 rounded flex-shrink-0 ${
-                    challenge.difficulty === 'easy'
-                      ? 'bg-green-500/20 text-green-800 dark:text-green-300'
-                      : challenge.difficulty === 'medium'
-                        ? 'bg-amber-500/20 text-amber-800 dark:text-amber-300'
-                        : 'bg-red-500/20 text-red-800 dark:text-red-300'
-                  }`}
-                >
-                  {challenge.difficulty}
-                </span>
+        <h2 className="mb-6 text-2xl font-bold text-foreground">How It Works</h2>
+        <ol className="space-y-4">
+          {[
+            ['Look at the screenshot', 'Read it the way a customer would. Add up the numbers. Check the dates against the country.'],
+            ['Name the bugs and rewrite them', 'Tick the kinds of bug you see, then type the text as it should read. Wrong guesses cost points.'],
+            ['See what a test would catch', 'You get a score, the reason for each bug and the one-line RenderCheck assertion that fails on it.'],
+          ].map(([title, text], i) => (
+            <li key={title} className="flex gap-4">
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-primary/30 bg-primary/20 font-semibold text-primary">
+                {i + 1}
               </div>
-            </div>
+              <div>
+                <h3 className="font-semibold text-foreground">{title}</h3>
+                <p className="mt-1 text-sm text-foreground/80">{text}</p>
+              </div>
+            </li>
           ))}
-        </div>
+        </ol>
+        <p className="mt-6 max-w-2xl text-sm text-muted-foreground">
+          Grading runs in your browser and the answers are in the page, so this is practice, not a contest. Nothing you type is sent anywhere.
+        </p>
       </section>
 
-      {/* CTA */}
-      <section className="border-t pt-8 mt-8 space-y-4">
+      <section id="past-challenges" className="border-t pt-8">
+        <h2 className="mb-6 text-2xl font-bold text-foreground">Practice</h2>
+        <ul className="space-y-3">
+          {CHALLENGES.map((c) => (
+            <li key={c.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border p-4">
+              <div className="min-w-0 flex-1">
+                <h3 className="font-semibold text-foreground">
+                  {c.title}
+                  {c.id === thisWeek.id && <span className="ml-2 text-xs font-medium text-primary">This week</span>}
+                </h3>
+                <p className="mt-1 text-sm text-foreground/80">{c.teaches}</p>
+              </div>
+              <span className={`rounded px-2 py-1 text-xs ${DIFFICULTY_STYLE[c.difficulty]}`}>{c.difficulty}</span>
+              <button
+                type="button"
+                aria-pressed={c.id === selected.id}
+                onClick={() => {
+                  setSelectedId(c.id);
+                  document.getElementById('challenge-of-week')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="inline-flex min-h-[44px] items-center justify-center rounded-md border border-border bg-muted/60 px-4 py-2 text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                {c.id === selected.id ? 'Playing' : 'Play'}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="mt-8 space-y-4 border-t pt-8">
         <h3 className="text-xl font-semibold text-foreground">Use RenderCheck in your tests</h3>
         <p className="text-foreground/80">
-          These challenges are practice. In production, use RenderCheck to automate visual verification in Playwright and Cypress.
+          These challenges are practice. In production, RenderCheck runs the same checks in Playwright and Cypress, on your machine, with no upload.
         </p>
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row">
           <a
             href={ROUTES.RENDERCHECK}
-            className="inline-flex px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-[hsl(220_89%_35%)] transition-colors"
+            className="inline-flex min-h-[44px] items-center rounded-lg bg-primary px-4 py-2 font-medium text-primary-foreground transition-colors hover:bg-[hsl(220_89%_35%)]"
           >
             Learn RenderCheck
           </a>
           <a
             href={ROUTES.DEVELOPERS}
-            className="inline-flex px-4 py-2 border border-primary text-primary rounded-lg font-medium hover:bg-primary/5 transition-colors"
+            className="inline-flex min-h-[44px] items-center rounded-lg border border-primary px-4 py-2 font-medium text-primary transition-colors hover:bg-primary/5"
           >
             Read the developer docs
           </a>
