@@ -115,13 +115,16 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
 
   return (
     <AuroraBackground>
-      <SEO
-        title="Free Online Image to Text Converter - OCR Tool"
-        description="Extract text from images instantly with our free OCR tool. Supports PNG, JPG, and WEBP. No signup required. Fast, secure, and accurate text extraction."
-        canonical="https://freetextfromimage.com/"
-        keywords="image to text, OCR, extract text from image, online OCR, free text extraction"
-        jsonLd={baseJsonLd}
-      />
+      {/* A page that supplies its own heading (IntentPage) also supplies its own SEO; this default must not override it. */}
+      {!customHeading && (
+        <SEO
+          title="Free Online Image to Text Converter - OCR Tool"
+          description="Extract text from images instantly with our free OCR tool. Supports PNG, JPG, and WEBP. No signup required. Fast, secure, and accurate text extraction."
+          canonical="https://freetextfromimage.com/"
+          keywords="image to text, OCR, extract text from image, online OCR, free text extraction"
+          jsonLd={baseJsonLd}
+        />
+      )}
 
       {/* History Drawer */}
       <HistoryDrawer
@@ -143,7 +146,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
               {customHeading || (
                 <>
                   Verify what{' '}
@@ -153,7 +156,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
                   {' '}actually shows
                 </>
               )}
-            </h2>
+            </h1>
             <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-light">
               {customSubheading ||
                 'RenderCheck uses privacy-first OCR to test screenshots and rendered interfaces—catching visible text failures that DOM checks miss.'}
