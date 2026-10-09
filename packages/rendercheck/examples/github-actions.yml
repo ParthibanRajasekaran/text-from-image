@@ -1,0 +1,21 @@
+# Example only: copy it to .github/workflows/ in your own project and adjust.
+# RenderCheck needs no secrets and no network access beyond installing dependencies and the browser.
+name: ui-text-assertions
+on: [push, pull_request]
+
+jobs:
+  rendercheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: packages/rendercheck/package-lock.json
+      - run: npm ci --legacy-peer-deps
+        working-directory: packages/rendercheck
+      - run: npx playwright install --with-deps chromium
+        working-directory: packages/rendercheck
+      - run: npm run test:example
+        working-directory: packages/rendercheck
