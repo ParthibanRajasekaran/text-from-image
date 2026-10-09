@@ -155,7 +155,7 @@ export default function About() {
           <PillarCard
             icon="⚡"
             title="Fast"
-            body="Instant results. OCR runs locally using Tesseract (WASM) and transformers.js—works offline."
+            body="Instant results. OCR runs locally using Tesseract (WASM), with nothing uploaded."
           />
           <PillarCard
             icon="♿"

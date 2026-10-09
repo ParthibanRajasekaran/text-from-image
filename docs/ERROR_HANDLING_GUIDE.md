@@ -133,87 +133,22 @@ finally {
 }
 ```
 
-### Transformers Service
+### Low-confidence results
 
-**Model Loading:**
+There is no second OCR method. When Tesseract is unsure, the result is returned with its confidence and a
+`lowConfidence` flag, and the UI shows it as such. Tesseract runs under a timeout:
+
 ```typescript
-try {
-  ocrPipeline = await pipeline('image-to-text', MODEL_NAME);
-} catch (error) {
-  ocrPipeline = null; // Reset on failure
-  
-  if (error.message?.includes('network') || error.message?.includes('fetch')) {
-    throw ErrorFactory.networkError(error);
-  }
-  throw ErrorFactory.modelLoadFailed(MODEL_NAME, error);
-}
+const result = await ErrorRecovery.withTimeout(
+  () => extractTextWithConfidence(file, options),
+  60000, // 60 seconds
+  'Tesseract OCR'
+);
+// result.lowConfidence is true when confidence is below the threshold
 ```
 
-**Image Conversion:**
-```typescript
-try {
-  const dataUrl = await fileToDataURL(file);
-  if (!dataUrl || !dataUrl.startsWith('data:')) {
-    throw ErrorFactory.imageLoadFailed('Invalid data URL');
-  }
-  return dataUrl;
-} catch (error) {
-  throw error instanceof OCRError ? error : ErrorFactory.imageLoadFailed(error);
-}
-```
-
-**Model Execution:**
-```typescript
-try {
-  result = await pipe(imageUrl);
-} catch (modelError) {
-  if (modelError.message?.includes('memory')) {
-    throw ErrorFactory.outOfMemory(modelError);
-  }
-  throw ErrorFactory.processingFailed('Transformers model', modelError);
-}
-```
-
-### Hybrid Service
-
-**Multi-Method Error Handling:**
-```typescript
-try {
-  // Try Tesseract with timeout
-  const tesseractResult = await ErrorRecovery.withTimeout(
-    () => extractTextWithConfidence(file, options),
-    60000, // 60 seconds
-    'Tesseract OCR'
-  );
-  
-  if (tesseractResult.confidence >= minConfidence) {
-    return { method: 'tesseract', ...tesseractResult };
-  }
-} catch (tesseractError) {
-  console.warn('Tesseract failed, trying Transformers:', tesseractError);
-  
-  try {
-    // Fallback to Transformers with timeout
-    const transformersText = await ErrorRecovery.withTimeout(
-      () => extractTextFromImage(file, progressCallback),
-      120000, // 120 seconds
-      'Transformers OCR'
-    );
-    
-    return {
-      method: 'transformers',
-      text: transformersText,
-      fallbackUsed: true
-    };
-  } catch (transformersError) {
-    // Both methods failed - provide comprehensive error
-    throw ErrorFactory.processingFailed(
-      'both OCR methods',
-      new Error(`Both methods failed. Tesseract: ${tesseractError.message}, Transformers: ${transformersError.message}`)
-    );
-  }
-}
-```
+A failure (timeout, out of memory, unreadable image) is thrown as an `OCRError` built by `ErrorFactory`.
+The site's Content-Security-Policy (`connect-src 'self'`) means nothing is downloaded at recognition time.
 
 ## User Interface Integration
 
@@ -331,7 +266,7 @@ Upload a very blurry or low-resolution image with text
 **Test:**
 1. Open DevTools → Network tab
 2. Set throttling to "Offline"
-3. Upload an image (first time - needs to download Transformers model)
+3. Upload an image (the OCR engine is self-hosted, so this still works once the page has loaded)
 
 **Expected:**
 - ❌ Error: "Network connection error."
@@ -356,16 +291,15 @@ Upload a very large or complex image that takes too long to process
 - ❌ Error: "The browser ran out of memory while processing the image."
 - 💡 Suggestions: "Try a smaller image" / "Close other browser tabs" / "Refresh the page and try again" / "Use a device with more available memory"
 
-### 9. Model Load Failed Error
+### 9. Engine files fail to load
 
 **Test:**
 1. Open DevTools → Network tab
-2. Block requests to `huggingface.co` or `cdn.jsdelivr.net`
-3. Upload an image (should fallback to Transformers after Tesseract)
+2. Block requests to `/ocr/*` (the self-hosted Tesseract files)
+3. Upload an image
 
 **Expected:**
-- ❌ Error: "Failed to load the AI model."
-- 💡 Suggestions: "Check your internet connection" / "Try again in a moment" / "The AI model (~300MB) needs to download on first use"
+- ❌ A clear error that the OCR engine could not start, with a suggestion to reload the page
 
 ### 10. Processing Failed Error
 
@@ -384,9 +318,8 @@ This catches unexpected errors during OCR processing
    - If preprocessing fails, use original image
    - Logs warning but continues processing
 
-2. **Automatic Fallback:**
-   - Tesseract fails → try Transformers
-   - Low confidence → fallback to AI model
+2. **Honest low confidence:**
+   - Low confidence → the result is returned and flagged, never replaced by a different method
 
 3. **Worker Cleanup:**
    - Always terminates Tesseract worker in finally block
@@ -573,4 +506,4 @@ The error handling system provides:
 ✅ **Comprehensive logging** for debugging
 ✅ **UI integration** with error messages and suggestion panel
 
-This creates a production-ready error handling system that helps users understand and recover from issues.
+This creates a consistent error handling system that helps users understand and recover from issues.

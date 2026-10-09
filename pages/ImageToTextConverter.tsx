@@ -16,7 +16,7 @@ export default function ImageToTextConverter() {
       faq={[
         {
           question: 'What makes this converter different?',
-          answer: 'Our converter uses state-of-the-art AI models for superior accuracy. It works entirely in your browser, requires no signup, and processes images instantly with support for multiple languages.',
+          answer: 'Our converter runs the Tesseract OCR engine entirely in your browser, so nothing is uploaded. It requires no signup, and processes images instantly with support for multiple languages.',
         },
         {
           question: 'Can I convert multiple images at once?',

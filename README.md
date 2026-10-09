@@ -11,8 +11,8 @@
 
 - 🚀 **Lightning Fast** - 2-7 second processing time
 - 🔒 **100% Private** - All processing happens in your browser
-- 🤖 **AI-Powered** - Hybrid OCR using Tesseract.js + TrOCR transformers
-- 📊 **Smart Fallback** - Automatically uses best method for each image
+- 🤖 **Local OCR** - Tesseract.js (WebAssembly) runs in your browser, self-hosted, with no model download
+- 📊 **Honest confidence** - Low-confidence results are returned and flagged, not silently replaced
 - 🎨 **Image Enhancement** - 8 preprocessing techniques for better accuracy
 - 💰 **Completely Free** - No API costs, no hidden fees
 - 🌓 **Dark/Light Mode** - Beautiful UI with theme toggle
@@ -205,7 +205,7 @@ lib/                # Business logic
   ├── analytics.ts  # Web Vitals tracking
   └── config/       # Feature flags & env guards
 
-services/           # OCR engines (Tesseract, TrOCR)
+services/           # OCR engine (Tesseract.js, in the browser)
 
 src/test/         # Test suite (vitest): routes, SEO, a11y
 ```
@@ -219,9 +219,9 @@ File Validation (type, size)
     ↓
 Image Preprocessing (optional)
     ↓
-Tesseract OCR (fast, 2-5s)
+Tesseract OCR (in the browser, 2-5s)
     ├─ Confidence ≥ 60%? → Return ✓
-    └─ Fallback → TrOCR AI (5-10s) → Return ✓
+    └─ Below 60% → Return, flagged low confidence ✓
     ↓
 Result Display + Copy/Download
 ```
@@ -232,7 +232,7 @@ Result Display + Copy/Download
 |-------|-----------|
 | **UI** | React 19.2 + TypeScript 5.8 |
 | **Build** | Vite 6.2 + Rollup (code splitting) |
-| **OCR** | Tesseract.js 5.1 + TrOCR (AI) |
+| **OCR** | Tesseract.js 5.1 (WebAssembly, self-hosted) |
 | **Styling** | CSS + Tailwind + Custom properties |
 | **State** | React Hooks (useReducer, Context) |
 | **Testing** | Vitest + Testing Library |
@@ -260,8 +260,8 @@ See `.env.example` for all available flags:
 ### 2. Processing
 - **Step 1:** Validate file (type, size, browser compatibility)
 - **Step 2:** Apply image preprocessing (optional, auto-enabled)
-- **Step 3:** Try Tesseract OCR (fast method)
-- **Step 4:** If confidence < 60%, fallback to TrOCR AI model
+- **Step 3:** Run Tesseract OCR in the browser
+- **Step 4:** If confidence < 60%, show the result flagged as low confidence
 
 ### 3. Results
 - Extracted text with confidence score
@@ -297,7 +297,7 @@ See `.env.example` for all available flags:
 - ✅ **No data collection** - Your images never leave your device
 - ✅ **No API keys required** - No external dependencies
 - ✅ **No tracking** - Privacy-first design
-- ✅ **GDPR compliant** - No personal data processed
+- ✅ **Nothing to collect** - Images are processed in your browser; see the privacy policy
 
 ## 🚀 Deployment
 
@@ -354,7 +354,6 @@ This project uses **aggressive code splitting** to minimize initial load time:
 | `index.js` (main) | ~145 KB | Initial page load |
 | `react-vendor.js` | ~140 KB | Initial page load |
 | `tesseract.js` | ~23 KB | When user starts OCR |
-| `transformers.js` | ~199 KB | When AI fallback needed |
 | `jspdf.js` | ~40 KB | When user exports to PDF |
 
 **First-load JS:** ~285 KB (gzipped) ✅  

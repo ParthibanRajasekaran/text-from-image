@@ -2,8 +2,8 @@
  * OCR Worker Thread
  * 
  * Offloads heavy OCR library imports and processing to a separate worker thread.
- * This keeps the main thread responsive and defers loading of onnxruntime-web,
- * and tesseract.js until the user actually performs OCR.
+ * This keeps the main thread responsive and defers loading of tesseract.js
+ * until the user actually performs OCR.
  * 
  * Message Protocol:
  * Main → Worker: { type: 'RUN', payload: File }

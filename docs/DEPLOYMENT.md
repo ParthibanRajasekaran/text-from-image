@@ -220,7 +220,7 @@ npm run deploy:prod
 | Initial route chunks | ≤ 300 KB | ~102 KB ✅ |
 | React vendor | ≤ 150 KB | ~87 KB ✅ |
 | Total first-load | ≤ 450 KB | ~280 KB ✅ |
-| Lazy chunks | No limit | 204 KB (transformers) |
+| Lazy chunks | No limit | Tesseract wasm and worker, self-hosted under `/ocr` |
 
 ### Check Bundle Size
 
@@ -254,19 +254,15 @@ const MAX_TOTAL_INITIAL_KB = 450;  // All initial chunks
 Heavy libraries are lazy-loaded:
 
 ```typescript
-// ❌ Don't: Loads 200KB immediately
-import { pipeline } from '@xenova/transformers';
+// ❌ Don't: Loads the OCR library immediately
+import Tesseract from 'tesseract.js';
 
 // ✅ Do: Loads only when user needs it
-const loadTransformers = async () => {
-  const { pipeline } = await import('@xenova/transformers');
-  return pipeline(/* ... */);
-};
+const loadTesseract = async () => (await import('tesseract.js')).default;
 ```
 
 **Currently split:**
 - ✅ `tesseract.js` - Loaded on image upload
-- ✅ `@xenova/transformers` - Loaded as AI fallback
 - ✅ `jspdf` - Loaded on PDF export
 - ✅ `framer-motion` - Separate chunk for animations
 - ✅ React - Separate vendor chunk
@@ -322,7 +318,6 @@ npm run deploy:prod
 npm run analyze
 
 # 2. Check for duplicates
-npm ls @xenova/transformers
 npm ls tesseract.js
 
 # 3. Verify dynamic imports

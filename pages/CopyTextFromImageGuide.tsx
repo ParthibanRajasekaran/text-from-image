@@ -177,10 +177,10 @@ export default function CopyTextFromImageGuide() {
             <ul className="list-disc ml-6 space-y-1">
               <li>A progress indicator showing the current processing stage</li>
               <li>Real-time status updates (e.g., "Analyzing image structure..." or "Extracting text...")</li>
-              <li>The OCR method being used (Fast OCR or AI Model)</li>
+              <li>A confidence score for the text it read</li>
             </ul>
             <p className="mt-2">
-              Most images complete processing in 1-3 seconds. Complex or low-quality images may take up to 10 seconds when the AI fallback engages.
+              Most images complete processing in 1-3 seconds. Complex or low-quality images can take up to 10 seconds, and a low-confidence result is shown with a warning.
             </p>
           </div>
 
@@ -289,7 +289,7 @@ export default function CopyTextFromImageGuide() {
               <li><strong>Legibility matters:</strong> Clear, well-spaced handwriting yields better results than cursive or cramped text</li>
               <li><strong>Use dark ink:</strong> Black or dark blue ink on white paper provides the best contrast</li>
               <li><strong>Write larger:</strong> Handwriting that's too small often causes misrecognition</li>
-              <li><strong>Try the AI model:</strong> If the fast engine struggles, our AI-powered fallback often handles handwriting better</li>
+              <li><strong>Check the confidence score:</strong> Handwriting is the hardest case for OCR, so read the result over and correct any words it flags as uncertain</li>
             </ul>
             <p className="mt-2">
               For critical handwritten documents, always review extracted text carefully and correct any errors before using it.
