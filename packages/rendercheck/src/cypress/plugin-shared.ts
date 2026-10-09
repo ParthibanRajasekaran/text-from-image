@@ -8,4 +8,7 @@ export interface VerifyTaskArgs {
   expected: string;
   options?: AssertionOptions;
   domText?: string;
+  /** Spec file (project-relative) and test title, for failure records. */
+  spec?: string;
+  testTitle?: string;
 }

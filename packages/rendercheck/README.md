@@ -104,6 +104,27 @@ if (!report.pass) console.error(report.message);
 | `fullPage` | `false` | Playwright: capture the whole scrollable page |
 | `lang` / `langPath` | `eng` / bundled | other Tesseract languages: point `langPath` at the folder with `<lang>.traineddata.gz` |
 
+## Pull request annotations (GitHub Actions)
+
+When an assertion fails, RenderCheck can leave a record for CI: a JSON file and a copy of the screenshot with
+the failing text outlined in red. The GitHub Action in [`action/`](./action) turns those into pull request
+annotations on the failing test line ("Expected `Total: $14.00`, OCR read `Total: €14.00`, failing region
+x=140, y=244, 219×24 px"), a job summary table, and a downloadable report with the outlined screenshots.
+
+```yaml
+env:
+  RENDERCHECK_REPORT_DIR: rendercheck-report      # on GitHub Actions this is already the default
+steps:
+  - run: npx playwright test                       # or cypress run
+  - uses: ParthibanRajasekaran/text-from-image/packages/rendercheck/action@<ref>
+    if: always()
+```
+
+Records are off outside GitHub Actions unless you set `RENDERCHECK_REPORT_DIR` (set it to an empty string to
+switch them off there). A failure is recorded once, after the last retry, and a retry that passes removes it.
+GitHub annotations attach to source lines, not screen coordinates, so the region is written in the message and
+drawn on the screenshot. Everything stays in your workflow: no service, no token, no network call.
+
 ## What it can and cannot do
 
 - **OCR is not perfect.** It can misread `l`/`I`/`1` and `O`/`0`, and it can skip text. Light text on a
@@ -120,7 +141,7 @@ if (!report.pass) console.error(report.message);
 ## Network
 
 No code in this package makes a network request. Tesseract's own cache is switched off, so nothing is
-written to your project either. To check it yourself on Linux: `npm run test:offline` runs the tests in a
+written to your project either. (Failure records are the one exception, and only when you turn them on: see above.) To check it yourself on Linux: `npm run test:offline` runs the tests in a
 network-less namespace (`unshare -rn`).
 
 ## Example

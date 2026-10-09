@@ -75,6 +75,11 @@ export interface VerifyReport {
   similarity: number;
   /** Lowest contrast ratio among the matched words, when it was measured. */
   minContrast?: number;
+  /**
+   * Where on the screenshot the failing text is: the line that best explains the expected text,
+   * in screenshot pixels. Absent when OCR read no text at all.
+   */
+  box?: Region;
   /** Multi-line, human readable. Empty when the assertion passes. */
   message: string;
   ocr: OCRResult;

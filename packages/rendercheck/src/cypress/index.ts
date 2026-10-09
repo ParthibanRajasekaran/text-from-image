@@ -28,6 +28,8 @@ interface CyLike {
 declare const cy: CyLike;
 declare const Cypress: {
   Commands: { add(name: string, opts: unknown, fn: (...args: never[]) => unknown): void };
+  spec?: { relative?: string };
+  currentTest?: { titlePath?: string[]; title?: string };
 };
 
 const DEFAULT_TIMEOUT = 5000;
@@ -59,7 +61,15 @@ export function addMatchTextCommand(): void {
         return shot
           .then((() => cy.readFile(shotPath, 'base64', { log: false })) as never)
           .then(((imageBase64: string) => {
-            const args: VerifyTaskArgs = { imageBase64, expected, options, domText };
+            const test = Cypress.currentTest;
+            const args: VerifyTaskArgs = {
+              imageBase64,
+              expected,
+              options,
+              domText,
+              spec: Cypress.spec?.relative,
+              testTitle: test?.titlePath?.join(' › ') || test?.title,
+            };
             return cy.task(TASK_NAME, args, { log: false, timeout: 60_000 });
           }) as never)
           .then(((report: Report) => {

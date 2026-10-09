@@ -6,7 +6,7 @@ import { analyzeWordContrast, type BBox } from './contrast';
 import { decodeImage } from './image';
 import { recognize } from './ocr';
 import { highlightDiff, normalizeText, similarity } from './text';
-import type { AssertionOptions, FailureKind, OCRLine, OCRResult, OCRWord, VerifyReport } from './types';
+import type { AssertionOptions, FailureKind, OCRLine, OCRResult, OCRWord, Region, VerifyReport } from './types';
 
 export const DEFAULT_MIN_CONFIDENCE = 80;
 
@@ -36,7 +36,7 @@ export function evaluateOcr(
   ocr: OCRResult,
   expected: string,
   options: AssertionOptions = {}
-): Pick<VerifyReport, 'pass' | 'read' | 'confidence' | 'similarity'> & { matchedWords: OCRWord[]; found: boolean } {
+): Pick<VerifyReport, 'pass' | 'read' | 'confidence' | 'similarity'> & { matchedWords: OCRWord[]; found: boolean; box?: Region } {
   const ic = options.ignoreCase === true;
   const want = normalizeText(expected, ic);
   const lines: OCRLine[] = ocr.lines.length ? ocr.lines : [{ text: ocr.text, bbox: { x0: 0, y0: 0, x1: Infinity, y1: Infinity }, confidence: mean(ocr.words.map((w) => w.confidence)) }];
@@ -56,7 +56,10 @@ export function evaluateOcr(
   let read: string;
   let matchedWords: OCRWord[];
   let sim: number;
+  let box: Region | undefined;
   if (best && (best.contains || best.sim >= 0.5)) {
+    const b = best.line.bbox;
+    if (Number.isFinite(b.x1) && Number.isFinite(b.y1)) box = { x: b.x0, y: b.y0, width: b.x1 - b.x0, height: b.y1 - b.y0 };
     read = best.line.text.trim();
     matchedWords = wordsInside(ocr.words, best.line.bbox);
     sim = best.sim;
@@ -67,7 +70,7 @@ export function evaluateOcr(
   }
   if (!matchedWords.length) matchedWords = ocr.words;
   const confidence = mean(matchedWords.map((w) => w.confidence));
-  return { pass: found, found, read, confidence, similarity: sim, matchedWords };
+  return { pass: found, found, read, confidence, similarity: sim, matchedWords, box };
 }
 
 export async function verifyText({ image, expected, options = {}, domText }: VerifyInput): Promise<VerifyReport> {
@@ -88,6 +91,7 @@ export async function verifyText({ image, expected, options = {}, domText }: Ver
     read: ev.read,
     confidence: Math.round(ev.confidence),
     similarity: ev.similarity,
+    box: ev.box,
     message: failure ? message + regionNote : '',
     ocr,
     ...extra,

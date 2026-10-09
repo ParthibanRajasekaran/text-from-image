@@ -3,6 +3,10 @@
 name: ui-text-assertions
 on: [push, pull_request]
 
+# RENDERCHECK_REPORT_DIR makes failed assertions leave a record for the action below.
+env:
+  RENDERCHECK_REPORT_DIR: rendercheck-report
+
 jobs:
   rendercheck:
     runs-on: ubuntu-latest
@@ -19,3 +23,9 @@ jobs:
         working-directory: packages/rendercheck
       - run: npm run test:example
         working-directory: packages/rendercheck
+      # Annotates the pull request with what was on screen and where, and uploads the screenshots with
+      # the failing text outlined. `if: always()` so it runs after a failed test step.
+      - uses: ParthibanRajasekaran/text-from-image/packages/rendercheck/action@foundation/phase-1
+        if: always()
+        with:
+          report-dir: packages/rendercheck/rendercheck-report

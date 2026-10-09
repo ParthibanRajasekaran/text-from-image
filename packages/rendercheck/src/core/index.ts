@@ -23,3 +23,5 @@ export type {
   Region,
   VerifyReport,
 } from './types';
+export { recordFailure, clearFailure, failureKey, markRegion, callSite, reportDir, DEFAULT_REPORT_DIR } from './failures';
+export type { FailureRecord, RecordInput } from './failures';

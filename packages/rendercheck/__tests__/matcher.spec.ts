@@ -1,3 +1,4 @@
+import os from 'node:os';
 import { afterAll, describe, expect, it, vi } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -77,5 +78,33 @@ describe('toShowText', () => {
     const r = await run(fakePage(fx('white-on-fefefe')), 'Total: $14.00', { minContrastRatio: 4.5 });
     expect(r.pass).toBe(false);
     expect(r.message()).toContain('not legible');
+  }, 60_000);
+});
+
+describe('failure records for CI', () => {
+  it('writes one record for the final failure, pointing at the test that called the assertion', async () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rc-matcher-'));
+    const before = process.env.RENDERCHECK_REPORT_DIR;
+    process.env.RENDERCHECK_REPORT_DIR = dir;
+    try {
+      const r = await run(fakePage(fx('total-eur')), 'Total: $14.00', { timeout: 300, interval: 50 });
+      expect(r.pass).toBe(false);
+      const files = fs.readdirSync(dir).filter((f) => f.endsWith('.json'));
+      expect(files).toHaveLength(1); // not one per retry
+      const rec = JSON.parse(fs.readFileSync(path.join(dir, files[0]), 'utf8'));
+      expect(rec.kind).toBe('NOT_FOUND');
+      expect(rec.file).toMatch(/matcher\.spec\.ts$/);
+      expect(rec.line).toBeGreaterThan(0);
+      expect(rec.box).toBeDefined();
+      expect(fs.existsSync(path.join(dir, rec.image))).toBe(true);
+
+      // A later pass for the same assertion removes the stale record.
+      const pass = await run(fakePage(fx('total-usd')), 'Total: $14.00', { timeout: 0 });
+      expect(pass.pass).toBe(true);
+    } finally {
+      if (before === undefined) delete process.env.RENDERCHECK_REPORT_DIR;
+      else process.env.RENDERCHECK_REPORT_DIR = before;
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
   }, 60_000);
 });
