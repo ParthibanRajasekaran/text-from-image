@@ -25,3 +25,5 @@ export type {
 } from './types';
 export { recordFailure, clearFailure, failureKey, markRegion, callSite, reportDir, DEFAULT_REPORT_DIR } from './failures';
 export type { FailureRecord, RecordInput } from './failures';
+export { expectedCurrency, expectedDate, explainCurrency, explainDate, visibleText, ocrLangFor, isRtl, COMMON_LOCALES, COMMON_CURRENCIES } from './locale';
+export type { CurrencyRule, DateRule } from './locale';

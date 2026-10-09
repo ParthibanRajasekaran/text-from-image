@@ -35,10 +35,11 @@ describe('cypress command (browser side)', () => {
     (globalThis as Record<string, unknown>).Cypress = { Commands: { add } };
     try {
       await import('../src/cypress/index');
-      expect(add).toHaveBeenCalledTimes(1);
-      expect(add.mock.calls[0][0]).toBe('matchText');
-      expect(add.mock.calls[0][1]).toEqual({ prevSubject: ['optional', 'element'] });
-      expect(typeof add.mock.calls[0][2]).toBe('function');
+      expect(add.mock.calls.map((c) => c[0])).toEqual(['matchText', 'matchCurrency', 'matchDate']);
+      for (const call of add.mock.calls) {
+        expect(call[1]).toEqual({ prevSubject: ['optional', 'element'] });
+        expect(typeof call[2]).toBe('function');
+      }
     } finally {
       delete (globalThis as Record<string, unknown>).Cypress;
     }

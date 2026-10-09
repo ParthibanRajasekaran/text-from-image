@@ -2,9 +2,10 @@
  * Text comparison helpers shared by the matchers and the website demo.
  */
 
-/** Collapse whitespace; lower-case unless `ignoreCase` is false. Punctuation and symbols are kept. */
+/** Collapse whitespace (including non-breaking spaces) and drop bidi marks; lower-case unless `ignoreCase` is false. Punctuation and symbols are kept. */
 export function normalizeText(s: string, ignoreCase = true): string {
-  const t = s.replace(/\s+/g, ' ').trim();
+  // Direction marks are invisible, so OCR never reads them; DOM text and Intl output often contain them.
+  const t = s.replace(/[\u200e\u200f\u061c\u202a-\u202e\u2066-\u2069]/g, '').replace(/\s+/g, ' ').trim();
   return ignoreCase ? t.toLowerCase() : t;
 }
 

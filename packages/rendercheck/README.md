@@ -50,6 +50,31 @@ test('checkout shows the right total', async ({ page }) => {
 Like Playwright's own assertions, `toShowText` retries until it passes or `timeout` (default 5000 ms) runs out.
 Already using `expect.extend`? Import `toShowText` from the same path and add it yourself.
 
+### Prices and dates in the right locale
+
+```ts
+await expect(page).toShowCurrency(1234.5, { currency: 'EUR', locale: 'de-DE' }); // expects "1.234,50 €"
+await expect(page).toShowDate('2026-03-04', { locale: 'en-GB' });               // expects "04/03/2026"
+await expect(page).toShowDate('2026-03-04', { locale: 'en-GB', format: { day: 'numeric', month: 'long', year: 'numeric' } });
+```
+
+The expected text comes from `Intl`, so each locale's separators, symbol position and date order are
+applied for you. When the screen shows something else, the failure says what it is:
+`The screen shows USD ($14.00), not GBP (£14.00).` or
+`The date is formatted for en-US (03/04/2026), but en-GB should show 04/03/2026.`
+Dates use UTC unless you pass `dateTimeZone`, so they are the same on every CI machine.
+
+Cypress has the same checks: `cy.matchCurrency(1234.5, { currency: 'EUR', locale: 'de-DE' })` and
+`cy.matchDate('2026-03-04', { locale: 'en-GB' })`. In other tools, `expectedCurrency` and `expectedDate`
+(from the package root) give you the text to pass to `toShowText`.
+
+**Right-to-left and other scripts.** Direction marks and non-breaking spaces are ignored in every
+comparison, so Intl output and DOM text match what OCR reads. Only English OCR data ships with the package.
+For Arabic, Hebrew, Japanese and the like, download the `.traineddata` file and set `langPath`; the language
+is then picked from the locale (`ar-EG` uses `ara`), or set `lang` yourself. Arabic locales use Arabic-Indic
+digits, so a page that shows `14.00` where `١٤٫٠٠` belongs fails, which is usually what you want.
+
+
 ## Cypress
 
 ```ts

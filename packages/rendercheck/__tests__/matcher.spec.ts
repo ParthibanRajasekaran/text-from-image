@@ -2,7 +2,7 @@ import os from 'node:os';
 import { afterAll, describe, expect, it, vi } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
-import { toShowText } from '../src/playwright/matcher';
+import { toShowCurrency, toShowDate, toShowText } from '../src/playwright/matcher';
 import { shutdown } from '../src/core';
 
 const fx = (n: string) => fs.readFileSync(path.join(__dirname, 'fixtures', `${n}.png`));
@@ -106,5 +106,26 @@ describe('failure records for CI', () => {
       else process.env.RENDERCHECK_REPORT_DIR = before;
       fs.rmSync(dir, { recursive: true, force: true });
     }
+  }, 60_000);
+});
+
+describe('toShowCurrency / toShowDate', () => {
+  it('passes when the screen shows the amount for the locale', async () => {
+    const r = await toShowCurrency.call({}, fakePage(fx('total-eur')) as never, 14, { currency: 'EUR', locale: 'en-US', timeout: 0 });
+    expect(r.pass).toBe(true);
+    expect(r.name).toBe('toShowCurrency');
+  }, 60_000);
+
+  it('fails and names the currency that is on screen', async () => {
+    const r = await toShowCurrency.call({}, fakePage(fx('total-eur')) as never, 14, { currency: 'USD', locale: 'en-US', timeout: 0 });
+    expect(r.pass).toBe(false);
+    expect(r.message()).toContain('Expected to find text "[$14.00]"');
+    expect(r.message()).toContain('The screen shows EUR (€14.00), not USD ($14.00).');
+  }, 60_000);
+
+  it('toShowDate rejects a date for a different locale in its message', async () => {
+    const r = await toShowDate.call({}, fakePage(fx('total-usd')) as never, '2026-03-04', { locale: 'en-GB', timeout: 0 });
+    expect(r.pass).toBe(false);
+    expect(r.message()).toContain('04/03/2026');
   }, 60_000);
 });

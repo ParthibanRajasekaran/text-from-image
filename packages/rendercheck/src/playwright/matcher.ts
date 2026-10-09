@@ -13,6 +13,7 @@ import type { Locator, Page } from '@playwright/test';
 import { verifyText } from '../core/verify';
 import type { AssertionOptions, VerifyReport } from '../core/types';
 import { callSite, clearFailure, recordFailure, reportDir } from '../core/failures';
+import { expectedCurrency, expectedDate, explainCurrency, explainDate, ocrLangFor, type CurrencyRule } from '../core/locale';
 
 const isPage = (r: Page | Locator): r is Page => typeof (r as Page).goto === 'function';
 
@@ -98,5 +99,47 @@ export async function toShowText(
     message,
     expected,
     actual: report.read,
+  };
+}
+
+export type CurrencyOptions = AssertionOptions & Omit<CurrencyRule, 'locale'> & { locale: string };
+export type DateOptions = AssertionOptions & { locale: string; format?: Intl.DateTimeFormatOptions; dateTimeZone?: string };
+
+function withLang<T extends AssertionOptions>(o: T, locale: string): T {
+  // Another script needs its own language data; only pick it when the caller says where it is.
+  return o.lang || !o.langPath ? o : { ...o, lang: ocrLangFor(locale) };
+}
+
+/**
+ * `await expect(page).toShowCurrency(1234.5, { currency: 'EUR', locale: 'de-DE' })` expects `1.234,50 €`,
+ * and when the screen shows another currency or another locale's format, says which.
+ */
+export async function toShowCurrency(this: { isNot?: boolean }, received: Page | Locator, amount: number, options: CurrencyOptions) {
+  const { currency, locale, display, fractionDigits, ...assertion } = options;
+  const rule = { currency, locale, display, fractionDigits };
+  const expected = expectedCurrency(amount, rule);
+  const r = await toShowText.call(this, received, expected, withLang(assertion, locale));
+  return withHint(r, 'toShowCurrency', (read) => explainCurrency(read, amount, rule));
+}
+
+/** `await expect(page).toShowDate('2026-03-04', { locale: 'en-GB' })` expects `04/03/2026`. */
+export async function toShowDate(this: { isNot?: boolean }, received: Page | Locator, date: Date | string | number, options: DateOptions) {
+  const { locale, format, dateTimeZone, ...assertion } = options;
+  const rule = { locale, format, timeZone: dateTimeZone };
+  const expected = expectedDate(date, rule);
+  const r = await toShowText.call(this, received, expected, withLang(assertion, locale));
+  return withHint(r, 'toShowDate', (read) => explainDate(read, date, rule));
+}
+
+function withHint(r: Awaited<ReturnType<typeof toShowText>>, name: string, explain: (read: string) => string | undefined) {
+  return {
+    ...r,
+    name,
+    message: () => {
+      const m = r.message();
+      if (r.pass) return m;
+      const hint = explain(r.actual);
+      return hint ? `${m}\n  ${hint}` : m;
+    },
   };
 }

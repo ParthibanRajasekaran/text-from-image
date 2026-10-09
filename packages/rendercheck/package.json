@@ -1,6 +1,6 @@
 {
   "name": "@freetextfromimage/rendercheck",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Assert what users actually see: local, offline OCR assertions for Playwright and Cypress",
   "keywords": [
     "ocr",
