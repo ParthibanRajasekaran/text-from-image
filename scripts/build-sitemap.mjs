@@ -15,6 +15,7 @@ const routes = [
   '/image-to-excel',
   '/privacy-policy',
   '/terms',
+  '/security',
   '/about',
   '/contact'
 ];
@@ -24,7 +25,7 @@ const xml = `<?xml version="1.0" encoding="UTF-8"?>
 ${routes.map(r => `  <url>
     <loc>${siteUrl}${r}</loc>
     <changefreq>weekly</changefreq>
-    <priority>${r === '/' ? '1.0' : r.includes('privacy') || r.includes('terms') ? '0.3' : '0.8'}</priority>
+    <priority>${r === '/' ? '1.0' : r.includes('privacy') || r.includes('terms') || r.includes('security') ? '0.3' : '0.8'}</priority>
   </url>`).join('\n')}
 </urlset>`;
 

@@ -151,7 +151,6 @@ function getScoreBandAdvice(band: RiskBand): string {
 }
 
 export default function VerificationDebtScore() {
-  const { theme } = useTheme();
   const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
   const canonicalAbsolute = new URL('/verify-debt-score', SITE_URL).toString();
 

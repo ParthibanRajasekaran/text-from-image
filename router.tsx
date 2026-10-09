@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 // Global shell
 import { AppShell } from './components/shell/AppShell';
+import { RouteErrorBoundary } from './components/RouteErrorBoundary';
 
 // V3: Futuristic Hero UI (feature-gated) — now replaced by minimal-premium homepage
 import { HomepageMinimalPremium } from './components/home/HomepageMinimalPremium';
@@ -19,6 +20,11 @@ const CopyTextFromImageGuide = lazy(() => import('./pages/CopyTextFromImageGuide
 const JpgToExcelGuide = lazy(() => import('./pages/JpgToExcelGuide'));
 const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
+
+// Legal and trust pages (served by the router so direct navigation works)
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const Terms = lazy(() => import('./pages/Terms'));
+const Security = lazy(() => import('./pages/Security'));
 
 // Phase 5: Product pages
 const VerificationDebtScore = lazy(() => import('./pages/VerificationDebtScore'));
@@ -45,6 +51,9 @@ export const ROUTES = {
   JPG_TO_EXCEL: '/jpg-to-excel',
   ABOUT: '/about',
   CONTACT: '/contact',
+  PRIVACY_POLICY: '/privacy-policy',
+  TERMS: '/terms',
+  SECURITY: '/security',
   VERIFY_DEBT_SCORE: '/verify-debt-score',
   RENDERCHECK: '/rendercheck',
   DEVELOPERS: '/developers',
@@ -69,7 +78,14 @@ export const router = createBrowserRouter([
   {
     path: ROUTES.HOME,
     element: <AppShell />,
+    // Last-resort boundary: catches a failure in the shell itself.
+    errorElement: <RouteErrorBoundary />,
     children: [
+      {
+        // Pathless layout route. Its errorElement catches an uncaught error thrown by ANY
+        // child route below, and keeps the AppShell (header and footer) on screen.
+        errorElement: <RouteErrorBoundary />,
+        children: [
       {
         index: true,
         element: <HomeComponent />,
@@ -109,6 +125,18 @@ export const router = createBrowserRouter([
       {
         path: 'contact',
         element: <Contact />,
+      },
+      {
+        path: 'privacy-policy',
+        element: <PrivacyPolicy />,
+      },
+      {
+        path: 'terms',
+        element: <Terms />,
+      },
+      {
+        path: 'security',
+        element: <Security />,
       },
       {
         path: 'verify-debt-score',
@@ -177,6 +205,8 @@ export const router = createBrowserRouter([
       {
         path: '*',
         element: <NotFound />,
+      },
+        ],
       },
     ],
   },
