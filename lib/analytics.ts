@@ -8,7 +8,6 @@
  * - File operations (file_added)
  * - OCR lifecycle (extraction_started, extraction_completed, extraction_failed)
  * - User actions (copy_clicked, download_clicked)
- * - Ad visibility (adslot_visible, adslot_filled)
  * - Content engagement (faq_opened)
  */
 
@@ -34,11 +33,6 @@ export interface ContentInteractionParams {
   contentType?: string;  // e.g., 'text', 'latex', 'csv'
   format?: string;       // e.g., 'txt', 'json', 'csv'
   question?: string;     // FAQ question text
-  pagePath?: string;
-}
-
-export interface AdEventParams {
-  slotId: string;        // Ad slot identifier (e.g., 'afterExplainer1', 'bottom')
   pagePath?: string;
 }
 
@@ -155,40 +149,6 @@ export function trackDownloadClicked(params: ContentInteractionParams = {}): voi
   
   if (process.env.NODE_ENV === 'development') {
     console.log('[Analytics] download_clicked:', params);
-  }
-}
-
-/**
- * Track when an ad slot becomes visible
- */
-export function trackAdSlotVisible(params: AdEventParams): void {
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', 'adslot_visible', {
-      event_category: 'Ad Performance',
-      slot_id: params.slotId,
-      page_path: params.pagePath || window.location.pathname,
-    });
-  }
-  
-  if (process.env.NODE_ENV === 'development') {
-    console.log('[Analytics] adslot_visible:', params);
-  }
-}
-
-/**
- * Track when an ad slot is filled with an ad
- */
-export function trackAdSlotFilled(params: AdEventParams): void {
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', 'adslot_filled', {
-      event_category: 'Ad Performance',
-      slot_id: params.slotId,
-      page_path: params.pagePath || window.location.pathname,
-    });
-  }
-  
-  if (process.env.NODE_ENV === 'development') {
-    console.log('[Analytics] adslot_filled:', params);
   }
 }
 
@@ -346,12 +306,6 @@ export function trackEvents(events: Array<{ name: string; params: any }>): void 
         break;
       case 'download_clicked':
         trackDownloadClicked(params);
-        break;
-      case 'adslot_visible':
-        trackAdSlotVisible(params);
-        break;
-      case 'adslot_filled':
-        trackAdSlotFilled(params);
         break;
       case 'faq_opened':
         trackFAQOpened(params);

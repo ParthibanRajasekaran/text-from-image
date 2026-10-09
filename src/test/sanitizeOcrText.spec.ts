@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { sanitizeOcrText } from '../utils/sanitizeOcrText';
+import { sanitizeOcrText } from '../../utils/sanitizeOcrText';
 
 describe('sanitizeOcrText', () => {
   it('removes null bytes', () => {

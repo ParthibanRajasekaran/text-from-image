@@ -207,7 +207,7 @@ lib/                # Business logic
 
 services/           # OCR engines (Tesseract, TrOCR)
 
-__tests__/          # Test suite (routes, SEO, a11y, deprecation)
+src/test/         # Test suite (vitest): routes, SEO, a11y
 ```
 
 ### Request Flow: Image Upload → OCR → Result

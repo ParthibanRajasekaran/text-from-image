@@ -38,10 +38,6 @@ export default defineConfig(({ mode: _mode }) => {
             'src/**/*.a11y.spec.tsx',
             // Spec-driven tests
             'src/**/*.spec.json',
-            // __tests__ directory tests
-            '__tests__/**/*.spec.ts',
-            '__tests__/**/*.spec.tsx',
-            '__tests__/**/*.a11y.spec.tsx',
           ],
         },
       plugins: [
