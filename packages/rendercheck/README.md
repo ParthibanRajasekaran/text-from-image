@@ -70,8 +70,9 @@ cy.matchText('Total: $14.00', { minConfidence: 85, minContrastRatio: 4.5 });
 cy.get('#total').matchText('Total: $14.00');
 ```
 
-> The Cypress integration is covered by unit tests with a fake `cy`/`Cypress`, but has **not** been run
-> inside a real Cypress yet. Try it and report problems.
+> Tested in a real Cypress (13.17, Electron, Linux): `examples/cypress` runs 5 specs against the mock
+> checkout page, including the failing cases. Other Cypress versions and browsers are untested.
+> Run it with `npm run build && npx cypress@13 run --project examples/cypress` (add `--browser electron`).
 
 ## Core
 

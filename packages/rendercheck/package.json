@@ -72,6 +72,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:example": "playwright test -c examples/playwright/playwright.config.ts",
+    "test:cypress": "cypress run --project examples/cypress --browser electron",
     "clean": "rm -rf dist",
     "test:offline": "unshare -rn env RENDERCHECK_EXPECT_NO_NETWORK=1 vitest run __tests__/offline.spec.ts"
   },

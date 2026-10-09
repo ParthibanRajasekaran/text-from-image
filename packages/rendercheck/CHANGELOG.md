@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@freetextfromimage/rendercheck/cypress` and `/cypress/plugin`: `cy.matchText`.
 - `@freetextfromimage/rendercheck/core`: `verifyText`, `recognize`, WCAG 2.1 contrast analysis.
 - Failure messages that say what OCR read and where it differs.
-- Example Playwright suite on a mock checkout page.
+- Example Playwright and Cypress suites on a mock checkout page (Cypress run in Cypress 13.17, Electron).
 
 ## [0.1.0] - 2026-06-15
 
