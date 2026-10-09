@@ -151,13 +151,13 @@ export default function Changelog() {
       <section className="border-t pt-8 mt-8 space-y-4">
         <h3 className="text-xl font-semibold text-foreground">Want to shape what's next?</h3>
         <p className="text-foreground/80">
-          Early access users and beta testers directly influence the roadmap. Request API access to start building and shaping the future of visual verification.
+          Early access users and beta testers directly influence the roadmap. Try the SDK and tell us what breaks. No account or API key needed.
         </p>
         <a
           href={ROUTES.ACCESS}
           className="inline-flex px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-[hsl(220_89%_35%)] transition-colors"
         >
-          Join the Beta
+          Get RenderCheck
         </a>
       </section>
     </EnterpriseLayout>

@@ -170,7 +170,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
             <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-4">
               {[
                 { num: '1', label: 'Screenshot', icon: '📸' },
-                { num: '2', label: 'verify()', icon: '✓' },
+                { num: '2', label: 'toShowText()', icon: '✓' },
                 { num: '3', label: 'Results', icon: '📊' },
                 { num: '4', label: 'Assert', icon: '🎯' },
               ].map((step, idx) => (

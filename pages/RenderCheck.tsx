@@ -279,13 +279,13 @@ test('checkout shows the correct total', async ({ page }) => {
         {/* CTA */}
         <section className="border-t pt-8 bg-primary/10 border-primary/20 rounded-lg p-8 text-center">
           <h3 className="text-2xl font-bold text-foreground mb-3">Ready to verify rendered UI?</h3>
-          <p className="text-muted-foreground mb-6">Request API access and start catching UI bugs in your tests.</p>
+          <p className="text-muted-foreground mb-6">Install the package and start catching UI bugs in your tests. No account and no API key.</p>
           <div className="flex gap-3 justify-center flex-wrap">
             <a
-              href={ROUTES.ACCESS}
+              href={ROUTES.DEVELOPERS}
               className="inline-flex px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-[hsl(220_89%_35%)] transition-colors"
             >
-              Request API Key
+              Read the developer docs
             </a>
             <a
               href={ROUTES.HOME}

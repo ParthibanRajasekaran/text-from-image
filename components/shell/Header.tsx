@@ -16,7 +16,7 @@ interface HeaderProps {
  * - Logo with Developer Beta badge
  * - Main nav: Product | RenderCheck | Labs | Developers | Security | Access
  * - Mobile: hamburger menu with focus trap
- * - CTA: Join Beta button
+ * - CTA: Get started button
  */
 export function Header({ theme, onToggleTheme }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -105,7 +105,7 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
         <div className="flex items-center gap-4">
           {theme && <ThemeToggle theme={theme} toggleTheme={onToggleTheme} />}
           <Button href={ROUTES.ACCESS} size="sm" variant="solid">
-            Join Beta
+            Get started
           </Button>
 
           {/* Mobile menu button */}

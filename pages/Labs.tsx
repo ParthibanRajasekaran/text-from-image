@@ -135,10 +135,10 @@ export default function Labs() {
             Learn RenderCheck
           </a>
           <a
-            href={ROUTES.ACCESS}
+            href={ROUTES.DEVELOPERS}
             className="inline-flex px-4 py-2 border border-primary text-primary rounded-lg font-medium hover:bg-primary/5 transition-colors"
           >
-            Request API Access
+            Read the developer docs
           </a>
         </div>
       </section>

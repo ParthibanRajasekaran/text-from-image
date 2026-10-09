@@ -197,12 +197,7 @@ export function HomepageMinimalPremium() {
                     Suggested Playwright Test
                   </p>
                   <code className="block bg-code-bg border border-code-border rounded p-4 text-code-text text-sm font-mono overflow-x-auto">
-                    {`const result = await verify({
-  imageBuffer: screenshot,
-  expectedText: 'Payment successful',
-  apiKey: process.env.RENDERCHECK_API_KEY,
-});
-expect(result.outcome).toBe('pass');`}
+                    {`await expect(page).toShowText('Payment successful');`}
                   </code>
                 </div>
 
@@ -259,10 +254,10 @@ expect(result.outcome).toBe('pass');`}
 
             <div className="space-y-6">
               {[
-                { num: '1', label: 'Take Screenshot', desc: 'Use page.screenshot() in Playwright' },
-                { num: '2', label: 'Pass to verify()', desc: 'Call RenderCheck with image and expected text' },
-                { num: '3', label: 'Get Results', desc: 'Outcome: pass, partial, or fail' },
-                { num: '4', label: 'Assert in Test', desc: 'expect(result.outcome).toBe("pass")' },
+                { num: '1', label: 'Import expect', desc: "From '@freetextfromimage/rendercheck/playwright'" },
+                { num: '2', label: 'Assert what users see', desc: 'await expect(page).toShowText("Total: $14.00")' },
+                { num: '3', label: 'OCR runs on your machine', desc: 'The screenshot is read locally. Nothing is uploaded' },
+                { num: '4', label: 'Get a clear failure', desc: 'Expected vs read text, OCR confidence and a diff' },
               ].map((step) => (
                 <div key={step.num} className="flex gap-6 items-start">
                   <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary">
@@ -339,8 +334,7 @@ expect(result.outcome).toBe('pass');`}
             <div className="space-y-4">
               {[
                 { feature: 'Browser OCR', status: 'live' as const, desc: 'Free, no signup, runs locally' },
-                { feature: 'API OCR', status: 'developer-beta' as const, desc: '1,000 calls/month, request access' },
-                { feature: 'RenderCheck SDK', status: 'developer-beta' as const, desc: 'npm install @freetextfromimage/rendercheck' },
+                { feature: 'RenderCheck SDK', status: 'developer-beta' as const, desc: 'Local-only Playwright/Cypress assertions. No API key' },
                 { feature: 'CLI Tool', status: 'planned' as const, desc: 'Coming soon' },
               ].map((item) => (
                 <div key={item.feature} className="flex items-center justify-between p-4 border border-border rounded-lg">
@@ -378,14 +372,14 @@ expect(result.outcome).toBe('pass');`}
                 <li className="flex gap-3">
                   <span className="text-primary font-bold">✓</span>
                   <span>
-                    <strong>No image or text persistence</strong> — API mode does not store
-                    screenshots
+                    <strong>No upload from the SDK</strong> — screenshots are read in your test
+                    process and never sent anywhere
                   </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-primary font-bold">✓</span>
                   <span>
-                    <strong>HTTPS only</strong> — All communication encrypted
+                    <strong>No network calls</strong> — the engine and language data ship with the package
                   </span>
                 </li>
                 <li className="flex gap-3">
@@ -410,7 +404,7 @@ expect(result.outcome).toBe('pass');`}
           >
             <h2 className="text-3xl sm:text-4xl font-bold">Browser OCR Tool</h2>
             <p className="text-lg text-foreground/90">
-              Try RenderCheck's browser-based OCR. No signup, no API key, entirely local.
+              Try RenderCheck's browser-based OCR. No signup, entirely local.
             </p>
 
             {/* Dropzone */}
@@ -479,9 +473,9 @@ expect(result.outcome).toBe('pass');`}
             viewport={{ once: true }}
             className="max-w-3xl mx-auto space-y-8"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold">Get Access</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold">Get Started</h2>
 
-            <div className="grid sm:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 gap-6">
               {([
                 {
                   title: 'Browser OCR',
@@ -491,18 +485,11 @@ expect(result.outcome).toBe('pass');`}
                   href: '#ocr-tool',
                 },
                 {
-                  title: 'Developer Beta',
+                  title: 'RenderCheck SDK',
                   status: 'developer-beta' as const,
-                  points: ['1,000 calls/month', 'Request access', 'Early pricing'],
-                  cta: 'Request Access',
-                  href: ROUTES.ACCESS,
-                },
-                {
-                  title: 'Public Interest',
-                  status: 'developer-beta' as const,
-                  points: ['NGOs & healthcare', 'Education & research', 'Free tier'],
-                  cta: 'Apply',
-                  href: ROUTES.ACCESS,
+                  points: ['Free', 'No API key or account', 'Runs inside your tests'],
+                  cta: 'Read the docs',
+                  href: ROUTES.DEVELOPERS,
                 },
               ] as const).map((tier) => (
                 <div key={tier.title} className="border border-border rounded-2xl p-6 space-y-6">

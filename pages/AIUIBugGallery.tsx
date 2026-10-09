@@ -35,12 +35,7 @@ const EXAMPLES: ExampleCard[] = [
     whatWentWrong: 'AI code generator output price in wrong currency based on checkout endpoint input.',
     whyDOMTestsMiss: 'DOM node exists with correct numeric value (99.99), but symbol is rendered incorrectly.',
     howRenderCheckCatches: 'Screenshot shows £99.99 when USD was expected. OCR finds "£" instead of "$".',
-    playwrightPattern: `const result = await verify({
-  imageBuffer: screenshot,
-  expectedText: 'Total: $99.99',
-  apiKey: process.env.RENDERCHECK_API_KEY,
-});
-expect(result.outcome).toBe('pass');`,
+    playwrightPattern: `await expect(page).toShowText('Total: $99.99');`,
   },
   {
     id: 'missing-order-number',
@@ -50,12 +45,7 @@ expect(result.outcome).toBe('pass');`,
     whatWentWrong: 'AI-generated confirmation page omitted order number in the render, though order ID exists in state.',
     whyDOMTestsMiss: 'order_id div is in the DOM with correct value, but not visible due to CSS overflow or display:none.',
     howRenderCheckCatches: 'Screenshot does not show order number. OCR extracts confirmation text without "Order #" or ID.',
-    playwrightPattern: `const result = await verify({
-  imageBuffer: screenshot,
-  expectedText: 'Order #ABC-123-DEF',
-  apiKey: process.env.RENDERCHECK_API_KEY,
-});
-expect(result.outcome).not.toBe('fail');`,
+    playwrightPattern: `await expect(page).toShowText('Order #ABC-123-DEF');`,
   },
   {
     id: 'truncated-price',
@@ -65,12 +55,7 @@ expect(result.outcome).not.toBe('fail');`,
     whatWentWrong: 'Total price field was given too-short width. Renders as "99.9" instead of "99.99".',
     whyDOMTestsMiss: 'DOM textContent is correct ("99.99"), but rendered display clips the final digit.',
     howRenderCheckCatches: 'OCR reads visible text on screen: "99.9". Expected "99.99" fails verification.',
-    playwrightPattern: `const result = await verify({
-  imageBuffer: screenshot,
-  expectedText: 'Order Total: $99.99',
-  apiKey: process.env.RENDERCHECK_API_KEY,
-});
-expect(result.outcome).toBe('pass');`,
+    playwrightPattern: `await expect(page).toShowText('Order Total: $99.99');`,
   },
   {
     id: 'white-on-white',
@@ -80,12 +65,7 @@ expect(result.outcome).toBe('pass');`,
     whatWentWrong: 'AI generated button with white text color and white background due to style copy-paste error.',
     whyDOMTestsMiss: 'Button element exists with correct text content in DOM. CSS class name is syntactically valid.',
     howRenderCheckCatches: 'Screenshot shows blank button. OCR finds no visible text. Expected "Click here" fails.',
-    playwrightPattern: `const result = await verify({
-  imageBuffer: screenshot,
-  expectedText: 'Click here to proceed',
-  apiKey: process.env.RENDERCHECK_API_KEY,
-});
-expect(result.outcome).toBe('pass');`,
+    playwrightPattern: `await expect(page).toShowText('Click here to proceed');`,
   },
   {
     id: 'locale-date',
@@ -96,12 +76,7 @@ expect(result.outcome).toBe('pass');`,
     whyDOMTestsMiss: 'Date value is technically correct in state. Formatting function was not locale-aware.',
     howRenderCheckCatches: 'Screenshot shows "03/15/2026" when user expects "15.03.2026" on de-DE locale.',
     playwrightPattern: `await page.goto('https://example.de/checkout?locale=de-DE');
-const result = await verify({
-  imageBuffer: screenshot,
-  expectedText: '15.03.2026',
-  apiKey: process.env.RENDERCHECK_API_KEY,
-});
-expect(result.outcome).toBe('pass');`,
+await expect(page).toShowText('15.03.2026');`,
   },
 ];
 
@@ -260,10 +235,10 @@ export default function AIUIBugGallery() {
             Learn RenderCheck
           </a>
           <a
-            href={ROUTES.ACCESS}
+            href={ROUTES.DEVELOPERS}
             className="inline-flex px-4 py-2 border border-primary text-primary rounded-lg font-medium hover:bg-primary/5 transition-colors"
           >
-            Request API Access
+            Read the developer docs
           </a>
         </div>
       </section>
