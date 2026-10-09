@@ -16,6 +16,8 @@ import {
   type NetworkAudit,
 } from '../src/core/privacy/networkProof';
 import { SnippetExport } from './SnippetExport';
+import { DiffView } from './DiffView';
+import { confidenceHeat, HEAT_STOPS } from '../src/core/analysis/heat';
 
 /** Box colours. Green = passed, amber = low confidence (< 80%), rose = contrast failure or text mismatch. */
 export const STATUS_COLORS: Record<WordStatus, string> = {
@@ -57,6 +59,8 @@ export async function readImageData(file: Blob): Promise<Pixels> {
     bitmap.close();
   }
 }
+
+type ViewMode = 'boxes' | 'heatmap';
 
 type Phase = 'idle' | 'loading-engine' | 'reading' | 'done' | 'error';
 
@@ -108,6 +112,7 @@ export function HeroDemo({ className = '', createEngine, readPixels = readImageD
   const [selectedLine, setSelectedLine] = useState<number | null>(null);
   const [revealed, setRevealed] = useState(false);
   const [dragging, setDragging] = useState(false);
+  const [view, setView] = useState<ViewMode>('boxes');
   const reducedMotion = usePrefersReducedMotion();
 
   // Free the image URL and the engine when the component goes away.
@@ -374,12 +379,14 @@ export function HeroDemo({ className = '', createEngine, readPixels = readImageD
                     >
                       {words.map((w, i) => {
                         const { x0, y0, x1, y1 } = w.word.bbox;
-                        const color = STATUS_COLORS[w.status];
+                        const heat = view === 'heatmap';
+                        const color = heat ? confidenceHeat(w.word.confidence) : STATUS_COLORS[w.status];
                         return (
                           <rect
                             key={i}
                             data-testid="hero-demo-box"
                             data-status={w.status}
+                            data-heat={heat ? color : undefined}
                             data-reason={w.reason ?? ''}
                             data-text={w.word.text}
                             x={x0}
@@ -388,9 +395,9 @@ export function HeroDemo({ className = '', createEngine, readPixels = readImageD
                             height={Math.max(1, y1 - y0)}
                             rx={2}
                             fill={color}
-                            fillOpacity={0.14}
+                            fillOpacity={heat ? 0.55 : 0.14}
                             stroke={color}
-                            strokeWidth={2}
+                            strokeWidth={heat ? 1 : 2}
                             vectorEffect="non-scaling-stroke"
                             style={{ cursor: 'pointer' }}
                             onClick={() => {
@@ -482,7 +489,25 @@ export function HeroDemo({ className = '', createEngine, readPixels = readImageD
                 />
               </label>
             )}
-            <Legend />
+            {analysis && (
+              <div role="group" aria-label="Overlay view" className="inline-flex overflow-hidden rounded-md border border-white/20">
+                {(['boxes', 'heatmap'] as const).map((v) => (
+                  <button
+                    key={v}
+                    type="button"
+                    data-testid={`hero-demo-view-${v}`}
+                    aria-pressed={view === v}
+                    onClick={() => setView(v)}
+                    className={`min-h-11 px-3 py-1.5 text-sm font-medium ${
+                      view === v ? 'bg-white/15 text-white' : 'text-zinc-300 hover:bg-white/10'
+                    }`}
+                  >
+                    {v === 'boxes' ? 'Boxes' : 'Confidence heatmap'}
+                  </button>
+                ))}
+              </div>
+            )}
+            {view === 'heatmap' && analysis ? <HeatLegend /> : <Legend />}
           </div>
         </div>
 
@@ -502,6 +527,12 @@ export function HeroDemo({ className = '', createEngine, readPixels = readImageD
               className="mt-1 min-h-11 w-full rounded-md border border-white/15 bg-black/40 px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-sky-400"
             />
             <p className="mt-1 text-xs text-zinc-400">If the closest line differs, its words turn rose and the difference is shown.</p>
+            {analysis && target && (
+              <div className="mt-3 rounded-lg border border-white/10 bg-white/[0.03] p-3">
+                <h3 className="mb-2 text-sm font-semibold">Expected vs on screen</h3>
+                <DiffView expected={expected} read={target.line.text} />
+              </div>
+            )}
           </div>
 
           <section
@@ -643,6 +674,17 @@ function Legend() {
         </li>
       ))}
     </ul>
+  );
+}
+
+function HeatLegend() {
+  const gradient = `linear-gradient(90deg, ${HEAT_STOPS.map((s) => `${confidenceHeat(s.at)} ${s.at === 50 ? 0 : s.at === 80 ? 60 : 100}%`).join(', ')})`;
+  return (
+    <div data-testid="hero-demo-heat-legend" className="flex items-center gap-2 text-xs text-zinc-400" aria-label="Confidence scale">
+      <span>OCR unsure (50% or less)</span>
+      <span aria-hidden="true" className="h-2.5 w-24 rounded-sm" style={{ background: gradient }} />
+      <span>sure (95% or more)</span>
+    </div>
   );
 }
 

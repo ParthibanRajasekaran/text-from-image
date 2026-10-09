@@ -169,3 +169,59 @@ describe('<HeroDemo />', () => {
     expect(screen.getByTestId('hero-demo-status').getAttribute('data-phase')).toBe('error');
   });
 });
+
+describe('<HeroDemo /> confidence heatmap and diff view (PRD N5)', () => {
+  it('switches the overlay to a confidence heatmap without re-running OCR', async () => {
+    const { container, recognize } = setup();
+    upload(container);
+    await waitFor(() => expect(screen.getAllByTestId('hero-demo-box')).toHaveLength(4));
+    expect(screen.getByTestId('hero-demo-view-boxes').getAttribute('aria-pressed')).toBe('true');
+    expect(screen.queryByTestId('hero-demo-heat-legend')).toBeNull();
+
+    fireEvent.click(screen.getByTestId('hero-demo-view-heatmap'));
+
+    const by = Object.fromEntries(screen.getAllByTestId('hero-demo-box').map((b) => [b.getAttribute('data-text'), b]));
+    // 96% -> near the green end, 60% -> between rose and amber, 98% -> exactly green
+    expect(by['ghost'].getAttribute('fill')).toBe('#4ADE80');
+    expect(by['Hello'].getAttribute('fill')).not.toBe(by['ghost'].getAttribute('fill'));
+    expect(by['Hello'].getAttribute('data-heat')).toBe(by['Hello'].getAttribute('fill'));
+    expect(screen.getByTestId('hero-demo-heat-legend')).toBeTruthy();
+    expect(screen.getByTestId('hero-demo-view-heatmap').getAttribute('aria-pressed')).toBe('true');
+    expect(recognize).toHaveBeenCalledTimes(1);
+
+    // Back to boxes: the verdict colours return.
+    fireEvent.click(screen.getByTestId('hero-demo-view-boxes'));
+    const back = Object.fromEntries(screen.getAllByTestId('hero-demo-box').map((b) => [b.getAttribute('data-text'), b]));
+    expect(back['ghost'].getAttribute('stroke')).toBe('#FB7185');
+    expect(back['ghost'].getAttribute('data-heat')).toBeNull();
+  });
+
+  it('shows no view toggle before there is a result', () => {
+    setup();
+    expect(screen.queryByTestId('hero-demo-view-heatmap')).toBeNull();
+  });
+
+  it('marks the differing characters when the expected text does not match the pixels', async () => {
+    const { container } = setup();
+    upload(container);
+    await waitFor(() => expect(screen.getAllByTestId('hero-demo-box')).toHaveLength(4));
+
+    fireEvent.change(screen.getByTestId('hero-demo-expected'), { target: { value: 'Total: $14.00' } });
+
+    const view = await screen.findByTestId('diff-view');
+    const marks = Array.from(view.querySelectorAll('[data-testid="diff-mark"]')).map((m) => m.textContent);
+    expect(marks).toEqual(['$', '€']); // expected row, then on-screen row
+    expect(view.textContent).toContain('Total: ');
+    expect(view.textContent).toContain('14.00');
+  });
+
+  it('says so when the pixels match exactly', async () => {
+    const { container } = setup();
+    upload(container);
+    await waitFor(() => expect(screen.getAllByTestId('hero-demo-box')).toHaveLength(4));
+    fireEvent.change(screen.getByTestId('hero-demo-expected'), { target: { value: 'Total: €14.00' } });
+    const view = await screen.findByTestId('diff-view');
+    expect(view.textContent).toMatch(/match the expected text exactly/i);
+    expect(view.querySelector('[data-testid="diff-mark"]')).toBeNull();
+  });
+});
