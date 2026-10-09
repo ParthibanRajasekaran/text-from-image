@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useSEO } from '../src/seo';
 import { EnterpriseLayout } from '../components/layouts/EnterpriseLayout';
 import { ScrollNav } from '../components/ui/ScrollNav';
@@ -6,8 +6,11 @@ import { CodeBlock } from '../components/ui/CodeBlock';
 import { StatusBadge } from '../components/ui/StatusBadge';
 import { ROUTES } from '../router';
 
+const BreakTheUI = React.lazy(() => import('../components/BreakTheUI'));
+
 const sections = [
   { id: 'overview', label: 'Overview' },
+  { id: 'break-the-ui', label: 'Break the UI' },
   { id: 'wrong-currency', label: 'Wrong Currency' },
   { id: 'missing-confirmation', label: 'Missing Confirmation' },
   { id: 'truncated-text', label: 'Truncated Text' },
@@ -131,6 +134,10 @@ export default function AIUIBugGallery() {
       </section>
 
       {/* Filters */}
+      <Suspense fallback={<div className="mb-12 min-h-11 text-muted-foreground">Loading the playground…</div>}>
+        <BreakTheUI />
+      </Suspense>
+
       <section className="mb-8">
         <div className="flex flex-wrap gap-2">
           <button
