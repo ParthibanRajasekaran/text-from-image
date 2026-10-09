@@ -1,122 +1,27 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSEO } from '../src/seo';
 import { AuroraBackground } from '../components/AuroraBackground';
 import { Glass } from '../components/ui/Glass';
 import { trackToolStarted, trackToolCompleted } from '../lib/analytics';
-
-type RiskBand = 'low' | 'moderate' | 'high' | 'critical';
-
-interface Question {
-  id: string;
-  text: string;
-  options: { label: string; points: number }[];
-}
-
-const QUESTIONS: Question[] = [
-  {
-    id: 'ai-tools',
-    text: 'Do your teams use AI coding tools (GitHub Copilot, Claude Code, etc.)?',
-    options: [
-      { label: 'Yes, extensively', points: 0 },
-      { label: 'Yes, sometimes', points: 2 },
-      { label: 'No', points: 5 },
-    ],
-  },
-  {
-    id: 'rendered-ui',
-    text: 'How do you verify that rendered UI shows the correct visible text?',
-    options: [
-      { label: 'OCR/visual assertions in tests', points: 0 },
-      { label: 'Manual QA only', points: 4 },
-      { label: 'DOM/code tests only (no visual check)', points: 8 },
-      { label: "Don't verify visible text", points: 10 },
-    ],
-  },
-  {
-    id: 'pdfs',
-    text: 'Do you verify generated PDFs, reports, or documents before sending to users?',
-    options: [
-      { label: 'Yes, with automated checks', points: 0 },
-      { label: 'Yes, manual review only', points: 3 },
-      { label: 'No, we trust the generator', points: 8 },
-    ],
-  },
-  {
-    id: 'legal-copy',
-    text: 'Do you verify that legal, regulatory, or compliance copy is correct?',
-    options: [
-      { label: 'Yes, every deployment', points: 0 },
-      { label: 'Yes, sometimes', points: 3 },
-      { label: 'No, we assume it is', points: 7 },
-    ],
-  },
-  {
-    id: 'assertions',
-    text: 'Do you use Playwright/Cypress visual text assertions?',
-    options: [
-      { label: 'Yes, extensively', points: 0 },
-      { label: 'Yes, sometimes', points: 2 },
-      { label: 'No, only DOM assertions', points: 5 },
-    ],
-  },
-  {
-    id: 'cfr',
-    text: 'Do you monitor change failure rate (CFR) after AI-assisted changes?',
-    options: [
-      { label: 'Yes, closely', points: 0 },
-      { label: 'Yes, loosely', points: 2 },
-      { label: 'No, we trust the tests', points: 6 },
-    ],
-  },
-  {
-    id: 'locale',
-    text: 'Do your AI coding tools generate locale-specific text (dates, currency, addresses)?',
-    options: [
-      { label: 'Yes, and we verify it', points: 0 },
-      { label: 'Yes, but minimal testing', points: 3 },
-      { label: 'Yes, and we often miss it', points: 7 },
-      { label: 'No, single locale only', points: 2 },
-    ],
-  },
-  {
-    id: 'shipped-wrong',
-    text: 'Have you ever shipped wrong visible text that all tests passed?',
-    options: [
-      { label: 'Never', points: 0 },
-      { label: 'Once or twice', points: 4 },
-      { label: 'Yes, multiple times', points: 8 },
-      { label: 'Not sure / just started', points: 3 },
-    ],
-  },
-  {
-    id: 'truncation',
-    text: 'How often do you find truncated or wrapped text in shipped features?',
-    options: [
-      { label: 'Never, we test thoroughly', points: 0 },
-      { label: 'Occasionally (1-2 per quarter)', points: 3 },
-      { label: 'Regularly (monthly or more)', points: 6 },
-    ],
-  },
-];
-
-function calculateScore(answers: Record<string, number>): number {
-  return Object.values(answers).reduce((sum, points) => sum + points, 0);
-}
-
-function getScoreBand(score: number): RiskBand {
-  if (score <= 25) return 'low';
-  if (score <= 50) return 'moderate';
-  if (score <= 75) return 'high';
-  return 'critical';
-}
+import { DebtRadar } from '../components/DebtRadar';
+import {
+  QUESTIONS,
+  bandOf,
+  biggestRisk,
+  decodeAnswers,
+  encodeAnswers,
+  score100,
+  type RiskBand,
+} from '../src/core/debt/model';
+import { BAND_LABEL, renderShareImage } from '../src/core/debt/shareImage';
 
 function getScoreBandColor(band: RiskBand): string {
   switch (band) {
     case 'low':
       return 'bg-green-500/20 border-green-500/30 text-green-800 dark:text-green-300';
     case 'moderate':
-      return 'bg-blue-500/20 border-blue-500/30 text-blue-300';
+      return 'bg-blue-500/20 border-blue-500/30 text-blue-800 dark:text-blue-300';
     case 'high':
       return 'bg-amber-500/20 border-amber-500/30 text-amber-800 dark:text-amber-300';
     case 'critical':
@@ -150,13 +55,24 @@ function getScoreBandAdvice(band: RiskBand): string {
   }
 }
 
+const shareButton =
+  'w-full min-h-[44px] px-4 py-2 bg-accent/10 hover:bg-accent/20 text-accent border border-accent/30 rounded transition-all';
+
 export default function VerificationDebtScore() {
   const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
   const canonicalAbsolute = new URL('/verify-debt-score', SITE_URL).toString();
 
+  // A shared link (#r=...) restores a finished result.
+  const restored = useMemo(() => {
+    if (typeof window === 'undefined') return null;
+    const m = /^#r=(.+)$/.exec(window.location.hash);
+    return m ? decodeAnswers(m[1]) : null;
+  }, []);
+
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, number>>({});
-  const [showResult, setShowResult] = useState(false);
+  const [answers, setAnswers] = useState<Array<number | undefined>>(restored ?? []);
+  const [showResult, setShowResult] = useState(restored !== null);
+  const [notice, setNotice] = useState('');
 
   useSEO({
     title: 'Verification Debt Score — AI UI Testing',
@@ -164,23 +80,68 @@ export default function VerificationDebtScore() {
     canonical: canonicalAbsolute,
   });
 
-  const handleAnswer = (points: number) => {
-    const newAnswers = { ...answers, [QUESTIONS[currentQuestion].id]: points };
+  const handleAnswer = (optionIndex: number) => {
+    const newAnswers = [...answers];
+    newAnswers[currentQuestion] = optionIndex;
     setAnswers(newAnswers);
 
     if (currentQuestion < QUESTIONS.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
-      const finalScore = Object.values(newAnswers).reduce((sum, p) => sum + p, 0);
-      const finalBand = getScoreBand(finalScore);
+      const finalBand = bandOf(score100(newAnswers));
       trackToolStarted({ toolName: 'verification-debt-score' });
       trackToolCompleted({ toolName: 'verification-debt-score', riskLevel: finalBand, duration: 0 });
       setShowResult(true);
+      try {
+        window.history.replaceState(null, '', `#r=${encodeAnswers(newAnswers)}`);
+      } catch {
+        /* the link is a convenience */
+      }
     }
   };
 
-  const score = calculateScore(answers);
-  const band = getScoreBand(score);
+  const score = score100(answers);
+  const band = bandOf(score);
+  const risk = biggestRisk(answers);
+  const riskText = risk ? risk.label : 'none, keep visual assertions strong';
+  const shareLink = `${SITE_URL}/verify-debt-score#r=${encodeAnswers(answers)}`;
+
+  const say = (message: string) => {
+    setNotice(message);
+    window.setTimeout(() => setNotice(''), 3000);
+  };
+  const copyText = async (text: string, done: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      say(done);
+    } catch {
+      say('Copy is not available in this browser.');
+    }
+  };
+  const downloadImage = async () => {
+    try {
+      const blob = await renderShareImage(answers, new URL(SITE_URL).host);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `verification-debt-score-${score}.png`;
+      a.click();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      say('Image downloaded.');
+    } catch {
+      say('Could not create the image.');
+    }
+  };
+  const copyImage = async () => {
+    try {
+      const blob = await renderShareImage(answers, new URL(SITE_URL).host);
+      if (!navigator.clipboard || typeof ClipboardItem === 'undefined') throw new Error('unsupported');
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      say('Image copied.');
+    } catch {
+      say('Copying images is not supported here. Use Download image.');
+    }
+  };
   const progress = ((currentQuestion + (showResult ? 1 : 0)) / QUESTIONS.length) * 100;
 
   return (
@@ -226,6 +187,9 @@ export default function VerificationDebtScore() {
                 </div>
               </div>
 
+              {/* Live radar: the shape grows with every answer */}
+              <DebtRadar answers={answers} className="max-w-sm mx-auto" />
+
               {/* Question */}
               <Glass>
                 <div className="p-8 space-y-6">
@@ -237,7 +201,7 @@ export default function VerificationDebtScore() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: idx * 0.1 }}
-                        onClick={() => handleAnswer(option.points)}
+                        onClick={() => handleAnswer(idx)}
                         className="w-full p-4 text-left border border-border/50 rounded-lg hover:bg-white/5 hover:border-accent/50 transition-all text-white font-medium"
                       >
                         {option.label}
@@ -257,7 +221,7 @@ export default function VerificationDebtScore() {
               {/* Score Card */}
               <Glass>
                 <div className={`p-8 space-y-4 border-l-4 ${getScoreBandColor(band)}`}>
-                  <div className="text-5xl font-bold">{score}</div>
+                  <div className="text-5xl font-bold">{score}<span className="text-2xl text-muted-foreground"> / 100</span></div>
                   <div className="text-2xl font-semibold">{getScoreBandLabel(band)}</div>
                   <p className="text-sm text-muted-foreground">
                     {getScoreBandAdvice(band)}
@@ -272,11 +236,11 @@ export default function VerificationDebtScore() {
                   <ul className="text-sm text-muted-foreground space-y-3">
                     <li className="flex gap-3">
                       <span className="text-accent">→</span>
-                      <span>Start verifying visible text with <code className="text-xs bg-black/40 px-2 py-1 rounded">OCR assertions</code></span>
+                      <span>Start verifying visible text with <code className="text-xs bg-muted text-foreground px-2 py-1 rounded">OCR assertions</code></span>
                     </li>
                     <li className="flex gap-3">
                       <span className="text-accent">→</span>
-                      <span>Use <a href="https://www.npmjs.com/package/@freetextfromimage/rendercheck" className="text-accent hover:underline">RenderCheck</a> for Playwright/Cypress tests</span>
+                      <span>Use <a href="https://www.npmjs.com/package/@freetextfromimage/rendercheck" className="text-accent underline">RenderCheck</a> for Playwright/Cypress tests</span>
                     </li>
                     <li className="flex gap-3">
                       <span className="text-accent">→</span>
@@ -290,29 +254,40 @@ export default function VerificationDebtScore() {
                 </div>
               </Glass>
 
+              {/* Radar of the result */}
+              <Glass>
+                <div className="p-8">
+                  <DebtRadar answers={answers} className="max-w-sm mx-auto" />
+                </div>
+              </Glass>
+
               {/* Share Card */}
               <Glass>
                 <div className="p-8 space-y-4">
                   <h3 className="font-semibold text-white">Share your score</h3>
-                  <div className="bg-black/40 p-4 rounded border border-border/50 text-sm text-muted-foreground">
-                    <p>My Verification Debt Score: {band} ({score}/100)</p>
-                    <p className="text-xs mt-2">Main risk: {band === 'low' && 'Keep visual assertions strong'}</p>
-                    {band !== 'low' && <p className="text-xs mt-2">Recommended: RenderCheck in Playwright CI</p>}
-                    <p className="text-xs text-accent mt-2 hover:underline cursor-pointer">
-                      {SITE_URL}/verify-debt-score
-                    </p>
+                  <div className="bg-muted/60 p-4 rounded border border-border/50 text-sm text-foreground">
+                    <p>My Verification Debt Score: {BAND_LABEL[band].toLowerCase()} ({score}/100)</p>
+                    <p className="text-xs mt-2">Biggest gap: {riskText}</p>
+                    <p className="text-xs mt-2 break-all">{shareLink}</p>
                   </div>
-                  <button
-                    onClick={() => {
-                      const riskText = band === 'low' ? 'Keep visual assertions strong' : 'RenderCheck in Playwright CI';
-                      navigator.clipboard.writeText(
-                        `My Verification Debt Score: ${band} (${score}/100)\nMain risk: ${riskText}\n\n${SITE_URL}/verify-debt-score`
-                      );
-                    }}
-                    className="w-full px-4 py-2 bg-accent/10 hover:bg-accent/20 text-accent border border-accent/30 rounded transition-all"
-                  >
-                    Copy result
-                  </button>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button type="button" onClick={downloadImage} className={shareButton}>Download image</button>
+                    <button type="button" onClick={copyImage} className={shareButton}>Copy image</button>
+                    <button type="button" onClick={() => copyText(shareLink, 'Link copied.')} className={shareButton}>Copy link</button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        copyText(
+                          `My Verification Debt Score: ${BAND_LABEL[band].toLowerCase()} (${score}/100)\nBiggest gap: ${riskText}\n\n${shareLink}`,
+                          'Result copied.'
+                        )
+                      }
+                      className={shareButton}
+                    >
+                      Copy result
+                    </button>
+                  </div>
+                  <p role="status" aria-live="polite" className="text-sm text-muted-foreground min-h-[1.25rem]">{notice}</p>
                 </div>
               </Glass>
 
@@ -330,10 +305,15 @@ export default function VerificationDebtScore() {
               <button
                 onClick={() => {
                   setCurrentQuestion(0);
-                  setAnswers({});
+                  setAnswers([]);
                   setShowResult(false);
+                  try {
+                    window.history.replaceState(null, '', window.location.pathname);
+                  } catch {
+                    /* ignore */
+                  }
                 }}
-                className="w-full px-4 py-2 text-sm text-muted-foreground hover:text-white border border-border/50 rounded transition-all"
+                className="w-full min-h-[44px] px-4 py-2 text-sm text-muted-foreground hover:text-white border border-border/50 rounded transition-all"
               >
                 Take again
               </button>
