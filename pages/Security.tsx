@@ -37,7 +37,7 @@ export default function Security() {
       <ul>
         <li>
           A Content Security Policy that limits scripts, workers, images and network connections to
-          this site, with the exceptions needed for web fonts.
+          this site.
         </li>
         <li>Strict-Transport-Security, so browsers use HTTPS.</li>
         <li>X-Frame-Options: DENY, so other sites cannot embed these pages.</li>
@@ -47,8 +47,8 @@ export default function Security() {
 
       <h2>Third-party requests</h2>
       <p>
-        Web fonts load from Google Fonts (fonts.googleapis.com and fonts.gstatic.com), so your
-        browser contacts Google when a page loads. This is separate from image recognition.
+        There are none. Fonts, scripts and the OCR engine are served from this site, and the
+        Content-Security-Policy blocks requests to any other origin.
       </p>
 
       <h2>Reporting a vulnerability</h2>

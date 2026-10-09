@@ -65,6 +65,8 @@ export default defineConfig(({ mode: _mode }) => {
         'import.meta.env.VITE_BUILD_TIME': JSON.stringify(new Date().toISOString()),
       },
       build: {
+        // Never inline fonts as data: URIs. The CSP is font-src 'self', so they must be real files.
+        assetsInlineLimit: (file) => (/\.woff2?$/.test(file) ? false : undefined),
         // Disable Vite's built-in compression reporting (we use check-budgets.mjs instead)
         reportCompressedSize: false,
         // Conservative chunk size warning limit (600–800k range)

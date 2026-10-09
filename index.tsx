@@ -1,3 +1,7 @@
+import '@fontsource-variable/inter/wght.css';
+import '@fontsource-variable/space-grotesk/wght.css';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import '@fontsource-variable/jetbrains-mono/wght-italic.css';
 import './index.css';
 import React, { Suspense } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';

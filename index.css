@@ -182,12 +182,12 @@
 html, body {
   background: hsl(var(--bg));
   color: hsl(var(--text));
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Inter Variable', 'Inter', system-ui, sans-serif;
   font-weight: 400;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-family: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
   font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.2;

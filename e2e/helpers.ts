@@ -2,7 +2,6 @@ import { expect, type BrowserContext, type Page } from '@playwright/test';
 
 // The only third-party hosts the CSP allows (web fonts). They are answered locally so the
 // tests do not depend on the network, and they are excluded from the OCR-run assertions.
-export const FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 
 export interface Recorder {
   problems: string[];
@@ -31,11 +30,6 @@ export async function record(context: BrowserContext, page: Page): Promise<Recor
     });
   });
 
-  for (const host of FONT_HOSTS) {
-    await context.route(`https://${host}/**`, (route) =>
-      route.fulfill({ status: 200, contentType: host.includes('googleapis') ? 'text/css' : 'font/woff2', body: '' })
-    );
-  }
   return rec;
 }
 

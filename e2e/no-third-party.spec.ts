@@ -18,7 +18,7 @@ test.describe('no ads and no third-party requests', () => {
   });
 
   for (const route of ROUTES) {
-    test(`${route} requests only its own origin and has no ad markup`, async ({ page, baseURL }) => {
+    test(`${route} requests only its own origin (fonts included) and has no ad markup`, async ({ page, baseURL }) => {
       const foreign: string[] = [];
       page.on('request', (r) => {
         const u = r.url();
@@ -26,9 +26,7 @@ test.describe('no ads and no third-party requests', () => {
       });
       await page.goto(route);
       await page.waitForLoadState('networkidle');
-      // Google Fonts is the one allowed stylesheet host (style-src / font-src in the CSP).
-      const bad = foreign.filter((u) => !/^https:\/\/fonts\.(googleapis|gstatic)\.com\//.test(u));
-      expect(bad, 'third-party requests').toEqual([]);
+      expect(foreign, 'third-party requests').toEqual([]);
       expect(await page.locator('ins.adsbygoogle, [aria-label="Advertisement"], script[src*="adsbygoogle"]').count()).toBe(0);
     });
   }
