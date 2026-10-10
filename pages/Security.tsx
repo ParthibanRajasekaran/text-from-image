@@ -1,5 +1,6 @@
 import { LegalPage } from '../components/legal/LegalPage';
 import { CONTACT_EMAIL } from '../src/config';
+import { ArchitectureDiagram } from '../components/security/ArchitectureDiagram';
 
 /**
  * Security page.
@@ -11,6 +12,7 @@ import { CONTACT_EMAIL } from '../src/config';
 const TOC = [
   { id: 'scope', label: 'Scope' },
   { id: 'images', label: 'How images are handled' },
+  { id: 'architecture', label: 'Architecture' },
   { id: 'verify', label: 'Verify it yourself' },
   { id: 'headers', label: 'Security headers' },
   { id: 'third-party', label: 'Third-party requests' },
@@ -45,6 +47,16 @@ export default function Security() {
         the browser makes any request to another address, or any request other than a plain page or
         file download, while recognition runs.
       </p>
+
+      <h2 id="architecture">Architecture</h2>
+      <p>
+        Two surfaces share one rule: an image is read on the machine that holds it. The full
+        write-up, with a table linking each claim to its test, is in{' '}
+        <a href="https://github.com/ParthibanRajasekaran/text-from-image/blob/main/docs/ARCHITECTURE.md">
+          docs/ARCHITECTURE.md
+        </a>.
+      </p>
+      <ArchitectureDiagram />
 
       <h2 id="verify">Verify it yourself</h2>
       <ol>
