@@ -8,6 +8,8 @@ import { HistoryDrawer } from '../v3/HistoryDrawer';
 import { reveal } from '../ui/reveal';
 import { HeroStage } from './HeroStage';
 import { LegibilitySlider } from './LegibilitySlider';
+import { ProofLedger } from './ProofLedger';
+import { ScrollScanLine, SectionDivider } from './ScrollKit';
 import { BentoGrid, FactsStrip, SectionHeading, WorkflowSteps } from './HomeSections';
 import { useOCRProcessor } from '../../hooks/useOCRProcessor';
 import { useLocalHistory, type HistoryItem } from '../../hooks/useLocalHistory';
@@ -79,10 +81,14 @@ export function HomepageMinimalPremium() {
       />
 
       <div id="main-content" role="main" className="bg-background">
+        <ScrollScanLine />
         <HeroStage />
         <FactsStrip />
         <LegibilitySlider />
+        <SectionDivider />
+        <ProofLedger />
         <BentoGrid />
+        <SectionDivider />
         <WorkflowSteps />
 
         {/* BROWSER OCR TOOL */}

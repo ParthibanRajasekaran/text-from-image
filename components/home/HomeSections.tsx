@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { reveal } from '../ui/reveal';
 import { StatusBadge } from '../ui/StatusBadge';
 import { ROUTES } from '../../router';
+import { CopyButton } from './ScrollKit';
 
 export function SectionHeading({ eyebrow, title, lead }: { eyebrow: string; title: string; lead?: string }) {
   return (
@@ -107,6 +108,7 @@ export function BentoGrid() {
             A <code className="font-mono">toShowText</code> matcher for Playwright and Cypress. Failures show expected text,
             what was read, OCR confidence and a diff.
           </p>
+          <div className="mb-2 flex justify-end"><CopyButton text={PLAYWRIGHT_SNIPPET} /></div>
           {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- keyboard users must be able to scroll long code */}
           <pre tabIndex={0} aria-label="Code example" className="overflow-x-auto rounded-xl border border-code-border bg-code-bg p-4 font-mono text-[13px] leading-6 text-code-text">
             <code>{PLAYWRIGHT_SNIPPET}</code>

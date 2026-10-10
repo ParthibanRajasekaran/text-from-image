@@ -1,18 +1,22 @@
 import React from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useMotionValue, useReducedMotion, useScroll, useTransform, type MotionValue } from 'framer-motion';
+import { CopyButton, usePinned } from './ScrollKit';
 import { StatusBadge } from '../ui/StatusBadge';
 import { ROUTES } from '../../router';
-
-/** One loop of the demo, in seconds. Every keyframe below is a fraction of this. */
-const LOOP = 7;
 
 /**
  * Animated, synthetic demonstration: RenderCheck reads a rendered confirmation screen, finds the typo
  * the DOM test could not see, and fails the assertion. Purely illustrative, and labelled as such.
  */
-function ScanDemo() {
+function ScanDemo({ progress }: { progress: MotionValue<number> }) {
   const reduce = useReducedMotion();
-  const loop = reduce ? undefined : { duration: LOOP, repeat: Infinity, ease: 'easeInOut' as const };
+  // Everything below is driven by scroll position (0 to 1), not by time.
+  const scanTop = useTransform(progress, [0.15, 0.65], ['-20%', '100%']);
+  const scanOpacity = useTransform(progress, [0.1, 0.15, 0.65, 0.7], [0, 1, 1, 0]);
+  const boxOpacity = useTransform(progress, [0.6, 0.75], [0, 1]);
+  const verdictOpacity = useTransform(progress, [0.55, 0.8], [0, 1]);
+  const verdictY = useTransform(progress, [0.55, 0.8], [24, 0]);
+  const verdictX = useTransform(progress, [0.4, 0.85], [40, 0]);
 
   return (
     <div className="relative mx-auto w-full max-w-4xl">
@@ -48,11 +52,8 @@ function ScanDemo() {
                 {/* detection box around the misspelt word */}
                 <motion.span
                   aria-hidden="true"
-                  className="absolute -inset-x-1.5 -inset-y-1 rounded-md border-2 border-destructive"
-                  style={{ boxShadow: '0 0 18px hsl(var(--destructive) / 0.45)' }}
-                  initial={{ opacity: reduce ? 1 : 0 }}
-                  animate={reduce ? undefined : { opacity: [0, 0, 1, 1, 0] }}
-                  transition={reduce ? undefined : { ...loop, times: [0, 0.38, 0.45, 0.9, 1] }}
+                  className="absolute -inset-x-1.5 -inset-y-1 rounded-md border-2 border-rose-400"
+                  style={{ opacity: boxOpacity, boxShadow: '0 0 18px rgb(251 113 133 / 0.55)' }}
                 />
               </p>
               <p className="mt-2 text-sm text-muted-foreground">Order 48213 &middot; confirmation sent</p>
@@ -62,11 +63,8 @@ function ScanDemo() {
               {!reduce && (
                 <motion.div
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 h-16 bg-gradient-to-b from-transparent via-accent/30 to-transparent"
-                  style={{ borderBottom: '1px solid hsl(var(--accent) / 0.9)' }}
-                  initial={{ top: '-20%' }}
-                  animate={{ top: ['-20%', '100%', '100%'] }}
-                  transition={{ ...loop, times: [0, 0.4, 1] }}
+                  className="pointer-events-none absolute inset-x-0 h-16 bg-gradient-to-b from-transparent via-cyan-300/30 to-transparent"
+                  style={{ top: scanTop, opacity: scanOpacity, borderBottom: '2px solid rgb(94 234 212)', boxShadow: '0 4px 14px rgb(94 234 212 / 0.5)' }}
                 />
               )}
             </div>
@@ -74,9 +72,10 @@ function ScanDemo() {
 
           {/* right: the assertion and its verdict */}
           <div className="p-6 sm:p-8">
-            <p className="mb-4 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-              Assertion
-            </p>
+            <div className="mb-4 flex items-center justify-between">
+              <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">Assertion</p>
+              <CopyButton text={"await expect(page).toShowText('Payment successful');"} />
+            </div>
             {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- keyboard users must be able to scroll long code */}
             <pre tabIndex={0} aria-label="Code example" className="overflow-x-auto rounded-xl border border-code-border bg-code-bg p-4 font-mono text-[13px] leading-6 text-code-text">
               <code>
@@ -87,10 +86,8 @@ function ScanDemo() {
             </pre>
 
             <motion.div
-              className="mt-4 rounded-xl border border-destructive/40 bg-destructive/10 p-4"
-              initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 8 }}
-              animate={reduce ? undefined : { opacity: [0, 0, 1, 1, 0], y: [8, 8, 0, 0, 8] }}
-              transition={reduce ? undefined : { ...loop, times: [0, 0.45, 0.52, 0.9, 1] }}
+              className="mt-4 rounded-xl border border-rose-400/40 bg-rose-400/10 p-4"
+              style={{ opacity: verdictOpacity, x: verdictX, y: verdictY }}
             >
               <p className="font-mono text-sm font-semibold text-red-700 dark:text-red-300">FAIL &middot; text mismatch</p>
               <dl className="mt-2 space-y-1 font-mono text-xs text-foreground/80">
@@ -108,9 +105,31 @@ function ScanDemo() {
   );
 }
 
+/**
+ * Desktop: the demo pins under the header for 2.4 screens of scroll and the scroll position plays it.
+ * Mobile and reduced motion: normal flow, no scroll hijacking. Reduced motion shows the finished state.
+ */
+function PinnedStage() {
+  const pinned = usePinned();
+  const reduce = useReducedMotion();
+  const ref = React.useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: pinned ? ['start start', 'end end'] : ['start 85%', 'end 45%'],
+  });
+  const done = useMotionValue(1);
+  return (
+    <div ref={ref} className="mt-16 sm:mt-20" style={pinned ? { height: '240vh' } : undefined}>
+      <div className={pinned ? 'sticky top-24' : ''}>
+        <ScanDemo progress={reduce ? done : scrollYProgress} />
+      </div>
+    </div>
+  );
+}
+
 export function HeroStage() {
   return (
-    <section className="relative isolate overflow-hidden">
+    <section className="relative isolate overflow-x-clip">
       {/* backdrop: grid fading out, plus two slow aurora blobs */}
       <div aria-hidden="true" className="absolute inset-0 -z-10">
         <div
@@ -185,24 +204,18 @@ export function HeroStage() {
             </a>
           </motion.div>
 
-          <motion.p
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="font-mono text-sm text-muted-foreground"
+            className="mx-auto flex w-fit items-center gap-3 rounded-xl border border-code-border bg-code-bg px-4 py-2 font-mono text-sm text-code-text"
           >
-            npm i -D @freetextfromimage/rendercheck
-          </motion.p>
+            <span>npm i -D @freetextfromimage/rendercheck</span>
+            <CopyButton text="npm i -D @freetextfromimage/rendercheck" label="Copy install command" tone="dark" />
+          </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.45, duration: 0.8 }}
-          className="mt-16 sm:mt-20"
-        >
-          <ScanDemo />
-        </motion.div>
+        <PinnedStage />
       </div>
     </section>
   );
