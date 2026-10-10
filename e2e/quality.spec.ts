@@ -59,6 +59,14 @@ test.describe(`accessibility (axe-core, ${scheme})`, () => {
       expect(await runAxe(page)).toEqual([]);
     });
   }
+
+  test('/image-to-text after reading an image has no serious or critical violations', async ({ page }) => {
+    await page.goto('/image-to-text');
+    await page.setInputFiles('#glass-dropzone-file-input', 'e2e/fixtures/ocr-sample.png');
+    await expect(page.getByTestId('scan-reveal')).toBeVisible({ timeout: 60_000 });
+    expect(await page.getByTestId('scan-box').count()).toBeGreaterThan(0);
+    expect(await runAxe(page)).toEqual([]);
+  });
 });
 }
 

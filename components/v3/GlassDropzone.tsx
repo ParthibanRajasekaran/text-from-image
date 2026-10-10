@@ -11,6 +11,8 @@ interface GlassDropzoneProps {
   isLoading?: boolean;
   disabled?: boolean;
   onError?: (message: string) => void;
+  /** Show the small preview under the dropzone. Turn off when the caller shows the image itself. */
+  showPreview?: boolean;
 }
 
 
@@ -24,7 +26,7 @@ interface GlassDropzoneProps {
  * - Image preview with fixed max-height (zero CLS)
  * - < 200ms interaction time
  */
-export function GlassDropzone({ onFileSelect, isLoading = false, disabled = false, onError }: GlassDropzoneProps) {
+export function GlassDropzone({ onFileSelect, isLoading = false, disabled = false, onError, showPreview = true }: GlassDropzoneProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const previewUrl = useObjectUrl(selectedFile);
   
@@ -99,7 +101,7 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
         className={`
           group relative min-h-[320px] rounded-2xl cursor-pointer
           bg-surface/40 backdrop-blur-xl
-          border-2 border-dashed transition-all duration-200 block
+          border border-border/70 transition-all duration-200 block
           ${
             isDragging
               ? 'border-accent shadow-glow-sm scale-[1.02]'
@@ -120,6 +122,20 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
         transition={{ duration: 0.15 }}
         style={{ willChange: shouldReduceMotion ? 'auto' : 'transform' }}
       >
+        {/* Viewfinder corners: they close in when the dropzone is hovered, focused or dragged over */}
+        {(['top-3 left-3 border-t-2 border-l-2 rounded-tl-lg', 'top-3 right-3 border-t-2 border-r-2 rounded-tr-lg', 'bottom-3 left-3 border-b-2 border-l-2 rounded-bl-lg', 'bottom-3 right-3 border-b-2 border-r-2 rounded-br-lg'] as const).map((c) => (
+          <span
+            key={c}
+            aria-hidden="true"
+            data-testid="viewfinder-corner"
+            className={`pointer-events-none absolute h-6 w-6 transition-all duration-200 ${c} ${
+              isDragging || isFocused
+                ? 'border-accent scale-110 motion-reduce:scale-100'
+                : 'border-muted-foreground/60 group-hover:border-accent group-hover:scale-110 motion-reduce:group-hover:scale-100'
+            }`}
+          />
+        ))}
+
         {/* Glass effect inner glow */}
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent/5 via-transparent to-accent-2/5 pointer-events-none" />
 
@@ -169,7 +185,7 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
       </motion.label>
 
       {/* Image preview - Fixed max-height prevents CLS */}
-      {previewUrl && (
+      {showPreview && previewUrl && (
         <motion.figure
           initial={shouldReduceMotion ? {} : { opacity: 0, y: 10 }}
           animate={shouldReduceMotion ? {} : { opacity: 1, y: 0 }}
