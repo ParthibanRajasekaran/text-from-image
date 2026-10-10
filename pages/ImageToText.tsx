@@ -45,7 +45,7 @@ export default function ImageToText() {
 
   useSEO({
     title: "Image to Text Converter - Free Online OCR Tool",
-    description: "Convert any image to text instantly with our free AI-powered OCR tool. Extract text from JPG, PNG, WEBP, and PDF files with high accuracy. No signup required.",
+    description: "Convert any image to text instantly with our free OCR tool that runs in your browser. Extract text from JPG, PNG and WEBP images. No signup required.",
     canonical: canonicalPath,
   });
 
@@ -63,7 +63,7 @@ export default function ImageToText() {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: 'Image to Text Converter - Free Online OCR Tool',
-    description: 'Convert any image to text instantly with our free AI-powered OCR tool. Extract text from JPG, PNG, WEBP, and PDF files with high accuracy.',
+    description: 'Convert any image to text instantly with our free OCR tool that runs in your browser. Extract text from JPG, PNG and WEBP images.',
     dateModified: new Date().toISOString(),
     author: { '@type': 'Person', name: 'TextFromImage' },
     mainEntityOfPage: canonicalAbsolute,
@@ -81,14 +81,14 @@ export default function ImageToText() {
     <>
       <SEO
         title="Image to Text Converter - Free Online OCR Tool"
-        description="Convert any image to text instantly with our free AI-powered OCR tool. Extract text from JPG, PNG, WEBP, and PDF files with high accuracy. No signup required."
+        description="Convert any image to text instantly with our free OCR tool that runs in your browser. Extract text from JPG, PNG and WEBP images. No signup required."
         canonical={canonicalAbsolute}
         jsonLd={pageJsonLd}
       />
       <FAQSchema faqs={faqs} />
       <GuideLayout
         title="Image to Text Converter"
-        description="Transform images into editable text with our free AI-powered OCR tool"
+        description="Transform images into editable text with our free OCR tool that runs in your browser"
       >
       <Suspense fallback={<div className="min-h-[280px] mb-10" aria-hidden="true" />}>
         <ImageToTextTool />
@@ -163,16 +163,7 @@ export default function ImageToText() {
           <li><strong>Language models:</strong> Tesseract leverages language-specific dictionaries and grammar rules to improve accuracy. For example, it knows "the" is more likely than "tbe" in English text.</li>
         </ul>
 
-        <h3 className="text-xl font-medium mb-2">Stage 3: AI-Powered Enhancement (Optional)</h3>
-        <p className="mb-3">
-          For challenging images (handwriting, low quality, unusual fonts), our system offers an AI fallback:
-        </p>
-        <ul className="list-disc ml-6 mb-4 space-y-1">
-          <li><strong>Vision-Language Model:</strong> A modern neural network trained on millions of text images analyzes the entire image context, not just individual characters. This model excels at recognizing cursive handwriting, stylized fonts, and text in complex backgrounds.</li>
-          <li><strong>Contextual understanding:</strong> Unlike traditional OCR, the AI model understands semantic context, for example, it can infer partially obscured words based on surrounding text.</li>
-        </ul>
-
-        <h3 className="text-xl font-medium mb-2">Stage 4: Post-Processing and Output</h3>
+        <h3 className="text-xl font-medium mb-2">Stage 3: Post-Processing and Output</h3>
         <p className="mb-3">
           After recognition, the extracted text undergoes final refinements:
         </p>
@@ -249,7 +240,7 @@ export default function ImageToText() {
               <li><strong>Line breaks:</strong> Text may run together if line spacing is tight, or split unexpectedly if there are large gaps</li>
             </ul>
             <p className="mt-2">
-              If you notice significant errors (more than 5% of words incorrect), try the AI-powered model by clicking "Try AI Model" (if available), or improve the image quality and re-upload.
+              If you notice significant errors, improve the image quality (resolution, contrast, straight orientation) and upload it again.
             </p>
           </div>
 
@@ -325,28 +316,10 @@ export default function ImageToText() {
           </div>
 
           <div>
-            <h3 className="text-xl font-medium mb-2">Handle Multi-Language Text</h3>
+            <h3 className="text-xl font-medium mb-2">Language</h3>
             <p className="mb-2">
-              Our OCR supports 100+ languages, but language detection is automatic. For best results:
+              This tool loads the English model. Text in other languages and scripts will be misread. The RenderCheck SDK can load other Tesseract language files you supply.
             </p>
-            <ul className="list-disc ml-6 space-y-1">
-              <li><strong>Single-language images:</strong> Accuracy is highest when the entire image contains text in one language.</li>
-              <li><strong>Mixed-language content:</strong> If your image contains multiple languages (e.g., English and Chinese), the OCR will attempt to recognize both, but accuracy may be lower at language boundaries.</li>
-              <li><strong>Non-Latin scripts:</strong> Arabic, Hebrew, Chinese, Japanese, Korean, and other scripts are supported. Ensure high contrast and clear characters for these languages.</li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-medium mb-2">When to Use the AI Model</h3>
-            <p className="mb-2">
-              If the standard OCR produces unsatisfactory results, try the AI-powered fallback (if available):
-            </p>
-            <ul className="list-disc ml-6 space-y-1">
-              <li><strong>Handwritten text:</strong> The AI model handles cursive and print handwriting better than traditional OCR.</li>
-              <li><strong>Unusual fonts:</strong> Stylized, decorative, or heavily stylized fonts (e.g., graffiti-style text) benefit from AI recognition.</li>
-              <li><strong>Text in images with busy backgrounds:</strong> Text overlaid on photos or graphics (like memes, infographics, or signs) is easier for the AI to isolate.</li>
-              <li><strong>Low-quality or damaged images:</strong> Blurry, faded, or partially obscured text may be readable by the AI where Tesseract fails.</li>
-            </ul>
           </div>
         </div>
 

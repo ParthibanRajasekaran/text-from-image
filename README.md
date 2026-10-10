@@ -41,18 +41,17 @@ entirely in your browser (Tesseract.js, WebAssembly). The rest of this README de
 
 ## ✨ Features
 
-- 🚀 **Lightning Fast** - 2-7 second processing time
-- 🔒 **100% Private** - All processing happens in your browser
+- 🚀 **Fast** - Runs on your device, so there is no upload wait
+- 🔒 **Private** - Images are read in your browser and are not uploaded
 - 🤖 **Local OCR** - Tesseract.js (WebAssembly) runs in your browser, self-hosted, with no model download
 - 📊 **Honest confidence** - Low-confidence results are returned and flagged, not silently replaced
-- 🎨 **Image Enhancement** - 8 preprocessing techniques for better accuracy
+- 🎨 **Image Enhancement** - Preprocessing steps before recognition
 - 💰 **Completely Free** - No API costs, no hidden fees
 - 🌓 **Dark/Light Mode** - Beautiful UI with theme toggle
 - 📱 **Mobile Friendly** - Responsive design for all devices
 - ✨ **V3 Premium UI** - Aurora gradients, glass-morphism, micro-interactions
 - ⌨️ **Keyboard Shortcuts** - Quick actions with keyboard (C/D/H/T/Escape)
-- 📚 **Local History** - Last 20 results saved in browser
-- ♿ **Fully Accessible** - WCAG 2.1 AA compliant, keyboard navigation
+- ♿ **Accessible** - Keyboard navigation; serious and critical axe-core checks run in CI
 - 🎯 **SEO Optimized** - Intent-specific pages with FAQ rich snippets
 
 ## 🎨 UI Variants
@@ -95,10 +94,9 @@ All canonical and OG/Twitter image URLs are computed as absolute using `VITE_SIT
 **Validation:**
 After deploy, validate with [Twitter Card Validator](https://cards-dev.twitter.com/validator) and [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/).
 
-- **92-97% accuracy** on printed text
-- **70-85% accuracy** on handwritten text
-- Automatic confidence scoring
-- Intelligent fallback for low-confidence results
+- Per-word confidence scores
+- Low-confidence results are flagged for review
+- Accuracy depends on the image; no benchmark figure is published yet
 
 
 ## 🧩 Spec-Driven Development (SDD)
@@ -303,25 +301,15 @@ See `.env.example` for all available flags:
 
 ## 📊 Performance
 
-| Metric | Value |
-|--------|-------|
-| **Speed** | 2-7 seconds average |
-| **Accuracy** | 92-97% (printed text) |
-| **Cost** | $0 (completely free) |
-| **Privacy** | 100% client-side |
-| **Success Rate** | 95%+ with hybrid approach |
+| Aspect | Status |
+|--------|--------|
+| **Speed** | Depends on your device and image size; the OCR runs in your browser |
+| **Accuracy** | Not benchmarked yet. Clear, high-resolution printed English text reads best |
+| **Cost** | Free |
+| **Privacy** | Images are read in the browser and are not uploaded (see `/security`) |
+| **Offline** | Works after the OCR model has downloaded once |
 
-### vs Google Gemini (Previous)
-
-| Aspect | Gemini API | This App | Winner |
-|--------|-----------|----------|--------|
-| Speed | 1-2s | 2-7s | Gemini |
-| Accuracy | 95-99% | 92-97% | Gemini |
-| **Cost** | $0.001-0.01/image | **$0** | **This App** 🏆 |
-| **Privacy** | ❌ Cloud | ✅ **Local** | **This App** 🏆 |
-| **Offline** | ❌ No | ✅ **Yes*** | **This App** 🏆 |
-
-*After first-time model download
+Accuracy figures will be published here only with the benchmark script and data that produce them.
 
 ## 🔒 Privacy
 

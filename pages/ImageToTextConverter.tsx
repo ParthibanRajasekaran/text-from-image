@@ -8,15 +8,15 @@ export default function ImageToTextConverter() {
   return (
     <IntentPage
       title="Image to Text Converter - Free Online OCR Tool"
-      description="Free online image to text converter with advanced OCR. Upload any image and extract text instantly. Supports JPG, PNG, WEBP with 95%+ accuracy."
+      description="Free image to text converter that runs in your browser. Extract text from JPG, PNG and WEBP without uploading anything."
       heading="Free Image to Text Converter"
-      subheading="Upload images and extract text in seconds with our powerful AI-driven OCR converter."
+      subheading="Upload images and extract text in seconds with an OCR converter that runs in your browser."
       keywords={['image to text converter', 'free ocr', 'online ocr', 'text converter', 'photo to text', 'image converter']}
       canonicalUrl="https://getrendercheck.com/image-to-text-converter"
       faq={[
         {
           question: 'What makes this converter different?',
-          answer: 'Our converter runs the Tesseract OCR engine entirely in your browser, so nothing is uploaded. It requires no signup, and processes images instantly with support for multiple languages.',
+          answer: 'Our converter runs the Tesseract OCR engine entirely in your browser, so nothing is uploaded. It requires no signup, and processes images instantly for English text.',
         },
         {
           question: 'Can I convert multiple images at once?',
@@ -24,7 +24,7 @@ export default function ImageToTextConverter() {
         },
         {
           question: 'Does it support non-English text?',
-          answer: 'Yes! Our OCR supports over 100 languages including Chinese, Arabic, Cyrillic, and many more. The AI automatically detects the language in your image.',
+          answer: 'Not yet. This tool loads the English model only, so text in other languages will be misread.',
         },
       ]}
     />

@@ -9,7 +9,7 @@
     "prebuild": "node scripts/validate-env.mjs",
     "build": "vite build",
     "postbuild": "node scripts/prerender.mjs && node scripts/bundle-report.mjs",
-    "check:copy": "node scripts/check-em-dashes.mjs",
+    "check:copy": "node scripts/check-em-dashes.mjs && node scripts/check-claims.mjs",
     "check:budgets": "node scripts/check-budgets.mjs",
     "preview": "vite preview",
     "test": "vitest run --reporter=default",

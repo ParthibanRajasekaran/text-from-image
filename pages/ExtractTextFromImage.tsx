@@ -8,7 +8,7 @@ import { GuideLayout } from "../src/layouts/GuideLayout";
 const faqs = [
   {
     question: 'How quickly can I extract text?',
-    answer: 'Most images are processed in 2-5 seconds. The exact time depends on image size and complexity, but our AI model is optimized for speed without sacrificing accuracy.',
+    answer: 'Most images are processed in 2-5 seconds. The exact time depends on image size and complexity, but speed depends on your device because the OCR runs in your browser.',
   },
   {
     question: 'What if the extracted text has errors?',
@@ -42,8 +42,8 @@ export default function ExtractTextFromImage() {
   const canonicalAbsolute = new URL(canonicalPath, SITE_URL).toString();
 
   useSEO({
-    title: "Extract Text from Image - Free AI-Powered OCR",
-    description: "Extract text from any image online for free. Advanced AI OCR with 95%+ accuracy. Supports JPG, PNG, WEBP. No signup required.",
+    title: "Extract Text from Image - Free Local OCR",
+    description: "Extract text from any image online for free. OCR that runs in your browser, so images are never uploaded. Supports JPG, PNG, WEBP. No signup required.",
     canonical: canonicalPath,
   });
 
@@ -60,8 +60,8 @@ export default function ExtractTextFromImage() {
   const article = {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: 'Extract Text from Image - Free AI-Powered OCR',
-    description: 'Extract text from any image online for free using advanced AI-powered OCR technology.',
+    headline: 'Extract Text from Image - Free Local OCR',
+    description: 'Extract text from any image online for free using OCR that runs in your browser.',
     dateModified: new Date().toISOString(),
     author: { '@type': 'Person', name: 'TextFromImage' },
     mainEntityOfPage: canonicalAbsolute,
@@ -78,15 +78,15 @@ export default function ExtractTextFromImage() {
   return (
     <>
       <SEO
-        title="Extract Text from Image - Free AI-Powered OCR"
-        description="Extract text from any image online for free. Advanced AI OCR with 95%+ accuracy. Supports JPG, PNG, WEBP. No signup required."
+        title="Extract Text from Image - Free Local OCR"
+        description="Extract text from any image online for free. OCR that runs in your browser, so images are never uploaded. Supports JPG, PNG, WEBP. No signup required."
         canonical={canonicalAbsolute}
         jsonLd={pageJsonLd}
       />
       <FAQSchema faqs={faqs} />
       <GuideLayout
         title="Extract Text from Image"
-        description="Unlock text data from images using AI-powered OCR extraction"
+        description="Unlock text data from images using OCR that runs in your browser"
       >
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-3">Overview</h2>
@@ -97,7 +97,7 @@ export default function ExtractTextFromImage() {
           Unlike simply viewing text in an image, <em>extracting</em> it means converting the visual representation into machine-readable characters that you can search, edit, translate, analyze, or store in databases. This capability is essential for knowledge workers, researchers, and anyone who needs to repurpose text from non-editable sources like PDFs, photos, or scanned documents.
         </p>
         <p>
-          Our browser-based extraction tool uses AI-powered OCR (Optical Character Recognition) to identify and isolate text from images in seconds, no software installation, no uploads to external servers, and no limits on how many images you can process.
+          Our browser-based extraction tool uses Tesseract OCR (Optical Character Recognition) to identify and isolate text from images in seconds, no software installation, no uploads to external servers, and no limits on how many images you can process.
         </p>
 
         <h3 className="text-xl font-medium mt-6 mb-3">Who Needs Text Extraction from Images</h3>
@@ -167,21 +167,12 @@ export default function ExtractTextFromImage() {
           With text regions identified, the OCR engine processes each bounding box:
         </p>
         <ul className="list-disc ml-6 mb-4 space-y-1">
-          <li><strong>Tesseract OCR:</strong> Our primary recognition engine uses Tesseract, which compares detected character shapes against a trained model of letter and symbol patterns. Tesseract handles 100+ languages and achieves 95%+ accuracy on clear printed text.</li>
+          <li><strong>Tesseract OCR:</strong> Our primary recognition engine uses Tesseract, which compares detected character shapes against a trained model of letter and symbol patterns. This tool loads the English model; clear, high-resolution printed text reads best.</li>
           <li><strong>Line and word segmentation:</strong> The engine breaks each text region into lines, then words, then individual characters. This segmentation respects whitespace, punctuation, and line breaks.</li>
           <li><strong>Confidence scoring:</strong> Each recognized character receives a confidence score (0-100%). Low-confidence characters may be flagged for review or alternative processing.</li>
         </ul>
 
-        <h3 className="text-xl font-medium mb-2">Step 4: AI-Powered Verification (Optional)</h3>
-        <p className="mb-3">
-          For challenging text (handwriting, unusual fonts, low quality), an AI fallback provides enhanced recognition:
-        </p>
-        <ul className="list-disc ml-6 mb-4 space-y-1">
-          <li><strong>Vision-Language Model:</strong> A deep learning model trained on millions of text images re-analyzes low-confidence regions. This model understands context, for example, it can infer partially obscured letters based on surrounding words.</li>
-          <li><strong>Ensemble voting:</strong> When both Tesseract and the AI model produce results, the system compares them. If they agree, confidence is high. If they differ, the system selects the more plausible result based on language models and context.</li>
-        </ul>
-
-        <h3 className="text-xl font-medium mb-2">Step 5: Text Reconstruction and Formatting</h3>
+        <h3 className="text-xl font-medium mb-2">Step 4: Text Reconstruction and Formatting</h3>
         <p className="mb-3">
           Finally, the system assembles individual character recognitions into coherent text:
         </p>
@@ -355,7 +346,7 @@ export default function ExtractTextFromImage() {
             <ul className="list-disc ml-6 space-y-1">
               <li><strong>Handwritten text:</strong> OCR accuracy drops significantly for handwriting. For best results, use images of clear, legible print handwriting (not cursive). Review the output before relying on it.</li>
               <li><strong>Text on colored backgrounds:</strong> Text overlaid on photos or colored backgrounds (e.g., infographics, memes) is more challenging. Crop to isolate text regions if possible.</li>
-              <li><strong>Multi-language documents:</strong> The OCR supports 100+ languages. For best results, ensure the entire image contains text in one primary language. Mixed-language documents may have reduced accuracy at language boundaries.</li>
+              <li><strong>Multi-language documents:</strong> This tool reads English text. For best results, ensure the entire image contains text in one primary language. Text in other languages will be misread.</li>
               <li><strong>Mathematical formulas and symbols:</strong> Standard OCR handles basic mathematical symbols (÷, ×, =, etc.), but complex LaTeX-style formulas may require specialized tools.</li>
             </ul>
           </div>

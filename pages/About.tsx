@@ -123,7 +123,7 @@ export default function About() {
       {/* Hero + CTAs */}
       <Glass className="mb-8 space-y-4">
         <p className="text-foreground/90 leading-relaxed">
-          TextFromImage proves that modern browsers are powerful enough to run AI-powered OCR
+          TextFromImage proves that modern browsers are powerful enough to run OCR
           locally. Extract text from images instantly, without uploading to the cloud, without
           compromise.
         </p>
@@ -200,7 +200,7 @@ export default function About() {
             </div>
             <div>
               <strong className="text-foreground">More Languages & Handwriting</strong>
-              <p className="text-xs text-foreground/70">Support for 100+ languages and handwritten text.</p>
+              <p className="text-xs text-foreground/70">Additional languages and better handwriting support.</p>
             </div>
             <div>
               <strong className="text-foreground">PWA & Offline</strong>
@@ -246,7 +246,7 @@ export default function About() {
             <li className="flex gap-2">
               <span className="text-accent">✓</span>
               <span>
-                <strong>Security:</strong> HTTPS only, no third-party cookies, no cross-site tracking
+                <strong>Security:</strong> served over HTTPS, no cookies, no third-party scripts
               </span>
             </li>
           </ul>

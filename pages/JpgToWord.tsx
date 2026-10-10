@@ -97,7 +97,7 @@ export default function JpgToWord() {
           Unlike simply viewing text in an image, converting to Word format enables full document editing, you can correct typos, adjust formatting, add comments, track changes, merge with other documents, and collaborate with colleagues. This capability is essential for modernizing legacy documents, creating editable versions of printed materials, or repurposing content from image-based sources.
         </p>
         <p>
-          Our browser-based tool uses AI-powered OCR to recognize text from JPG (and PNG, WEBP, GIF, BMP) images, then outputs plain text that you can paste directly into Word or download as a .txt file for conversion to .docx. All processing happens locally in your browser, no uploads, no account required, and complete privacy.
+          Our browser-based tool uses Tesseract OCR to recognize text from JPG (and PNG, WEBP, GIF, BMP) images, then outputs plain text that you can paste directly into Word or download as a .txt file for conversion to .docx. All processing happens locally in your browser, no uploads, no account required, and complete privacy.
         </p>
 
         <h3 className="text-xl font-medium mt-6 mb-3">Who Benefits from JPG to Word Conversion</h3>
@@ -147,7 +147,6 @@ export default function JpgToWord() {
           <li><strong>Image pre-processing:</strong> The system enhances image quality by reducing noise, adjusting contrast, and binarizing (converting to black-and-white). Skewed images are automatically straightened.</li>
           <li><strong>Text region detection:</strong> Computer vision algorithms identify all areas containing text (paragraphs, headings, captions, page numbers) and determine their reading order.</li>
           <li><strong>Character recognition:</strong> Tesseract OCR analyzes each detected character, comparing it against trained models of letter shapes. The engine recognizes letters, numbers, punctuation, and special symbols.</li>
-          <li><strong>AI fallback (optional):</strong> For challenging content (handwriting, unusual fonts, low quality), a vision-language model provides enhanced recognition with contextual understanding.</li>
         </ul>
 
         <h3 className="text-xl font-medium mb-2">Stage 2: Text Structure Preservation</h3>
