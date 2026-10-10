@@ -135,7 +135,14 @@ jobs:
         run: npm test
 
       - name: Unit tests with the network removed
-        run: npm run test:offline
+        # `unshare -rn` needs unprivileged user namespaces, which newer runner images switch off.
+        # Fall back to a root-created network namespace, then drop back to the runner user.
+        run: |
+          if unshare -rn true 2>/dev/null; then
+            npm run test:offline
+          else
+            sudo unshare -n sudo -u "$(id -un)" env "PATH=$PATH" RENDERCHECK_EXPECT_NO_NETWORK=1 npx vitest run __tests__/offline.spec.ts
+          fi
 
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
