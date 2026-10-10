@@ -1,14 +1,16 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { SEO, baseJsonLd, createFAQJsonLd } from "../components/SEO";
 import { useSEO } from "../src/seo";
 import { FAQSchema } from "../components/FAQSchema";
 import { Link } from "react-router-dom";
 import { GuideLayout } from "../src/layouts/GuideLayout";
 
+const ImageToTextTool = React.lazy(() => import("../components/tool/ImageToTextTool"));
+
 const faqs = [
   {
     question: 'How does the image to text converter work?',
-    answer: 'Our OCR (Optical Character Recognition) tool uses advanced AI models to analyze your image and extract all readable text. Simply upload an image, and our system will process it in seconds, identifying text with high accuracy.',
+    answer: 'The tool runs the Tesseract OCR engine (compiled to WebAssembly) inside your browser. Choose an image and it reads the text on your device, usually within a few seconds. Results depend on how clear the image is.',
   },
   {
     question: 'What image formats are supported?',
@@ -16,11 +18,11 @@ const faqs = [
   },
   {
     question: 'Is my data secure?',
-    answer: 'Yes! All processing happens securely over HTTPS. We do not store your images or extracted text on our servers. Your data is processed in real-time and immediately deleted.',
+    answer: 'Your image is read in your browser and is not uploaded. The page counts network requests while an image is read and shows the result above the text. Results are kept only in your own browser if you use the history.',
   },
   {
     question: 'How accurate is the text extraction?',
-    answer: 'Our AI-powered OCR achieves 95%+ accuracy for clear, high-quality images with printed text. Accuracy may vary for handwritten text, low-resolution images, or complex layouts.',
+    answer: 'Clear, high-resolution printed text reads best. Accuracy drops for handwriting, low-resolution images and complex layouts, so check the output before relying on it.',
   },
   {
     question: 'Is there a file size limit?',
@@ -88,6 +90,10 @@ export default function ImageToText() {
         title="Image to Text Converter"
         description="Transform images into editable text with our free AI-powered OCR tool"
       >
+      <Suspense fallback={<div className="min-h-[280px] mb-10" aria-hidden="true" />}>
+        <ImageToTextTool />
+      </Suspense>
+
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-3">Overview</h2>
         <p className="mb-4">

@@ -52,6 +52,18 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
 
   const isActive = (path: string) => location.pathname === path;
 
+  // The "Developer Beta" tag belongs to the SDK. Consumer tool pages and the home hero already say what
+  // the product is, so the tag only shows on developer-facing routes.
+  const showBeta = [
+    ROUTES.RENDERCHECK,
+    ROUTES.DEVELOPERS,
+    ROUTES.ACCESS,
+    ROUTES.LABS,
+    ROUTES.PLAYWRIGHT_OCR_TESTING,
+    ROUTES.CYPRESS_OCR_TESTING,
+    ROUTES.WHAT_IS_VERIFICATION_DEBT,
+  ].includes(location.pathname as never);
+
   const navItems = [
     { label: 'RenderCheck', href: ROUTES.RENDERCHECK },
     { label: 'Developers', href: ROUTES.DEVELOPERS },
@@ -82,7 +94,7 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
           <span className="text-xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">
             RenderCheck
           </span>
-          <StatusBadge variant="developer-beta" size="sm" />
+          {showBeta && <StatusBadge variant="developer-beta" size="sm" />}
         </Link>
 
         {/* Desktop Nav */}

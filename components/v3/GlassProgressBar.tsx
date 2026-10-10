@@ -27,7 +27,7 @@ export interface GlassProgressBarHandle {
 
 const STAGE_LABELS: Record<ProgressStage, string> = {
   idle: 'Ready',
-  upload: 'Uploading...',
+  upload: 'Preparing...',
   ocr: 'Extracting text...',
   render: 'Processing...',
   complete: 'Complete',

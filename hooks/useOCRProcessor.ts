@@ -63,9 +63,7 @@ export function useOCRProcessor(_options: UseOCRProcessorOptions = {}) {
     setProgressStage('upload');
 
     try {
-      // Stage 1: Upload (simulate upload delay)
-      await new Promise(resolve => setTimeout(resolve, 300));
-      
+      // Stage 1: nothing is uploaded; the file goes straight to the in-browser worker.
       // Stage 2: OCR processing via worker
       setProgressStage('ocr');
 
