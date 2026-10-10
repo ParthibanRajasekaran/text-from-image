@@ -41,7 +41,7 @@ export function LegalPage({ title, description, path, docRef, version, effective
           className="rounded-xl border border-border bg-surface p-6 sm:p-10 shadow-sm text-muted-foreground [&_h2]:mt-10 [&_h2]:mb-3 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h2:first-of-type]:mt-0 [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:font-semibold [&_h3]:text-foreground [&_p]:mb-4 [&_p]:leading-7 [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:mb-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mb-2 [&_li]:leading-7 [&_a]:text-primary [&_a]:underline [&_strong]:text-foreground [&_code]:rounded [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.85em] [&_code]:text-foreground"
         >
           <header className="border-b border-border pb-6 mb-8">
-            <span className="font-mono text-xs text-primary bg-primary/10 px-2.5 py-1 rounded">{docRef}</span>
+            <span className="font-mono text-xs text-foreground bg-primary/10 border border-primary/30 px-2.5 py-1 rounded">{docRef}</span>
             <h1 id="legal-title" className="mt-4 text-3xl font-bold tracking-tight text-foreground">
               {title}
             </h1>
