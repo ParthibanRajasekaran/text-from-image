@@ -41,6 +41,7 @@ const Changelog = lazy(() => import('./pages/Changelog'));
 const RedactImage = lazy(() => import('./pages/RedactImage'));
 const PlaywrightOcrTesting = lazy(() => import('./pages/PlaywrightOcrTesting'));
 const CypressOcrTesting = lazy(() => import('./pages/CypressOcrTesting'));
+const WhatIsVerificationDebt = lazy(() => import('./pages/WhatIsVerificationDebt'));
 
 // Route path constants - single source of truth for all route paths
 export const ROUTES = {
@@ -69,6 +70,7 @@ export const ROUTES = {
   REDACT_IMAGE: '/redact-image',
   PLAYWRIGHT_OCR_TESTING: '/playwright-ocr-testing',
   CYPRESS_OCR_TESTING: '/cypress-ocr-testing',
+  WHAT_IS_VERIFICATION_DEBT: '/what-is-verification-debt',
 } as const;
 
 // Always use HomepageMinimalPremium as the home component (minimal-premium redesign)
@@ -165,6 +167,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div className="p-8">Loading...</div>}>
             <CypressOcrTesting />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'what-is-verification-debt',
+        element: (
+          <Suspense fallback={<div className="p-8">Loading...</div>}>
+            <WhatIsVerificationDebt />
           </Suspense>
         ),
       },
