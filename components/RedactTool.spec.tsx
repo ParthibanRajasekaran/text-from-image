@@ -27,7 +27,7 @@ function setup() {
   const engine = {
     isReady: false,
     init: vi.fn(async () => {}),
-    recognize: vi.fn(async () => ({ result: r, network: { requests: [], offOrigin: [] } })),
+    recognize: vi.fn(async () => ({ result: r, network: { totalOutboundBytes: 0, requests: [], verifiedZeroUpload: true } })),
     terminate: vi.fn(async () => {}),
   };
   const renderFn = vi.fn(async () => new Blob(['x'], { type: 'image/png' }));
@@ -66,8 +66,10 @@ describe('RedactTool', () => {
     URL.revokeObjectURL = vi.fn();
     vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
     await upload();
-    fireEvent.click(screen.getByRole('button', { name: 'Download redacted image' }));
-    await waitFor(() => expect(renderFn).toHaveBeenCalled());
+    const button = screen.getByRole('button', { name: 'Download redacted image' });
+    await waitFor(() => expect((button as HTMLButtonElement).disabled).toBe(false), { timeout: 5000 });
+    fireEvent.click(button);
+    await waitFor(() => expect(renderFn).toHaveBeenCalled(), { timeout: 5000 });
     expect((renderFn.mock.calls[0] as any)[1]).toHaveLength(2);
   });
 });
