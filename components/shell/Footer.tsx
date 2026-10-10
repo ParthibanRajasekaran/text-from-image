@@ -66,6 +66,16 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to={ROUTES.PLAYWRIGHT_OCR_TESTING} className="hover:text-foreground transition-colors">
+                  Playwright testing
+                </Link>
+              </li>
+              <li>
+                <Link to={ROUTES.CYPRESS_OCR_TESTING} className="hover:text-foreground transition-colors">
+                  Cypress testing
+                </Link>
+              </li>
+              <li>
                 <a
                   href="https://github.com/ParthibanRajasekaran/text-from-image"
                   target="_blank"
