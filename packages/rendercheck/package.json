@@ -81,7 +81,7 @@
     "@tesseract.js-data/eng": "^1.0.0",
     "jpeg-js": "^0.4.4",
     "pngjs": "^7.0.0",
-    "tesseract.js": "5.1.1"
+    "tesseract.js": "7.0.0"
   },
   "peerDependencies": {
     "@playwright/test": ">=1.40.0",
