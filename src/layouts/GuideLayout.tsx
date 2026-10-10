@@ -1,8 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { AuroraBackground } from '../../components/AuroraBackground';
-import { ThemeToggle } from '../../components/ThemeToggle';
-import { useTheme } from '../../hooks/useTheme';
 
 interface GuideLayoutProps {
   title: string;
@@ -23,8 +21,6 @@ interface GuideLayoutProps {
  * - Zero CLS: all positioned with reserved space
  */
 export function GuideLayout({ title, description, children }: GuideLayoutProps) {
-  const { theme, toggleTheme } = useTheme();
-
   return (
     <AuroraBackground>
       {/* Skip link for accessibility */}
@@ -34,11 +30,6 @@ export function GuideLayout({ title, description, children }: GuideLayoutProps) 
       >
         Skip to main content
       </a>
-
-      {/* Fixed header with theme toggle */}
-      <header className="fixed top-0 right-0 z-50 p-4">
-        <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-      </header>
 
       <div id="main-content" className="relative min-h-screen py-12 sm:py-16" role="main">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

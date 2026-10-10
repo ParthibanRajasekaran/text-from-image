@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import { MotionConfig } from 'framer-motion';
 import { useTheme } from '../../hooks/useTheme';
 import { Header } from './Header';
 import { Footer } from './Footer';
@@ -16,6 +17,8 @@ export function AppShell() {
   const { theme, toggleTheme } = useTheme();
 
   return (
+    // One easing curve for the whole app, and animations stop for visitors who ask for reduced motion.
+    <MotionConfig reducedMotion="user" transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}>
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       {/* Skip to main content link */}
       <a
@@ -41,5 +44,6 @@ export function AppShell() {
       {/* Global footer */}
       <Footer />
     </div>
+    </MotionConfig>
   );
 }

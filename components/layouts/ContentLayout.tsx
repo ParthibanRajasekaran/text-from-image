@@ -1,6 +1,5 @@
 import React from 'react';
 import { AuroraBackground } from '../AuroraBackground';
-import { ThemeToggle } from '../ThemeToggle';
 
 export interface ContentLayoutProps {
   /** Page title for SEO */
@@ -54,12 +53,6 @@ export function ContentLayout({
         >
           Skip to main content
         </a>
-
-        {theme && onToggleTheme && (
-          <header className="fixed top-0 right-0 z-50 p-4">
-            <ThemeToggle theme={theme} toggleTheme={onToggleTheme} />
-          </header>
-        )}
 
         <div id="main-content" className="relative min-h-screen py-12 sm:py-16" role="main">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
