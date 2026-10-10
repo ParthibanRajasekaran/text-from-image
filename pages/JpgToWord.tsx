@@ -94,10 +94,10 @@ export default function JpgToWord() {
           Converting JPG images to Word documents transforms static visual content into editable, formatted, professional text files. Whether you've scanned a printed letter, photographed meeting notes, or received a document as an image file, our OCR-powered converter extracts the text and prepares it for import into Microsoft Word, Google Docs, or any word processor.
         </p>
         <p className="mb-4">
-          Unlike simply viewing text in an image, converting to Word format enables full document editing—you can correct typos, adjust formatting, add comments, track changes, merge with other documents, and collaborate with colleagues. This capability is essential for modernizing legacy documents, creating editable versions of printed materials, or repurposing content from image-based sources.
+          Unlike simply viewing text in an image, converting to Word format enables full document editing, you can correct typos, adjust formatting, add comments, track changes, merge with other documents, and collaborate with colleagues. This capability is essential for modernizing legacy documents, creating editable versions of printed materials, or repurposing content from image-based sources.
         </p>
         <p>
-          Our browser-based tool uses AI-powered OCR to recognize text from JPG (and PNG, WEBP, GIF, BMP) images, then outputs plain text that you can paste directly into Word or download as a .txt file for conversion to .docx. All processing happens locally in your browser—no uploads, no account required, and complete privacy.
+          Our browser-based tool uses AI-powered OCR to recognize text from JPG (and PNG, WEBP, GIF, BMP) images, then outputs plain text that you can paste directly into Word or download as a .txt file for conversion to .docx. All processing happens locally in your browser, no uploads, no account required, and complete privacy.
         </p>
 
         <h3 className="text-xl font-medium mt-6 mb-3">Who Benefits from JPG to Word Conversion</h3>
@@ -145,7 +145,7 @@ export default function JpgToWord() {
         </p>
         <ul className="list-disc ml-6 mb-4 space-y-1">
           <li><strong>Image pre-processing:</strong> The system enhances image quality by reducing noise, adjusting contrast, and binarizing (converting to black-and-white). Skewed images are automatically straightened.</li>
-          <li><strong>Text region detection:</strong> Computer vision algorithms identify all areas containing text—paragraphs, headings, captions, page numbers—and determine their reading order.</li>
+          <li><strong>Text region detection:</strong> Computer vision algorithms identify all areas containing text (paragraphs, headings, captions, page numbers) and determine their reading order.</li>
           <li><strong>Character recognition:</strong> Tesseract OCR analyzes each detected character, comparing it against trained models of letter shapes. The engine recognizes letters, numbers, punctuation, and special symbols.</li>
           <li><strong>AI fallback (optional):</strong> For challenging content (handwriting, unusual fonts, low quality), a vision-language model provides enhanced recognition with contextual understanding.</li>
         </ul>
@@ -168,7 +168,7 @@ export default function JpgToWord() {
           The extracted text is delivered as plain text (UTF-8 Unicode):
         </p>
         <ul className="list-disc ml-6 mb-4 space-y-1">
-          <li><strong>Text format:</strong> All output is plain text—no fonts, colors, or styling. This ensures compatibility with any word processor.</li>
+          <li><strong>Text format:</strong> All output is plain text, no fonts, colors, or styling. This ensures compatibility with any word processor.</li>
           <li><strong>Line breaks:</strong> Paragraphs are separated by double line breaks. Single line breaks within paragraphs are preserved.</li>
           <li><strong>Special characters:</strong> Unicode characters (accented letters, symbols, emoji, non-Latin scripts) are fully supported.</li>
         </ul>
@@ -251,7 +251,7 @@ export default function JpgToWord() {
             <ul className="list-disc ml-6 space-y-1">
               <li><strong>Check accuracy:</strong> Look for common OCR errors like "O" (letter O) vs. "0" (zero), "l" (lowercase L) vs. "I" (capital i) vs. "1" (one).</li>
               <li><strong>Verify paragraph structure:</strong> Ensure paragraphs are properly separated and reading order is correct (especially for multi-column documents).</li>
-              <li><strong>Edit errors:</strong> The text box is editable—correct any mistakes directly before importing into Word.</li>
+              <li><strong>Edit errors:</strong> The text box is editable, correct any mistakes directly before importing into Word.</li>
             </ul>
           </div>
 
@@ -349,7 +349,7 @@ export default function JpgToWord() {
           <div>
             <h3 className="text-xl font-medium mb-2">Text and Font Considerations</h3>
             <ul className="list-disc ml-6 space-y-1">
-              <li><strong>Printed text preferred:</strong> OCR performs best on typed or printed documents. Handwritten documents have lower accuracy—see our <Link to="/handwriting-to-text" className="text-primary hover:text-primary/80">Handwriting to Text</Link> guide for tips.</li>
+              <li><strong>Printed text preferred:</strong> OCR performs best on typed or printed documents. Handwritten documents have lower accuracy, see our <Link to="/handwriting-to-text" className="text-primary hover:text-primary/80">Handwriting to Text</Link> guide for tips.</li>
               <li><strong>Font size:</strong> Text smaller than 9pt often causes errors. If possible, enlarge the original document or scan at higher DPI.</li>
               <li><strong>Standard fonts:</strong> Common fonts (Arial, Times New Roman, Calibri, Helvetica) yield best results. Highly decorative or stylized fonts may confuse the OCR.</li>
               <li><strong>Text weight:</strong> Normal and bold text are reliable. Very thin (hairline) or extra-bold fonts may be misread.</li>
@@ -399,7 +399,7 @@ export default function JpgToWord() {
           Converting business documents, contracts, or personal records requires strong privacy protections. Here's how our tool safeguards your data:
         </p>
         <ul className="list-disc ml-6 space-y-2">
-          <li><strong>Client-side OCR processing:</strong> All text extraction occurs entirely in your web browser using WebAssembly. Your JPG images and extracted text never leave your device—no uploads to servers, no cloud storage.</li>
+          <li><strong>Client-side OCR processing:</strong> All text extraction occurs entirely in your web browser using WebAssembly. Your JPG images and extracted text never leave your device, no uploads to servers, no cloud storage.</li>
           <li><strong>No data retention:</strong> We do not log, store, or transmit any images or text. Once you close the browser tab, all data is permanently deleted from memory.</li>
           <li><strong>Anonymous usage:</strong> No account, login, or personal information is required. You can use the tool completely anonymously.</li>
           <li><strong>Local history only:</strong> The History feature stores past extractions in your browser's local storage (IndexedDB), which resides on your device. This data is not synced to servers and can be cleared at any time via your browser's privacy settings.</li>

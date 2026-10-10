@@ -15,7 +15,7 @@ export default function Labs() {
   const canonicalAbsolute = new URL('/labs', SITE_URL).toString();
 
   useSEO({
-    title: 'RenderCheck Labs — Public Experiments and Educational Tools',
+    title: 'RenderCheck Labs: Public Experiments and Educational Tools',
     description: 'Interactive tools for AI-era verification debt. Self-assess your team, learn from real examples, and practice visual verification.',
     canonical: canonicalAbsolute,
   });

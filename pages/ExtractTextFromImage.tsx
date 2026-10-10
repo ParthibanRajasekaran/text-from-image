@@ -97,7 +97,7 @@ export default function ExtractTextFromImage() {
           Unlike simply viewing text in an image, <em>extracting</em> it means converting the visual representation into machine-readable characters that you can search, edit, translate, analyze, or store in databases. This capability is essential for knowledge workers, researchers, and anyone who needs to repurpose text from non-editable sources like PDFs, photos, or scanned documents.
         </p>
         <p>
-          Our browser-based extraction tool uses AI-powered OCR (Optical Character Recognition) to identify and isolate text from images in seconds—no software installation, no uploads to external servers, and no limits on how many images you can process.
+          Our browser-based extraction tool uses AI-powered OCR (Optical Character Recognition) to identify and isolate text from images in seconds, no software installation, no uploads to external servers, and no limits on how many images you can process.
         </p>
 
         <h3 className="text-xl font-medium mt-6 mb-3">Who Needs Text Extraction from Images</h3>
@@ -154,7 +154,7 @@ export default function ExtractTextFromImage() {
           Before recognizing individual characters, the system identifies where text exists in the image:
         </p>
         <ul className="list-disc ml-6 mb-4 space-y-1">
-          <li><strong>Layout analysis:</strong> Computer vision algorithms scan the image for text-like patterns—continuous sequences of similar-sized shapes arranged in lines.</li>
+          <li><strong>Layout analysis:</strong> Computer vision algorithms scan the image for text-like patterns, continuous sequences of similar-sized shapes arranged in lines.</li>
           <li><strong>Bounding box creation:</strong> Each detected text region is enclosed in a bounding box. These boxes define the areas to be processed by the OCR engine.</li>
           <li><strong>Reading order determination:</strong> The system determines the logical reading order (top-to-bottom, left-to-right for Latin scripts) to preserve document structure in the extracted output.</li>
         </ul>
@@ -177,7 +177,7 @@ export default function ExtractTextFromImage() {
           For challenging text (handwriting, unusual fonts, low quality), an AI fallback provides enhanced recognition:
         </p>
         <ul className="list-disc ml-6 mb-4 space-y-1">
-          <li><strong>Vision-Language Model:</strong> A deep learning model trained on millions of text images re-analyzes low-confidence regions. This model understands context—for example, it can infer partially obscured letters based on surrounding words.</li>
+          <li><strong>Vision-Language Model:</strong> A deep learning model trained on millions of text images re-analyzes low-confidence regions. This model understands context, for example, it can infer partially obscured letters based on surrounding words.</li>
           <li><strong>Ensemble voting:</strong> When both Tesseract and the AI model produce results, the system compares them. If they agree, confidence is high. If they differ, the system selects the more plausible result based on language models and context.</li>
         </ul>
 
@@ -193,7 +193,7 @@ export default function ExtractTextFromImage() {
         </ul>
 
         <p className="mt-4">
-          This entire pipeline completes in 2–5 seconds for typical images, running entirely in your browser using WebAssembly and JavaScript—no server uploads required.
+          This entire pipeline completes in 2–5 seconds for typical images, running entirely in your browser using WebAssembly and JavaScript, no server uploads required.
         </p>
       </section>
 
@@ -383,7 +383,7 @@ export default function ExtractTextFromImage() {
           Extracting text from sensitive documents requires robust privacy protections. Here's how our tool safeguards your data:
         </p>
         <ul className="list-disc ml-6 space-y-2">
-          <li><strong>Client-side processing only:</strong> All OCR operations occur entirely in your web browser using WebAssembly. Your images and extracted text never leave your device—no server uploads, no cloud storage.</li>
+          <li><strong>Client-side processing only:</strong> All OCR operations occur entirely in your web browser using WebAssembly. Your images and extracted text never leave your device, no server uploads, no cloud storage.</li>
           <li><strong>Zero data retention:</strong> We do not log, store, or transmit any images or text. Once you close the browser tab, all data is permanently deleted from memory.</li>
           <li><strong>Anonymous usage:</strong> No account, login, or personal information is required. You can use the tool completely anonymously.</li>
           <li><strong>Local history storage:</strong> The History feature stores past extractions in your browser's local storage (IndexedDB), which resides on your device. This data is not synced to servers and can be cleared at any time via your browser settings.</li>

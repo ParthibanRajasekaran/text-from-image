@@ -14,7 +14,7 @@ export default function Contact() {
   const canonicalAbsolute = new URL('/contact', SITE_URL).toString();
 
   useSEO({
-    title: 'Contact TextFromImage — Bug Reports & Feature Requests',
+    title: 'Contact TextFromImage: Bug Reports & Feature Requests',
     description:
       'Found a bug? Have a feature request? Multiple ways to reach the TextFromImage team. We usually reply within 2 business days.',
     canonical: canonicalAbsolute,
@@ -46,7 +46,7 @@ export default function Contact() {
       },
       sameAs: [
         'https://github.com/ParthibanRajasekaran/text-from-image',
-        'https://www.linkedin.com/in/parthiban-rajasekaran',
+        'https://www.linkedin.com/in/parthibanrajasekaran',
       ],
     },
   };
@@ -105,7 +105,7 @@ export default function Contact() {
                     {/* Privacy notice */}
                     <section className="p-4 rounded-lg bg-accent/5 border border-accent/20">
                       <p className="text-sm text-foreground/90">
-                        <strong>Privacy note:</strong> TextFromImage processes images entirely in your browser—we never store or access them on our servers. When you contact us, we only receive the information you explicitly send.
+                        <strong>Privacy note:</strong> TextFromImage processes images entirely in your browser, we never store or access them on our servers. When you contact us, we only receive the information you explicitly send.
                       </p>
                     </section>
 
@@ -178,7 +178,7 @@ export default function Contact() {
                               Reach out to Parthiban Rajasekaran directly on LinkedIn for business inquiries or just to connect.
                             </p>
                             <a
-                              href="https://www.linkedin.com/in/parthiban-rajasekaran"
+                              href="https://www.linkedin.com/in/parthibanrajasekaran"
                               rel="noopener noreferrer"
                               target="_blank"
                               className="inline-flex items-center gap-2 text-accent hover:text-accent-2 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background rounded px-2 py-1 font-medium"

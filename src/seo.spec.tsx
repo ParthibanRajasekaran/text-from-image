@@ -47,7 +47,7 @@ describe('useSEO', () => {
     document.head.innerHTML = '';
     render(<TestSEO title="T" description="D" />);
     const ogAltDefault = document.querySelector('meta[property="og:image:alt"]');
-    expect(ogAltDefault.getAttribute('content')).toBe('Extract text from image — Free OCR');
+    expect(ogAltDefault.getAttribute('content')).toBe('Extract text from image: Free OCR');
   });
 
   it('sets title and description', () => {

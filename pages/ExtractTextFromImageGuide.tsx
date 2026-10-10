@@ -48,7 +48,7 @@ export default function ExtractTextFromImageGuide() {
   <h2 className="text-3xl font-bold mb-4">Extract Text from Image</h2>
       <section className="mb-6">
         <p>
-          Extracting text from images is a powerful way to digitize printed or handwritten content. Whether you’re converting scanned documents, photos of notes, or screenshots, our online tool makes it fast, private, and easy—no signup required.
+          Extracting text from images is a powerful way to digitize printed or handwritten content. Whether you’re converting scanned documents, photos of notes, or screenshots, our online tool makes it fast, private, and easy, no signup required.
         </p>
       </section>
       <section className="mb-6">

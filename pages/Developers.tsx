@@ -19,7 +19,7 @@ export default function Developers() {
   const canonicalAbsolute = new URL('/developers', SITE_URL).toString();
 
   useSEO({
-    title: 'RenderCheck Developers — SDK Reference & Quick Start',
+    title: 'RenderCheck Developers: SDK Reference & Quick Start',
     description:
       'RenderCheck SDK documentation and examples for Playwright and Cypress. OCR runs on your machine: no API key, no upload. npm install @freetextfromimage/rendercheck.',
     canonical: canonicalAbsolute,
@@ -94,7 +94,7 @@ export default function Developers() {
           RenderCheck is an SDK for verifying rendered UI text in Playwright, Cypress, and any E2E testing framework.
         </p>
         <p className="text-foreground/90">
-          Use it to catch bugs where DOM tests pass but visible text is wrong — currency symbols, truncated confirmations,
+          Use it to catch bugs where DOM tests pass but visible text is wrong, currency symbols, truncated confirmations,
           locale formatting, missing copy, and invisible text.
         </p>
       </section>

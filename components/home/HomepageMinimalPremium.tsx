@@ -27,7 +27,7 @@ export function HomepageMinimalPremium() {
   const canonicalAbsolute = new URL('/', SITE_URL).toString();
 
   useSEO({
-    title: 'RenderCheck — Verify AI-Generated UI Output',
+    title: 'RenderCheck: Verify AI-Generated UI Output',
     description:
       'RenderCheck uses privacy-first OCR to test screenshots, documents, and rendered interfaces, helping teams catch visible text failures that DOM checks and code reviews can miss.',
     canonical: canonicalAbsolute,
@@ -365,26 +365,26 @@ export function HomepageMinimalPremium() {
                 <li className="flex gap-3">
                   <span className="text-primary font-bold">✓</span>
                   <span>
-                    <strong>Browser OCR runs locally</strong> — Tesseract.js WASM, no upload
+                    <strong>Browser OCR runs locally</strong>: Tesseract.js WASM, no upload
                   </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-primary font-bold">✓</span>
                   <span>
-                    <strong>No upload from the SDK</strong> — screenshots are read in your test
+                    <strong>No upload from the SDK</strong>: screenshots are read in your test
                     process and never sent anywhere
                   </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-primary font-bold">✓</span>
                   <span>
-                    <strong>No network calls</strong> — the engine and language data ship with the package
+                    <strong>No network calls</strong>: the engine and language data ship with the package
                   </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-primary font-bold">✓</span>
                   <span>
-                    <strong>No signup for browser OCR</strong> — Use the tool without account
+                    <strong>No signup for browser OCR</strong>: Use the tool without account
                   </span>
                 </li>
               </ul>

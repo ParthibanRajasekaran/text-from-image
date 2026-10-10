@@ -14,9 +14,9 @@ export default function About() {
   const canonicalAbsolute = new URL('/about', SITE_URL).toString();
 
   useSEO({
-    title: 'About TextFromImage — Private, Fast, On-Device OCR',
+    title: 'About TextFromImage: Private, Fast, On-Device OCR',
     description:
-      'Learn how TextFromImage extracts text privately in your browser—no signup, no uploads.',
+      'Learn how TextFromImage extracts text privately in your browser, no signup, no uploads.',
     canonical: canonicalAbsolute,
   });
 
@@ -43,10 +43,10 @@ export default function About() {
       founder: {
         '@type': 'Person',
         name: 'Parthiban Rajasekaran',
-        url: 'https://www.linkedin.com/in/parthiban-rajasekaran',
+        url: 'https://www.linkedin.com/in/parthibanrajasekaran',
         image: `${SITE_URL}/images/headshot.jpg`,
         sameAs: [
-          'https://www.linkedin.com/in/parthiban-rajasekaran',
+          'https://www.linkedin.com/in/parthibanrajasekaran',
           'https://github.com/ParthibanRajasekaran',
         ],
       },
@@ -82,7 +82,7 @@ export default function About() {
           </p>
           <div className="flex gap-2 text-xs">
             <a
-              href="https://www.linkedin.com/in/parthiban-rajasekaran"
+              href="https://www.linkedin.com/in/parthibanrajasekaran"
               rel="noopener noreferrer"
               target="_blank"
               aria-label="LinkedIn"
@@ -124,7 +124,7 @@ export default function About() {
       <Glass className="mb-8 space-y-4">
         <p className="text-foreground/90 leading-relaxed">
           TextFromImage proves that modern browsers are powerful enough to run AI-powered OCR
-          locally. Extract text from images instantly—without uploading to the cloud, without
+          locally. Extract text from images instantly, without uploading to the cloud, without
           compromise.
         </p>
         <div className="flex flex-col sm:flex-row gap-3">
@@ -150,7 +150,7 @@ export default function About() {
           <PillarCard
             icon="🔒"
             title="Private"
-            body="Your images never leave your device. Processing happens in your browser—no servers, no uploads, no logs."
+            body="Your images never leave your device. Processing happens in your browser, no servers, no uploads, no logs."
           />
           <PillarCard
             icon="⚡"
@@ -172,11 +172,11 @@ export default function About() {
           <ol className="space-y-3">
             <li className="flex gap-3">
               <span className="font-bold text-accent flex-shrink-0">1.</span>
-              <span className="text-foreground/90">Upload an image—it stays in your browser.</span>
+              <span className="text-foreground/90">Upload an image, it stays in your browser.</span>
             </li>
             <li className="flex gap-3">
               <span className="font-bold text-accent flex-shrink-0">2.</span>
-              <span className="text-foreground/90">OCR runs locally in Web Workers—no server call.</span>
+              <span className="text-foreground/90">OCR runs locally in Web Workers, no server call.</span>
             </li>
             <li className="flex gap-3">
               <span className="font-bold text-accent flex-shrink-0">3.</span>

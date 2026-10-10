@@ -120,7 +120,7 @@ describe('About Page', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText(/Upload an image—it stays in your browser/)).toBeInTheDocument();
+    expect(screen.getByText(/Upload an image, it stays in your browser/)).toBeInTheDocument();
     expect(screen.getByText(/OCR runs locally in Web Workers/)).toBeInTheDocument();
     expect(screen.getByText(/Results appear instantly/)).toBeInTheDocument();
   });

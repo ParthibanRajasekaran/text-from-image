@@ -18,7 +18,7 @@ export default function CaseStudies() {
   const canonicalAbsolute = new URL('/case-studies', SITE_URL).toString();
 
   useSEO({
-    title: 'RenderCheck Case Studies — Beta Adoption in Progress',
+    title: 'RenderCheck Case Studies: Beta Adoption in Progress',
     description:
       'Real-world case studies showing how teams use RenderCheck for AI-generated UI verification. Public impact, verified metrics.',
     canonical: canonicalAbsolute,

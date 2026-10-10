@@ -45,7 +45,7 @@ export function useSEO({ title, description, canonical, ogImage, ogImageAlt }: S
     link.setAttribute('href', abs(canonical));
     // OG/Twitter image
     const img = abs(ogImage ?? '/og/default.png');
-    const imgAlt = ogImageAlt ?? 'Extract text from image — Free OCR';
+    const imgAlt = ogImageAlt ?? 'Extract text from image: Free OCR';
     // OG tags
     const ogTags = [
       ['og:type', 'website'],

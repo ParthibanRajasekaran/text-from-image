@@ -98,7 +98,7 @@ export default function CopyTextFromImageGuide() {
           Copying text from images is a common need in modern workflows. Whether you're digitizing handwritten notes, extracting quotes from screenshots, or repurposing text from scanned documents, having a reliable method to convert visual text into editable content saves time and reduces errors from manual retyping.
         </p>
         <p className="mt-3">
-          Our browser-based OCR tool processes images entirely on your device, ensuring your documents remain private while delivering fast, accurate text extraction. No account creation, no file uploads to external servers, and no usage limits—just straightforward optical character recognition whenever you need it.
+          Our browser-based OCR tool processes images entirely on your device, ensuring your documents remain private while delivering fast, accurate text extraction. No account creation, no file uploads to external servers, and no usage limits, just straightforward optical character recognition whenever you need it.
         </p>
       </section>
 
@@ -206,7 +206,7 @@ export default function CopyTextFromImageGuide() {
               <li><strong>Use keyboard shortcut:</strong> Press Cmd+C (Mac) or Ctrl+C (Windows) while the results panel is focused.</li>
             </ul>
             <p className="mt-2">
-              You'll see a brief confirmation message ("Copied!") to indicate success. The text is now ready to paste into any application—email, document editor, spreadsheet, or note-taking app.
+              You'll see a brief confirmation message ("Copied!") to indicate success. The text is now ready to paste into any application, email, document editor, spreadsheet, or note-taking app.
             </p>
           </div>
 

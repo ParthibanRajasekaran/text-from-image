@@ -88,7 +88,7 @@ export default function AIUIBugGallery() {
   const canonicalAbsolute = new URL('/ai-ui-bug-gallery', SITE_URL).toString();
 
   useSEO({
-    title: 'AI UI Bug Gallery — How AI-Generated UI Fails Visual Verification',
+    title: 'AI UI Bug Gallery: How AI-Generated UI Fails Visual Verification',
     description: 'Synthetic examples of AI-generated UI bugs that pass code tests but fail visible-output verification, with the RenderCheck assertion that catches each.',
     canonical: canonicalAbsolute,
   });
@@ -175,8 +175,13 @@ export default function AIUIBugGallery() {
 
       {/* Gallery */}
       <section className="space-y-6">
-        {filteredExamples.map((example) => (
-          <div key={example.id} className="border border-border rounded-lg p-6 space-y-4">
+        {filteredExamples.map((example, i) => (
+          <div
+            key={example.id}
+            // The side navigation links to #<category>; anchor the first card of each category.
+            id={filteredExamples.findIndex((x) => x.category === example.category) === i ? example.category : undefined}
+            className="scroll-mt-24 border border-border rounded-lg p-6 space-y-4"
+          >
             <div className="flex items-start justify-between gap-4">
               <div>
                 <h3 className="text-xl font-semibold text-foreground">{example.title}</h3>
