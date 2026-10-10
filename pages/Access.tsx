@@ -14,7 +14,7 @@ import { ROUTES } from '../router';
  * form; it is kept at /access so existing links still land somewhere useful.
  */
 export default function Access() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalAbsolute = new URL('/access', SITE_URL).toString();
 
   useSEO({

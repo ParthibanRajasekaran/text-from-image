@@ -108,7 +108,7 @@ useEffect(() => {
    <SEO
      title="Free Online Image to Text Converter - OCR Tool"
      description="Extract text from images instantly..."
-     canonical="https://freetextfromimage.com/"
+     canonical="https://getrendercheck.com/"
      jsonLd={baseJsonLd}
    />
    ```
@@ -136,7 +136,7 @@ useEffect(() => {
 
 **Canonical URL Pattern**:
 ```
-https://freetextfromimage.com/[route-path]
+https://getrendercheck.com/[route-path]
 ```
 
 **JSON-LD Structure**:
@@ -147,13 +147,13 @@ https://freetextfromimage.com/[route-path]
     {
       "@type": "Organization",
       "name": "TextFromImage",
-      "url": "https://freetextfromimage.com",
-      "logo": "https://freetextfromimage.com/logo.png"
+      "url": "https://getrendercheck.com",
+      "logo": "https://getrendercheck.com/logo.png"
     },
     {
       "@type": "WebSite",
       "name": "TextFromImage",
-      "url": "https://freetextfromimage.com"
+      "url": "https://getrendercheck.com"
     },
     {
       "@type": "FAQPage",

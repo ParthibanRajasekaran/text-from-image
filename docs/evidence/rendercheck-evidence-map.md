@@ -10,7 +10,7 @@ This document maps all public claims about RenderCheck to their supporting evide
 - npm package published: `@freetextfromimage/rendercheck` ([npmjs.com](https://www.npmjs.com/package/@freetextfromimage/rendercheck))
 - MIT license: source available at GitHub
 - Version: 0.1.0
-- Browser demo live at [freetextfromimage.com](https://freetextfromimage.com) — try the OCR tool directly
+- Browser demo live at [getrendercheck.com](https://getrendercheck.com) — try the OCR tool directly
 - Playwright/Cypress integration documented on `/developers` page
 - API accepts screenshot + expected text, returns pass/fail
 

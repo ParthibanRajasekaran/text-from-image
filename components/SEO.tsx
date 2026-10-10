@@ -33,7 +33,7 @@ export interface SEOProps {
 }
 
 const SITE_NAME = 'TextFromImage';
-const SITE_URL = 'https://freetextfromimage.com';
+const SITE_URL = 'https://getrendercheck.com';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 /**
@@ -44,7 +44,7 @@ const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
  * <SEO
  *   title="Image to Text Converter"
  *   description="Convert images to text with our free OCR tool"
- *   canonical="https://freetextfromimage.com/image-to-text"
+ *   canonical="https://getrendercheck.com/image-to-text"
  * />
  * ```
  * 

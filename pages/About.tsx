@@ -10,7 +10,7 @@ import { CONTACT_EMAIL } from '../src/config';
 
 export default function About() {
   const { theme, toggleTheme } = useTheme();
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalAbsolute = new URL('/about', SITE_URL).toString();
 
   useSEO({

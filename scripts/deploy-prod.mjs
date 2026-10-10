@@ -185,7 +185,7 @@ function deployToProduction() {
     log(`   Vercel commit: ${vercelCommit}`, 'cyan');
     
     log('\n✨ Verification steps:', 'yellow');
-    log('   1. Visit your production domain (e.g., https://freetextfromimage.com)');
+    log('   1. Visit your production domain (e.g., https://getrendercheck.com)');
     log('   2. Check the footer for the commit SHA');
     log(`   3. Verify it shows: ${localCommit}`);
     log('   4. If different, clear your browser cache (Cmd+Shift+R / Ctrl+F5)');

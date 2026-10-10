@@ -43,7 +43,7 @@ export function IntentPage({
   
   // Combine base JSON-LD with Breadcrumb, Article and FAQ schema
   const combinedJsonLd = useMemo(() => {
-    const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+    const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
     const breadcrumb = {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',

@@ -12,7 +12,7 @@ export default function CopyTextFromImage() {
       heading="Copy Text from Image"
       subheading="Extract and copy text from images in seconds. Supports JPG, PNG, WEBP, and more."
       keywords={['copy text from image', 'image to text', 'ocr copy', 'extract text', 'photo to text']}
-      canonicalUrl="https://freetextfromimage.com/copy-text-from-image"
+      canonicalUrl="https://getrendercheck.com/copy-text-from-image"
       faq={[
         {
           question: 'How do I copy text from an image?',

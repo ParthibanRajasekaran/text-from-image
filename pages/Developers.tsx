@@ -15,7 +15,7 @@ import { ROUTES } from '../router';
  * - DevFAQ
  */
 export default function Developers() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalAbsolute = new URL('/developers', SITE_URL).toString();
 
   useSEO({
@@ -110,7 +110,7 @@ export default function Developers() {
               <StatusBadge variant="live" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Free tool at freetextfromimage.com. Extract text from images in your browser. No signup required.
+              Free tool at getrendercheck.com. Extract text from images in your browser. No signup required.
             </p>
           </div>
 

@@ -37,7 +37,7 @@ const faqs = [
  * SEO-optimized route for /extract-text-from-image
  */
 export default function ExtractTextFromImage() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalPath = '/extract-text-from-image';
   const canonicalAbsolute = new URL(canonicalPath, SITE_URL).toString();
 

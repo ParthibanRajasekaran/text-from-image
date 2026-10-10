@@ -8,7 +8,7 @@ export type SEOProps = {
   ogImageAlt?: string;
 };
 
-const ORIGIN = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+const ORIGIN = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
 const abs = (p?: string) => {
   if (!p) return ORIGIN;
   return p.startsWith('http') ? p : new URL(p, ORIGIN).toString();

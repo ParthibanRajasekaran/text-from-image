@@ -36,7 +36,7 @@ export interface ChallengePlayerProps {
 }
 
 /** Mount it with `key={challenge.id}` so a new challenge starts clean. */
-export function ChallengePlayer({ challenge, siteUrl = 'https://freetextfromimage.com' }: ChallengePlayerProps) {
+export function ChallengePlayer({ challenge, siteUrl = 'https://getrendercheck.com' }: ChallengePlayerProps) {
   const [picked, setPicked] = useState<Set<BugKind>>(new Set());
   const [answer, setAnswer] = useState('');
   const [result, setResult] = useState<Grade | null>(null);

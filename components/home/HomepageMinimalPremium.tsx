@@ -23,7 +23,7 @@ import { useLiveRegion } from '../../hooks/useLiveRegion';
  * - Premium through restraint, not decoration
  */
 export function HomepageMinimalPremium() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalAbsolute = new URL('/', SITE_URL).toString();
 
   useSEO({

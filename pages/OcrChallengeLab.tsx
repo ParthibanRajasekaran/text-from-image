@@ -20,7 +20,7 @@ const DIFFICULTY_STYLE = {
 } as const;
 
 export default function OcrChallengeLab() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalAbsolute = new URL('/ocr-challenge-lab', SITE_URL).toString();
 
   useSEO({

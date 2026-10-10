@@ -69,7 +69,7 @@ const ENTRIES: ChangelogEntry[] = [
 ];
 
 export default function Changelog() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalAbsolute = new URL('/changelog', SITE_URL).toString();
 
   useSEO({

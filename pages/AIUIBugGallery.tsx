@@ -84,7 +84,7 @@ await expect(page).toShowText('15.03.2026');`,
 ];
 
 export default function AIUIBugGallery() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalAbsolute = new URL('/ai-ui-bug-gallery', SITE_URL).toString();
 
   useSEO({

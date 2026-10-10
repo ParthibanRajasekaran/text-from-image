@@ -14,7 +14,7 @@ interface LegalPageProps {
  * Plain Tailwind classes only (the project does not use the typography plugin).
  */
 export function LegalPage({ title, description, path, children }: LegalPageProps) {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonical = new URL(path, SITE_URL).toString();
 
   useSEO({ title: `${title} | TextFromImage`, description, canonical });
