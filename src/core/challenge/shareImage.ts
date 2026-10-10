@@ -8,7 +8,7 @@ export interface ShareInput {
 }
 
 /** The 1200x630 result card. Pure drawing: nothing is fetched, no fonts are loaded. */
-export function drawChallengeCard(ctx: Ctx, input: ShareInput, siteHost = 'freetextfromimage.com') {
+export function drawChallengeCard(ctx: Ctx, input: ShareInput, siteHost = 'getrendercheck.com') {
   const sans = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
   const { score, label, found, total } = input.grade;
   const color = score >= 75 ? '#4ade80' : score >= 40 ? '#fbbf24' : '#f87171';

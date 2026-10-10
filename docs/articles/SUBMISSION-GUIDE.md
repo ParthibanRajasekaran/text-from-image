@@ -87,7 +87,7 @@ Parthiban
 title: AI Coding Made UI Faster. Now We Need Rendered Output Verification
 description: Why OCR assertions in Playwright/Cypress catch bugs that DOM tests miss
 tags: testing, ai, ocr, javascript, automation
-cover_image: https://freetextfromimage.com/og.png
+cover_image: https://getrendercheck.com/og.png
 ---
 
 [PASTE ARTICLE TEXT]
@@ -132,7 +132,7 @@ Parthiban
 **Conservative estimate:**
 - 1-2 acceptances within 30 days
 - ~500-1000 readers per published article
-- ~10-20 external links back to freetextfromimage.com
+- ~10-20 external links back to getrendercheck.com
 
 **This counts as:**
 - 3rd-party validation ✓

@@ -42,7 +42,7 @@ test.describe('prerendered HTML (what a crawler without JavaScript receives)', (
   test('the sitemap lists every prerendered route', async ({ request }) => {
     const xml = await (await request.get('/sitemap.xml')).text();
     for (const route of ROUTES) {
-      expect(xml, route).toContain(`https://freetextfromimage.com${route}</loc>`);
+      expect(xml, route).toContain(`https://getrendercheck.com${route}</loc>`);
     }
   });
 

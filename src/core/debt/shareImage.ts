@@ -38,7 +38,7 @@ function polygon(ctx: Ctx, pts: Array<[number, number]>) {
 }
 
 /** Draw the 1200x630 share card. Pure drawing: no DOM, no fonts to load, nothing fetched. */
-export function drawShareCard(ctx: Ctx, answers: Answers, siteHost = 'freetextfromimage.com') {
+export function drawShareCard(ctx: Ctx, answers: Answers, siteHost = 'getrendercheck.com') {
   const score = score100(answers);
   const band = bandOf(score);
   const axes = axisValues(answers);

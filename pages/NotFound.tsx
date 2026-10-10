@@ -29,7 +29,7 @@ export default function NotFound() {
       <SEO
         title="404 - Page Not Found"
         description="The page you're looking for doesn't exist. Return to our free image to text converter."
-        canonical="https://freetextfromimage.com/404"
+        canonical="https://getrendercheck.com/404"
       />
       <motion.div
         initial={{ opacity: 0, y: 20 }}

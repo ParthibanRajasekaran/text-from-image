@@ -40,7 +40,7 @@ const faqs = [
 // FAQSchema returns a <script> tag with FAQPage JSON-LD
 
 export default function JpgToExcelGuide() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalPath = '/jpg-to-excel';
   const canonicalAbsolute = new URL(canonicalPath, SITE_URL).toString();
 

@@ -24,6 +24,6 @@ export default defineConfig({
     timeout: 180_000,
     // index.tsx renders the router UI only when VITE_UX_V2 is true; production sets it. Without
     // it the build serves the legacy single-page App and none of the routes exist.
-    env: { VITE_UX_V2: 'true', VITE_SITE_URL: 'https://freetextfromimage.com' },
+    env: { VITE_UX_V2: 'true', VITE_SITE_URL: 'https://getrendercheck.com' },
   },
 });

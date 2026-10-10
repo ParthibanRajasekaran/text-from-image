@@ -54,9 +54,9 @@ Works with Playwright, Cypress, or any E2E tool that captures screenshots.
 ## Documentation
 
 - **Quick Start**: [RenderCheck package README](https://www.npmjs.com/package/@freetextfromimage/rendercheck)
-- **Full Docs**: [freetextfromimage.com/rendercheck](https://freetextfromimage.com/rendercheck)
-- **Workflow Examples**: [freetextfromimage.com/workflows/ocr-in-ci](https://freetextfromimage.com/workflows/ocr-in-ci)
-- **Verify Your Team's Debt**: [Verification Debt Score](https://freetextfromimage.com/verify-debt-score)
+- **Full Docs**: [getrendercheck.com/rendercheck](https://getrendercheck.com/rendercheck)
+- **Workflow Examples**: [getrendercheck.com/workflows/ocr-in-ci](https://getrendercheck.com/workflows/ocr-in-ci)
+- **Verify Your Team's Debt**: [Verification Debt Score](https://getrendercheck.com/verify-debt-score)
 
 ## Dataset
 
@@ -74,7 +74,7 @@ Useful for:
 
 RenderCheck uses the FreeTextFromImage OCR API. No images or extracted text are persisted — they're processed in memory and immediately discarded.
 
-[Privacy Architecture →](https://freetextfromimage.com/privacy-architecture)
+[Privacy Architecture →](https://getrendercheck.com/privacy-architecture)
 
 ## License
 

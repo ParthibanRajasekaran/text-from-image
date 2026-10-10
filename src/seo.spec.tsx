@@ -8,7 +8,7 @@ function TestSEO(props: Parameters<typeof useSEO>[0]) {
   return null;
 }
 
-const ORIGIN = 'https://freetextfromimage.com';
+const ORIGIN = 'https://getrendercheck.com';
 
 describe('useSEO', () => {
   beforeEach(() => {

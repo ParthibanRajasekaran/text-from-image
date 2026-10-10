@@ -120,7 +120,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
         <SEO
           title="Free Online Image to Text Converter - OCR Tool"
           description="Extract text from images instantly with our free OCR tool. Supports PNG, JPG, and WEBP. No signup required. Fast, secure, and accurate text extraction."
-          canonical="https://freetextfromimage.com/"
+          canonical="https://getrendercheck.com/"
           keywords="image to text, OCR, extract text from image, online OCR, free text extraction"
           jsonLd={baseJsonLd}
         />

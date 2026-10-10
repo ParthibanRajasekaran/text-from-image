@@ -93,7 +93,7 @@ npm run sitemap
 1. Go to [search.google.com/search-console](https://search.google.com/search-console)
 2. Select your site property
 3. Sitemaps → Add new sitemap
-4. Enter: `https://freetextfromimage.com/sitemap.xml`
+4. Enter: `https://getrendercheck.com/sitemap.xml`
 5. Request indexing for each guide page
 
 ### 5. Tag Assistant Verification
@@ -172,7 +172,7 @@ VITE_UX_V2=true
 ### Preview Deployments (Vercel)
 ```bash
 # Vercel Dashboard → Environment Variables → Preview
-VITE_SITE_URL=https://freetextfromimage.com
+VITE_SITE_URL=https://getrendercheck.com
 VITE_UX_V2=true
 VITE_ENABLE_ADS_IN_PREVIEW=true
 VITE_ADS_SLOTS_ENABLED=true
@@ -188,7 +188,7 @@ VITE_ADS_SLOTS_ENABLED=true
 ### Production Deployment (Vercel)
 ```bash
 # Vercel Dashboard → Environment Variables → Production
-VITE_SITE_URL=https://freetextfromimage.com
+VITE_SITE_URL=https://getrendercheck.com
 VITE_UX_V2=true
 VITE_ADSENSE_PUB_ID=ca-pub-XXXXXXXXXXXX     # Real publisher ID
 VITE_ADS_SLOTS_ENABLED=true                  # Enable after Google approval
@@ -218,7 +218,7 @@ google.com, pub-XXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
 npm run build && npm run deploy:prod
 ```
 
-Verify at: `https://freetextfromimage.com/ads.txt`
+Verify at: `https://getrendercheck.com/ads.txt`
 
 ### Step 2: Enable Ad Slots
 

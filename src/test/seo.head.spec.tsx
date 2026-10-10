@@ -10,7 +10,7 @@ describe('SEO head tags', () => {
       <SEO
         title="Test Title"
         description="Test description for SEO."
-        canonical="https://freetextfromimage.com/test"
+        canonical="https://getrendercheck.com/test"
       />
     );
   expect(document.title).toBe('Test Title | TextFromImage');
@@ -19,7 +19,7 @@ describe('SEO head tags', () => {
     expect(metaDesc?.getAttribute('content')).toBe('Test description for SEO.');
     const canonical = document.querySelector('link[rel="canonical"]');
     expect(canonical).toBeTruthy();
-    expect(canonical?.getAttribute('href')).toBe('https://freetextfromimage.com/test');
+    expect(canonical?.getAttribute('href')).toBe('https://getrendercheck.com/test');
   const results = await axe(document.head);
   expect(results.violations.length).toBe(0);
   });

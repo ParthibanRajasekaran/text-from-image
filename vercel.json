@@ -61,5 +61,40 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "freetextfromimage.com"
+        }
+      ],
+      "destination": "https://getrendercheck.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.freetextfromimage.com"
+        }
+      ],
+      "destination": "https://getrendercheck.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.getrendercheck.com"
+        }
+      ],
+      "destination": "https://getrendercheck.com/$1",
+      "permanent": true
+    }
   ]
 }

@@ -12,7 +12,7 @@ export default function ImageToTextConverter() {
       heading="Free Image to Text Converter"
       subheading="Upload images and extract text in seconds with our powerful AI-driven OCR converter."
       keywords={['image to text converter', 'free ocr', 'online ocr', 'text converter', 'photo to text', 'image converter']}
-      canonicalUrl="https://freetextfromimage.com/image-to-text-converter"
+      canonicalUrl="https://getrendercheck.com/image-to-text-converter"
       faq={[
         {
           question: 'What makes this converter different?',

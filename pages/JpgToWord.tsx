@@ -37,7 +37,7 @@ const faqs = [
  * SEO-optimized route for /jpg-to-word
  */
 export default function JpgToWord() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalPath = '/jpg-to-word';
   const canonicalAbsolute = new URL(canonicalPath, SITE_URL).toString();
 

@@ -2,7 +2,7 @@
 import { readFileSync, writeFileSync } from 'fs';
 
 // Use VITE_SITE_URL from env or fallback
-const siteUrl = process.env.VITE_SITE_URL || 'https://freetextfromimage.com';
+const siteUrl = process.env.VITE_SITE_URL || 'https://getrendercheck.com';
 
 // Every route the app prerenders (ROUTES in router.tsx), so the sitemap cannot drift from the site.
 const routerSource = readFileSync(new URL('../router.tsx', import.meta.url), 'utf8');

@@ -21,7 +21,7 @@ const sections = [
 ];
 
 export default function RenderCheck() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalAbsolute = new URL('/rendercheck', SITE_URL).toString();
 
   useSEO({

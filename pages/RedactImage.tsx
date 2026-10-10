@@ -6,7 +6,7 @@ import { KINDS, KIND_LABEL } from '../src/core/redact/detect';
 import { ROUTES } from '../router';
 
 export default function RedactImage() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalAbsolute = new URL(ROUTES.REDACT_IMAGE, SITE_URL).toString();
 
   useSEO({

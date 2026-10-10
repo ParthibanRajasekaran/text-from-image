@@ -37,7 +37,7 @@ const faqs = [
  * SEO-optimized route for /image-to-text
  */
 export default function ImageToText() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalPath = '/image-to-text';
   const canonicalAbsolute = new URL(canonicalPath, SITE_URL).toString();
 

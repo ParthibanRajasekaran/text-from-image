@@ -108,7 +108,7 @@ If you use this dataset in research or tools, cite as:
   title={AI UI Verification Dataset: 50 Real-World Rendering Failures},
   author={Rajasekaran, Parthiban},
   year={2026},
-  url={https://github.com/ParthibanRajasekaran/freetextfromimage/tree/main/dataset/ai-ui-verification}
+  url={https://github.com/ParthibanRajasekaran/text-from-image/tree/main/dataset/ai-ui-verification}
 }
 ```
 
@@ -128,6 +128,6 @@ MIT — Dataset is free to use, cite, fork, and distribute.
 ## Related Resources
 
 - [RenderCheck npm package](https://www.npmjs.com/package/@freetextfromimage/rendercheck)
-- [FreeTextFromImage Documentation](https://freetextfromimage.com)
-- [Verification Debt Score Assessment](https://freetextfromimage.com/verify-debt-score)
-- [AI UI Verification in CI](https://freetextfromimage.com/workflows/ocr-in-ci)
+- [FreeTextFromImage Documentation](https://getrendercheck.com)
+- [Verification Debt Score Assessment](https://getrendercheck.com/verify-debt-score)
+- [AI UI Verification in CI](https://getrendercheck.com/workflows/ocr-in-ci)

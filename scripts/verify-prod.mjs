@@ -205,7 +205,7 @@ function main() {
   
   // Default production URL - update this to match your domain
   if (!productionUrl) {
-    productionUrl = process.env.PRODUCTION_URL || 'https://freetextfromimage.com';
+    productionUrl = process.env.PRODUCTION_URL || 'https://getrendercheck.com';
     info(`No URL provided, using: ${productionUrl}`);
   }
   

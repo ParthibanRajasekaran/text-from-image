@@ -11,7 +11,7 @@ const sections = [
 ];
 
 export default function Labs() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalAbsolute = new URL('/labs', SITE_URL).toString();
 
   useSEO({

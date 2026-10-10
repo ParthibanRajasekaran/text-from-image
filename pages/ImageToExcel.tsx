@@ -12,7 +12,7 @@ export default function ImageToExcel() {
       heading="Extract Text for Excel"
       subheading="Convert images to text that's ready to paste into Excel, Google Sheets, or any spreadsheet application."
       keywords={['image to excel', 'screenshot to excel', 'table ocr', 'extract table', 'image to spreadsheet', 'ocr excel']}
-      canonicalUrl="https://freetextfromimage.com/image-to-excel"
+      canonicalUrl="https://getrendercheck.com/image-to-excel"
       faq={[
         {
           question: 'Can this extract tables directly to Excel format?',

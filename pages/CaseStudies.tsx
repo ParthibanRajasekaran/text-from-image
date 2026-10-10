@@ -14,7 +14,7 @@ import { ROUTES } from '../router';
  * Beta testimonials: pending collection
  */
 export default function CaseStudies() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalAbsolute = new URL('/case-studies', SITE_URL).toString();
 
   useSEO({

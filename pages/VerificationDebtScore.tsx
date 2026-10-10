@@ -59,7 +59,7 @@ const shareButton =
   'w-full min-h-[44px] px-4 py-2 bg-accent/10 hover:bg-accent/20 text-accent border border-accent/30 rounded transition-all';
 
 export default function VerificationDebtScore() {
-  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
+  const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalAbsolute = new URL('/verify-debt-score', SITE_URL).toString();
 
   // A shared link (#r=...) restores a finished result.
