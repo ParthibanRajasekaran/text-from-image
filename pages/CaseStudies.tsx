@@ -43,7 +43,7 @@ export default function CaseStudies() {
       {/* Hero */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-4">
-          <h1 className="text-4xl sm:text-5xl font-bold text-foreground">Real-World Adoption</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold text-foreground">Beta adoption</h1>
           <StatusBadge variant="developer-beta" />
         </div>
         <p className="text-lg text-muted-foreground max-w-2xl">

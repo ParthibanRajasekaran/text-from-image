@@ -5,23 +5,70 @@ import { ROUTES } from '../../router';
 /**
  * Footer: Global footer with trust signals and navigation
  * - Trust row with privacy/security claims (honest, verified)
- * - 4-column link grid (Platform, Developers, Privacy, Impact)
+ * - 4-column link grid (Product, Developers, Trust, About), driven by getColumns()
  * - Copyright + commit SHA + Developer Beta disclaimer
  */
+const REPO = 'https://github.com/ParthibanRajasekaran/text-from-image';
+
+type FooterLink = { label: string; to: string } | { label: string; href: string };
+
+// A function, not a constant: router.tsx imports this file, so ROUTES is not defined yet at import time.
+const getColumns = (): { title: string; links: FooterLink[] }[] => [
+  {
+    title: 'Product',
+    links: [
+      { label: 'Image to Text', to: ROUTES.IMAGE_TO_TEXT },
+      { label: 'Redact an image', to: ROUTES.REDACT_IMAGE },
+      { label: 'RenderCheck', to: ROUTES.RENDERCHECK },
+      { label: 'Labs', to: ROUTES.LABS },
+      { label: 'Access', to: ROUTES.ACCESS },
+    ],
+  },
+  {
+    title: 'Developers',
+    links: [
+      { label: 'Documentation', to: ROUTES.DEVELOPERS },
+      { label: 'Playwright', to: ROUTES.PLAYWRIGHT_OCR_TESTING },
+      { label: 'Cypress', to: ROUTES.CYPRESS_OCR_TESTING },
+      { label: 'Verification debt', to: ROUTES.WHAT_IS_VERIFICATION_DEBT },
+      { label: 'Changelog', to: ROUTES.CHANGELOG },
+      { label: 'GitHub', href: REPO },
+      { label: 'npm', href: 'https://www.npmjs.com/package/@freetextfromimage/rendercheck' },
+    ],
+  },
+  {
+    title: 'Trust',
+    links: [
+      { label: 'Security', to: ROUTES.SECURITY },
+      { label: 'Privacy Policy', to: ROUTES.PRIVACY_POLICY },
+      { label: 'Terms of Service', to: ROUTES.TERMS },
+    ],
+  },
+  {
+    title: 'About',
+    links: [
+      { label: 'About RenderCheck', to: ROUTES.ABOUT },
+      { label: 'Contact', to: ROUTES.CONTACT },
+      { label: 'Evidence and research', href: `${REPO}/tree/main/docs/evidence` },
+    ],
+  },
+];
+
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="border-t border-border/50 bg-background">
-      {/* Trust signals */}
+      {/* Trust signals: each is a claim the Security page explains and a test checks */}
       <div className="border-b border-border/30 py-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-4 text-xs text-muted-foreground justify-center">
-            <span>• Browser OCR runs locally</span>
-            <span>• No image or text persistence</span>
-            <span>• HTTPS only</span>
-            <span>• No signup required</span>
-            <span>• Keyboard accessible</span>
+          <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground justify-center">
+            <Link to={ROUTES.SECURITY} className="hover:text-foreground transition-colors">
+              Images are read in your browser and never uploaded
+            </Link>
+            <span>No cookies</span>
+            <span>No third-party scripts</span>
+            <span>No signup required</span>
           </div>
         </div>
       </div>
@@ -29,131 +76,26 @@ export function Footer() {
       {/* Navigation grid */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Platform */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">Platform</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <Link to={ROUTES.HOME} className="hover:text-foreground transition-colors">
-                  Browser OCR
-                </Link>
-              </li>
-              <li>
-                <Link to={ROUTES.RENDERCHECK} className="hover:text-foreground transition-colors">
-                  RenderCheck
-                </Link>
-              </li>
-              <li>
-                <Link to={ROUTES.LABS} className="hover:text-foreground transition-colors">
-                  Labs
-                </Link>
-              </li>
-              <li>
-                <Link to={ROUTES.ACCESS} className="hover:text-foreground transition-colors">
-                  Access
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Developers */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">Developers</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <Link to={ROUTES.DEVELOPERS} className="hover:text-foreground transition-colors">
-                  API Docs
-                </Link>
-              </li>
-              <li>
-                <Link to={ROUTES.PLAYWRIGHT_OCR_TESTING} className="hover:text-foreground transition-colors">
-                  Playwright testing
-                </Link>
-              </li>
-              <li>
-                <Link to={ROUTES.CYPRESS_OCR_TESTING} className="hover:text-foreground transition-colors">
-                  Cypress testing
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/ParthibanRajasekaran/text-from-image"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-foreground transition-colors"
-                >
-                  GitHub
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.npmjs.com/package/@freetextfromimage/rendercheck"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-foreground transition-colors"
-                >
-                  npm Package
-                </a>
-              </li>
-              <li>
-                <Link to={ROUTES.RENDERCHECK} className="hover:text-foreground transition-colors">
-                  SDK Docs
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Privacy & Security */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">Privacy & Security</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <a href="/privacy-policy" className="hover:text-foreground transition-colors">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="/terms" className="hover:text-foreground transition-colors">
-                  Terms of Service
-                </a>
-              </li>
-              <li>
-                <a href="/security" className="hover:text-foreground transition-colors">
-                  Security Architecture
-                </a>
-              </li>
-              <li>
-                <span className="text-foreground/60">No data persistence by default</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Impact & Evidence */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">Evidence & Impact</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <Link to={ROUTES.CASE_STUDIES} className="hover:text-foreground transition-colors">
-                  Case Studies
-                </Link>
-              </li>
-              <li>
-                <a href="https://github.com/ParthibanRajasekaran/text-from-image/tree/main/docs/evidence" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
-                  Evidence Pack
-                </a>
-              </li>
-              <li>
-                <Link to={ROUTES.CHANGELOG} className="hover:text-foreground transition-colors">
-                  Changelog
-                </Link>
-              </li>
-              <li>
-                <a href="https://github.com/ParthibanRajasekaran" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
-                  Author Profile
-                </a>
-              </li>
-            </ul>
-          </div>
+          {getColumns().map((col) => (
+            <div key={col.title}>
+              <h3 className="font-semibold text-foreground mb-4">{col.title}</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                {col.links.map((l) => (
+                  <li key={l.label}>
+                    {'to' in l ? (
+                      <Link to={l.to} className="hover:text-foreground transition-colors">
+                        {l.label}
+                      </Link>
+                    ) : (
+                      <a href={l.href} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+                        {l.label}
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -161,7 +103,7 @@ export function Footer() {
       <div className="border-t border-border/30 py-4 text-xs text-muted-foreground">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            © {currentYear} Free Text From Image • <span className="text-foreground/60">Developer Beta</span>
+            © {currentYear} RenderCheck • <span className="text-foreground/60">Developer Beta</span>
           </div>
           <div className="flex items-center gap-4 text-foreground/60">
             <a href="https://github.com/ParthibanRajasekaran/text-from-image" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
