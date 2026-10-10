@@ -31,3 +31,20 @@ globalThis.beforeAll?.(() => {
 globalThis.afterAll?.(() => {
   console.error = originalError;
 });
+
+// jsdom has no IntersectionObserver. The shared scroll reveal (components/ui/reveal.ts) uses
+// whileInView, so without this every route that reveals on scroll logs a crash that the route error
+// boundary swallows. Individual specs can still replace it with their own mock.
+if (typeof globalThis.IntersectionObserver === 'undefined') {
+  globalThis.IntersectionObserver = class {
+    readonly root = null;
+    readonly rootMargin = '';
+    readonly thresholds = [];
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+    takeRecords() {
+      return [];
+    }
+  } as unknown as typeof IntersectionObserver;
+}
