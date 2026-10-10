@@ -38,7 +38,9 @@ function setup() {
 async function upload() {
   const file = new File(['img'], 'shot.png', { type: 'image/png' });
   fireEvent.change(screen.getByTestId('redact-input'), { target: { files: [file] } });
-  await waitFor(() => expect(screen.getByTestId('redact-findings')).toBeTruthy());
+  // The findings list is in the DOM as soon as the image shows, before OCR has finished.
+  // Wait for the detected boxes themselves, which only exist once the result is in.
+  await waitFor(() => expect(screen.getAllByTestId('redact-box').length).toBeGreaterThan(0), { timeout: 5000 });
 }
 
 describe('RedactTool', () => {
