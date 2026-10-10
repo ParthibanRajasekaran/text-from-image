@@ -1,9 +1,23 @@
+# Major-version holds, and why:
+# - tesseract.js 7: reports 0% confidence on the SDK sample, so the legibility checks fail.
+# - vitest 5: requires Node 22.12 or newer; the SDK is tested on Node 20.
+# - typescript 7 and tailwindcss 4+: break the build and need a planned migration.
 version: 2
 updates:
   - package-ecosystem: npm
     directory: /
     schedule: { interval: weekly }
     open-pull-requests-limit: 5
+    ignore:
+      # Majors that need planned work (see the note at the top of this file); minor and patch still update.
+      - dependency-name: tesseract.js
+        update-types: [version-update:semver-major]
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+      - dependency-name: vitest
+        update-types: [version-update:semver-major]
+      - dependency-name: tailwindcss
+        update-types: [version-update:semver-major]
     groups:
       minor-and-patch:
         update-types: [minor, patch]
@@ -11,6 +25,16 @@ updates:
     directory: /packages/rendercheck
     schedule: { interval: weekly }
     open-pull-requests-limit: 5
+    ignore:
+      # Majors that need planned work (see the note at the top of this file); minor and patch still update.
+      - dependency-name: tesseract.js
+        update-types: [version-update:semver-major]
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+      - dependency-name: vitest
+        update-types: [version-update:semver-major]
+      - dependency-name: tailwindcss
+        update-types: [version-update:semver-major]
   - package-ecosystem: github-actions
     directory: /
     schedule: { interval: weekly }
