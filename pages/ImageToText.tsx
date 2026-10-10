@@ -312,7 +312,7 @@ export default function ImageToText() {
           <div>
             <h3 className="text-xl font-medium mb-2">Choose Clear Fonts and Text</h3>
             <ul className="list-disc ml-6 space-y-1">
-              <li><strong>Printed text preferred:</strong> OCR performs best on typed, printed, or digitally rendered text. Handwriting accuracy varies, see our <Link to="/handwriting-to-text" className="text-primary hover:text-primary/80">Handwriting to Text</Link> guide for specialized tips.</li>
+              <li><strong>Printed text preferred:</strong> OCR performs best on typed, printed, or digitally rendered text. Handwriting accuracy varies, so expect to review and correct the output.</li>
               <li><strong>Font size:</strong> Text smaller than 10pt (approximately 13px) may cause errors. Zoom in or use higher-resolution images for tiny text.</li>
               <li><strong>Standard fonts:</strong> Common fonts (Arial, Times New Roman, Helvetica, Calibri) work best. Highly decorative or script fonts may confuse the engine.</li>
             </ul>
