@@ -100,7 +100,7 @@
     "@types/node": "^26.6.4",
     "@types/pngjs": "^6.0.5",
     "tsup": "^8.5.0",
-    "typescript": "~5.8.2",
+    "typescript": "~5.9.3",
     "vitest": "^4.0.18"
   },
   "publishConfig": {
