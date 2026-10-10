@@ -1,0 +1,32 @@
+name: Bug report
+description: Something in the SDK or the site does not work as documented
+labels: [bug]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [SDK (Playwright), SDK (Cypress), Site or tool, Docs]
+    validations: { required: true }
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: "For the SDK: the output of `npm ls @freetextfromimage/rendercheck`"
+    validations: { required: true }
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: A minimal test or the image that fails, if you can share it
+    validations: { required: true }
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual result
+    validations: { required: true }
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: OS, Node version, Playwright or Cypress version, browser
