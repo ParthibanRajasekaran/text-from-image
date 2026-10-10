@@ -1,6 +1,38 @@
-# 📸 Extract Text From Image
+# RenderCheck
 
-> **Free, private, AI-powered OCR tool running entirely in your browser**: extract text from images with 92-97% accuracy, zero API costs, and 100% data privacy.
+**Assert the text users actually see, not just what is in the DOM.** RenderCheck takes a screenshot in your
+Playwright or Cypress test, reads it with OCR on your machine, and fails the test when the rendered text is
+wrong, too faint to read, or missing. No API key, no upload, no network calls.
+
+```
+Expected to find text "[Total: $14.00]" but OCR read "[Total: €14.00]" (Confidence: 96%)
+  Diff: Total: [$]14.00  →  Total: [€]14.00
+```
+
+```bash
+npm install --save-dev @freetextfromimage/rendercheck
+```
+
+```ts
+import { test } from '@playwright/test';
+import { expect } from '@freetextfromimage/rendercheck/playwright';
+
+test('checkout shows the right total', async ({ page }) => {
+  await page.goto('/checkout');
+  await expect(page).toShowText('Total: $14.00');
+});
+```
+
+- Site and docs: [getrendercheck.com](https://getrendercheck.com) ([Playwright](https://getrendercheck.com/playwright-ocr-testing), [Cypress](https://getrendercheck.com/cypress-ocr-testing), [developer reference](https://getrendercheck.com/developers))
+- SDK source and full options: [`packages/rendercheck`](./packages/rendercheck)
+- Status: developer beta. Cypress support has been run in Cypress 13 (Electron, Linux) only.
+
+This repository also contains the free browser tool at getrendercheck.com, which extracts text from images
+entirely in your browser (Tesseract.js, WebAssembly). The rest of this README describes that tool.
+
+## Free image-to-text tool
+
+> Free, private OCR that runs entirely in your browser: zero API costs, and your images never leave your device.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react)](https://reactjs.org/)

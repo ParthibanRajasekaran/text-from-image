@@ -39,6 +39,8 @@ const OcrChallengeLab = lazy(() => import('./pages/OcrChallengeLab'));
 const Labs = lazy(() => import('./pages/Labs'));
 const Changelog = lazy(() => import('./pages/Changelog'));
 const RedactImage = lazy(() => import('./pages/RedactImage'));
+const PlaywrightOcrTesting = lazy(() => import('./pages/PlaywrightOcrTesting'));
+const CypressOcrTesting = lazy(() => import('./pages/CypressOcrTesting'));
 
 // Route path constants - single source of truth for all route paths
 export const ROUTES = {
@@ -65,6 +67,8 @@ export const ROUTES = {
   OCR_CHALLENGE_LAB: '/ocr-challenge-lab',
   CHANGELOG: '/changelog',
   REDACT_IMAGE: '/redact-image',
+  PLAYWRIGHT_OCR_TESTING: '/playwright-ocr-testing',
+  CYPRESS_OCR_TESTING: '/cypress-ocr-testing',
 } as const;
 
 // Always use HomepageMinimalPremium as the home component (minimal-premium redesign)
@@ -147,6 +151,22 @@ export const router = createBrowserRouter([
       {
         path: 'rendercheck',
         element: <RenderCheck />,
+      },
+      {
+        path: 'playwright-ocr-testing',
+        element: (
+          <Suspense fallback={<div className="p-8">Loading...</div>}>
+            <PlaywrightOcrTesting />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'cypress-ocr-testing',
+        element: (
+          <Suspense fallback={<div className="p-8">Loading...</div>}>
+            <CypressOcrTesting />
+          </Suspense>
+        ),
       },
       {
         path: 'developers',
