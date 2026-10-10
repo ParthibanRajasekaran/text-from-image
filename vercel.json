@@ -8,7 +8,7 @@
       "destination": "/_shell.html"
     }
   ],
-  "ignoreCommand": "node scripts/should-build.mjs",
+  "git": { "deploymentEnabled": false },
   "headers": [
     {
       "source": "/(.*)",
