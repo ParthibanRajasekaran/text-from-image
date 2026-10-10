@@ -184,3 +184,10 @@ npm run test:example
 ## License
 
 MIT
+
+## Links
+
+- Documentation: https://getrendercheck.com/developers
+- How it stays local (architecture and threat model): https://getrendercheck.com/security
+- Issues and feature requests: https://github.com/ParthibanRajasekaran/text-from-image/issues
+- Security reports: see [SECURITY.md](https://github.com/ParthibanRajasekaran/text-from-image/blob/main/SECURITY.md)
