@@ -220,7 +220,7 @@ export function HomepageMinimalPremium() {
             <h2 className="text-3xl sm:text-4xl font-bold">Why This Matters</h2>
             <div className="space-y-4 text-lg text-foreground/90 leading-relaxed">
               <p>
-                AI-powered coding tools generate UI fast. But your DOM tests pass while users
+                AI coding tools generate UI fast. But your DOM tests pass while users
                 see wrong text:
               </p>
               <ul className="space-y-2 ml-4">

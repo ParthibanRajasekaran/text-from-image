@@ -119,7 +119,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
       {!customHeading && (
         <SEO
           title="Free Online Image to Text Converter - OCR Tool"
-          description="Extract text from images instantly with our free OCR tool. Supports PNG, JPG, and WEBP. No signup required. Fast, secure, and accurate text extraction."
+          description="Extract text from images instantly with our free OCR tool. Supports PNG, JPG, and WEBP. No signup required. Runs in your browser; images are never uploaded."
           canonical="https://getrendercheck.com/"
           keywords="image to text, OCR, extract text from image, online OCR, free text extraction"
           jsonLd={baseJsonLd}
@@ -235,7 +235,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
             {[
               { icon: '🔒', text: 'Browser OCR runs locally' },
               { icon: '🔐', text: 'No persistence' },
-              { icon: '🛡️', text: 'HTTPS only' },
+              { icon: '🛡️', text: 'No uploads' },
               { icon: '⌨️', text: 'Keyboard accessible' },
             ].map((chip, index) => (
               <motion.div

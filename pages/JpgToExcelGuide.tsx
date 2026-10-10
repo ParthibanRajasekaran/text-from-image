@@ -154,7 +154,6 @@ export default function JpgToExcelGuide() {
         <ul className="list-disc ml-6 mb-4 space-y-1">
           <li><strong>Tesseract OCR Engine:</strong> Our primary engine handles printed text in cells. It's optimized for alphanumeric content, including numbers, currency symbols, percentages, and dates commonly found in spreadsheets.</li>
           <li><strong>Data Type Inference:</strong> The system identifies numeric cells, date formats, and text labels, preserving these distinctions in the Excel export (e.g., numbers align right, text aligns left).</li>
-          <li><strong>AI-Powered Fallback:</strong> For challenging cells (low contrast, unusual fonts, or partial handwriting), a vision-language model provides a second opinion, improving overall accuracy.</li>
         </ul>
 
         <h3 className="text-xl font-medium mb-2">3. Excel Export Generation</h3>

@@ -14,20 +14,20 @@ export function HomeStructuredData({ siteUrl }: { siteUrl: string }) {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       'url': siteUrl,
-      'name': 'Free Text From Image',
-      'description': 'Extract text from images for free.'
+      'name': 'RenderCheck',
+      'description': 'Local OCR assertions for Playwright and Cypress, and a free image-to-text tool that runs in your browser.'
     }} />
     <StructuredData data={{
       '@context': 'https://schema.org',
-      '@type': 'Organization',
-      'name': 'Free Text From Image',
-      'url': siteUrl,
-      'logo': `${siteUrl}/og/default.png` // TODO: Ensure OG image exists
+      '@type': 'Person',
+      'name': 'Parthiban Rajasekaran',
+      'sameAs': ['https://github.com/ParthibanRajasekaran', 'https://www.linkedin.com/in/parthibanrajasekaran'],
+      'url': siteUrl
     }} />
     <StructuredData data={{
       '@context': 'https://schema.org',
       '@type': 'SoftwareApplication',
-      'name': 'Free Text From Image',
+      'name': 'RenderCheck',
       'applicationCategory': 'WebApplication',
       'operatingSystem': 'All',
       'offers': {
