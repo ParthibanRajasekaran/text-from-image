@@ -402,6 +402,20 @@ export function validateFile(file: File): void {
  * Check browser compatibility
  */
 export function checkBrowserCompatibility(): void {
+  // OCR runs inside a Web Worker, which has no `window`. Check the APIs that exist there.
+  const inWorker =
+    typeof (globalThis as { WorkerGlobalScope?: unknown }).WorkerGlobalScope !== 'undefined' &&
+    typeof window === 'undefined';
+  if (inWorker) {
+    if (typeof FileReader === 'undefined') {
+      throw ErrorFactory.browserNotSupported('FileReader API');
+    }
+    if (typeof URL === 'undefined' || !URL.createObjectURL) {
+      throw ErrorFactory.browserNotSupported('URL.createObjectURL');
+    }
+    return;
+  }
+
   if (typeof window === 'undefined') {
     throw ErrorFactory.browserNotSupported('browser environment');
   }

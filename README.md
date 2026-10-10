@@ -11,8 +11,8 @@
 
 - 🚀 **Lightning Fast** - 2-7 second processing time
 - 🔒 **100% Private** - All processing happens in your browser
-- 🤖 **AI-Powered** - Hybrid OCR using Tesseract.js + TrOCR transformers
-- 📊 **Smart Fallback** - Automatically uses best method for each image
+- 🤖 **Local OCR** - Tesseract.js (WebAssembly) runs in your browser, self-hosted, with no model download
+- 📊 **Honest confidence** - Low-confidence results are returned and flagged, not silently replaced
 - 🎨 **Image Enhancement** - 8 preprocessing techniques for better accuracy
 - 💰 **Completely Free** - No API costs, no hidden fees
 - 🌓 **Dark/Light Mode** - Beautiful UI with theme toggle
@@ -196,7 +196,6 @@ pages/               # SEO-optimized route pages (lazy-loaded)
     
 components/         # Reusable React components
   ├── v3/           # Premium UI (Aurora, Glass, History)
-  ├── AdSlot.tsx    # AdSense slot containers
   └── ...
 
 hooks/              # Custom React hooks (useShortcuts, useLocalHistory, etc.)
@@ -206,9 +205,9 @@ lib/                # Business logic
   ├── analytics.ts  # Web Vitals tracking
   └── config/       # Feature flags & env guards
 
-services/           # OCR engines (Tesseract, TrOCR)
+services/           # OCR engine (Tesseract.js, in the browser)
 
-__tests__/          # Test suite (routes, SEO, a11y, deprecation)
+src/test/         # Test suite (vitest): routes, SEO, a11y
 ```
 
 ### Request Flow: Image Upload → OCR → Result
@@ -220,9 +219,9 @@ File Validation (type, size)
     ↓
 Image Preprocessing (optional)
     ↓
-Tesseract OCR (fast, 2-5s)
+Tesseract OCR (in the browser, 2-5s)
     ├─ Confidence ≥ 60%? → Return ✓
-    └─ Fallback → TrOCR AI (5-10s) → Return ✓
+    └─ Below 60% → Return, flagged low confidence ✓
     ↓
 Result Display + Copy/Download
 ```
@@ -233,7 +232,7 @@ Result Display + Copy/Download
 |-------|-----------|
 | **UI** | React 19.2 + TypeScript 5.8 |
 | **Build** | Vite 6.2 + Rollup (code splitting) |
-| **OCR** | Tesseract.js 5.1 + TrOCR (AI) |
+| **OCR** | Tesseract.js 5.1 (WebAssembly, self-hosted) |
 | **Styling** | CSS + Tailwind + Custom properties |
 | **State** | React Hooks (useReducer, Context) |
 | **Testing** | Vitest + Testing Library |
@@ -246,7 +245,6 @@ See `.env.example` for all available flags:
 | Flag | Purpose | Default |
 |------|---------|---------|
 | `VITE_UX_V2` | Enable premium UI (Aurora/Glass) | `false` |
-| `VITE_ADSENSE_PUB_ID` | AdSense publisher ID (prod only) | unset |
 | `VITE_SITE_URL` | Canonical domain for SEO | computed |
 | `VITE_OCR_MIN_CONFIDENCE` | Tesseract confidence threshold | `60` |
 
@@ -262,8 +260,8 @@ See `.env.example` for all available flags:
 ### 2. Processing
 - **Step 1:** Validate file (type, size, browser compatibility)
 - **Step 2:** Apply image preprocessing (optional, auto-enabled)
-- **Step 3:** Try Tesseract OCR (fast method)
-- **Step 4:** If confidence < 60%, fallback to TrOCR AI model
+- **Step 3:** Run Tesseract OCR in the browser
+- **Step 4:** If confidence < 60%, show the result flagged as low confidence
 
 ### 3. Results
 - Extracted text with confidence score
@@ -299,7 +297,7 @@ See `.env.example` for all available flags:
 - ✅ **No data collection** - Your images never leave your device
 - ✅ **No API keys required** - No external dependencies
 - ✅ **No tracking** - Privacy-first design
-- ✅ **GDPR compliant** - No personal data processed
+- ✅ **Nothing to collect** - Images are processed in your browser; see the privacy policy
 
 ## 🚀 Deployment
 
@@ -345,7 +343,7 @@ vercel --prod --confirm
 This project uses **aggressive code splitting** to minimize initial load time:
 
 - ✅ **Dynamic Imports** - Heavy libraries loaded only when needed
-- ✅ **Vendor Chunking** - React, Tesseract, Transformers in separate chunks
+- ✅ **Vendor Chunking** - React, Tesseract, motion in separate chunks
 - ✅ **Lazy Loading** - OCR engines loaded on-demand, not upfront
 - ✅ **Tree Shaking** - Unused code automatically removed
 
@@ -356,7 +354,6 @@ This project uses **aggressive code splitting** to minimize initial load time:
 | `index.js` (main) | ~145 KB | Initial page load |
 | `react-vendor.js` | ~140 KB | Initial page load |
 | `tesseract.js` | ~23 KB | When user starts OCR |
-| `transformers.js` | ~199 KB | When AI fallback needed |
 | `jspdf.js` | ~40 KB | When user exports to PDF |
 
 **First-load JS:** ~285 KB (gzipped) ✅  
@@ -388,16 +385,7 @@ import Tesseract from 'tesseract.js';
 const { recognize } = await import('tesseract.js');
 ```
 
-**2. Transformers** (199 KB)
-```typescript
-// ❌ Before: Loaded upfront
-import { pipeline } from '@xenova/transformers';
-
-// ✅ After: Loaded only as fallback or when requested
-const { pipeline } = await import('@xenova/transformers');
-```
-
-**3. jsPDF** (40 KB)
+**2. jsPDF** (40 KB)
 ```typescript
 // ❌ Before: CDN script tag in index.html
 <script src="https://cdn.../jspdf.umd.min.js"></script>
@@ -437,33 +425,13 @@ const { default: jsPDF } = await import('jspdf');
 
 ---
 
-## 💸 Monetization (AdSense)
+## 🔒 No ads, no third-party scripts
 
-To apply for AdSense and enable monetization:
+The site ships no advertising and loads nothing from a third party at runtime. This is deliberate:
 
-1. Go to AdSense “Sites” and add `https://freetextfromimage.com`.
-2. Ensure the site has live policy pages (`/privacy-policy`, `/terms`, `/about`, `/contact`) and helpful guides (`/image-to-text`, etc.).
-3. Add a Google-certified CMP and wire its callback to `updateConsent()` in `src/consent/consent.ts`.
-   - Consent Mode v2 must fire before any ad scripts load.
-4. Set `VITE_ADSENSE_PUB_ID` in Vercel (Production) **after approval**.
-5. Add your publisher ID to `/public/ads.txt`.
-6. Use Search Console to submit your sitemap and fix Page Indexing/Core Web Vitals issues.
-7. Placement rules:
-   - No ads near upload/CTA areas; avoid accidental clicks.
-   - All ad slots reserve space to prevent CLS.
-   - Ads only load after consent and in Production.
-
-**Testing:**
-- Run `npm run sitemap` to generate `/public/sitemap.xml`.
-- Run `npm run build && npm run test` to verify build and ad readiness.
-
-**CMP Integration:**
-- See comments in `src/consent/consent.ts` for wiring a certified CMP callback.
-- Verify Consent Mode v2 fires before ads script loads.
-
-**AdSense Approval:**
-- Update `/public/ads.txt` with your real publisher ID after approval.
-- Use AdSense dashboard for auto ad configuration.
+- The Content-Security-Policy in `vercel.json` is `script-src 'self' 'wasm-unsafe-eval'` and `connect-src 'self'`, so the OCR worker and WebAssembly run from the site's own origin and cannot be interfered with.
+- RenderCheck's pitch is that nothing leaves the browser. An ad network would fill the network panel with requests that make that claim hard to believe.
+- `e2e/no-third-party.spec.ts` fails if any route requests another origin or if the policy allows an ad host.
 
 **SEO:**
 - All pages have unique meta tags and canonical URLs.
@@ -497,7 +465,6 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 ### Third-Party Licenses
 
 - Tesseract.js - Apache 2.0
-- @xenova/transformers - Apache 2.0
 - React - MIT
 - Vite - MIT
 
@@ -506,8 +473,6 @@ All dependencies are compatible with commercial use.
 ## 🙏 Acknowledgments
 
 - [Tesseract.js](https://github.com/naptha/tesseract.js) - Traditional OCR engine
-- [Transformers.js](https://github.com/xenova/transformers.js) - Browser-based AI models
-- [Microsoft TrOCR](https://huggingface.co/microsoft/trocr-base-printed) - AI OCR model
 
 ## 📮 Contact
 

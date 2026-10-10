@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Mock checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f4f4f5; font: 20px/1.4 "DejaVu Sans", Verdana, Arial, sans-serif; color: #18181b; }
+    main { position: relative; width: 520px; margin: 40px auto; padding: 28px 32px; background: #fff; border: 1px solid #e4e4e7; border-radius: 14px; }
+    h1 { margin: 0 0 18px; font-size: 28px; }
+    .row { display: flex; justify-content: space-between; padding: 6px 0; color: #3f3f46; }
+    #total { margin: 14px 0; padding-top: 14px; border-top: 2px solid #e4e4e7; font-size: 30px; font-weight: 700; }
+    #note { margin: 0 0 18px; font-size: 20px; }
+    button { width: 100%; padding: 14px; font: 700 22px inherit; font-family: inherit; color: #fff; background: #1d4ed8; border: 0; border-radius: 10px; }
+    /* Variants of the page, switched with ?variant=... */
+    body.low-contrast #total { color: #8a8a8a; }
+    body.white-on-white #total { color: #fff; background: #fefefe; }
+    body.cover #cover { display: block; }
+    #cover { display: none; position: absolute; left: 0; right: 0; top: 150px; height: 120px; background: #fff; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Order summary</h1>
+    <div class="row"><span>Subtotal</span><span id="subtotal">$12.00</span></div>
+    <div class="row"><span>Shipping</span><span id="shipping">$2.00</span></div>
+    <div id="total">Total: $14.00</div>
+    <p id="note">Free returns within 30 days</p>
+    <button id="pay">Pay now</button>
+    <div id="cover"></div>
+  </main>
+  <script>
+    // ?variant=euro | low-contrast | white-on-white | cover
+    const v = new URLSearchParams(location.search).get('variant');
+    if (v === 'euro') document.getElementById('total').textContent = 'Total: €14.00';
+    if (v) document.body.classList.add(v);
+  </script>
+</body>
+</html>

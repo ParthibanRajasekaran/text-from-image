@@ -61,7 +61,7 @@ export function ContentLayout({
           </header>
         )}
 
-        <main id="main-content" className="relative min-h-screen py-12 sm:py-16">
+        <div id="main-content" className="relative min-h-screen py-12 sm:py-16" role="main">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
               {/* Breadcrumb */}
@@ -91,7 +91,7 @@ export function ContentLayout({
               {/* 12-col grid layout */}
               <div className="grid lg:grid-cols-12 gap-8 items-start">
                 {/* Main content (9 cols or full width) */}
-                <div className={side ? 'lg:col-span-9' : 'lg:col-span-12'}>
+                <div className={`min-w-0 ${side ? 'lg:col-span-9' : 'lg:col-span-12'}`}>
                   {/* Title section */}
                   {title && (
                     <section className="mb-8">
@@ -113,7 +113,7 @@ export function ContentLayout({
               </div>
             </div>
           </div>
-        </main>
+        </div>
       </AuroraBackground>
     </>
   );

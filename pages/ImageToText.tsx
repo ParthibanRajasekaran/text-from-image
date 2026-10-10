@@ -4,7 +4,6 @@ import { useSEO } from "../src/seo";
 import { FAQSchema } from "../components/FAQSchema";
 import { Link } from "react-router-dom";
 import { GuideLayout } from "../src/layouts/GuideLayout";
-import { InArticle } from "../src/ads/InArticle";
 
 const faqs = [
   {
@@ -38,10 +37,6 @@ const faqs = [
  * SEO-optimized route for /image-to-text
  */
 export default function ImageToText() {
-  const isPreview = import.meta.env.MODE === "preview";
-  const allowPreview = import.meta.env.VITE_ENABLE_ADS_IN_PREVIEW === "true";
-  const slotsEnabled = (isPreview && allowPreview) || import.meta.env.VITE_ADS_SLOTS_ENABLED === "true";
-  const consent = { ad_storage: 'denied' as const, ad_user_data: 'denied' as const, ad_personalization: 'denied' as const };
   const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
   const canonicalPath = '/image-to-text';
   const canonicalAbsolute = new URL(canonicalPath, SITE_URL).toString();
@@ -371,7 +366,6 @@ export default function ImageToText() {
         </p>
       </section>
 
-      {slotsEnabled && <InArticle consent={consent} />}
 
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-3">Frequently Asked Questions</h2>

@@ -1,18 +1,16 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AuroraBackground } from '../AuroraBackground';
 import { GlassDropzone } from './GlassDropzone';
 import { GlassProgressBar } from './GlassProgressBar';
 import { GlassResultCard } from './GlassResultCard';
 import { HistoryDrawer } from './HistoryDrawer';
-import { ThemeToggle } from '../ThemeToggle';
-import { useTheme } from '../../hooks/useTheme';
 import { useOCRProcessor } from '../../hooks/useOCRProcessor';
 import { useLocalHistory, type HistoryItem } from '../../hooks/useLocalHistory';
 import { useShortcuts, getCommonShortcuts } from '../../hooks/useShortcuts';
 import { useLiveRegion } from '../../hooks/useLiveRegion';
 import { SEO, baseJsonLd } from '../SEO';
+import { ROUTES } from '../../router';
 
 interface HeroOCRProps {
   customHeading?: string;
@@ -39,7 +37,6 @@ interface HeroOCRProps {
  */
 export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) {
   // Separate concerns into individual hooks (SRP)
-  const { theme, toggleTheme } = useTheme();
   const {
     imageFile,
     extractedText,
@@ -53,10 +50,10 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
     clear: handleClear,
   } = useOCRProcessor();
   const { history, removeFromHistory, clearHistory } = useLocalHistory();
-  
+
   // Accessibility: Screen reader announcements for OCR status
   const announceStatus = useLiveRegion('polite');
-  
+
   // Local UI state only
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
@@ -114,87 +111,20 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
     onClear: extractedText ? handleClear : undefined,
   });
 
-  // Add theme toggle shortcut (T key)
-  const allShortcuts = [
-    ...shortcuts,
-    {
-      key: 't',
-      action: toggleTheme,
-      description: 'Toggle theme',
-      disabled: false,
-    },
-  ];
-
-  useShortcuts(allShortcuts, true);
+  useShortcuts(shortcuts, true);
 
   return (
     <AuroraBackground>
-      <SEO
-        title="Free Online Image to Text Converter - OCR Tool"
-        description="Extract text from images instantly with our free OCR tool. Supports PNG, JPG, and WEBP. No signup required. Fast, secure, and accurate text extraction."
-        canonical="https://freetextfromimage.com/"
-        keywords="image to text, OCR, extract text from image, online OCR, free text extraction"
-        jsonLd={baseJsonLd}
-      />
-      
-      {/* Skip to main content - Accessibility */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-accent focus:text-white focus:shadow-glow focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
-      >
-        Skip to main content
-      </a>
-
-      {/* Header */}
-      <header className="sticky top-0 z-30 backdrop-blur-xl bg-background/80 border-b border-border/50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <h1 className="text-xl font-bold bg-gradient-to-r from-accent via-primary to-accent-2 bg-clip-text text-transparent">
-                TextFromImage
-              </h1>
-            </motion.div>
-            <div className="flex items-center gap-3 sm:gap-4">
-              {/* Navigation links */}
-              <Link
-                to="/about"
-                className="text-sm font-medium text-foreground hover:text-accent transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded px-2 py-1"
-              >
-                About
-              </Link>
-              <Link
-                to="/contact"
-                className="text-sm font-medium text-foreground hover:text-accent transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded px-2 py-1"
-              >
-                Contact
-              </Link>
-              {/* History button */}
-              {history.length > 0 && (
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  onClick={() => setIsHistoryOpen(true)}
-                  className="px-3 py-1.5 rounded-lg bg-surface/60 hover:bg-surface/80 border border-border/50 hover:border-border text-sm font-medium text-foreground transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
-                  aria-label="View history"
-                >
-                  <span className="hidden sm:inline">History</span>
-                  <span className="sm:hidden">📚</span>
-                  {history.length > 0 && (
-                    <span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-accent/20 text-accent text-xs font-semibold">
-                      {history.length}
-                    </span>
-                  )}
-                </motion.button>
-              )}
-              <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* A page that supplies its own heading (IntentPage) also supplies its own SEO; this default must not override it. */}
+      {!customHeading && (
+        <SEO
+          title="Free Online Image to Text Converter - OCR Tool"
+          description="Extract text from images instantly with our free OCR tool. Supports PNG, JPG, and WEBP. No signup required. Fast, secure, and accurate text extraction."
+          canonical="https://freetextfromimage.com/"
+          keywords="image to text, OCR, extract text from image, online OCR, free text extraction"
+          jsonLd={baseJsonLd}
+        />
+      )}
 
       {/* History Drawer */}
       <HistoryDrawer
@@ -207,38 +137,83 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
       />
 
       {/* Hero Section */}
-      <section id="main-content" className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20" aria-label="Main content">
-        <div className="max-w-4xl mx-auto">
-          {/* Hero text */}
+      <section id="main-content" className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 lg:pt-20 pb-12 sm:pb-16 lg:pb-24" aria-label="Main content">
+        <div className="max-w-5xl mx-auto">
+          {/* Hero text - Large and bold */}
           <motion.div
-            className="text-center mb-12 space-y-4"
-            initial={{ opacity: 0, y: 20 }}
+            className="text-center mb-16 space-y-6"
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
               {customHeading || (
                 <>
-                  Image → <span className="bg-gradient-to-r from-accent via-accent-2 to-primary bg-clip-text text-transparent">Text</span>, instantly.
+                  Verify what{' '}
+                  <span className="bg-gradient-to-r from-accent via-accent-2 to-primary bg-clip-text text-transparent relative inline-block">
+                    AI-generated UI
+                  </span>
+                  {' '}actually shows
                 </>
               )}
-            </h2>
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-              {customSubheading || 'AI-powered OCR that respects your privacy. Extract text from images in seconds, no signup required.'}
+            </h1>
+            <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-light">
+              {customSubheading ||
+                'RenderCheck uses privacy-first OCR to test screenshots and rendered interfaces—catching visible text failures that DOM checks miss.'}
             </p>
           </motion.div>
 
-          {/* Glass card with Dropzone */}
+          {/* 4-Step Visual Flow - Enhanced */}
           <motion.div
+            className="mb-16 p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-primary/5 via-transparent to-accent-2/5 border border-primary/10 backdrop-blur-sm"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="mb-8"
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
           >
-            <div className="relative rounded-2xl bg-surface/40 backdrop-blur-xl border border-white/10 shadow-glow p-6 sm:p-8">
-              {/* Inner glow effect */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent/10 via-transparent to-accent-2/10 pointer-events-none" />
-              
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-4">
+              {[
+                { num: '1', label: 'Screenshot', icon: '📸' },
+                { num: '2', label: 'toShowText()', icon: '✓' },
+                { num: '3', label: 'Results', icon: '📊' },
+                { num: '4', label: 'Assert', icon: '🎯' },
+              ].map((step, idx) => (
+                <motion.div
+                  key={idx}
+                  className="flex flex-col items-center flex-1"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4, delay: 0.2 + idx * 0.1 }}
+                >
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-3 shadow-elevation-2">
+                    <span className="text-2xl sm:text-3xl font-bold text-white">{step.num}</span>
+                  </div>
+                  <p className="text-sm sm:text-base font-semibold text-foreground">{step.label}</p>
+                </motion.div>
+              ))}
+              {/* Arrows */}
+              {[0, 1, 2].map((idx) => (
+                <div key={`arrow-${idx}`} className="hidden sm:block absolute left-0 w-full pointer-events-none" style={{ top: '50%' }}>
+                  <div className="absolute inset-0 flex items-center justify-center" style={{ left: `${20 + idx * 25}%` }}>
+                    <div className="text-2xl text-primary/30">→</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Glass card with Dropzone - Premium */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
+            className="mb-12"
+            data-dropzone-scroll
+          >
+            <div className="relative rounded-3xl bg-gradient-to-br from-surface via-surface to-surface/80 backdrop-blur-2xl border border-primary/10 shadow-glow-lg p-8 sm:p-12 lg:p-16">
+              {/* Animated glow background */}
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 via-transparent to-accent-2/5 pointer-events-none" />
+              <div className="absolute -inset-1 rounded-3xl blur-2xl bg-gradient-to-r from-primary/10 via-transparent to-accent-2/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
               <div className="relative">
                 <GlassDropzone
                   onFileSelect={handleFileSelect}
@@ -254,26 +229,56 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex flex-wrap items-center justify-center gap-4"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="flex flex-wrap items-center justify-center gap-3 mb-12"
           >
             {[
-              { icon: '🔒', text: 'No signup required' },
-              { icon: '⚡', text: 'Lightning fast' },
-              { icon: '🛡️', text: 'HTTPS secure' },
-              { icon: '🎯', text: 'AI-powered' },
+              { icon: '🔒', text: 'Browser OCR runs locally' },
+              { icon: '🔐', text: 'No persistence' },
+              { icon: '🛡️', text: 'HTTPS only' },
+              { icon: '⌨️', text: 'Keyboard accessible' },
             ].map((chip, index) => (
               <motion.div
                 key={chip.text}
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.2, delay: 0.3 + index * 0.05 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface/60 backdrop-blur border border-border/50 text-sm text-muted-foreground"
+                transition={{ duration: 0.3, delay: 0.35 + index * 0.05 }}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-surface border border-border/60 backdrop-blur-sm text-sm text-muted-foreground hover:border-primary/30 transition-all shadow-card"
               >
                 <span className="text-base">{chip.icon}</span>
-                <span className="font-medium">{chip.text}</span>
+                <span className="font-medium whitespace-nowrap">{chip.text}</span>
               </motion.div>
             ))}
+          </motion.div>
+
+          {/* CTAs - Premium Styling */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center mb-12 items-center"
+          >
+            <button
+              onClick={() => {
+                const dropzone = document.querySelector('[data-dropzone-scroll]');
+                dropzone?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }}
+              className="px-8 py-4 bg-gradient-to-r from-primary to-accent text-white rounded-2xl font-semibold hover:shadow-elevation-3 hover:scale-105 transition-all duration-200 shadow-elevation-2"
+            >
+              Try RenderCheck
+            </button>
+            <a
+              href={ROUTES.VERIFY_DEBT_SCORE}
+              className="px-8 py-4 border-2 border-primary text-primary rounded-2xl font-semibold hover:bg-primary/5 hover:scale-105 transition-all duration-200 shadow-card"
+            >
+              Take Verification Debt Score
+            </a>
+            <a
+              href={ROUTES.LABS}
+              className="px-8 py-4 text-foreground hover:bg-muted/60 rounded-2xl font-semibold transition-all duration-200 hover:scale-105"
+            >
+              Explore Labs →
+            </a>
           </motion.div>
 
           {/* Progress Bar */}

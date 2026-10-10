@@ -11,7 +11,7 @@ This guide helps developers understand the transition from the **pre-guides mono
 ### Before (Legacy)
 - Single `/` home page with all routes
 - Monolithic `App.tsx` component
-- Direct Tesseract/TrOCR imports (no lazy loading)
+- Direct Tesseract imports (no lazy loading)
 - No deprecation tracking
 - Manual testing
 
@@ -64,8 +64,8 @@ This guide helps developers understand the transition from the **pre-guides mono
 | Old | New | Status | Migration |
 |-----|-----|--------|-----------|
 | `services/tesseractService.ts` | ✅ Same | Unchanged | Dynamic import in `useOCRProcessor` |
-| `services/transformersService.ts` | ✅ Same | Unchanged | Lazy loaded on fallback |
-| `services/hybridService.ts` | ✅ Same | Unchanged | Orchestrates both |
+| `services/transformersService.ts` | ❌ Removed | Deleted | The AI-model fallback was dropped: the CSP blocks the download, so it could only fail |
+| `services/hybridService.ts` | ✅ Kept | Tesseract only | Returns low-confidence results flagged `lowConfidence` |
 
 **Change:** Services now use dynamic imports (loaded on-demand).
 
@@ -338,13 +338,11 @@ Each has:
 OCR engines are **not** bundled upfront—they load on-demand:
 
 ```typescript
-// ❌ Bad: Loads 23 KB + 199 KB upfront
+// ❌ Bad: Loads the OCR library upfront
 import Tesseract from 'tesseract.js';
-import { pipeline } from '@xenova/transformers';
 
 // ✅ Good: Loads only when user clicks "Process"
 const { recognize } = await import('tesseract.js');
-const { pipeline } = await import('@xenova/transformers');
 ```
 
 **Result:** Initial bundle reduced from 850 KB → 285 KB (67% reduction)

@@ -75,14 +75,14 @@
 /* Define CSS variables for light and dark themes - OKLCH for consistent contrast */
 :root {
   /* Layout */
-  --header-h: 80px;
-  
+  --header-h: 64px;
+
   /* Base */
-  --bg: 0 0% 99%;
+  --bg: 0 0% 100%;
   --surface: 0 0% 98%;
-  --text: 222 84% 5%;
-  --text-muted: 220 9% 46%;
-  
+  --text: 220 20% 8%;
+  --text-muted: 220 9% 50%;
+
   /* Legacy compat */
   --background: var(--bg);
   --foreground: var(--text);
@@ -90,40 +90,51 @@
   --card-foreground: var(--text);
   --popover: var(--surface);
   --popover-foreground: var(--text);
-  
-  /* Accent colors - vibrant cyan/blue aurora */
-  --primary: 210 89% 43%;
+
+  /* Primary - vibrant blue */
+  --primary: 217 92% 52%;
   --primary-foreground: 210 40% 98%;
-  --accent: 195 95% 58%;
+  --accent: 186 100% 50%;
   --accent-foreground: 220 84% 5%;
-  --accent-2: 270 85% 65%;
-  
+  --accent-2: 272 91% 65%;
+
   /* Supporting */
   --secondary: 210 40% 96%;
   --secondary-foreground: 210 40% 10%;
-  --muted: 210 30% 95%;
-  --muted-foreground: 215 16% 47%;
+  --muted: 210 14% 92%;
+  --muted-foreground: 215 19% 40%; /* 6.1:1 on white, 5.1:1 on --muted */
   --destructive: 0 84% 60%;
   --destructive-foreground: 210 40% 98%;
-  
+
+  /* Status badges */
+  --status-live: 142 72% 22%;
+  --status-beta: 26 90% 30%; /* text on a 10% tint: 6:1. The dark theme keeps the brighter orange. */
+  --status-planned: 220 14% 36%;
+  --status-evidence-pending: 25 95% 53%;
+
+  /* Code block (always dark) */
+  --code-bg: 215 28% 9%;
+  --code-border: 215 14% 18%;
+  --code-text: 210 17% 82%;
+
   /* Borders & UI */
-  --border: 214 32% 91%;
-  --input: 214 32% 91%;
-  --ring: 215 20% 65%;
-  --radius: 0.75rem;
-  
+  --border: 210 14% 90%;
+  --input: 210 14% 90%;
+  --ring: 217 92% 52%;
+  --radius: 0.875rem;
+
   /* Glass & glow effects */
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --glow-color: rgba(56, 189, 248, 0.3);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glow-color: rgba(76, 175, 255, 0.25);
 }
 
 .dark {
   /* Base */
-  --bg: 222 84% 5%;
-  --surface: 220 40% 8%;
+  --bg: 220 30% 3.5%;
+  --surface: 220 20% 8%;
   --text: 210 40% 98%;
-  --text-muted: 215 20% 65%;
-  
+  --text-muted: 215 20% 68%;
+
   /* Legacy compat */
   --background: var(--bg);
   --foreground: var(--text);
@@ -131,35 +142,73 @@
   --card-foreground: var(--text);
   --popover: var(--surface);
   --popover-foreground: var(--text);
-  
-  /* Accent colors - aurora glow */
-  --primary: 208 83% 53%;
-  --primary-foreground: 210 40% 98%;
-  --accent: 195 95% 58%;
+
+  /* Primary - vibrant blue (lighter for dark mode) */
+  --primary: 217 95% 62%;
+  --primary-foreground: 220 84% 5%; /* dark text on the light blue: 5.9:1 (white was 3.2:1) */
+  --accent: 186 100% 50%;
   --accent-foreground: 220 84% 98%;
-  --accent-2: 270 85% 65%;
-  
+  --accent-2: 272 91% 65%;
+
   /* Supporting */
-  --secondary: 217 33% 18%;
+  --secondary: 217 30% 20%;
   --secondary-foreground: 210 40% 98%;
-  --muted: 217 33% 15%;
-  --muted-foreground: 215 20% 65%;
+  --muted: 217 20% 16%;
+  --muted-foreground: 215 20% 68%;
   --destructive: 0 63% 31%;
   --destructive-foreground: 210 40% 98%;
-  
+
+  /* Status badges (same across themes) */
+  --status-live: 142 76% 40%;
+  --status-beta: 34 97% 50%;
+  --status-planned: 220 14% 60%;
+  --status-evidence-pending: 25 95% 53%;
+
+  /* Code block (same dark across themes) */
+  --code-bg: 215 28% 9%;
+  --code-border: 215 14% 18%;
+  --code-text: 210 17% 82%;
+
   /* Borders & UI */
-  --border: 217 33% 18%;
-  --input: 217 33% 18%;
-  --ring: 213 27% 84%;
-  
+  --border: 217 20% 16%;
+  --input: 217 20% 16%;
+  --ring: 217 95% 62%;
+
   /* Glass & glow effects */
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glow-color: rgba(56, 189, 248, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glow-color: rgba(76, 175, 255, 0.3);
 }
 
 html, body {
   background: hsl(var(--bg));
   color: hsl(var(--text));
+  font-family: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+h1 { font-size: 2.25rem; margin-bottom: 1rem; }
+h2 { font-size: 1.875rem; margin-bottom: 0.875rem; margin-top: 2rem; }
+h3 { font-size: 1.5rem; margin-bottom: 0.75rem; margin-top: 1.5rem; }
+h4 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+
+p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+section {
+  margin-bottom: 4rem;
+}
+
+section:last-child {
+  margin-bottom: 0;
 }
 
 /* Custom animations */
@@ -186,4 +235,31 @@ html, body {
 
 .animate-slide-in {
   animation: slide-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+
+/* Accessibility (PRD C5, C6)
+   - Light theme: the cyan accent is 1.6:1 on white, so accent *text* uses a darker teal (6:1).
+   - Small screens: controls are at least 44x44 CSS px. min-height/min-width do nothing on inline
+     links inside running text, so those keep their size. */
+:root:not(.dark) .text-accent {
+  color: hsl(186 100% 22%);
+}
+
+@media (max-width: 767px), (pointer: coarse) {
+  a,
+  button,
+  summary,
+  [role='button'],
+  [role='tab'] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Links that stand alone in a list (footer, breadcrumb) are inline, so give them a box. */
+  li > a,
+  footer a {
+    display: inline-flex;
+    align-items: center;
+  }
 }

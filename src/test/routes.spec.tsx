@@ -8,8 +8,9 @@ describe('routes.spec - all specified routes render', () => {
   // Test all required routes from spec
   routesSpec.mustExist.forEach((path) => {
     it(`renders ${path} without crashing`, () => {
-      // Static HTML routes are served directly by public/ and not part of React router
-      const staticRoutes = ['/privacy-policy', '/terms', '/about', '/contact'];
+      // Static HTML routes are served directly by public/ and not part of React router.
+      // /privacy-policy, /terms and /security are real router routes and are rendered below.
+      const staticRoutes = ['/about', '/contact'];
       
       if (staticRoutes.includes(path)) {
         // These routes exist as static HTML files in public/

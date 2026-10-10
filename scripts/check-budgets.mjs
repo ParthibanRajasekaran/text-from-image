@@ -94,6 +94,37 @@ function getGzipSize(buffer) {
 }
 
 /**
+ * Check image file sizes (max 200 KB per image)
+ */
+function checkImageBudgets() {
+  const imageDir = path.join(__dirname, '..', 'public', 'images');
+  const maxImageSize = 204800; // 200 KB
+  let imageViolations = [];
+
+  if (!fs.existsSync(imageDir)) {
+    return imageViolations; // Directory doesn't exist yet, skip check
+  }
+
+  const files = fs.readdirSync(imageDir);
+  for (const file of files) {
+    if (!/\.(jpg|jpeg|png|webp|gif)$/i.test(file)) continue;
+
+    const filepath = path.join(imageDir, file);
+    const stat = fs.statSync(filepath);
+    if (stat.size > maxImageSize) {
+      imageViolations.push({
+        filename: file,
+        size: stat.size,
+        budget: maxImageSize,
+        exceeded: stat.size - maxImageSize,
+      });
+    }
+  }
+
+  return imageViolations;
+}
+
+/**
  * Main function
  */
 async function main() {
@@ -216,19 +247,37 @@ async function main() {
   console.log(`  Route chunks: ${results.route.length} file(s), ${formatBytes(totalRouteGzip)} gzip`);
   console.log(`  Total JS (gzip): ${formatBytes(totalVendorGzip + totalRouteGzip)}\n`);
 
+  // Check image budgets
+  const imageViolations = checkImageBudgets();
+
   // Print violations
-  if (violations.length > 0) {
-    console.log('⚠️  Budget Violations:');
-    for (const violation of violations) {
-      const budget = violation.category === 'vendor' ? VENDOR_JS_MAX_GZIP : ROUTE_JS_MAX_GZIP;
-      console.log(
-        `  ❌ ${violation.filename}`
-      );
-      console.log(
-        `     Gzip: ${formatBytes(violation.gzipSize)} (budget: ${formatBytes(budget)}, exceeded by ${formatBytes(violation.exceeded)})`
-      );
+  if (violations.length > 0 || imageViolations.length > 0) {
+    if (violations.length > 0) {
+      console.log('⚠️  JS Budget Violations:');
+      for (const violation of violations) {
+        const budget = violation.category === 'vendor' ? VENDOR_JS_MAX_GZIP : ROUTE_JS_MAX_GZIP;
+        console.log(
+          `  ❌ ${violation.filename}`
+        );
+        console.log(
+          `     Gzip: ${formatBytes(violation.gzipSize)} (budget: ${formatBytes(budget)}, exceeded by ${formatBytes(violation.exceeded)})`
+        );
+      }
+      console.log();
     }
-    console.log();
+
+    if (imageViolations.length > 0) {
+      console.log('⚠️  Image Budget Violations:');
+      for (const violation of imageViolations) {
+        console.log(
+          `  ❌ ${violation.filename}`
+        );
+        console.log(
+          `     Size: ${formatBytes(violation.size)} (budget: ${formatBytes(violation.budget)}, exceeded by ${formatBytes(violation.exceeded)})`
+        );
+      }
+      console.log();
+    }
     process.exit(1);
   }
 

@@ -40,7 +40,7 @@ export function GuideLayout({ title, description, children }: GuideLayoutProps) 
         <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
       </header>
 
-      <main id="main-content" className="relative min-h-screen py-12 sm:py-16">
+      <div id="main-content" className="relative min-h-screen py-12 sm:py-16" role="main">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             {/* Glass-morphism card matching landing page */}
@@ -97,7 +97,7 @@ export function GuideLayout({ title, description, children }: GuideLayoutProps) 
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </AuroraBackground>
   );
 }

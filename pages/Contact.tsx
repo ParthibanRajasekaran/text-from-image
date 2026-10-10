@@ -70,7 +70,7 @@ export default function Contact() {
           <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
         </header>
 
-        <main id="main-content" className="relative min-h-screen py-12 sm:py-16">
+        <div id="main-content" className="relative min-h-screen py-12 sm:py-16" role="main">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto">
               <div className="rounded-2xl border border-border/50 backdrop-blur-xl bg-surface/40 shadow-glow-md overflow-hidden">
@@ -295,7 +295,7 @@ export default function Contact() {
               </div>
             </div>
           </div>
-        </main>
+        </div>
       </AuroraBackground>
     </>
   );

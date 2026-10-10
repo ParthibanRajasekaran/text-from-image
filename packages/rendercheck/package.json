@@ -1,45 +1,104 @@
 {
   "name": "@freetextfromimage/rendercheck",
-  "version": "0.1.0",
-  "description": "Verify that AI-generated UI shows the correct visible text using OCR and assertions",
-  "keywords": ["ocr", "ui-verification", "ai", "testing", "playwright", "cypress", "rendercheck"],
+  "version": "0.4.0",
+  "description": "Assert what users actually see: local, offline OCR assertions for Playwright and Cypress",
+  "keywords": [
+    "ocr",
+    "ui-verification",
+    "ai",
+    "testing",
+    "playwright",
+    "cypress",
+    "rendercheck",
+    "accessibility",
+    "contrast"
+  ],
   "license": "MIT",
   "author": "Parthiban Rajasekaran",
   "homepage": "https://freetextfromimage.com/rendercheck",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ParthibanRajasekaran/freetextfromimage",
+    "url": "https://github.com/ParthibanRajasekaran/text-from-image",
     "directory": "packages/rendercheck"
   },
   "bugs": {
-    "url": "https://github.com/ParthibanRajasekaran/freetextfromimage/issues"
+    "url": "https://github.com/ParthibanRajasekaran/text-from-image/issues"
   },
   "engines": {
     "node": ">=18"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "type": "commonjs",
+  "main": "./dist/core/index.js",
+  "module": "./dist/core/index.mjs",
+  "types": "./dist/core/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    }
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.mjs",
+      "require": "./dist/core/index.js"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.mjs",
+      "require": "./dist/core/index.js"
+    },
+    "./playwright": {
+      "types": "./dist/playwright/index.d.ts",
+      "import": "./dist/playwright/index.mjs",
+      "require": "./dist/playwright/index.js"
+    },
+    "./cypress": {
+      "types": "./dist/cypress/index.d.ts",
+      "import": "./dist/cypress/index.mjs",
+      "require": "./dist/cypress/index.js"
+    },
+    "./cypress/plugin": {
+      "types": "./dist/cypress/plugin.d.ts",
+      "import": "./dist/cypress/plugin.mjs",
+      "require": "./dist/cypress/plugin.js"
+    },
+    "./package.json": "./package.json"
   },
-  "files": ["dist", "README.md", "LICENSE", "CHANGELOG.md"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "clean": "rm -rf dist"
+    "test:example": "playwright test -c examples/playwright/playwright.config.ts",
+    "test:cypress": "cypress run --project examples/cypress --browser electron",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build",
+    "test:offline": "unshare -rn env RENDERCHECK_EXPECT_NO_NETWORK=1 vitest run __tests__/offline.spec.ts"
   },
   "dependencies": {
-    "@freetextfromimage/core": "workspace:*"
+    "@tesseract.js-data/eng": "^1.0.0",
+    "jpeg-js": "^0.4.4",
+    "pngjs": "^7.0.0",
+    "tesseract.js": "5.1.1"
+  },
+  "peerDependencies": {
+    "@playwright/test": ">=1.40.0",
+    "cypress": ">=12.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@playwright/test": {
+      "optional": true
+    },
+    "cypress": {
+      "optional": true
+    }
   },
   "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "@types/node": "^22.0.0",
+    "@types/pngjs": "^6.0.5",
     "tsup": "^8.5.0",
     "typescript": "~5.8.2",
     "vitest": "^4.0.18"

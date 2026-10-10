@@ -5,7 +5,6 @@ import { FAQSchema } from "../components/FAQSchema";
 import { Link } from "react-router-dom";
 import { GuideLayout } from "../src/layouts/GuideLayout";
 import { TableWrap } from "../src/components/TableWrap";
-import { InArticle } from "../src/ads/InArticle";
 
 const faqs = [
   {
@@ -41,10 +40,6 @@ const faqs = [
 // FAQSchema returns a <script> tag with FAQPage JSON-LD
 
 export default function CopyTextFromImageGuide() {
-  const isPreview = import.meta.env.MODE === "preview";
-  const allowPreview = import.meta.env.VITE_ENABLE_ADS_IN_PREVIEW === "true";
-  const slotsEnabled = (isPreview && allowPreview) || import.meta.env.VITE_ADS_SLOTS_ENABLED === "true";
-  const consent = { ad_storage: 'denied' as const, ad_user_data: 'denied' as const, ad_personalization: 'denied' as const };
   const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://freetextfromimage.com';
   const canonicalPath = '/copy-text-from-image';
   const canonicalAbsolute = new URL(canonicalPath, SITE_URL).toString();
@@ -127,7 +122,7 @@ export default function CopyTextFromImageGuide() {
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-3">How Our OCR Technology Works</h2>
         <p className="mb-3">
-          Optical Character Recognition (OCR) technology analyzes the shapes, patterns, and structures within an image to identify individual characters and words. Our implementation uses two complementary approaches:
+          Optical Character Recognition (OCR) technology analyzes the shapes, patterns, and structures within an image to identify individual characters and words. Our implementation runs the open-source Tesseract engine:
         </p>
         <div className="mb-4">
           <h3 className="text-xl font-medium mb-2">Fast OCR Engine (Tesseract)</h3>
@@ -141,20 +136,8 @@ export default function CopyTextFromImageGuide() {
             <li>Computer-generated images containing text</li>
           </ul>
         </div>
-        <div className="mb-4">
-          <h3 className="text-xl font-medium mb-2">AI-Powered Fallback (Transformers)</h3>
-          <p className="mb-2">
-            When the fast engine encounters challenges—such as unusual fonts, poor lighting, or handwritten content—our system automatically switches to an advanced AI model. This backup method handles:
-          </p>
-          <ul className="list-disc ml-6 space-y-1">
-            <li>Handwritten notes and annotations</li>
-            <li>Stylized or decorative fonts</li>
-            <li>Low-quality or compressed images</li>
-            <li>Text with background noise or watermarks</li>
-          </ul>
-        </div>
         <p className="mt-3">
-          Both engines run entirely in your browser using WebAssembly and client-side JavaScript. No image data ever leaves your device, ensuring complete privacy.
+          The OCR engine runs entirely in your browser using WebAssembly and client-side JavaScript. No image data ever leaves your device, ensuring complete privacy.
         </p>
       </section>
       <section className="mb-8">
@@ -194,10 +177,10 @@ export default function CopyTextFromImageGuide() {
             <ul className="list-disc ml-6 space-y-1">
               <li>A progress indicator showing the current processing stage</li>
               <li>Real-time status updates (e.g., "Analyzing image structure..." or "Extracting text...")</li>
-              <li>The OCR method being used (Fast OCR or AI Model)</li>
+              <li>A confidence score for the text it read</li>
             </ul>
             <p className="mt-2">
-              Most images complete processing in 1-3 seconds. Complex or low-quality images may take up to 10 seconds when the AI fallback engages.
+              Most images complete processing in 1-3 seconds. Complex or low-quality images can take up to 10 seconds, and a low-confidence result is shown with a warning.
             </p>
           </div>
 
@@ -306,7 +289,7 @@ export default function CopyTextFromImageGuide() {
               <li><strong>Legibility matters:</strong> Clear, well-spaced handwriting yields better results than cursive or cramped text</li>
               <li><strong>Use dark ink:</strong> Black or dark blue ink on white paper provides the best contrast</li>
               <li><strong>Write larger:</strong> Handwriting that's too small often causes misrecognition</li>
-              <li><strong>Try the AI model:</strong> If the fast engine struggles, our AI-powered fallback often handles handwriting better</li>
+              <li><strong>Check the confidence score:</strong> Handwriting is the hardest case for OCR, so read the result over and correct any words it flags as uncertain</li>
             </ul>
             <p className="mt-2">
               For critical handwritten documents, always review extracted text carefully and correct any errors before using it.
@@ -364,7 +347,6 @@ export default function CopyTextFromImageGuide() {
         </TableWrap>
       </section>
 
-      {slotsEnabled && <InArticle consent={consent} />}
 
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-3">FAQs</h2>

@@ -2,8 +2,6 @@ import React, { useMemo } from 'react';
 import { HeroOCR } from './HeroOCR';
 import { motion } from 'framer-motion';
 import { SEO, baseJsonLd, createFAQJsonLd } from '../SEO';
-import { InArticle } from '../../src/ads/InArticle';
-import type { ConsentState } from '../../src/consent/consent';
 
 export interface FAQItem {
   question: string;
@@ -40,12 +38,6 @@ export function IntentPage({
   faq,
   canonicalUrl,
 }: IntentPageProps) {
-  // Env flag checks for ad slot gating
-  const isPreview = import.meta.env.MODE === "preview";
-  const allowPreview = import.meta.env.VITE_ENABLE_ADS_IN_PREVIEW === "true";
-  const slotsEnabled = (isPreview && allowPreview) || import.meta.env.VITE_ADS_SLOTS_ENABLED === "true";
-  const consent: ConsentState = { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' };
-
   // Structured data for FAQ rich snippets
   const faqJsonLd = useMemo(() => createFAQJsonLd(faq), [faq]);
   
@@ -93,8 +85,6 @@ export function IntentPage({
       {/* Main OCR Tool */}
       <HeroOCR customHeading={heading} customSubheading={subheading} />
 
-      {/* Ad Slot - Mid Content */}
-      {slotsEnabled && <InArticle consent={consent} />}
 
       {/* FAQ Section */}
       <section className="relative py-16 sm:py-20 overflow-hidden">

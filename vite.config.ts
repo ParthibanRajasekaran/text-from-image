@@ -34,14 +34,11 @@ export default defineConfig(({ mode: _mode }) => {
             // Core unit & integration tests
             'src/**/*.spec.ts',
             'src/**/*.spec.tsx',
+            'components/**/*.spec.tsx',
             // Accessibility tests
             'src/**/*.a11y.spec.tsx',
             // Spec-driven tests
             'src/**/*.spec.json',
-            // __tests__ directory tests
-            '__tests__/**/*.spec.ts',
-            '__tests__/**/*.spec.tsx',
-            '__tests__/**/*.a11y.spec.tsx',
           ],
         },
       plugins: [
@@ -65,6 +62,8 @@ export default defineConfig(({ mode: _mode }) => {
         'import.meta.env.VITE_BUILD_TIME': JSON.stringify(new Date().toISOString()),
       },
       build: {
+        // Never inline fonts as data: URIs. The CSP is font-src 'self', so they must be real files.
+        assetsInlineLimit: (file) => (/\.woff2?$/.test(file) ? false : undefined),
         // Disable Vite's built-in compression reporting (we use check-budgets.mjs instead)
         reportCompressedSize: false,
         // Conservative chunk size warning limit (600–800k range)
@@ -82,17 +81,8 @@ export default defineConfig(({ mode: _mode }) => {
               
               // Split heavy OCR dependencies into separate lazy-loaded chunks
               // Each chunk loads only when user performs OCR on tool pages
-              if (id.includes('node_modules/onnxruntime-web') ||
-                  id.includes('node_modules/onnxruntime-common')) {
-                return 'onnx-vendor';
-              }
-              
               if (id.includes('node_modules/tesseract.js')) {
                 return 'tesseract-vendor';
-              }
-              
-              if (id.includes('node_modules/@xenova/transformers')) {
-                return 'transformers-vendor';
               }
               
               // Editor & UI vendor chunk - framer-motion for animations

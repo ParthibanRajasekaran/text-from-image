@@ -1,0 +1,40 @@
+name: RenderCheck report
+description: Annotate the pull request with what RenderCheck found on screen, and outline the failing text in the screenshots.
+author: Parthiban Rajasekaran
+branding:
+  icon: eye
+  color: purple
+
+inputs:
+  report-dir:
+    description: Directory RenderCheck wrote failure records to (RENDERCHECK_REPORT_DIR). On GitHub Actions the default is rendercheck-report.
+    default: rendercheck-report
+  upload:
+    description: Upload the report directory (screenshots with the failing text outlined) as a workflow artifact.
+    default: 'true'
+  artifact-name:
+    description: Name of the uploaded artifact.
+    default: rendercheck-report
+
+outputs:
+  failures:
+    description: Number of failing assertions found.
+    value: ${{ steps.annotate.outputs.failures }}
+
+runs:
+  using: composite
+  steps:
+    - id: upload
+      if: ${{ always() && inputs.upload == 'true' && hashFiles(format('{0}/*.json', inputs.report-dir)) != '' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.report-dir }}
+        retention-days: 14
+    - id: annotate
+      if: ${{ always() }}
+      shell: bash
+      env:
+        RENDERCHECK_REPORT_DIR: ${{ inputs.report-dir }}
+        RENDERCHECK_ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+      run: node "${{ github.action_path }}/annotate.mjs"

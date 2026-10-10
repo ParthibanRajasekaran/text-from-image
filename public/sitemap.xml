@@ -11,6 +11,21 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://freetextfromimage.com/image-to-text-converter</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/jpg-to-word</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/image-to-excel</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://freetextfromimage.com/extract-text-from-image</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -21,17 +36,17 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://freetextfromimage.com/jpg-to-word</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://freetextfromimage.com/jpg-to-excel</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://freetextfromimage.com/image-to-excel</loc>
+    <loc>https://freetextfromimage.com/about</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/contact</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -46,12 +61,57 @@
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://freetextfromimage.com/about</loc>
+    <loc>https://freetextfromimage.com/security</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/verify-debt-score</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://freetextfromimage.com/contact</loc>
+    <loc>https://freetextfromimage.com/rendercheck</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/developers</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/access</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/case-studies</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/labs</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/ai-ui-bug-gallery</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/ocr-challenge-lab</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/changelog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://freetextfromimage.com/redact-image</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

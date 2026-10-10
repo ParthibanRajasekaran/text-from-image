@@ -1,5 +1,6 @@
 import { autoPreprocess, preprocessForOCR } from '../utils/imagePreprocessing';
 import { OCRError, ErrorFactory, validateFile } from '../utils/errorHandling';
+import { recognizeLocal } from '../src/core/ocr/tesseractConfig';
 
 /**
  * Tesseract.js OCR Service (Enhanced with Preprocessing + Dynamic Loading)
@@ -28,16 +29,6 @@ import { OCRError, ErrorFactory, validateFile } from '../utils/errorHandling';
 
 const PROCESSING_MAX_SIZE_BYTES = 20 * 1024 * 1024; // 20 MB
 
-// Lazy-load Tesseract.js only when needed
-let tesseractModule: typeof import('tesseract.js') | null = null;
-
-async function getTesseract() {
-  if (!tesseractModule) {
-    tesseractModule = await import('tesseract.js');
-  }
-  return tesseractModule;
-}
-
 export const extractTextFromImage = async (
   file: File,
   onProgress?: (progress: number) => void,
@@ -59,15 +50,12 @@ export const extractTextFromImage = async (
       if (onProgress) onProgress(20);
     }
 
-    // Lazy-load Tesseract.js
-    const { recognize } = await getTesseract();
 
-    // Create an image URL for Tesseract
-    const imageUrl = URL.createObjectURL(processedFile);
-
+    // Pass the File itself, not a blob: URL. tesseract.js fetch()es URLs, and the CSP
+    // (connect-src 'self') does not allow fetching blob: URLs.
     // Perform OCR with progress tracking
-    const result = await recognize(
-      imageUrl,
+    const result = await recognizeLocal(
+      processedFile,
       'eng', // Language: English (you can add more: 'eng+spa+fra')
       {
         logger: (info) => {
@@ -82,9 +70,6 @@ export const extractTextFromImage = async (
         },
       }
     );
-
-    // Clean up the object URL
-    URL.revokeObjectURL(imageUrl);
 
     // Extract the text from the result
     const extractedText = result.data.text.trim();
@@ -117,8 +102,6 @@ export const extractTextWithConfidence = async (
     throw error instanceof OCRError ? error : ErrorFactory.fromError(error, 'file validation');
   }
 
-  let imageUrl: string | null = null;
-
   try {
     let processedFile = file;
     
@@ -136,12 +119,8 @@ export const extractTextWithConfidence = async (
       }
     }
 
-    // Lazy-load Tesseract.js
-    const { recognize } = await getTesseract();
 
-    imageUrl = URL.createObjectURL(processedFile);
-
-    const result = await recognize(imageUrl, 'eng', {
+    const result = await recognizeLocal(processedFile, 'eng', {
       logger: (info) => {
         if (info.status === 'recognizing text' && onProgress) {
           const adjustedProgress = usePreprocessing 
@@ -176,15 +155,6 @@ export const extractTextWithConfidence = async (
     }
 
     throw ErrorFactory.processingFailed('Tesseract', error);
-  } finally {
-    // Always clean up the object URL
-    if (imageUrl) {
-      try {
-        URL.revokeObjectURL(imageUrl);
-      } catch (e) {
-        console.warn('Failed to revoke object URL:', e);
-      }
-    }
   }
 };
 
@@ -218,20 +188,14 @@ export const extractTextWithCustomPreprocessing = async (
     
     if (onProgress) onProgress(20);
 
-    // Lazy-load Tesseract.js
-    const { recognize } = await getTesseract();
 
-    const imageUrl = URL.createObjectURL(processedFile);
-
-    const result = await recognize(imageUrl, 'eng', {
+    const result = await recognizeLocal(processedFile, 'eng', {
       logger: (info) => {
         if (info.status === 'recognizing text' && onProgress) {
           onProgress(20 + Math.round(info.progress * 80));
         }
       },
     });
-
-    URL.revokeObjectURL(imageUrl);
 
     return {
       text: result.data.text.trim(),

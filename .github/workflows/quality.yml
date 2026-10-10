@@ -36,6 +36,20 @@ jobs:
       - name: Check for new legacy-shims imports (non-blocking warning)
         if: always()
         run: npm run check-legacy-shims
+
+      - name: Verify security headers in vercel.json
+        run: node -e "const v=JSON.parse(require('fs').readFileSync('vercel.json','utf8')); if(!v.headers?.length){console.error('❌ CSP missing in vercel.json');process.exit(1);} console.log('✅ Security headers found');"
+
+      - name: Guard raw innerHTML on user content
+        run: |
+          VIOLATIONS=$(grep -rn '\.innerHTML\s*=' --include="*.tsx" --include="*.ts" --exclude-dir=node_modules --exclude="*.spec.*" --exclude="*.test.*" . 2>/dev/null | grep -v 'JSON.stringify' | grep -v '//.*innerHTML' || true)
+          if [ -n "$VIOLATIONS" ]; then
+            echo "❌ Potential XSS vulnerabilities (innerHTML without sanitization):"
+            echo "$VIOLATIONS"
+            exit 1
+          else
+            echo "✅ No dangerous innerHTML patterns found"
+          fi
       
       - name: Upload Vitest coverage (if generated)
         if: always()
@@ -59,3 +73,82 @@ jobs:
           echo "- Build: ✅ Passed" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "📎 [View full workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+
+  # End-to-end tests run against the production build, served with the real headers from
+  # vercel.json (including the CSP). They cover: every route loads with no console or CSP errors,
+  # OCR runs on a test PNG with self-hosted assets and no off-origin request, the hero demo and its
+  # offline proof, axe-core on every route in light and dark, and the 390px layout.
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run end-to-end tests
+        run: npm run test:e2e
+        env:
+          CI: 'true'
+          # In CI a route that fails to prerender is an error; on the host it only falls back to the SPA.
+          PRERENDER_REQUIRED: '1'
+
+      - name: Upload Playwright traces on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7
+
+  # The SDK: unit tests, the Playwright example suite, the Cypress example suite, and the check that
+  # nothing in it needs a network.
+  rendercheck-sdk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: packages/rendercheck
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Build
+        run: npm run build
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Unit tests with the network removed
+        # `unshare -rn` needs unprivileged user namespaces, which newer runner images switch off.
+        # Fall back to a root-created network namespace, then drop back to the runner user.
+        run: |
+          if unshare -rn true 2>/dev/null; then
+            npm run test:offline
+          else
+            sudo unshare -n sudo -u "$(id -un)" env "PATH=$PATH" RENDERCHECK_EXPECT_NO_NETWORK=1 npx vitest run __tests__/offline.spec.ts
+          fi
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Playwright example suite
+        run: npm run test:example
+
+      - name: Cypress example suite
+        run: npx --yes cypress@13 run --project examples/cypress --browser electron

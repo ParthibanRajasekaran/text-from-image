@@ -18,7 +18,6 @@ import { useShortcuts, getCommonShortcuts } from './hooks/useShortcuts';
 import { useLiveRegion } from './hooks/useLiveRegion';
 import { isUXV2Enabled } from './utils/env';
 import { COMMIT } from './lib/version';
-import { AutoAds } from './src/ads/AutoAds';
 
 function App() {
   // Accessibility: Add skip link and enhanced error handling
@@ -30,13 +29,7 @@ function App() {
         message: e.userMessage,
         technical: e.technicalDetails,
         recoverable: e.recoverable,
-        bothMethodsAttempted: e.technicalDetails?.bothMethodsAttempted || false,
       });
-      if (e.technicalDetails?.bothMethodsAttempted) {
-        console.warn('⚠️ Both OCR methods were attempted but failed:');
-        console.warn('  1. Fast OCR (Tesseract):', e.technicalDetails.tesseractError);
-        console.warn('  2. AI Model (Transformers):', e.technicalDetails.transformersError);
-      }
     } else {
       setError('An unexpected error occurred during text extraction. Please try again or reload the page.');
       console.error('Unexpected error:', e);
@@ -150,9 +143,8 @@ function App() {
         setExtractedText(result.text);
         setProgressStage('complete');
         setProgressPercent(100);
-        const methodLabel = result.method === 'tesseract' ? '⚡ Fast OCR (Tesseract)' : '🤖 AI Model (Transformers)';
-        const fallbackNote = result.fallbackUsed ? ' - Used advanced AI after initial attempt' : '';
-        setMethodUsed(`Extracted using ${methodLabel}${fallbackNote}`);
+        const lowNote = result.lowConfidence ? ' - low confidence, please check the text' : '';
+        setMethodUsed(`Extracted using ⚡ Tesseract OCR${lowNote}`);
         if (result.confidence) {
           setMethodUsed(prev => `${prev} • Confidence: ${Math.round(result.confidence!)}%`);
         }
@@ -188,7 +180,6 @@ function App() {
       >
         Skip to main content
       </a>
-      <AutoAds />
       <header className="py-4 px-6 border-b border-border sticky top-0 bg-background/80 backdrop-blur-sm z-10">
         <div className="container mx-auto grid grid-cols-3 items-center">
           <div aria-hidden="true" /> {/* Empty cell for spacing */}

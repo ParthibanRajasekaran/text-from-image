@@ -4,8 +4,6 @@
  * Validates:
  * - Exactly one <main> per page
  * - Header "Guides" menu keyboard reachable
- * - InArticle never renders on uploader route
- * - InArticle reserves height ≥ 280px before consent
  * - SEO: every route has title/description/canonical
  * - JSON-LD only where FAQ visible
  * - No blocking scripts; CLS prevention
@@ -18,7 +16,6 @@ import React from 'react';
 
 // Import components to test
 import App from '../../App';
-import { InArticle } from '../ads/InArticle';
 import CopyTextFromImageGuide from '../../pages/CopyTextFromImageGuide';
 import ImageToText from '../../pages/ImageToText';
 import ExtractTextFromImage from '../../pages/ExtractTextFromImage';
@@ -84,7 +81,7 @@ vi.mock('../../hooks/useOCRProcessor', () => ({
 }));
 
 describe('SEO, A11y & Performance Tests', () => {
-  describe('Main Landmark - Exactly One <main> Per Page', () => {
+  describe('Main Landmark - Exactly One Main Per Page', () => {
     it('App.tsx (uploader route) should have exactly one <main>', () => {
       const { container } = render(
         <MemoryRouter initialEntries={['/']}>
@@ -97,59 +94,59 @@ describe('SEO, A11y & Performance Tests', () => {
       expect(mainElements[0]).toHaveAttribute('id', 'main-content');
     });
 
-    it('CopyTextFromImageGuide should have exactly one <main>', () => {
+    it('CopyTextFromImageGuide should have exactly one main landmark', () => {
       const { container } = render(
         <BrowserRouter>
           <CopyTextFromImageGuide />
         </BrowserRouter>
       );
 
-      const mainElements = container.querySelectorAll('main');
-      expect(mainElements.length).toBe(1);
+      const mainLandmarks = container.querySelectorAll('[role="main"]');
+      expect(mainLandmarks.length).toBe(1);
     });
 
-    it('ImageToText guide should have exactly one <main>', () => {
+    it('ImageToText guide should have exactly one main landmark', () => {
       const { container } = render(
         <BrowserRouter>
           <ImageToText />
         </BrowserRouter>
       );
 
-      const mainElements = container.querySelectorAll('main');
-      expect(mainElements.length).toBe(1);
+      const mainLandmarks = container.querySelectorAll('[role="main"]');
+      expect(mainLandmarks.length).toBe(1);
     });
 
-    it('ExtractTextFromImage guide should have exactly one <main>', () => {
+    it('ExtractTextFromImage guide should have exactly one main landmark', () => {
       const { container } = render(
         <BrowserRouter>
           <ExtractTextFromImage />
         </BrowserRouter>
       );
 
-      const mainElements = container.querySelectorAll('main');
-      expect(mainElements.length).toBe(1);
+      const mainLandmarks = container.querySelectorAll('[role="main"]');
+      expect(mainLandmarks.length).toBe(1);
     });
 
-    it('JpgToExcelGuide should have exactly one <main>', () => {
+    it('JpgToExcelGuide should have exactly one main landmark', () => {
       const { container } = render(
         <BrowserRouter>
           <JpgToExcelGuide />
         </BrowserRouter>
       );
 
-      const mainElements = container.querySelectorAll('main');
-      expect(mainElements.length).toBe(1);
+      const mainLandmarks = container.querySelectorAll('[role="main"]');
+      expect(mainLandmarks.length).toBe(1);
     });
 
-    it('JpgToWord guide should have exactly one <main>', () => {
+    it('JpgToWord guide should have exactly one main landmark', () => {
       const { container } = render(
         <BrowserRouter>
           <JpgToWord />
         </BrowserRouter>
       );
 
-      const mainElements = container.querySelectorAll('main');
-      expect(mainElements.length).toBe(1);
+      const mainLandmarks = container.querySelectorAll('[role="main"]');
+      expect(mainLandmarks.length).toBe(1);
     });
   });
 
@@ -201,96 +198,6 @@ describe('SEO, A11y & Performance Tests', () => {
         const tabIndex = el.getAttribute('tabindex');
         expect(tabIndex).not.toBe('-1');
       });
-    });
-  });
-
-  describe('InArticle Ad Slot - Route-Specific Rendering', () => {
-    it('InArticle should NEVER render on uploader route (App.tsx)', () => {
-      const { container } = render(
-        <MemoryRouter initialEntries={['/']}>
-          <App />
-        </MemoryRouter>
-      );
-
-      // Check for InArticle slot indicators
-      const adSlots = container.querySelectorAll('[role="region"][aria-label="Advertisement"]');
-      const inArticleSlots = Array.from(adSlots).filter(slot => {
-        // InArticle has min-h-[280px] class
-        return (slot as HTMLElement).className.includes('min-h-[280px]');
-      });
-
-      expect(inArticleSlots.length).toBe(0);
-    });
-
-    it('InArticle should render on guide pages when enabled', () => {
-      // Set environment to enable slots
-      vi.stubEnv('VITE_ADS_SLOTS_ENABLED', 'true');
-      
-      const { container } = render(
-        <BrowserRouter>
-          <CopyTextFromImageGuide />
-        </BrowserRouter>
-      );
-
-      // Should have ad region (even if empty before consent)
-      const adRegions = container.querySelectorAll('[role="region"][aria-label="Advertisement"]');
-      expect(adRegions.length).toBeGreaterThan(0);
-      
-      vi.unstubAllEnvs();
-    });
-  });
-
-  describe('InArticle - CLS Prevention (Height Reservation)', () => {
-    it('InArticle should reserve min-height of 280px BEFORE consent', () => {
-      const consent = {
-        ad_storage: 'denied' as const,
-        ad_user_data: 'denied' as const,
-        ad_personalization: 'denied' as const,
-      };
-
-      const { container } = render(
-        <InArticle consent={consent} />
-      );
-
-      const adRegion = container.querySelector('[role="region"][aria-label="Advertisement"]');
-      expect(adRegion).toBeInTheDocument();
-      
-      // Check for min-h-[280px] class
-      expect(adRegion?.className).toContain('min-h-[280px]');
-      
-      // Verify no <ins> element is rendered (consent denied)
-      const insElement = container.querySelector('ins.adsbygoogle');
-      expect(insElement).not.toBeInTheDocument();
-    });
-
-    it('InArticle reserved space should have w-full class to prevent horizontal CLS', () => {
-      const consent = {
-        ad_storage: 'denied' as const,
-        ad_user_data: 'denied' as const,
-        ad_personalization: 'denied' as const,
-      };
-
-      const { container } = render(
-        <InArticle consent={consent} />
-      );
-
-      const adRegion = container.querySelector('[role="region"][aria-label="Advertisement"]');
-      expect(adRegion?.className).toContain('w-full');
-    });
-
-    it('InArticle should have my-8 for vertical spacing (no layout shift)', () => {
-      const consent = {
-        ad_storage: 'denied' as const,
-        ad_user_data: 'denied' as const,
-        ad_personalization: 'denied' as const,
-      };
-
-      const { container } = render(
-        <InArticle consent={consent} />
-      );
-
-      const adRegion = container.querySelector('[role="region"][aria-label="Advertisement"]');
-      expect(adRegion?.className).toContain('my-8');
     });
   });
 
@@ -434,20 +341,6 @@ describe('SEO, A11y & Performance Tests', () => {
   });
 
   describe('Performance - No Blocking Scripts', () => {
-    it('AdSense script in AutoAds should be async and non-blocking', () => {
-      // Note: This tests the AutoAds component logic
-      // In actual implementation, script should have async attribute
-      
-      // Mock document.head to verify script attributes
-      const mockScript = document.createElement('script');
-      mockScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
-      mockScript.async = true;
-      mockScript.crossOrigin = 'anonymous';
-
-      expect(mockScript.async).toBe(true);
-      expect(mockScript.crossOrigin).toBe('anonymous');
-    });
-
     it('Tesseract should be lazy loaded (not in initial bundle)', () => {
       // This is verified by vite config manualChunks
       // Tesseract should be in separate 'tesseract' chunk
@@ -461,44 +354,6 @@ describe('SEO, A11y & Performance Tests', () => {
       // Initial render should not load Tesseract immediately
       // (it loads on user interaction via useOCRProcessor)
       expect(container).toBeInTheDocument();
-    });
-  });
-
-  describe('Performance - CLS Prevention from Ad Slots', () => {
-    it('All InArticle slots should have fixed height before ad loads', () => {
-      const consent = {
-        ad_storage: 'denied' as const,
-        ad_user_data: 'denied' as const,
-        ad_personalization: 'denied' as const,
-      };
-
-      const { container } = render(
-        <InArticle consent={consent} />
-      );
-
-      const adRegion = container.querySelector('[role="region"][aria-label="Advertisement"]');
-      
-      // Should have min-h-[280px] which reserves space
-      expect(adRegion?.className).toMatch(/min-h-\[280px\]/);
-      
-      // Should not cause layout shift when ad loads later
-      expect(adRegion?.className).toContain('w-full');
-    });
-
-    it('Ad slots should use CSS containment for layout stability', () => {
-      const consent = {
-        ad_storage: 'granted' as const,
-        ad_user_data: 'granted' as const,
-        ad_personalization: 'granted' as const,
-      };
-
-      const { container } = render(
-        <InArticle consent={consent} />
-      );
-
-      // Even with consent granted, container should maintain dimensions
-      const adRegion = container.querySelector('[role="region"][aria-label="Advertisement"]');
-      expect(adRegion?.className).toContain('min-h-[280px]');
     });
   });
 

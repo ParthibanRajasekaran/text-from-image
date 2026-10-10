@@ -5,6 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-10-09
+
+### Added
+
+- Locale rule packs. Playwright `toShowCurrency(amount, { currency, locale })` and `toShowDate(date, { locale })`,
+  Cypress `cy.matchCurrency` and `cy.matchDate`. The expected text is built with `Intl`, and a failure says
+  whether the screen shows another currency or another locale's format.
+- Core exports: `expectedCurrency`, `expectedDate`, `explainCurrency`, `explainDate`, `visibleText`, `ocrLangFor`, `isRtl`.
+- Right-to-left support: bidi direction marks and non-breaking spaces are ignored when comparing text.
+  With `langPath` set, the OCR language follows the locale.
+
+## [0.3.0] - 2026-10-09
+
+### Added
+
+- `VerifyReport.box`: where on the screenshot the failing text is (the line that best matches what you expected).
+- Failure records for CI. On a failed assertion RenderCheck can write a JSON file and a copy of the screenshot
+  with the failing text outlined in red. It is off unless `RENDERCHECK_REPORT_DIR` is set, and defaults to
+  `rendercheck-report` on GitHub Actions. Playwright records the test file and line; Cypress the spec and title.
+  A retry that passes removes the record. Core exports: `recordFailure`, `clearFailure`, `markRegion`, `callSite`.
+- GitHub Action (`packages/rendercheck/action`): annotates the pull request on the failing test line with what OCR
+  read and the failing region, writes a job summary table, and uploads the outlined screenshots as an artifact.
+
+## [0.2.0] - 2026-10-09
+
+### Breaking
+
+- Removed `verify()` and its API mode. It uploaded the screenshot to the FreeTextFromImage API with an
+  API key. RenderCheck now runs OCR locally and makes no network calls.
+
+### Added
+
+- `@freetextfromimage/rendercheck/playwright`: `expect` with the `toShowText` matcher (retrying, `.not`,
+  locator DOM check, `region`, `minConfidence`, `minContrastRatio`).
+- `@freetextfromimage/rendercheck/cypress` and `/cypress/plugin`: `cy.matchText`.
+- `@freetextfromimage/rendercheck/core`: `verifyText`, `recognize`, WCAG 2.1 contrast analysis.
+- Failure messages that say what OCR read and where it differs.
+- Example Playwright and Cypress suites on a mock checkout page (Cypress run in Cypress 13.17, Electron).
+
 ## [0.1.0] - 2026-06-15
 
 ### Added

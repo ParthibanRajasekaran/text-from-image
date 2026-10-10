@@ -8,7 +8,6 @@
  * - File operations (file_added)
  * - OCR lifecycle (extraction_started, extraction_completed, extraction_failed)
  * - User actions (copy_clicked, download_clicked)
- * - Ad visibility (adslot_visible, adslot_filled)
  * - Content engagement (faq_opened)
  */
 
@@ -34,11 +33,6 @@ export interface ContentInteractionParams {
   contentType?: string;  // e.g., 'text', 'latex', 'csv'
   format?: string;       // e.g., 'txt', 'json', 'csv'
   question?: string;     // FAQ question text
-  pagePath?: string;
-}
-
-export interface AdEventParams {
-  slotId: string;        // Ad slot identifier (e.g., 'afterExplainer1', 'bottom')
   pagePath?: string;
 }
 
@@ -159,40 +153,6 @@ export function trackDownloadClicked(params: ContentInteractionParams = {}): voi
 }
 
 /**
- * Track when an ad slot becomes visible
- */
-export function trackAdSlotVisible(params: AdEventParams): void {
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', 'adslot_visible', {
-      event_category: 'Ad Performance',
-      slot_id: params.slotId,
-      page_path: params.pagePath || window.location.pathname,
-    });
-  }
-  
-  if (process.env.NODE_ENV === 'development') {
-    console.log('[Analytics] adslot_visible:', params);
-  }
-}
-
-/**
- * Track when an ad slot is filled with an ad
- */
-export function trackAdSlotFilled(params: AdEventParams): void {
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', 'adslot_filled', {
-      event_category: 'Ad Performance',
-      slot_id: params.slotId,
-      page_path: params.pagePath || window.location.pathname,
-    });
-  }
-  
-  if (process.env.NODE_ENV === 'development') {
-    console.log('[Analytics] adslot_filled:', params);
-  }
-}
-
-/**
  * Track when a user opens/expands an FAQ item
  */
 export function trackFAQOpened(params: ContentInteractionParams): void {
@@ -246,6 +206,84 @@ export function trackToolCompleted(params: ToolCompletedParams): void {
 }
 
 /**
+ * Track form submission
+ */
+export function trackFormSubmit(params: { formId: string; pagePath?: string }): void {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', 'form_submit', {
+      event_category: 'Form Interactions',
+      form_id: params.formId,
+      page_path: params.pagePath || window.location.pathname,
+    });
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[Analytics] form_submit:', params);
+  }
+}
+
+/**
+ * Track form error
+ */
+export function trackFormError(params: {
+  formId: string;
+  error: string;
+  pagePath?: string;
+}): void {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', 'form_error', {
+      event_category: 'Form Interactions',
+      form_id: params.formId,
+      error: params.error,
+      page_path: params.pagePath || window.location.pathname,
+    });
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[Analytics] form_error:', params);
+  }
+}
+
+/**
+ * Track CTA click
+ */
+export function trackCTAClicked(params: {
+  ctaId: string;
+  label: string;
+  pagePath?: string;
+}): void {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', 'cta_clicked', {
+      event_category: 'CTA Interactions',
+      cta_id: params.ctaId,
+      label: params.label,
+      page_path: params.pagePath || window.location.pathname,
+    });
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[Analytics] cta_clicked:', params);
+  }
+}
+
+/**
+ * Track code block copy
+ */
+export function trackCodeBlockCopied(params: { filename?: string; pagePath?: string }): void {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', 'code_block_copied', {
+      event_category: 'Developer Content',
+      filename: params.filename,
+      page_path: params.pagePath || window.location.pathname,
+    });
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[Analytics] code_block_copied:', params);
+  }
+}
+
+/**
  * Batch track multiple events at once (useful for initial page setup)
  */
 export function trackEvents(events: Array<{ name: string; params: any }>): void {
@@ -268,12 +306,6 @@ export function trackEvents(events: Array<{ name: string; params: any }>): void 
         break;
       case 'download_clicked':
         trackDownloadClicked(params);
-        break;
-      case 'adslot_visible':
-        trackAdSlotVisible(params);
-        break;
-      case 'adslot_filled':
-        trackAdSlotFilled(params);
         break;
       case 'faq_opened':
         trackFAQOpened(params);
