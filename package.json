@@ -65,7 +65,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "jest-axe": "^10.0.0",
+    "jest-axe": "^11.0.0",
     "jsdom": "^24.0.0",
     "postcss": "^8.5.29",
     "rollup-plugin-visualizer": "^7.1.1",
