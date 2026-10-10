@@ -6,6 +6,7 @@ import { GlassResultCard } from '../v3/GlassResultCard';
 import { GlassProgressBar } from '../v3/GlassProgressBar';
 import { HistoryDrawer } from '../v3/HistoryDrawer';
 import { StatusBadge } from '../ui/StatusBadge';
+import { reveal } from '../ui/reveal';
 import type { StatusVariant } from '../ui/StatusBadge';
 import { ROUTES } from '../../router';
 import { useOCRProcessor } from '../../hooks/useOCRProcessor';
@@ -144,10 +145,7 @@ export function HomepageMinimalPremium() {
         {/* PRODUCT PROOF SECTION */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-28">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            {...reveal}
             className="max-w-3xl mx-auto"
           >
             <div className="bg-surface rounded-2xl border border-border/50 p-8 sm:p-12 space-y-8">
@@ -211,10 +209,7 @@ export function HomepageMinimalPremium() {
         {/* WHY THIS MATTERS SECTION */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-28">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            {...reveal}
             className="max-w-3xl mx-auto space-y-6"
           >
             <h2 className="text-3xl sm:text-4xl font-bold">Why This Matters</h2>
@@ -243,10 +238,7 @@ export function HomepageMinimalPremium() {
         {/* RENDERCHECK WORKFLOW SECTION */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-28">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            {...reveal}
             className="max-w-3xl mx-auto space-y-8"
           >
             <h2 className="text-3xl sm:text-4xl font-bold">RenderCheck Workflow</h2>
@@ -275,10 +267,7 @@ export function HomepageMinimalPremium() {
         {/* RENDERCHECK LABS SECTION */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-28">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            {...reveal}
             className="max-w-4xl mx-auto space-y-8"
           >
             <h2 className="text-3xl sm:text-4xl font-bold">RenderCheck Labs</h2>
@@ -322,10 +311,7 @@ export function HomepageMinimalPremium() {
         {/* DEVELOPER PRIMITIVES SECTION */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-28">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            {...reveal}
             className="max-w-3xl mx-auto space-y-8"
           >
             <h2 className="text-3xl sm:text-4xl font-bold">Developer Primitives</h2>
@@ -351,10 +337,7 @@ export function HomepageMinimalPremium() {
         {/* PRIVACY ARCHITECTURE SECTION */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-28">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            {...reveal}
             className="max-w-3xl mx-auto space-y-8"
           >
             <h2 className="text-3xl sm:text-4xl font-bold">Privacy Architecture</h2>
@@ -395,10 +378,7 @@ export function HomepageMinimalPremium() {
         {/* OCR TOOL SECTION */}
         <section id="ocr-tool" className="container mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-28">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            {...reveal}
             className="max-w-3xl mx-auto space-y-8"
           >
             <h2 className="text-3xl sm:text-4xl font-bold">Browser OCR Tool</h2>
@@ -441,10 +421,7 @@ export function HomepageMinimalPremium() {
         {/* PROOF, NOT CLAIMS SECTION */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-28">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            {...reveal}
             className="max-w-3xl mx-auto space-y-6 bg-surface border border-border rounded-2xl p-8"
           >
             <h2 className="text-2xl font-bold">Proof, Not Claims</h2>
@@ -466,10 +443,7 @@ export function HomepageMinimalPremium() {
         {/* ACCESS SECTION */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-28">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            {...reveal}
             className="max-w-3xl mx-auto space-y-8"
           >
             <h2 className="text-3xl sm:text-4xl font-bold">Get Started</h2>

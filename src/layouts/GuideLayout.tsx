@@ -48,7 +48,7 @@ export function GuideLayout({ title, description, children }: GuideLayoutProps) 
                     </li>
                     <li aria-hidden="true">/</li>
                     <li>
-                      <span className="text-muted-foreground/60">Guides</span>
+                      <span className="text-muted-foreground">Guides</span>
                     </li>
                     <li aria-hidden="true">/</li>
                     <li className="text-foreground font-medium" aria-current="page">
