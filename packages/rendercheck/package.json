@@ -97,7 +97,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.56.1",
-    "@types/node": "^22.0.0",
+    "@types/node": "^26.6.4",
     "@types/pngjs": "^6.0.5",
     "tsup": "^8.5.0",
     "typescript": "~5.8.2",
