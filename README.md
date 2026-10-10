@@ -1,6 +1,6 @@
 # 📸 Extract Text From Image
 
-> **Free, private, AI-powered OCR tool running entirely in your browser** — Extract text from images with 92-97% accuracy, zero API costs, and 100% data privacy.
+> **Free, private, AI-powered OCR tool running entirely in your browser**: extract text from images with 92-97% accuracy, zero API costs, and 100% data privacy.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react)](https://reactjs.org/)
@@ -92,10 +92,10 @@ This repo uses Spec-Driven Development for reliability and accessibility. All fe
 - [ ] No SEO/a11y regressions
 
 ### CI Gates
-- `npm run spec:lint` — Spectral lint for OpenAPI
-- `npm run spec:schemas` — Validate JSON schemas and tokens
-- `npm run spec:test` — Playwright BDD tests
-- `npm run spec:diff` — OAS diff for breaking changes
+- `npm run spec:lint`: Spectral lint for OpenAPI
+- `npm run spec:schemas`: Validate JSON schemas and tokens
+- `npm run spec:test`: Playwright BDD tests
+- `npm run spec:diff`: OAS diff for breaking changes
 
 
 ### Prerequisites

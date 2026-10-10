@@ -73,7 +73,7 @@ export default function Changelog() {
   const canonicalAbsolute = new URL('/changelog', SITE_URL).toString();
 
   useSEO({
-    title: 'RenderCheck Changelog — Product Updates and Development',
+    title: 'RenderCheck Changelog: Product Updates and Development',
     description: 'Track RenderCheck development: new features, API changes, and product milestones. See what\'s live, in beta, and planned.',
     canonical: canonicalAbsolute,
   });

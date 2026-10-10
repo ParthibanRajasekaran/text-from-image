@@ -48,7 +48,7 @@ export default function JpgToWordGuide() {
   <h2 className="text-3xl font-bold mb-4">JPG to Word</h2>
       <section className="mb-6">
         <p>
-          Converting JPG images to Word documents lets you edit, share, and repurpose text from photos, scans, or screenshots. Our tool makes it easy, private, and fast—no registration required.
+          Converting JPG images to Word documents lets you edit, share, and repurpose text from photos, scans, or screenshots. Our tool makes it easy, private, and fast, no registration required.
         </p>
       </section>
       <section className="mb-6">

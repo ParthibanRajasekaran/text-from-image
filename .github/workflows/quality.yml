@@ -30,6 +30,9 @@ jobs:
       - name: Build
         run: npm run build
       
+      - name: Check site copy for em dashes
+        run: npm run check:copy
+
       - name: Check performance budgets
         run: npm run check:budgets
       

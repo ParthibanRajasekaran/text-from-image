@@ -159,7 +159,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
             </h1>
             <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-light">
               {customSubheading ||
-                'RenderCheck uses privacy-first OCR to test screenshots and rendered interfaces—catching visible text failures that DOM checks miss.'}
+                'RenderCheck uses privacy-first OCR to test screenshots and rendered interfaces, catching visible text failures that DOM checks miss.'}
             </p>
           </motion.div>
 

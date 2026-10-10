@@ -18,7 +18,7 @@ export default function Access() {
   const canonicalAbsolute = new URL('/access', SITE_URL).toString();
 
   useSEO({
-    title: 'Get RenderCheck — No Account, No API Key',
+    title: 'Get RenderCheck: No Account, No API Key',
     description:
       'RenderCheck runs on your machine. Use the browser OCR tool or install the Playwright/Cypress SDK. No account, no API key, no upload.',
     canonical: canonicalAbsolute,

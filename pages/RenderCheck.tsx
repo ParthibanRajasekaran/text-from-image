@@ -25,7 +25,7 @@ export default function RenderCheck() {
   const canonicalAbsolute = new URL('/rendercheck', SITE_URL).toString();
 
   useSEO({
-    title: 'RenderCheck — Verify Rendered UI Text in Playwright & Cypress',
+    title: 'RenderCheck: Verify Rendered UI Text in Playwright & Cypress',
     description: 'RenderCheck: OCR-based verification for AI-generated UI. Catch bugs where DOM tests pass but visible text is wrong. Works with Playwright, Cypress, and any E2E tool.',
     canonical: canonicalAbsolute,
   });
@@ -93,16 +93,16 @@ export default function RenderCheck() {
           </p>
           <ol className="space-y-3 text-foreground/90">
             <li>
-              <strong>1. Take a screenshot</strong> — Use `page.screenshot()` in Playwright or `cy.screenshot()` in Cypress
+              <strong>1. Take a screenshot</strong>: Use `page.screenshot()` in Playwright or `cy.screenshot()` in Cypress
             </li>
             <li>
-              <strong>2. Assert with toShowText()</strong> — RenderCheck reads the screenshot locally and compares it with the expected text
+              <strong>2. Assert with toShowText()</strong>: RenderCheck reads the screenshot locally and compares it with the expected text
             </li>
             <li>
-              <strong>3. Get results</strong> — the assertion passes, or fails with what OCR read and how it differs
+              <strong>3. Get results</strong>: the assertion passes, or fails with what OCR read and how it differs
             </li>
             <li>
-              <strong>4. Assert</strong> — `expect(result.outcome).toBe('pass')` in your test
+              <strong>4. Assert</strong>: `expect(result.outcome).toBe('pass')` in your test
             </li>
           </ol>
         </section>

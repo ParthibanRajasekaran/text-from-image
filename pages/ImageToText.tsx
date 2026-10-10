@@ -97,7 +97,7 @@ export default function ImageToText() {
           This technology eliminates the need for manual retyping, saving hours of work when digitizing books, extracting quotes from images shared on social media, archiving printed documents, or making image-based content accessible to screen readers and search engines.
         </p>
         <p>
-          Our browser-based OCR tool supports all major image formats (JPG, PNG, WEBP, GIF, BMP) and works entirely in your web browser—no software installation, no account creation, and no uploads to external servers. Your images remain private and secure on your device.
+          Our browser-based OCR tool supports all major image formats (JPG, PNG, WEBP, GIF, BMP) and works entirely in your web browser, no software installation, no account creation, and no uploads to external servers. Your images remain private and secure on your device.
         </p>
 
         <h3 className="text-xl font-medium mt-6 mb-3">Who Benefits from Image to Text Conversion</h3>
@@ -144,7 +144,7 @@ export default function ImageToText() {
           <li><strong>Contrast enhancement:</strong> The difference between text and background is amplified, making characters more distinct.</li>
           <li><strong>Binarization:</strong> The image is converted to black-and-white (binary), simplifying the recognition task.</li>
           <li><strong>Deskewing:</strong> If the image is tilted, the system automatically rotates it to align text horizontally.</li>
-          <li><strong>Layout analysis:</strong> The system identifies regions of interest—blocks of text, headings, captions, page numbers—and determines reading order.</li>
+          <li><strong>Layout analysis:</strong> The system identifies regions of interest (blocks of text, headings, captions, page numbers) and determines reading order.</li>
         </ul>
 
         <h3 className="text-xl font-medium mb-2">Stage 2: Character Recognition</h3>
@@ -153,7 +153,7 @@ export default function ImageToText() {
         </p>
         <ul className="list-disc ml-6 mb-4 space-y-1">
           <li><strong>Tesseract OCR Engine:</strong> Our primary engine uses Tesseract, an open-source OCR system originally developed by Hewlett-Packard and now maintained by Google. Tesseract compares detected shapes against a trained database of character patterns, recognizing letters, numbers, punctuation, and special symbols.</li>
-          <li><strong>Feature extraction:</strong> The engine identifies unique features of each character—curves, lines, endpoints, intersections—and matches them to known character profiles.</li>
+          <li><strong>Feature extraction:</strong> The engine identifies unique features of each character (curves, lines, endpoints, intersections) and matches them to known character profiles.</li>
           <li><strong>Language models:</strong> Tesseract leverages language-specific dictionaries and grammar rules to improve accuracy. For example, it knows "the" is more likely than "tbe" in English text.</li>
         </ul>
 
@@ -163,7 +163,7 @@ export default function ImageToText() {
         </p>
         <ul className="list-disc ml-6 mb-4 space-y-1">
           <li><strong>Vision-Language Model:</strong> A modern neural network trained on millions of text images analyzes the entire image context, not just individual characters. This model excels at recognizing cursive handwriting, stylized fonts, and text in complex backgrounds.</li>
-          <li><strong>Contextual understanding:</strong> Unlike traditional OCR, the AI model understands semantic context—for example, it can infer partially obscured words based on surrounding text.</li>
+          <li><strong>Contextual understanding:</strong> Unlike traditional OCR, the AI model understands semantic context, for example, it can infer partially obscured words based on surrounding text.</li>
         </ul>
 
         <h3 className="text-xl font-medium mb-2">Stage 4: Post-Processing and Output</h3>
@@ -191,7 +191,7 @@ export default function ImageToText() {
           <div>
             <h3 className="text-xl font-medium mb-2">Step 1: Access the OCR Tool</h3>
             <p>
-              Navigate to the homepage of <strong>Free Text From Image</strong>. The OCR tool is immediately available—no login or registration required. The interface displays a large dropzone labeled "Drag & drop or click to upload image."
+              Navigate to the homepage of <strong>Free Text From Image</strong>. The OCR tool is immediately available, no login or registration required. The interface displays a large dropzone labeled "Drag & drop or click to upload image."
             </p>
           </div>
 
@@ -255,7 +255,7 @@ export default function ImageToText() {
             <ul className="list-disc ml-6 space-y-1">
               <li><strong>Copy to clipboard:</strong> Click <strong>"Copy"</strong> (or press <kbd className="px-2 py-1 bg-muted/60 rounded text-sm">Ctrl+C</kbd> / <kbd className="px-2 py-1 bg-muted/60 rounded text-sm">Cmd+C</kbd> with the text selected). Then paste (Ctrl+V / Cmd+V) into your document, email, notes app, or translation tool.</li>
               <li><strong>Download as .txt file:</strong> Click <strong>"Download"</strong> to save the extracted text as a plain text file on your computer.</li>
-              <li><strong>Edit before copying:</strong> The text box is editable—you can correct any OCR errors directly before copying or downloading.</li>
+              <li><strong>Edit before copying:</strong> The text box is editable, you can correct any OCR errors directly before copying or downloading.</li>
             </ul>
           </div>
 
@@ -312,7 +312,7 @@ export default function ImageToText() {
           <div>
             <h3 className="text-xl font-medium mb-2">Choose Clear Fonts and Text</h3>
             <ul className="list-disc ml-6 space-y-1">
-              <li><strong>Printed text preferred:</strong> OCR performs best on typed, printed, or digitally rendered text. Handwriting accuracy varies—see our <Link to="/handwriting-to-text" className="text-primary hover:text-primary/80">Handwriting to Text</Link> guide for specialized tips.</li>
+              <li><strong>Printed text preferred:</strong> OCR performs best on typed, printed, or digitally rendered text. Handwriting accuracy varies, see our <Link to="/handwriting-to-text" className="text-primary hover:text-primary/80">Handwriting to Text</Link> guide for specialized tips.</li>
               <li><strong>Font size:</strong> Text smaller than 10pt (approximately 13px) may cause errors. Zoom in or use higher-resolution images for tiny text.</li>
               <li><strong>Standard fonts:</strong> Common fonts (Arial, Times New Roman, Helvetica, Calibri) work best. Highly decorative or script fonts may confuse the engine.</li>
             </ul>

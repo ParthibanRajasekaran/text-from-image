@@ -100,7 +100,7 @@ export default function JpgToExcelGuide() {
           Unlike generic image-to-text converters that dump all content into a single text block, our table-aware OCR engine preserves row and column relationships, making it ideal for structured data like price lists, inventory tables, financial statements, research data, and meeting schedules.
         </p>
         <p>
-          Everything runs in your browser—no uploads, no accounts, no waiting. Simply drag in your image, extract the data, and export an .xlsx file or copy cells directly into your existing spreadsheet.
+          Everything runs in your browser, no uploads, no accounts, no waiting. Simply drag in your image, extract the data, and export an .xlsx file or copy cells directly into your existing spreadsheet.
         </p>
 
         <h3 className="text-xl font-medium mt-6 mb-3">Who Should Use This Tool</h3>
@@ -115,7 +115,7 @@ export default function JpgToExcelGuide() {
           </li>
           <li>
             <strong className="block mb-1">Small Business Owners:</strong>
-            <span className="text-foreground/90">Digitize supplier invoices with line-item tables, inventory lists from product catalogs, or event schedules from printed materials—then import into your accounting or inventory system.</span>
+            <span className="text-foreground/90">Digitize supplier invoices with line-item tables, inventory lists from product catalogs, or event schedules from printed materials, then import into your accounting or inventory system.</span>
           </li>
           <li>
             <strong className="block mb-1">Educators & Students:</strong>
@@ -130,7 +130,7 @@ export default function JpgToExcelGuide() {
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-3">How Our Table OCR Technology Works</h2>
         <p className="mb-4">
-          Extracting structured tables from images requires more than simple character recognition—it must understand row and column boundaries, cell relationships, and data types. Our system employs a two-stage approach optimized for table extraction:
+          Extracting structured tables from images requires more than simple character recognition, it must understand row and column boundaries, cell relationships, and data types. Our system employs a two-stage approach optimized for table extraction:
         </p>
 
         <h3 className="text-xl font-medium mb-2">1. Table Structure Detection</h3>
@@ -223,7 +223,7 @@ export default function JpgToExcelGuide() {
               <li><strong>Empty cells:</strong> Confirm that blank cells in the original table remain blank in the extraction</li>
             </ul>
             <p className="mt-2">
-              If you notice significant errors (e.g., entire columns misaligned), the image quality may be too low—see the accuracy tips below for guidance.
+              If you notice significant errors (e.g., entire columns misaligned), the image quality may be too low, see the accuracy tips below for guidance.
             </p>
           </div>
 
@@ -319,9 +319,9 @@ export default function JpgToExcelGuide() {
             <h3 className="text-xl font-medium mb-2">Cell Content Considerations</h3>
             <ul className="list-disc ml-6 space-y-1">
               <li><strong>Font size:</strong> Text smaller than 9pt may cause errors. If your table has tiny text, scale up the image or increase the font size in the source spreadsheet before capturing.</li>
-              <li><strong>Numeric formatting:</strong> The OCR handles numbers, currency symbols ($, €, £), percentages (%), and decimal points. However, thousands separators (commas) may be misread as periods if the image is blurry—verify these after extraction.</li>
+              <li><strong>Numeric formatting:</strong> The OCR handles numbers, currency symbols ($, €, £), percentages (%), and decimal points. However, thousands separators (commas) may be misread as periods if the image is blurry, verify these after extraction.</li>
               <li><strong>Merged cells:</strong> Cells spanning multiple columns or rows are detected, but the content typically appears in the top-left cell of the merge. You may need to manually adjust merged cell formatting in Excel after export.</li>
-              <li><strong>Empty cells:</strong> Blank cells remain blank in the output. If your table uses dashes (—) or "N/A" to indicate missing data, these will be extracted as text.</li>
+              <li><strong>Empty cells:</strong> Blank cells remain blank in the output. If your table uses dashes ("-") or "N/A" to indicate missing data, these will be extracted as text.</li>
             </ul>
           </div>
 

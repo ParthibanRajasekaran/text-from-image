@@ -75,7 +75,7 @@ export default function VerificationDebtScore() {
   const [notice, setNotice] = useState('');
 
   useSEO({
-    title: 'Verification Debt Score — AI UI Testing',
+    title: 'Verification Debt Score: AI UI Testing',
     description: 'Assess your team\'s AI-generated UI verification maturity. Calculate your verification debt score and get RenderCheck recommendations.',
     canonical: canonicalAbsolute,
   });
