@@ -31,3 +31,9 @@ dist-ssr
 test-results/
 playwright-report/
 .turbo/
+
+# Generated reports
+stats.html
+test-results/
+rendercheck-report/
+.turbo

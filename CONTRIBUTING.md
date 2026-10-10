@@ -9,7 +9,7 @@ Welcome! We appreciate contributions to the text-from-image project. This guide 
 1. **Fork** the repository
 2. **Clone** your fork: `git clone https://github.com/YOUR_USERNAME/text-from-image.git`
 3. **Create a branch:** `git checkout -b feat/your-feature` or `fix/your-fix`
-4. **Read** [MIGRATION.md](./MIGRATION.md) to understand the current architecture
+4. **Read** [docs/MIGRATION.md](./docs/MIGRATION.md) to understand the current architecture
 5. **Ask questions** if unsure: Open an issue or discussion
 
 ---
@@ -569,7 +569,7 @@ ctx.drawImage(img, 0, 0);
 
 - **Questions?** Open a [GitHub Discussion](https://github.com/ParthibanRajasekaran/text-from-image/discussions)
 - **Found a bug?** Open a [GitHub Issue](https://github.com/ParthibanRajasekaran/text-from-image/issues)
-- **Architecture questions?** See [MIGRATION.md](./MIGRATION.md) and [docs/IMPLEMENTATION_SUMMARY.md](./docs/IMPLEMENTATION_SUMMARY.md)
+- **Architecture questions?** See [docs/MIGRATION.md](./docs/MIGRATION.md) and [docs/IMPLEMENTATION_SUMMARY.md](./docs/IMPLEMENTATION_SUMMARY.md)
 - **Accessibility help?** Check [docs/a11y-audit-findings.md](./docs/a11y-audit-findings.md)
 
 ---
