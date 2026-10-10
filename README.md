@@ -39,6 +39,8 @@ entirely in your browser (Tesseract.js, WebAssembly). The rest of this README de
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8.2-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-6.2.0-646CFF?logo=vite)](https://vitejs.dev/)
 
+**How it is built:** see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the system, browser and SDK diagrams and a table mapping each privacy claim to the code and test that back it.
+
 ## ✨ Features
 
 - 🚀 **Fast** - Runs on your device, so there is no upload wait
