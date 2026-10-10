@@ -12,6 +12,7 @@ describe('integration pages', () => {
   const cases = [
     [ROUTES.PLAYWRIGHT_OCR_TESTING, 'Playwright OCR testing', 'toShowText'],
     [ROUTES.CYPRESS_OCR_TESTING, 'Cypress OCR testing', 'cy.matchText'],
+    [ROUTES.WHAT_IS_VERIFICATION_DEBT, 'What is verification debt?', 'Verification debt'],
   ] as const;
 
   cases.forEach(([path, h1, api]) => {
