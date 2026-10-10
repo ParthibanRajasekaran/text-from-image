@@ -13,7 +13,7 @@ function getCommitSHA() {
   }
 }
 
-export default defineConfig(({ mode: _mode }) => {
+export default defineConfig(({ mode }) => {
     const commitSHA = getCommitSHA();
     const isAnalyze = process.env.ANALYZE === 'true';
     
@@ -57,6 +57,11 @@ export default defineConfig(({ mode: _mode }) => {
         }
       },
       define: {
+        // Production builds always use the real origin, so a wrong VITE_SITE_URL in a dashboard
+        // can never point canonicals or og:url at another host. Tests keep stubbing the env.
+        ...(mode === 'production'
+          ? { 'import.meta.env.VITE_SITE_URL': JSON.stringify('https://getrendercheck.com') }
+          : {}),
         // Inject commit SHA as environment variable
         'import.meta.env.VITE_COMMIT': JSON.stringify(commitSHA),
         'import.meta.env.VITE_BUILD_TIME': JSON.stringify(new Date().toISOString()),
