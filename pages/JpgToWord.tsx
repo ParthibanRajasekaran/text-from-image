@@ -349,7 +349,7 @@ export default function JpgToWord() {
           <div>
             <h3 className="text-xl font-medium mb-2">Text and Font Considerations</h3>
             <ul className="list-disc ml-6 space-y-1">
-              <li><strong>Printed text preferred:</strong> OCR performs best on typed or printed documents. Handwritten documents have lower accuracy, see our <Link to="/handwriting-to-text" className="text-primary hover:text-primary/80">Handwriting to Text</Link> guide for tips.</li>
+              <li><strong>Printed text preferred:</strong> OCR performs best on typed or printed documents. Handwritten documents have lower accuracy; review the output before relying on it.</li>
               <li><strong>Font size:</strong> Text smaller than 9pt often causes errors. If possible, enlarge the original document or scan at higher DPI.</li>
               <li><strong>Standard fonts:</strong> Common fonts (Arial, Times New Roman, Calibri, Helvetica) yield best results. Highly decorative or stylized fonts may confuse the OCR.</li>
               <li><strong>Text weight:</strong> Normal and bold text are reliable. Very thin (hairline) or extra-bold fonts may be misread.</li>

@@ -353,10 +353,10 @@ export default function ExtractTextFromImage() {
           <div>
             <h3 className="text-xl font-medium mb-2">Handling Special Content Types</h3>
             <ul className="list-disc ml-6 space-y-1">
-              <li><strong>Handwritten text:</strong> OCR accuracy drops significantly for handwriting. For best results, use images of clear, legible print handwriting (not cursive). Consider our <Link to="/handwriting-to-text" className="text-primary hover:text-primary/80">Handwriting to Text</Link> guide for specialized tips.</li>
+              <li><strong>Handwritten text:</strong> OCR accuracy drops significantly for handwriting. For best results, use images of clear, legible print handwriting (not cursive). Review the output before relying on it.</li>
               <li><strong>Text on colored backgrounds:</strong> Text overlaid on photos or colored backgrounds (e.g., infographics, memes) is more challenging. Crop to isolate text regions if possible.</li>
               <li><strong>Multi-language documents:</strong> The OCR supports 100+ languages. For best results, ensure the entire image contains text in one primary language. Mixed-language documents may have reduced accuracy at language boundaries.</li>
-              <li><strong>Mathematical formulas and symbols:</strong> Standard OCR handles basic mathematical symbols (÷, ×, =, etc.), but complex LaTeX-style formulas may require specialized tools. See our <Link to="/math-to-latex" className="text-primary hover:text-primary/80">Math to LaTeX</Link> guide.</li>
+              <li><strong>Mathematical formulas and symbols:</strong> Standard OCR handles basic mathematical symbols (÷, ×, =, etc.), but complex LaTeX-style formulas may require specialized tools.</li>
             </ul>
           </div>
 
