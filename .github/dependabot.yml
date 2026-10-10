@@ -1,7 +1,7 @@
 # Major-version holds, and why:
 # - tesseract.js 7: reports 0% confidence on the SDK sample, so the legibility checks fail.
 # - vitest 5: requires Node 22.12 or newer; the SDK is tested on Node 20.
-# - typescript 7 and tailwindcss 4+: break the build and need a planned migration.
+# - typescript 7, tailwindcss 4+, vite 7+ and @vitejs/plugin-react 6: break the build and need a planned migration.
 version: 2
 updates:
   - package-ecosystem: npm
@@ -17,6 +17,10 @@ updates:
       - dependency-name: vitest
         update-types: [version-update:semver-major]
       - dependency-name: tailwindcss
+        update-types: [version-update:semver-major]
+      - dependency-name: vite
+        update-types: [version-update:semver-major]
+      - dependency-name: "@vitejs/plugin-react"
         update-types: [version-update:semver-major]
     groups:
       minor-and-patch:
@@ -34,6 +38,10 @@ updates:
       - dependency-name: vitest
         update-types: [version-update:semver-major]
       - dependency-name: tailwindcss
+        update-types: [version-update:semver-major]
+      - dependency-name: vite
+        update-types: [version-update:semver-major]
+      - dependency-name: "@vitejs/plugin-react"
         update-types: [version-update:semver-major]
   - package-ecosystem: github-actions
     directory: /
