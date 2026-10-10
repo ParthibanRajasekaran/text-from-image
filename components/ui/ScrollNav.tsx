@@ -24,7 +24,8 @@ export function ScrollNav({ sections }: { sections: ScrollNavSection[] }) {
     const targets = sections
       .map(s => document.getElementById(s.id))
       .filter(Boolean) as HTMLElement[];
-    if (!targets.length) return;
+    // No IntersectionObserver (old browsers, jsdom): the links still work, just without the active highlight.
+    if (!targets.length || typeof IntersectionObserver === 'undefined') return;
 
     const io = new IntersectionObserver(
       entries => {
