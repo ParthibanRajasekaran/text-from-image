@@ -28,7 +28,7 @@ interface HeroOCRProps {
  * ✅ Uses useLocalHistory hook for history management (SRP)
  * 
  * Premium features:
- * - Aurora background with animated gradients
+ * - Hairline grid backdrop
  * - Glass-morphism cards with glow effects
  * - Trust chips (No signup, HTTPS, Fast)
  * - Centered hero layout
@@ -150,7 +150,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
               {customHeading || (
                 <>
                   Verify what{' '}
-                  <span className="bg-gradient-to-r from-accent via-accent-2 to-primary bg-clip-text text-transparent relative inline-block">
+                  <span className=" relative inline-block">
                     AI-generated UI
                   </span>
                   {' '}actually shows
@@ -184,7 +184,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.4, delay: 0.2 + idx * 0.1 }}
                 >
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-3 shadow-elevation-2">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-primary flex items-center justify-center mb-3 shadow-elevation-2">
                     <span className="text-2xl sm:text-3xl font-bold text-white">{step.num}</span>
                   </div>
                   <p className="text-sm sm:text-base font-semibold text-foreground">{step.label}</p>
@@ -209,10 +209,8 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
             className="mb-12"
             data-dropzone-scroll
           >
-            <div className="relative rounded-3xl bg-gradient-to-br from-surface via-surface to-surface/80 backdrop-blur-2xl border border-primary/10 shadow-glow-lg p-8 sm:p-12 lg:p-16">
+            <div className="relative rounded-3xl bg-surface border border-border p-8 sm:p-12 lg:p-16">
               {/* Animated glow background */}
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 via-transparent to-accent-2/5 pointer-events-none" />
-              <div className="absolute -inset-1 rounded-3xl blur-2xl bg-gradient-to-r from-primary/10 via-transparent to-accent-2/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
               <div className="relative">
                 <GlassDropzone
@@ -263,7 +261,7 @@ export function HeroOCR({ customHeading, customSubheading }: HeroOCRProps = {}) 
                 const dropzone = document.querySelector('[data-dropzone-scroll]');
                 dropzone?.scrollIntoView({ behavior: 'smooth', block: 'center' });
               }}
-              className="px-8 py-4 bg-gradient-to-r from-primary to-accent text-white rounded-2xl font-semibold hover:shadow-elevation-3 hover:scale-105 transition-all duration-200 shadow-elevation-2"
+              className="px-8 py-4 bg-primary text-primary-foreground rounded-full font-medium hover:opacity-85 active:scale-[0.98] transition duration-150 shadow-elevation-2"
             >
               Try RenderCheck
             </button>

@@ -88,8 +88,6 @@ export function IntentPage({
 
       {/* FAQ Section */}
       <section className="relative py-16 sm:py-20 overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent pointer-events-none" />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
@@ -118,7 +116,7 @@ export function IntentPage({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="group rounded-xl bg-surface/40 backdrop-blur-xl border border-border/50 hover:border-border hover:shadow-glow-sm transition-all duration-200 overflow-hidden"
+                  className="group rounded-xl bg-surface/40 backdrop-blur-xl border border-border/50 hover:border-border hover: transition-all duration-200 overflow-hidden"
                 >
                   <summary className="cursor-pointer list-none px-6 py-4 text-left font-semibold text-foreground hover:text-accent transition-colors">
                     <div className="flex items-center justify-between gap-4">

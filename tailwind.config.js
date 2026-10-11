@@ -79,7 +79,7 @@ export default {
       },
       fontFamily: {
         sans: ['Inter Variable', 'Inter', 'system-ui', 'sans-serif'],
-        display: ['Space Grotesk Variable', 'Space Grotesk', 'system-ui', 'sans-serif'],
+        display: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Inter Variable', 'Inter', 'Helvetica Neue', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono Variable', 'JetBrains Mono', 'Fira Code', 'ui-monospace', 'monospace'],
       },
       borderRadius: {
@@ -93,12 +93,19 @@ export default {
         'glow': '0 0 24px var(--glow-color), 0 0 48px var(--glow-color)',
         'glow-sm': '0 0 12px var(--glow-color)',
         'glow-lg': '0 0 40px var(--glow-color), 0 0 80px var(--glow-color)',
-        'elevation-1': '0 2px 8px rgba(0, 0, 0, 0.08)',
-        'elevation-2': '0 4px 12px rgba(0, 0, 0, 0.1)',
-        'elevation-3': '0 8px 24px rgba(0, 0, 0, 0.12)',
-        'elevation-4': '0 12px 32px rgba(0, 0, 0, 0.14)',
-        'card': '0 2px 8px rgba(0, 0, 0, 0.06)',
-        'card-hover': '0 8px 24px rgba(0, 0, 0, 0.12)',
+        // Depth comes from hairline borders, not shadows. Kept as names so existing classes still resolve.
+        'elevation-1': 'none',
+        'elevation-2': 'none',
+        'elevation-3': 'none',
+        'elevation-4': 'none',
+        'card': 'none',
+        'card-hover': 'none',
+        'sm': 'none',
+        'DEFAULT': 'none',
+        'md': 'none',
+        'lg': '0 1px 2px rgba(0, 0, 0, 0.04)',
+        'xl': '0 1px 2px rgba(0, 0, 0, 0.04)',
+        '2xl': '0 1px 2px rgba(0, 0, 0, 0.04)',
       },
       keyframes: {
         "slide-in": {

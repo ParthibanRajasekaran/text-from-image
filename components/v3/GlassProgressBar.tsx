@@ -135,7 +135,7 @@ export const GlassProgressBar = forwardRef<GlassProgressBarHandle, GlassProgress
 
           {/* Progress fill */}
           <motion.div
-            className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-accent via-primary to-accent-2"
+            className="absolute inset-y-0 left-0 rounded-full bg-primary"
             initial={{ width: 0 }}
             animate={{ width: `${currentProgress}%` }}
             transition={{
@@ -145,7 +145,6 @@ export const GlassProgressBar = forwardRef<GlassProgressBarHandle, GlassProgress
             style={{ willChange: 'width' }}
           >
             {/* Glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-accent/50 via-primary/50 to-accent-2/50 blur-sm" />
           </motion.div>
 
           {/* Animated shimmer overlay - only when processing */}
@@ -183,7 +182,7 @@ export const GlassProgressBar = forwardRef<GlassProgressBarHandle, GlassProgress
                 <div
                   className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-br from-accent to-primary text-white shadow-glow-sm'
+                      ? 'bg-primary text-primary-foreground'
                       : 'bg-surface/60 text-muted-foreground border border-border/50'
                   } ${isCurrent ? 'ring-2 ring-accent ring-offset-2 ring-offset-background' : ''}`}
                 >

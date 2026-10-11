@@ -78,10 +78,10 @@
   --header-h: 64px;
 
   /* Base */
-  --bg: 0 0% 100%;
-  --surface: 0 0% 98%;
-  --text: 220 20% 8%;
-  --text-muted: 220 9% 50%;
+  --bg: 240 11% 96%; /* #F5F5F7 */
+  --surface: 0 0% 100%;
+  --text: 240 3% 12%; /* #1D1D1F */
+  --text-muted: 240 2% 44%; /* #6E6E73 */
 
   /* Legacy compat */
   --background: var(--bg);
@@ -92,24 +92,24 @@
   --popover-foreground: var(--text);
 
   /* Primary - vibrant blue */
-  --primary: 217 92% 52%;
-  --primary-foreground: 210 40% 98%;
-  --accent: 186 100% 50%;
-  --accent-foreground: 220 84% 5%;
-  --accent-2: 272 91% 65%;
+  --primary: 240 3% 12%; /* solid #1D1D1F: the only "brand colour" is ink */
+  --primary-foreground: 0 0% 100%;
+  --accent: 240 3% 12%;
+  --accent-foreground: 0 0% 100%;
+  --accent-2: 240 2% 44%;
 
   /* Supporting */
-  --secondary: 210 40% 96%;
-  --secondary-foreground: 210 40% 10%;
-  --muted: 210 14% 92%;
-  --muted-foreground: 215 19% 40%; /* 6.1:1 on white, 5.1:1 on --muted */
+  --secondary: 240 6% 93%;
+  --secondary-foreground: 240 3% 12%;
+  --muted: 240 6% 93%;
+  --muted-foreground: 240 2% 36%; /* #5E5E63: 6.4:1 on white, 5.8:1 on #F5F5F7, 4.9:1 on the 10% tint (AA) */
   --destructive: 0 84% 60%;
   --destructive-foreground: 210 40% 98%;
 
   /* Status badges */
   --status-live: 142 72% 22%;
-  --status-beta: 26 90% 30%; /* text on a 10% tint: 6:1. The dark theme keeps the brighter orange. */
-  --status-planned: 220 14% 36%;
+  --status-beta: 240 3% 25%;
+  --status-planned: 240 2% 40%;
   --status-evidence-pending: 25 95% 53%;
 
   /* Code block (always dark) */
@@ -118,22 +118,22 @@
   --code-text: 210 17% 82%;
 
   /* Borders & UI */
-  --border: 210 14% 90%;
-  --input: 210 14% 90%;
-  --ring: 217 92% 52%;
-  --radius: 0.875rem;
+  --border: 240 6% 88%; /* hairline, about rgba(0,0,0,.08) on #F5F5F7 */
+  --input: 240 5% 82%;
+  --ring: 240 3% 12%;
+  --radius: 0.75rem;
 
   /* Glass & glow effects */
-  --glass-border: rgba(255, 255, 255, 0.4);
-  --glow-color: rgba(76, 175, 255, 0.25);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glow-color: rgba(0, 0, 0, 0); /* no glows: depth comes from hairlines, not light */
 }
 
 .dark {
   /* Base */
-  --bg: 220 30% 3.5%;
-  --surface: 220 20% 8%;
-  --text: 210 40% 98%;
-  --text-muted: 215 20% 68%;
+  --bg: 0 0% 4%;
+  --surface: 240 3% 8%;
+  --text: 0 0% 96%;
+  --text-muted: 240 2% 62%;
 
   /* Legacy compat */
   --background: var(--bg);
@@ -144,24 +144,24 @@
   --popover-foreground: var(--text);
 
   /* Primary - vibrant blue (lighter for dark mode) */
-  --primary: 217 95% 62%;
-  --primary-foreground: 220 84% 5%; /* dark text on the light blue: 5.9:1 (white was 3.2:1) */
-  --accent: 186 100% 50%;
-  --accent-foreground: 220 84% 98%;
-  --accent-2: 272 91% 65%;
+  --primary: 0 0% 100%; /* solid white */
+  --primary-foreground: 240 3% 12%;
+  --accent: 0 0% 96%;
+  --accent-foreground: 240 3% 12%;
+  --accent-2: 240 2% 62%;
 
   /* Supporting */
-  --secondary: 217 30% 20%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 217 20% 16%;
-  --muted-foreground: 215 20% 68%;
+  --secondary: 240 3% 14%;
+  --secondary-foreground: 0 0% 96%;
+  --muted: 240 3% 14%;
+  --muted-foreground: 240 2% 62%;
   --destructive: 0 63% 31%;
   --destructive-foreground: 210 40% 98%;
 
   /* Status badges (same across themes) */
   --status-live: 142 76% 40%;
-  --status-beta: 34 97% 50%;
-  --status-planned: 220 14% 60%;
+  --status-beta: 240 2% 72%;
+  --status-planned: 240 2% 62%;
   --status-evidence-pending: 25 95% 53%;
 
   /* Code block (same dark across themes) */
@@ -170,27 +170,28 @@
   --code-text: 210 17% 82%;
 
   /* Borders & UI */
-  --border: 217 20% 16%;
-  --input: 217 20% 16%;
-  --ring: 217 95% 62%;
+  --border: 240 3% 19%;
+  --input: 240 3% 24%;
+  --ring: 0 0% 100%;
 
   /* Glass & glow effects */
-  --glass-border: rgba(255, 255, 255, 0.15);
-  --glow-color: rgba(76, 175, 255, 0.3);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glow-color: rgba(0, 0, 0, 0);
 }
 
 html, body {
   background: hsl(var(--bg));
   color: hsl(var(--text));
-  font-family: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter Variable', 'Inter', 'Helvetica Neue', system-ui, sans-serif;
   font-weight: 400;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter Variable', 'Inter', 'Helvetica Neue', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
 }
 
 h1 { font-size: 2.25rem; margin-bottom: 1rem; }
@@ -238,13 +239,18 @@ section:last-child {
 }
 
 
+/* Links inside running text are ink-coloured like the text, so underline them (WCAG 1.4.1). */
+p a,
+dd a,
+td a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
 /* Accessibility (PRD C5, C6)
-   - Light theme: the cyan accent is 1.6:1 on white, so accent *text* uses a darker teal (6:1).
    - Small screens: controls are at least 44x44 CSS px. min-height/min-width do nothing on inline
      links inside running text, so those keep their size. */
-:root:not(.dark) .text-accent {
-  color: hsl(186 100% 22%);
-}
 
 @media (max-width: 767px), (pointer: coarse) {
   a,

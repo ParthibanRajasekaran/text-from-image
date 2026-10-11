@@ -91,7 +91,7 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
       >
         {/* Logo + Badge */}
         <Link to={ROUTES.HOME} className="flex items-center gap-3 group">
-          <span className="text-xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">
+          <span className="text-xl font-semibold tracking-[-0.03em] text-foreground group-hover:opacity-70 transition-opacity">
             RenderCheck
           </span>
           {showBeta && <StatusBadge variant="developer-beta" size="sm" />}

@@ -99,7 +99,7 @@ export function HomepageMinimalPremium() {
             lead="Drop a screenshot. It is read by a WASM engine in your browser and never uploaded."
           />
           <motion.div {...reveal} className="mx-auto max-w-3xl space-y-8">
-            <div className="rounded-2xl border border-border/70 bg-surface/70 p-6 shadow-elevation-3 backdrop-blur sm:p-10">
+            <div className="rounded-2xl border border-border bg-surface p-6 sm:p-10">
               <GlassDropzone
                 onFileSelect={handleFileSelect}
                 isLoading={isProcessing}
@@ -129,14 +129,10 @@ export function HomepageMinimalPremium() {
         <section className="container mx-auto px-4 pb-28 sm:px-6 lg:px-8">
           <motion.div
             {...reveal}
-            className="relative mx-auto max-w-4xl overflow-hidden rounded-3xl border border-border/70 bg-surface/80 p-8 text-center backdrop-blur sm:p-14"
+            className="relative mx-auto max-w-4xl overflow-hidden rounded-3xl border border-border bg-surface p-8 text-center sm:p-16"
           >
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent-2/10"
-            />
             <div className="relative space-y-6">
-              <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              <h2 className="font-display text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">
                 Early, open and honest about it
               </h2>
               <p className="mx-auto max-w-2xl text-muted-foreground">
@@ -146,13 +142,13 @@ export function HomepageMinimalPremium() {
               <div className="flex flex-col justify-center gap-4 sm:flex-row">
                 <a
                   href="/developers"
-                  className="rounded-2xl bg-primary px-8 py-4 font-semibold text-primary-foreground shadow-glow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-glow"
+                  className="inline-flex h-12 items-center justify-center rounded-full bg-primary px-8 text-[15px] font-medium text-primary-foreground transition duration-150 hover:opacity-85 active:scale-[0.98]"
                 >
                   Read the docs
                 </a>
                 <a
                   href="https://github.com/ParthibanRajasekaran/text-from-image"
-                  className="rounded-2xl border border-border px-8 py-4 font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/60"
+                  className="inline-flex h-12 items-center justify-center rounded-full border border-border px-8 text-[15px] font-medium transition duration-150 hover:bg-foreground/[0.04] active:scale-[0.98]"
                 >
                   Star on GitHub
                 </a>

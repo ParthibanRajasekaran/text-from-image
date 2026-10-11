@@ -44,7 +44,7 @@ function Ledger({ progress }: { progress: MotionValue<number> }) {
         <p className="mt-2 font-display text-xl font-semibold">screenshot.png</p>
         <p className="mt-1 text-sm text-muted-foreground">Read by a WASM worker inside this tab.</p>
         <div className="mt-6 h-2 overflow-hidden rounded-full bg-border/70" aria-hidden="true">
-          <motion.div className="h-full origin-left bg-gradient-to-r from-primary to-accent-2" style={{ scaleX: progress }} />
+          <motion.div className="h-full origin-left bg-foreground" style={{ scaleX: progress }} />
         </div>
       </div>
       <div className="overflow-hidden rounded-2xl border border-code-border bg-code-bg md:col-span-3">
@@ -61,7 +61,7 @@ function Ledger({ progress }: { progress: MotionValue<number> }) {
         </ul>
         <motion.div
           style={{ opacity: stampOpacity, scale: stampScale }}
-          className="border-t border-emerald-400/30 bg-emerald-400/10 px-4 py-3 font-mono text-sm font-semibold text-emerald-300"
+          className="border-t border-code-border bg-white/[0.06] px-4 py-3 font-mono text-sm font-semibold text-white"
         >
           Off-origin requests: 0 &middot; bytes uploaded: 0
         </motion.div>

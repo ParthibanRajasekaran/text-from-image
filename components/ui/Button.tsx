@@ -15,17 +15,17 @@ interface ButtonProps
 
 const variantClasses: Record<ButtonVariant, string> = {
   solid:
-    'bg-primary text-primary-foreground shadow-elevation-1 hover:shadow-elevation-2 hover:-translate-y-0.5 transition-all duration-200',
+    'bg-primary text-primary-foreground hover:opacity-85 active:scale-[0.98] transition duration-150',
   outline:
-    'border-2 border-border text-foreground hover:border-primary/60 hover:bg-muted/30 transition-all duration-200',
+    'border border-border text-foreground hover:bg-foreground/[0.04] active:scale-[0.98] transition duration-150',
   ghost:
-    'text-foreground hover:bg-muted/40 transition-all duration-200',
+    'text-foreground hover:bg-foreground/[0.06] transition duration-150',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
-  sm: 'px-3 py-1.5 text-sm rounded-md',
-  md: 'px-4 py-2 text-base rounded-lg',
-  lg: 'px-6 py-3 text-lg rounded-lg',
+  sm: 'px-3.5 py-1.5 text-sm rounded-full',
+  md: 'px-5 py-2.5 text-[15px] rounded-full',
+  lg: 'px-7 py-3 text-base rounded-full',
 };
 
 /**

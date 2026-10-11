@@ -96,7 +96,7 @@ export function HistoryDrawer({
               stiffness: 200,
               duration: shouldReduceMotion ? 0.2 : undefined,
             }}
-            className="fixed right-0 top-0 bottom-0 z-50 w-full sm:w-96 bg-surface/95 backdrop-blur-xl border-l border-border/50 shadow-glow flex flex-col"
+            className="fixed right-0 top-0 bottom-0 z-50 w-full sm:w-96 bg-surface/95 backdrop-blur-xl border-l border-border/50  flex flex-col"
             role="dialog"
             aria-modal="true"
             aria-labelledby="history-drawer-title"
@@ -132,10 +132,9 @@ export function HistoryDrawer({
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      className="group relative rounded-lg bg-background/50 border border-border/50 hover:border-border hover:shadow-glow-sm transition-all duration-150 overflow-hidden"
+                      className="group relative rounded-lg bg-background/50 border border-border/50 hover:border-border hover: transition-all duration-150 overflow-hidden"
                     >
                       {/* Gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-accent-2/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
                       <div className="relative p-3 space-y-2">
                         {/* Header */}

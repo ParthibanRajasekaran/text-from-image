@@ -7,8 +7,8 @@ interface AuroraBackgroundProps {
 }
 
 /**
- * Page wrapper with the shared RenderCheck backdrop (grid, glows, scan hairline).
- * Kept under its old name so existing layouts and tests keep working.
+ * Page shell with the shared hairline-grid backdrop. Kept under its old name so existing pages need no change.
+ * No gradients, blobs or animation: all absolutely positioned, so zero layout shift.
  */
 export function AuroraBackground({ children, className = '' }: AuroraBackgroundProps) {
   return (

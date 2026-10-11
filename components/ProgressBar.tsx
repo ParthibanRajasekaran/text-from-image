@@ -33,9 +33,9 @@ const STAGE_LABELS: Record<ProgressStage, string> = {
 
 const STAGE_COLORS: Record<ProgressStage, string> = {
   idle: 'bg-muted',
-  upload: 'bg-blue-500',
+  upload: 'bg-foreground/70',
   ocr: 'bg-primary',
-  render: 'bg-purple-500',
+  render: 'bg-foreground',
   complete: 'bg-green-500',
   error: 'bg-destructive',
 };

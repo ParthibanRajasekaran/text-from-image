@@ -25,7 +25,7 @@ export default function NotFound() {
 
   // V3 enhanced UI with glass-morphism and animations
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-indigo-950 dark:to-purple-950">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-background">
       <SEO
         title="404 - Page Not Found"
         description="The page you're looking for doesn't exist. Return to our free image to text converter."
@@ -42,7 +42,7 @@ export default function NotFound() {
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.1, duration: 0.5 }}
-          className="text-9xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4"
+          className="text-9xl font-semibold tracking-[-0.05em] text-foreground mb-4"
         >
           404
         </motion.h1>
@@ -52,12 +52,12 @@ export default function NotFound() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="backdrop-blur-lg bg-white/70 dark:bg-gray-800/70 rounded-2xl p-8 shadow-xl border border-white/20 dark:border-gray-700/20"
+          className="bg-surface rounded-2xl p-8 border border-border"
         >
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-3xl font-semibold tracking-[-0.03em] text-foreground mb-4">
             Page Not Found
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+          <p className="text-lg text-muted-foreground mb-8">
             Oops! The page you're looking for doesn't exist or has been moved.
           </p>
 
@@ -65,7 +65,7 @@ export default function NotFound() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to={ROUTES.HOME}
-              className="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="inline-flex items-center justify-center bg-primary text-primary-foreground font-medium px-8 py-3 rounded-full transition duration-150 hover:opacity-85 active:scale-[0.98]"
             >
               <svg
                 className="w-5 h-5 mr-2"
@@ -85,7 +85,7 @@ export default function NotFound() {
 
             <Link
               to={ROUTES.IMAGE_TO_TEXT}
-              className="inline-flex items-center justify-center bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-semibold px-8 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 transition-all duration-200"
+              className="inline-flex items-center justify-center text-foreground font-medium px-8 py-3 rounded-full border border-border transition duration-150 hover:bg-foreground/[0.04] active:scale-[0.98]"
             >
               <svg
                 className="w-5 h-5 mr-2"
@@ -105,26 +105,26 @@ export default function NotFound() {
           </div>
 
           {/* Additional helpful info */}
-          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+          <div className="mt-8 pt-6 border-t border-border">
+            <p className="text-sm text-muted-foreground">
               Looking for something specific? Try these popular pages:
             </p>
             <div className="flex flex-wrap gap-2 justify-center mt-4">
               <Link
                 to={ROUTES.JPG_TO_WORD}
-                className="text-sm px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                className="text-sm px-4 py-2 rounded-full border border-border text-foreground hover:bg-foreground/[0.04] transition-colors"
               >
                 JPG to Word
               </Link>
               <Link
                 to={ROUTES.IMAGE_TO_EXCEL}
-                className="text-sm px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                className="text-sm px-4 py-2 rounded-full border border-border text-foreground hover:bg-foreground/[0.04] transition-colors"
               >
                 Image to Excel
               </Link>
               <Link
                 to={ROUTES.EXTRACT_TEXT_FROM_IMAGE}
-                className="text-sm px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                className="text-sm px-4 py-2 rounded-full border border-border text-foreground hover:bg-foreground/[0.04] transition-colors"
               >
                 Extract Text
               </Link>

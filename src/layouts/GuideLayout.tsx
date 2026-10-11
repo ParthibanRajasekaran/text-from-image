@@ -12,7 +12,7 @@ interface GuideLayoutProps {
  * GuideLayout - Premium layout matching landing page aesthetics
  * 
  * Features:
- * - Aurora gradient background (same as HeroOCR)
+ * - Hairline grid backdrop (same as HeroOCR)
  * - Glass-morphism card with backdrop blur
  * - Breadcrumb navigation (Home / Guides / Page)
  * - Theme toggle (matches landing)
@@ -35,7 +35,7 @@ export function GuideLayout({ title, description, children }: GuideLayoutProps) 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             {/* Glass-morphism card matching landing page */}
-            <div className="rounded-2xl border border-border/50 backdrop-blur-xl bg-surface/40 shadow-glow-md overflow-hidden">
+            <div className="rounded-2xl border border-border/50 backdrop-blur-xl bg-surface/40  overflow-hidden">
               {/* Card content with generous padding */}
               <div className="px-6 sm:px-10 py-8 sm:py-12">
                 {/* Breadcrumb - subtle navigation */}

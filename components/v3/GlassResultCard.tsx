@@ -88,11 +88,9 @@ export function GlassResultCard({ text, onCopy, onDownload, filename = 'extracte
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="relative rounded-2xl bg-surface/40 backdrop-blur-xl border border-white/10 shadow-glow-sm overflow-hidden"
+        className="relative rounded-2xl bg-surface/40 backdrop-blur-xl border border-white/10  overflow-hidden"
         style={{ minHeight: '400px' }} // Reserve height to prevent CLS
       >
-        {/* Inner glow gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-accent-2/5 pointer-events-none" />
 
         {/* Header */}
         <div className="relative border-b border-border/50 p-4 sm:p-6">
@@ -184,7 +182,7 @@ export function GlassResultCard({ text, onCopy, onDownload, filename = 'extracte
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full bg-surface/90 backdrop-blur-xl border border-border/50 shadow-glow-sm text-sm font-medium text-foreground"
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full bg-surface/90 backdrop-blur-xl border border-border/50  text-sm font-medium text-foreground"
             role="status"
             aria-live="polite"
           >

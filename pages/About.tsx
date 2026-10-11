@@ -129,7 +129,7 @@ export default function About() {
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
             to="/"
-            className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-accent via-accent-2 to-primary text-background font-semibold rounded-lg hover:shadow-glow transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-full hover:opacity-85 active:scale-[0.98] transition duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
           >
             Try Image → Text
           </Link>
@@ -182,7 +182,7 @@ export default function About() {
               <span className="text-foreground/90">Results appear instantly. Copy, export, or use.</span>
             </li>
           </ol>
-          <p className="text-xs text-foreground/60 mt-4 border-t border-white/10 pt-4">
+          <p className="text-xs text-muted-foreground mt-4 border-t border-white/10 pt-4">
             Your images and data remain on your device at all times. No uploads. No server storage.
           </p>
         </Glass>
@@ -283,7 +283,7 @@ export default function About() {
         <div>
           <Link
             to="/"
-            className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-accent via-accent-2 to-primary text-background font-semibold rounded-lg hover:shadow-glow transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-full hover:opacity-85 active:scale-[0.98] transition duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
           >
             Try All Tools
           </Link>
