@@ -11,7 +11,10 @@
     "cypress",
     "rendercheck",
     "accessibility",
-    "contrast"
+    "contrast",
+    "mcp",
+    "model-context-protocol",
+    "cli"
   ],
   "license": "MIT",
   "author": {
@@ -64,6 +67,9 @@
   },
   "files": [
     "dist",
+    "!dist/cli/*.map",
+    "!dist/cli/index.mjs",
+    "!dist/cli/*.d.*",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
@@ -99,14 +105,19 @@
     }
   },
   "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
     "@playwright/test": "1.64.0",
     "@types/node": "^26.6.4",
     "@types/pngjs": "^6.0.5",
     "tsup": "^8.5.0",
     "typescript": "~5.9.3",
-    "vitest": "^4.0.18"
+    "vitest": "^4.0.18",
+    "zod": "^4.6.5"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "bin": {
+    "rendercheck": "./dist/cli/index.js"
   }
 }
