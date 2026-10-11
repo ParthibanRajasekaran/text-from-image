@@ -19,7 +19,7 @@ function LedgerRow({ row, i, progress }: { row: (typeof ROWS)[number]; i: number
     <motion.li
       style={{ opacity, x }}
       tabIndex={row.ok ? undefined : 0}
-      className="group border-b border-code-border/60 px-4 py-2.5 font-mono text-xs transition-colors hover:bg-white/[0.05] focus-visible:bg-white/[0.05] focus-visible:outline focus-visible:outline-1 focus-visible:-outline-offset-1 focus-visible:outline-white"
+      className="group border-b border-code-border/60 px-4 py-2.5 font-mono text-xs tall:py-4 xtall:py-6 tall:text-sm transition-colors hover:bg-white/[0.05] focus-visible:bg-white/[0.05] focus-visible:outline focus-visible:outline-1 focus-visible:-outline-offset-1 focus-visible:outline-white"
     >
       <div className="grid grid-cols-[3rem_1fr_auto] items-center gap-3">
       <span className="text-code-text/60">{row.m}</span>
@@ -46,21 +46,21 @@ function Ledger({ progress }: { progress: MotionValue<number> }) {
   const stampOpacity = useTransform(progress, [0.78, 0.9], [0, 1]);
   const stampScale = useTransform(progress, [0.78, 0.9], [1.15, 1]);
   return (
-    <div className="mx-auto grid max-w-5xl items-start gap-6 md:grid-cols-5">
-      <div className="rounded-2xl border border-border/70 bg-surface/70 p-6 backdrop-blur md:col-span-2">
+    <div className="mx-auto grid max-w-5xl items-stretch gap-6 md:grid-cols-5 2xl:max-w-6xl">
+      <div className="flex flex-col rounded-2xl border border-border/70 bg-surface/70 p-6 backdrop-blur tall:p-8 xtall:p-10 md:col-span-2">
         <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">Browser</p>
-        <p className="mt-2 font-display text-xl font-semibold">screenshot.png</p>
-        <p className="mt-1 text-sm text-muted-foreground">Read by a WASM worker inside this tab.</p>
-        <div className="mt-6 h-2 overflow-hidden rounded-full bg-border/70" aria-hidden="true">
+        <p className="mt-2 font-display text-xl font-semibold tall:text-2xl">screenshot.png</p>
+        <p className="mt-1 text-sm text-muted-foreground tall:text-base">Read by a WASM worker inside this tab.</p>
+        <div className="mt-auto h-2 overflow-hidden rounded-full bg-border/70 tall:h-3" aria-hidden="true">
           <motion.div className="h-full origin-left bg-foreground" style={{ scaleX: progress }} />
         </div>
       </div>
-      <div className="overflow-hidden rounded-2xl border border-code-border bg-code-bg md:col-span-3">
-        <div className="flex items-center justify-between border-b border-code-border px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest text-code-text/70">
+      <div className="flex flex-col overflow-hidden rounded-2xl border border-code-border bg-code-bg md:col-span-3">
+        <div className="flex items-center justify-between border-b border-code-border px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest text-code-text/70 tall:py-4">
           <span>Network (simulated)</span>
           <span>{ROWS.length} requests</span>
         </div>
-        <ul>
+        <ul className="flex-1">
           {ROWS.map((r, i) => (
             <React.Fragment key={r.u}>
               <LedgerRow row={r} i={i} progress={progress} />
@@ -69,7 +69,7 @@ function Ledger({ progress }: { progress: MotionValue<number> }) {
         </ul>
         <motion.div
           style={{ opacity: stampOpacity, scale: stampScale }}
-          className="border-t border-code-border bg-white/[0.06] px-4 py-3 font-mono text-sm font-semibold text-white"
+          className="border-t border-code-border bg-white/[0.06] px-4 py-3 font-mono text-sm font-semibold text-white tall:py-5 xtall:py-6 tall:text-base"
         >
           Off-origin requests: 0 &middot; bytes uploaded: 0
         </motion.div>
@@ -89,15 +89,15 @@ export function ProofLedger() {
   const done = useMotionValue(1);
   return (
     <section className="container mx-auto px-4 pb-24 sm:px-6 lg:px-8">
-      <div ref={ref} style={pinned ? { height: '220vh' } : undefined}>
-        <div className={pinned ? 'sticky top-24 flex min-h-[calc(100vh-7rem)] flex-col justify-center' : ''}>
+      <div ref={ref} style={pinned ? { height: '180vh' } : undefined}>
+        <div className={pinned ? 'sticky top-24 flex min-h-[calc(100svh-7rem)] flex-col justify-center' : ''}>
           <SectionHeading
             eyebrow="Proof"
             title="Zero bytes leave your machine"
             lead="Watch the ledger. The engine loads from this origin, and anything else is refused by the Content Security Policy."
           />
           <Ledger progress={reduce ? done : scrollYProgress} />
-          <p className="mx-auto mt-6 max-w-5xl text-xs text-muted-foreground">
+          <p className="mx-auto mt-6 max-w-5xl text-xs text-muted-foreground 2xl:max-w-6xl">
             Simulated for illustration. The real check runs in CI: e2e/smoke.spec.ts fails on any off-origin or upload request
             during an OCR run.
           </p>

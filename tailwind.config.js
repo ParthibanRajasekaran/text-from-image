@@ -12,6 +12,12 @@ export default {
   ],
   theme: {
     extend: {
+      // Desktop screens that are tall as well as wide: the pinned home stages scale up here so they
+      // do not sit in a mostly empty viewport. Added after the width screens so they win on conflict.
+      screens: {
+        tall: { raw: '(min-width: 1024px) and (min-height: 1000px)' },
+        xtall: { raw: '(min-width: 1024px) and (min-height: 1200px)' },
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

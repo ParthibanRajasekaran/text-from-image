@@ -19,7 +19,7 @@ function ScanDemo({ progress }: { progress: MotionValue<number> }) {
   const verdictX = useTransform(progress, [0.4, 0.85], [40, 0]);
 
   return (
-    <div className="relative mx-auto w-full max-w-4xl">
+    <div className="relative mx-auto w-full max-w-4xl 2xl:max-w-5xl">
       <div className="relative overflow-hidden rounded-2xl border border-border bg-surface">
         {/* window chrome */}
         <div className="flex items-center gap-2 border-b border-border/60 px-4 py-3">
@@ -31,19 +31,19 @@ function ScanDemo({ progress }: { progress: MotionValue<number> }) {
           </span>
         </div>
 
-        <div className="grid gap-0 md:grid-cols-2">
+        <div className="grid gap-0 md:grid-cols-2 lg:grid-cols-[1fr_1.4fr] 2xl:grid-cols-2">
           {/* left: the rendered screen under test */}
-          <div className="relative border-b border-border/60 p-6 sm:p-8 md:border-b-0 md:border-r">
+          <div className="relative border-b border-border/60 p-6 sm:p-8 lg:p-5 2xl:p-8 tall:p-10 xtall:p-12 md:border-b-0 md:border-r">
             <p className="mb-4 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
               Rendered screen
             </p>
-            <div className="relative overflow-hidden rounded-xl border border-border/60 bg-background/70 p-6">
+            <div className="relative overflow-hidden rounded-xl border border-border/60 bg-background/70 p-6 tall:p-8 xtall:p-10">
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background">
                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
                   <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
-              <p className="relative inline-block font-display text-2xl font-semibold tracking-tight">
+              <p className="relative inline-block font-display text-2xl font-semibold tracking-tight tall:text-3xl xtall:text-4xl">
                 Payment succesful
                 {/* detection box around the misspelt word */}
                 <motion.span
@@ -52,8 +52,8 @@ function ScanDemo({ progress }: { progress: MotionValue<number> }) {
                   style={{ opacity: boxOpacity }}
                 />
               </p>
-              <p className="mt-2 text-sm text-muted-foreground">Order 48213 &middot; confirmation sent</p>
-              <div className="mt-5 h-9 w-32 rounded-lg bg-primary/90" />
+              <p className="mt-2 text-sm text-muted-foreground tall:text-base">Order 48213 &middot; confirmation sent</p>
+              <div className="mt-5 h-9 w-32 rounded-lg bg-primary/90 tall:mt-7 tall:h-11 tall:w-40 xtall:h-12 xtall:w-44" />
 
               {/* scan line */}
               {!reduce && (
@@ -103,7 +103,7 @@ function ScanDemo({ progress }: { progress: MotionValue<number> }) {
 
 /**
  * Desktop (lg+): copy on the left (5 of 12 columns), the demo on the right (7 of 12). Both stay pinned under the
- * header for 2.4 screens while scroll position plays the demo. Mobile and reduced motion: stacked, normal flow,
+ * header for 2 screens while scroll position plays the demo. Mobile and reduced motion: stacked, normal flow,
  * no scroll hijacking. Reduced motion shows the finished state.
  */
 function HeroLayout({ children }: { children: React.ReactNode }) {
@@ -116,13 +116,13 @@ function HeroLayout({ children }: { children: React.ReactNode }) {
   });
   const done = useMotionValue(1);
   return (
-    <div ref={ref} style={pinned ? { height: '240vh' } : undefined}>
+    <div ref={ref} style={pinned ? { height: '200vh' } : undefined}>
       <div
         className={`grid items-center gap-12 lg:grid-cols-12 lg:gap-10 ${
-          pinned ? 'sticky top-24 min-h-[calc(100vh-7rem)]' : ''
+          pinned ? 'sticky top-24 min-h-[calc(100svh-7rem)]' : ''
         }`}
       >
-        <div className="space-y-8 text-center lg:col-span-5 lg:text-left">{children}</div>
+        <div className="space-y-8 text-center lg:col-span-5 lg:text-left tall:space-y-10">{children}</div>
         <div className="lg:col-span-7">
           <ScanDemo progress={reduce ? done : scrollYProgress} />
         </div>
@@ -158,7 +158,7 @@ export function HeroStage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.12 }}
-            className="font-display text-5xl font-semibold leading-[1.04] tracking-[-0.04em] sm:text-6xl lg:text-[3.5rem] xl:text-[4.25rem] [text-wrap:balance]"
+            className="font-display text-5xl font-semibold leading-[1.04] tracking-[-0.04em] sm:text-6xl lg:text-[3.5rem] xl:text-[4.25rem] tall:text-[4.5rem] xtall:text-[5rem] [text-wrap:balance]"
           >
             Verify what <span className="whitespace-nowrap">AI-generated</span> UI actually shows
           </motion.h1>
@@ -167,7 +167,7 @@ export function HeroStage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="mx-auto max-w-2xl text-lg leading-relaxed lg:mx-0 tracking-[-0.01em] text-muted-foreground sm:text-xl"
+            className="mx-auto max-w-2xl text-lg leading-relaxed lg:mx-0 tracking-[-0.01em] text-muted-foreground sm:text-xl tall:text-2xl"
           >
             Your DOM tests pass while users read the wrong text. RenderCheck reads the rendered pixels
             locally, in your test process or your browser, and fails the build when what users see is wrong.
@@ -177,17 +177,17 @@ export function HeroStage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.28 }}
-            className="flex flex-col justify-center gap-4 pt-2 sm:flex-row lg:justify-start"
+            className="flex flex-col justify-center gap-4 pt-2 tall:pt-4 sm:flex-row lg:justify-start"
           >
             <a
               href={ROUTES.DEVELOPERS}
-              className="inline-flex h-12 items-center justify-center rounded-full bg-primary px-8 text-[15px] font-medium text-primary-foreground transition duration-150 hover:opacity-85 active:scale-[0.98]"
+              className="inline-flex h-12 tall:h-14 items-center justify-center rounded-full bg-primary px-8 text-[15px] tall:text-base font-medium text-primary-foreground transition duration-150 hover:opacity-85 active:scale-[0.98]"
             >
               Read the docs
             </a>
             <a
               href="#ocr-tool"
-              className="inline-flex h-12 items-center justify-center rounded-full border border-border px-8 text-[15px] font-medium transition duration-150 hover:bg-foreground/[0.04] active:scale-[0.98]"
+              className="inline-flex h-12 tall:h-14 items-center justify-center rounded-full border border-border px-8 text-[15px] tall:text-base font-medium transition duration-150 hover:bg-foreground/[0.04] active:scale-[0.98]"
             >
               Try the browser OCR
             </a>
