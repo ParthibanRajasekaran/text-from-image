@@ -203,10 +203,10 @@ export function HeroStage() {
               <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
               <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
               <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
-              <span className="ml-3 text-[11px] text-code-text/50">terminal</span>
+              <span className="ml-3 text-[11px] text-code-text/70">terminal</span>
             </div>
             <div className="flex items-center justify-between gap-3 px-4 py-3.5">
-              <span><span className="select-none text-code-text/50">$ </span>npm i -D @rendercheck/sdk</span>
+              <span><span className="select-none text-code-text/70">$ </span>npm i -D @rendercheck/sdk</span>
               <CopyButton text="npm i -D @rendercheck/sdk" label="Copy install command" tone="dark" />
             </div>
           </motion.div>
