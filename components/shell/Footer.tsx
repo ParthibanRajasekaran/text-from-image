@@ -103,13 +103,13 @@ export function Footer() {
       <div className="border-t border-border/30 py-4 text-xs text-muted-foreground">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            © {currentYear} RenderCheck • <span className="text-foreground/60">Developer Beta</span>
+            © {currentYear} RenderCheck • <span className="text-muted-foreground">Developer Beta</span>
           </div>
-          <div className="flex items-center gap-4 text-foreground/60">
+          <div className="flex items-center gap-4 text-muted-foreground">
             <a href="https://github.com/ParthibanRajasekaran/text-from-image" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               GitHub
             </a>
-            <a href="https://www.linkedin.com/in/parthibanrajasekaran" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a href="https://www.linkedin.com/in/parthiban-rajasekaran/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               LinkedIn
             </a>
           </div>

@@ -37,12 +37,12 @@ export default function About() {
     mainEntity: {
       '@type': 'Person',
       name: 'Parthiban Rajasekaran',
-      url: 'https://www.linkedin.com/in/parthibanrajasekaran',
-      image: `${SITE_URL}/images/headshot.jpg`,
+      url: 'https://www.linkedin.com/in/parthiban-rajasekaran/',
+      image: `${SITE_URL}/images/parthiban-960.jpg`,
       jobTitle: 'Software engineer',
       description: 'Author of RenderCheck, a local OCR toolkit for UI tests and images',
       sameAs: [
-        'https://www.linkedin.com/in/parthibanrajasekaran',
+        'https://www.linkedin.com/in/parthiban-rajasekaran/',
         'https://github.com/ParthibanRajasekaran',
       ],
       email: CONTACT_EMAIL,
@@ -54,16 +54,24 @@ export default function About() {
     <div className="flex flex-col gap-4">
       <Glass className="overflow-hidden">
         <figure className="mb-4">
-          <img
-            src="images/headshot.jpg"
-            alt="Parthiban Rajasekaran, author of RenderCheck"
-            width={480}
-            height={600}
-            loading="lazy"
-            decoding="async"
-            srcSet="/images/headshot.jpg 1x, /images/headshot.jpg 2x"
-            className="w-full h-auto rounded-xl shadow-lg object-cover"
-          />
+          <picture>
+            <source
+              type="image/webp"
+              srcSet="/images/parthiban-480.webp 480w, /images/parthiban-960.webp 960w"
+              sizes="(min-width: 1024px) 320px, 480px"
+            />
+            <img
+              src="/images/parthiban-480.jpg"
+              srcSet="/images/parthiban-480.jpg 480w, /images/parthiban-960.jpg 960w"
+              sizes="(min-width: 1024px) 320px, 480px"
+              alt="Parthiban Rajasekaran, author of RenderCheck"
+              width={480}
+              height={600}
+              loading="lazy"
+              decoding="async"
+              className="aspect-[4/5] h-auto w-full rounded-xl object-cover"
+            />
+          </picture>
         </figure>
         <div className="px-6 pb-6">
           <h3 className="font-semibold text-foreground mb-1">Parthiban Rajasekaran</h3>
@@ -73,7 +81,7 @@ export default function About() {
           </p>
           <div className="flex gap-2 text-xs">
             <a
-              href="https://www.linkedin.com/in/parthibanrajasekaran"
+              href="https://www.linkedin.com/in/parthiban-rajasekaran/"
               rel="noopener noreferrer"
               target="_blank"
               aria-label="LinkedIn"
@@ -121,7 +129,7 @@ export default function About() {
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
             to="/"
-            className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-accent via-accent-2 to-primary text-background font-semibold rounded-lg hover:shadow-glow transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-full hover:opacity-85 active:scale-[0.98] transition duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
           >
             Try Image → Text
           </Link>
@@ -174,7 +182,7 @@ export default function About() {
               <span className="text-foreground/90">Results appear instantly. Copy, export, or use.</span>
             </li>
           </ol>
-          <p className="text-xs text-foreground/60 mt-4 border-t border-white/10 pt-4">
+          <p className="text-xs text-muted-foreground mt-4 border-t border-white/10 pt-4">
             Your images and data remain on your device at all times. No uploads. No server storage.
           </p>
         </Glass>
@@ -275,7 +283,7 @@ export default function About() {
         <div>
           <Link
             to="/"
-            className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-accent via-accent-2 to-primary text-background font-semibold rounded-lg hover:shadow-glow transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-full hover:opacity-85 active:scale-[0.98] transition duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
           >
             Try All Tools
           </Link>

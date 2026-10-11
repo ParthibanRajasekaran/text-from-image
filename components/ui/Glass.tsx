@@ -9,9 +9,8 @@ export interface GlassProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Glass: Reusable glass-morphism container matching landing theme
- * - rounded-2xl border-white/10 bg-white/6 dark:bg-white/5 backdrop-blur-xl
- * - Subtle inner hairline + drop shadow
+ * Glass: reusable surface. Name kept for existing imports; it is now a flat card.
+ * - rounded-2xl, 1px hairline border, solid surface, no shadow, no blur
  * - Responsive padding optional
  */
 export function Glass({
@@ -21,7 +20,7 @@ export function Glass({
   ...props
 }: GlassProps) {
   const baseClasses =
-    'rounded-2xl border border-white/10 bg-white/6 dark:bg-white/5 backdrop-blur-xl shadow-lg';
+    'rounded-2xl border border-border bg-surface';
   const paddingClasses = withPadding ? 'p-6 md:p-8' : '';
 
   return (

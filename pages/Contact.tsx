@@ -46,7 +46,7 @@ export default function Contact() {
       },
       sameAs: [
         'https://github.com/ParthibanRajasekaran/text-from-image',
-        'https://www.linkedin.com/in/parthibanrajasekaran',
+        'https://www.linkedin.com/in/parthiban-rajasekaran/',
       ],
     },
   };
@@ -73,7 +73,7 @@ export default function Contact() {
         <div id="main-content" className="relative min-h-screen py-12 sm:py-16" role="main">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto">
-              <div className="rounded-2xl border border-border/50 backdrop-blur-xl bg-surface/40 shadow-glow-md overflow-hidden">
+              <div className="rounded-2xl border border-border/50 backdrop-blur-xl bg-surface/40  overflow-hidden">
                 <div className="px-6 sm:px-10 py-8 sm:py-12">
                   <nav aria-label="Breadcrumb" className="mb-6">
                     <ol className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -178,7 +178,7 @@ export default function Contact() {
                               Reach out to Parthiban Rajasekaran directly on LinkedIn for business inquiries or just to connect.
                             </p>
                             <a
-                              href="https://www.linkedin.com/in/parthibanrajasekaran"
+                              href="https://www.linkedin.com/in/parthiban-rajasekaran/"
                               rel="noopener noreferrer"
                               target="_blank"
                               className="inline-flex items-center gap-2 text-accent hover:text-accent-2 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background rounded px-2 py-1 font-medium"
@@ -247,7 +247,7 @@ export default function Contact() {
                       <div className="flex flex-col sm:flex-row gap-4">
                         <a
                           href={`mailto:${CONTACT_EMAIL}`}
-                          className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-accent via-accent-2 to-primary text-background font-semibold rounded-lg hover:shadow-glow transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
+                          className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-full hover:opacity-85 active:scale-[0.98] transition duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
                         >
                           Send us an Email
                         </a>

@@ -104,10 +104,10 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
           border border-border/70 transition-all duration-200 block
           ${
             isDragging
-              ? 'border-accent shadow-glow-sm scale-[1.02]'
+              ? 'border-accent  scale-[1.02]'
               : isFocused
-              ? 'border-primary shadow-glow-sm'
-              : 'border-border hover:border-accent/50 hover:shadow-glow-sm'
+              ? 'border-primary '
+              : 'border-border hover:border-accent/50 hover:'
           }
           ${disabled || isLoading ? 'opacity-50 cursor-not-allowed' : ''}
           focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background
@@ -137,7 +137,6 @@ export function GlassDropzone({ onFileSelect, isLoading = false, disabled = fals
         ))}
 
         {/* Glass effect inner glow */}
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent/5 via-transparent to-accent-2/5 pointer-events-none" />
 
         <div className="relative flex flex-col items-center justify-center h-full p-8 space-y-6">
           {/* Upload icon */}

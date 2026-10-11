@@ -21,7 +21,7 @@ function getScoreBandColor(band: RiskBand): string {
     case 'low':
       return 'bg-green-500/20 border-green-500/30 text-green-800 dark:text-green-300';
     case 'moderate':
-      return 'bg-blue-500/20 border-blue-500/30 text-blue-800 dark:text-blue-300';
+      return 'bg-foreground/[0.06] border-border text-foreground';
     case 'high':
       return 'bg-amber-500/20 border-amber-500/30 text-amber-800 dark:text-amber-300';
     case 'critical':
@@ -154,7 +154,7 @@ export default function VerificationDebtScore() {
           className="py-16 sm:py-24 max-w-2xl mx-auto text-center space-y-6"
         >
           <h1 className="text-4xl sm:text-5xl font-bold">
-            <span className="bg-gradient-to-r from-accent via-accent-2 to-primary bg-clip-text text-transparent">
+            <span className="">
               Verification Debt Score
             </span>
           </h1>
@@ -182,7 +182,7 @@ export default function VerificationDebtScore() {
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
-                    className="h-full bg-gradient-to-r from-accent to-primary"
+                    className="h-full bg-primary"
                   />
                 </div>
               </div>

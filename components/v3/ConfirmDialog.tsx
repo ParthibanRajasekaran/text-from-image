@@ -131,7 +131,7 @@ export function ConfirmDialog({
                 duration: shouldReduceMotion ? 0.1 : 0.2,
                 ease: 'easeOut',
               }}
-              className="relative w-full max-w-md bg-surface/95 backdrop-blur-xl border border-border/50 rounded-xl shadow-glow overflow-hidden"
+              className="relative w-full max-w-md bg-surface/95 backdrop-blur-xl border border-border/50 rounded-xl  overflow-hidden"
               role="alertdialog"
               aria-modal="true"
               aria-labelledby="dialog-title"

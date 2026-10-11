@@ -217,7 +217,7 @@ function HistoryCard({ entry, onSelect, onCopy, onRemove, onRerun }: HistoryCard
           {onRerun && (
             <button
               onClick={onRerun}
-              className="p-1.5 rounded hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-600 dark:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-1.5 rounded hover:bg-foreground/[0.06] text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
               aria-label="Re-run OCR with same settings"
               title="Re-run OCR"
             >
