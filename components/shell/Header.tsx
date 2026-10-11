@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { CopyButton } from '../home/ScrollKit';
 import { ROUTES } from '../../router';
 import { StatusBadge } from '../ui/StatusBadge';
 import { Button } from '../ui/Button';
@@ -133,9 +134,12 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
         {/* Right slot: Theme + CTA */}
         <div className="flex items-center gap-2 sm:gap-4">
           {theme && <ThemeToggle theme={theme} toggleTheme={onToggleTheme} />}
-          <span className="hidden sm:inline-flex">
-            <Button href={ROUTES.ACCESS} size="sm" variant="solid">
-              Get started
+          <span className="hidden lg:inline-flex">
+            <InstallPill />
+          </span>
+          <span className="hidden sm:inline-flex lg:hidden">
+            <Button href={ROUTES.DEVELOPERS} size="sm" variant="solid">
+              Docs
             </Button>
           </span>
 
@@ -205,5 +209,16 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
         </div>
       )}
     </header>
+  );
+}
+
+
+/** One-click install: copies the command rather than navigating, so the primary action takes zero page loads. */
+function InstallPill() {
+  return (
+    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface py-1 pl-3.5 pr-1.5 font-mono text-xs text-foreground">
+      <span>npm i -D @rendercheck/sdk</span>
+      <CopyButton text="npm i -D @rendercheck/sdk" label="Copy install command" />
+    </span>
   );
 }

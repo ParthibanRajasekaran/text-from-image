@@ -9,7 +9,8 @@ import { reveal } from '../ui/reveal';
 import { HeroStage } from './HeroStage';
 import { LegibilitySlider } from './LegibilitySlider';
 import { ProofLedger } from './ProofLedger';
-import { ScrollScanLine, SectionDivider } from './ScrollKit';
+import { CopyButton, ScrollScanLine, SectionDivider } from './ScrollKit';
+import { CONTACT_EMAIL } from '../../src/config';
 import { BentoGrid, FactsStrip, SectionHeading, TrustBadges, WorkflowSteps } from './HomeSections';
 import { useOCRProcessor } from '../../hooks/useOCRProcessor';
 import { useLocalHistory, type HistoryItem } from '../../hooks/useLocalHistory';
@@ -21,6 +22,13 @@ import { useLiveRegion } from '../../hooks/useLiveRegion';
  * - Facts strip and bento grid: only statements the repo can prove (see scripts/check-claims.mjs)
  * - Browser OCR tool stays on the page so visitors can try the product without leaving
  */
+const CI_YAML = `steps:
+  - run: npm ci
+  - run: npx playwright install --with-deps chromium
+  - run: npx playwright test
+  - uses: ParthibanRajasekaran/text-from-image/packages/rendercheck/action@<ref>
+    if: always()`;
+
 export function HomepageMinimalPremium() {
   const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
   const canonicalAbsolute = new URL('/', SITE_URL).toString();
@@ -126,6 +134,34 @@ export function HomepageMinimalPremium() {
           </motion.div>
         </section>
 
+        {/* CI */}
+        <section aria-labelledby="ci-heading" className="container mx-auto px-4 pb-24 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-4xl">
+            <h2 id="ci-heading" className="font-display text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">
+              Runs in the CI you already have
+            </h2>
+            <ul className="mt-6 grid gap-px overflow-hidden rounded-2xl border border-border bg-border text-sm md:grid-cols-3">
+              {[
+                ['No service', 'No account, API key or upload. The check runs inside your test process.'],
+                ['No download at test time', 'The OCR engine and English data are installed with npm, so a run makes no network request for them.'],
+                ['Annotates the pull request', 'The GitHub Action marks the failing test line and attaches the screenshot with the text outlined.'],
+              ].map(([h, b]) => (
+                <li key={h} className="bg-surface p-6">
+                  <p className="font-medium">{h}</p>
+                  <p className="mt-2 text-muted-foreground">{b}</p>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 rounded-2xl border border-border bg-surface">
+              <div className="flex items-center justify-between border-b border-border px-4 py-2">
+                <p className="font-mono text-xs text-muted-foreground">.github/workflows/e2e.yml</p>
+                <CopyButton text={CI_YAML} label="Copy workflow steps" />
+              </div>
+              <pre tabIndex={0} aria-label="GitHub Actions steps" className="overflow-x-auto p-4 font-mono text-xs leading-relaxed">{CI_YAML}</pre>
+            </div>
+          </div>
+        </section>
+
         {/* HONEST STATUS + CTA */}
         <section className="container mx-auto px-4 pb-28 sm:px-6 lg:px-8">
           <motion.div
@@ -154,6 +190,13 @@ export function HomepageMinimalPremium() {
                   Star on GitHub
                 </a>
               </div>
+              <p className="text-sm text-muted-foreground">
+                Using it in a project?{' '}
+                <a href={`mailto:${CONTACT_EMAIL}?subject=RenderCheck%20case%20study`}>
+                  Tell me how it went
+                </a>
+                . I am looking for the first write-up.
+              </p>
             </div>
           </motion.div>
         </section>

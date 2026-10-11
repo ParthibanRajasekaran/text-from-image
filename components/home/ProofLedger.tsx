@@ -18,13 +18,21 @@ function LedgerRow({ row, i, progress }: { row: (typeof ROWS)[number]; i: number
   return (
     <motion.li
       style={{ opacity, x }}
-      className="grid grid-cols-[3rem_1fr_auto] items-center gap-3 border-b border-code-border/60 px-4 py-2.5 font-mono text-xs"
+      tabIndex={row.ok ? undefined : 0}
+      className="group border-b border-code-border/60 px-4 py-2.5 font-mono text-xs transition-colors hover:bg-white/[0.05] focus-visible:bg-white/[0.05] focus-visible:outline focus-visible:outline-1 focus-visible:-outline-offset-1 focus-visible:outline-white"
     >
+      <div className="grid grid-cols-[3rem_1fr_auto] items-center gap-3">
       <span className="text-code-text/60">{row.m}</span>
       <span className="truncate text-code-text">{row.u}</span>
       <span className={row.ok ? 'text-emerald-300' : 'text-rose-300'}>
         {row.s} <span className="text-code-text/60">&middot; {row.b}</span>
       </span>
+      </div>
+      {!row.ok && (
+        <p className="mt-1.5 hidden pl-[3.75rem] text-code-text/70 group-hover:block group-focus-visible:block">
+          Blocked by directive: connect-src 'self'
+        </p>
+      )}
     </motion.li>
   );
 }
@@ -38,7 +46,7 @@ function Ledger({ progress }: { progress: MotionValue<number> }) {
   const stampOpacity = useTransform(progress, [0.78, 0.9], [0, 1]);
   const stampScale = useTransform(progress, [0.78, 0.9], [1.15, 1]);
   return (
-    <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-5">
+    <div className="mx-auto grid max-w-5xl items-start gap-6 md:grid-cols-5">
       <div className="rounded-2xl border border-border/70 bg-surface/70 p-6 backdrop-blur md:col-span-2">
         <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">Browser</p>
         <p className="mt-2 font-display text-xl font-semibold">screenshot.png</p>
@@ -52,7 +60,7 @@ function Ledger({ progress }: { progress: MotionValue<number> }) {
           <span>Network (simulated)</span>
           <span>{ROWS.length} requests</span>
         </div>
-        <ul className="min-h-[13rem]">
+        <ul>
           {ROWS.map((r, i) => (
             <React.Fragment key={r.u}>
               <LedgerRow row={r} i={i} progress={progress} />
