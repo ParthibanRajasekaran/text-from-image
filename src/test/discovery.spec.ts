@@ -36,4 +36,16 @@ describe('machine-readable discovery files', () => {
     const buf = readFileSync(resolve(root, 'public/og/default.png'));
     expect([...buf.subarray(0, 4)]).toEqual([0x89, 0x50, 0x4e, 0x47]);
   });
+
+  it('declares the icon set and every icon file exists with the right type', () => {
+    const html = read('index.html');
+    for (const href of ['/favicon.svg', '/favicon.ico', '/favicon-32.png', '/apple-touch-icon.png']) {
+      expect(html, `index.html should link ${href}`).toContain(`href="${href}"`);
+    }
+    const png = (p: string) => [...readFileSync(resolve(root, p)).subarray(0, 4)];
+    expect(png('public/favicon-32.png')).toEqual([0x89, 0x50, 0x4e, 0x47]);
+    expect(png('public/apple-touch-icon.png')).toEqual([0x89, 0x50, 0x4e, 0x47]);
+    expect([...readFileSync(resolve(root, 'public/favicon.ico')).subarray(0, 4)]).toEqual([0, 0, 1, 0]);
+    expect(read('public/favicon.svg')).toMatch(/^<svg /);
+  });
 });

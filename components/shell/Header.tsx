@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { CopyButton } from '../home/ScrollKit';
+import { BrandMark } from '../BrandMark';
 import { ROUTES } from '../../router';
 import { StatusBadge } from '../ui/StatusBadge';
 import { Button } from '../ui/Button';
@@ -92,7 +93,8 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
       >
         {/* Logo + Badge */}
         <Link to={ROUTES.HOME} className="flex items-center gap-3 group">
-          <span className="text-xl font-semibold tracking-[-0.03em] text-foreground group-hover:opacity-70 transition-opacity">
+          <span className="flex items-center gap-2.5 text-xl font-semibold tracking-[-0.03em] text-foreground group-hover:opacity-70 transition-opacity">
+            <BrandMark className="h-7 w-7" />
             RenderCheck
           </span>
           {showBeta && <StatusBadge variant="developer-beta" size="sm" />}
