@@ -12,18 +12,20 @@ function makeFetch(over: Record<string, unknown> = {}) {
   const calls: string[] = [];
   const f = async (url: string) => {
     calls.push(url);
-    for (const [k, v] of Object.entries(over)) if (url.includes(k)) return v === 'fail' ? json({}, false) : json(v);
-    if (url.includes('api.npmjs.org')) return json({ downloads: [{ day: '2026-10-01', downloads: 5 }, { day: '2026-10-02', downloads: 9 }] });
-    if (url.includes('registry.npmjs.org')) {
+    const u = new URL(url);
+    const hostAndPath = `${u.hostname}${u.pathname}`;
+    for (const [k, v] of Object.entries(over)) if (hostAndPath.includes(k)) return v === 'fail' ? json({}, false) : json(v);
+    if (u.hostname === 'api.npmjs.org') return json({ downloads: [{ day: '2026-10-01', downloads: 5 }, { day: '2026-10-02', downloads: 9 }] });
+    if (u.hostname === 'registry.npmjs.org') {
       return json({
         'dist-tags': { latest: '1.0.0' },
         time: { created: 'a', modified: 'b', '1.0.0': '2026-09-01' },
         versions: { '1.0.0': { dist: { attestations: { url: 'https://x/att' } } } },
       });
     }
-    if (url.includes('search/issues')) return json({ total_count: 0, items: [] });
-    if (url.includes('/contributors')) return json([{ login: 'ParthibanRajasekaran', contributions: 50 }]);
-    if (url.includes('/releases') || url.includes('/tags')) return json([]);
+    if (u.pathname.includes('search/issues')) return json({ total_count: 0, items: [] });
+    if (u.pathname.endsWith('/contributors')) return json([{ login: 'ParthibanRajasekaran', contributions: 50 }]);
+    if (u.pathname.endsWith('/releases') || u.pathname.endsWith('/tags')) return json([]);
     return json({ stargazers_count: 3, forks_count: 1, subscribers_count: 2, created_at: 'c', pushed_at: 'p' });
   };
   return { f, calls };
