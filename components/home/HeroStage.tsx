@@ -189,10 +189,18 @@ export function HeroStage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="mx-auto flex w-fit items-center gap-3 rounded-xl border border-code-border bg-code-bg px-4 py-2 font-mono text-sm text-code-text"
+            className="mx-auto w-full max-w-md overflow-hidden rounded-xl border border-code-border bg-code-bg text-left font-mono text-sm text-code-text"
           >
-            <span>npm i -D @rendercheck/sdk</span>
-            <CopyButton text="npm i -D @rendercheck/sdk" label="Copy install command" tone="dark" />
+            <div className="flex items-center gap-1.5 border-b border-code-border px-3.5 py-2.5" aria-hidden="true">
+              <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
+              <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
+              <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
+              <span className="ml-3 text-[11px] text-code-text/50">terminal</span>
+            </div>
+            <div className="flex items-center justify-between gap-3 px-4 py-3.5">
+              <span><span className="select-none text-code-text/50">$ </span>npm i -D @rendercheck/sdk</span>
+              <CopyButton text="npm i -D @rendercheck/sdk" label="Copy install command" tone="dark" />
+            </div>
           </motion.div>
         </div>
 

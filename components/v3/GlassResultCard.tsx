@@ -14,14 +14,15 @@ interface GlassResultCardProps {
 /**
  * Premium glass result card with:
  * - Glass morphism styling
- * - Copy button with confetti micro-interaction (6-8 CSS dots)
+ * - Copy button, download button, Text/JSON view
+ * - One horizontal scan sweep when the result appears (skipped for reduced motion)
  * - Download button
  * - Non-blocking toast notification
  * - < 200ms interactions
  * - Zero CLS: reserved height
  */
 export function GlassResultCard({ text, onCopy, onDownload, filename = 'extracted-text.txt' }: GlassResultCardProps) {
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [view, setView] = useState<'text' | 'json'>('text');
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const shouldReduceMotion = useReducedMotion();
@@ -35,12 +36,6 @@ export function GlassResultCard({ text, onCopy, onDownload, filename = 'extracte
         contentType: 'text',
       });
       
-      // Trigger confetti
-      if (!shouldReduceMotion) {
-        setShowConfetti(true);
-        setTimeout(() => setShowConfetti(false), 600);
-      }
-
       // Show toast
       setToastMessage('Copied to clipboard');
       setShowToast(true);
@@ -53,7 +48,7 @@ export function GlassResultCard({ text, onCopy, onDownload, filename = 'extracte
       setTimeout(() => setShowToast(false), 2000);
       console.error('Copy failed:', err);
     }
-  }, [text, onCopy, shouldReduceMotion]);
+  }, [text, onCopy]);
 
   const handleDownload = useCallback(() => {
     // Track download event
@@ -79,6 +74,11 @@ export function GlassResultCard({ text, onCopy, onDownload, filename = 'extracte
     onDownload?.();
   }, [text, filename, onDownload]);
 
+  const jsonOutput = JSON.stringify(
+    { file: filename, words: text.trim().split(/\s+/).filter(Boolean).length, characters: text.length, text },
+    null,
+    2
+  );
   const characterCount = text.length;
   const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
 
@@ -88,7 +88,7 @@ export function GlassResultCard({ text, onCopy, onDownload, filename = 'extracte
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="relative rounded-2xl bg-surface/40 backdrop-blur-xl border border-white/10  overflow-hidden"
+        className="relative rounded-2xl bg-surface border border-border overflow-hidden"
         style={{ minHeight: '400px' }} // Reserve height to prevent CLS
       >
 
@@ -114,42 +114,6 @@ export function GlassResultCard({ text, onCopy, onDownload, filename = 'extracte
                 <CopyIcon className="w-4 h-4" aria-hidden="true" />
                 <span className="text-sm font-medium hidden sm:inline">Copy</span>
 
-                {/* CSS Confetti dots */}
-                {showConfetti && (
-                  <div className="absolute inset-0 pointer-events-none">
-                    {[...Array(8)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        className="absolute w-2 h-2 rounded-full"
-                        style={{
-                          left: '50%',
-                          top: '50%',
-                          background: [
-                            'hsl(var(--accent))',
-                            'hsl(var(--accent-2))',
-                            'hsl(var(--primary))',
-                            '#10b981',
-                            '#f59e0b',
-                            '#ef4444',
-                            '#8b5cf6',
-                            '#ec4899',
-                          ][i],
-                        }}
-                        initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
-                        animate={{
-                          opacity: 0,
-                          scale: 1,
-                          x: Math.cos((i / 8) * Math.PI * 2) * 40,
-                          y: Math.sin((i / 8) * Math.PI * 2) * 40,
-                        }}
-                        transition={{
-                          duration: 0.6,
-                          ease: 'easeOut',
-                        }}
-                      />
-                    ))}
-                  </div>
-                )}
               </motion.button>
 
               <motion.button
@@ -168,9 +132,37 @@ export function GlassResultCard({ text, onCopy, onDownload, filename = 'extracte
 
         {/* Content */}
         <div className="relative p-4 sm:p-6">
-          <pre className="whitespace-pre-wrap text-sm text-foreground font-mono bg-background/50 p-4 rounded-lg border border-border/50 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
-            {text}
-          </pre>
+          <div role="tablist" aria-label="Output format" className="mb-3 inline-flex rounded-full border border-border p-0.5 text-xs font-medium">
+            {(['text', 'json'] as const).map((v) => (
+              <button
+                key={v}
+                role="tab"
+                type="button"
+                aria-selected={view === v}
+                onClick={() => setView(v)}
+                className={`rounded-full px-3.5 py-1 transition-colors ${
+                  view === v ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {v === 'text' ? 'Text' : 'JSON'}
+              </button>
+            ))}
+          </div>
+          <div className="relative">
+            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- keyboard users must be able to scroll long output */}
+            <pre tabIndex={0} aria-label={view === 'text' ? 'Extracted text' : 'Extracted text as JSON'} className="whitespace-pre-wrap break-words text-sm text-foreground font-mono bg-background p-4 rounded-lg border border-border max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
+              {view === 'text' ? text : jsonOutput}
+            </pre>
+            {!shouldReduceMotion && (
+              <motion.div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 top-0 h-px bg-foreground"
+                initial={{ top: '0%', opacity: 1 }}
+                animate={{ top: '100%', opacity: [1, 1, 0] }}
+                transition={{ duration: 0.9, ease: 'easeInOut' }}
+              />
+            )}
+          </div>
         </div>
       </motion.div>
 
@@ -182,7 +174,7 @@ export function GlassResultCard({ text, onCopy, onDownload, filename = 'extracte
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full bg-surface/90 backdrop-blur-xl border border-border/50  text-sm font-medium text-foreground"
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full bg-surface border border-border text-sm font-medium text-foreground"
             role="status"
             aria-live="polite"
           >
