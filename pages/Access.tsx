@@ -71,7 +71,7 @@ export default function Access() {
             Assert what users see in Playwright and Cypress. OCR runs inside your test process.
           </p>
           <CodeBlock
-            code="npm install --save-dev @freetextfromimage/rendercheck"
+            code="npm install --save-dev @rendercheck/sdk"
             language="bash"
             filename="Terminal"
             className="mb-4"

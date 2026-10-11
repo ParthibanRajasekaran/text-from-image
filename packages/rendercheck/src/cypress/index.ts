@@ -1,7 +1,7 @@
 /**
  * Cypress, browser side. Import it from your support file:
  *
- *   import '@freetextfromimage/rendercheck/cypress';
+ *   import '@rendercheck/sdk/cypress';
  *
  *   cy.visit('/checkout');
  *   cy.matchText('Total: $14.00', { minConfidence: 85, minContrastRatio: 4.5 });

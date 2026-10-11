@@ -21,7 +21,7 @@ export default function Developers() {
   useSEO({
     title: 'RenderCheck Developers: SDK Reference & Quick Start',
     description:
-      'RenderCheck SDK documentation and examples for Playwright and Cypress. OCR runs on your machine: no API key, no upload. npm install @freetextfromimage/rendercheck.',
+      'RenderCheck SDK documentation and examples for Playwright and Cypress. OCR runs on your machine: no API key, no upload. npm install @rendercheck/sdk.',
     canonical: canonicalAbsolute,
   });
 
@@ -55,7 +55,7 @@ export default function Developers() {
               <p>
                 <strong>Package:</strong>
                 <br />
-                <code className="text-foreground">@freetextfromimage/rendercheck</code>
+                <code className="text-foreground">@rendercheck/sdk</code>
               </p>
               <p>
                 <strong>License:</strong>
@@ -152,7 +152,7 @@ export default function Developers() {
         <h2 className="text-2xl font-bold text-foreground mb-6">Install</h2>
 
         <CodeBlock
-          code="npm install --save-dev @freetextfromimage/rendercheck"
+          code="npm install --save-dev @rendercheck/sdk"
           language="bash"
           filename="Terminal"
           className="mb-4"
@@ -177,7 +177,7 @@ export default function Developers() {
 
         <CodeBlock
           code={`import { test } from '@playwright/test';
-import { expect } from '@freetextfromimage/rendercheck/playwright';
+import { expect } from '@rendercheck/sdk/playwright';
 
 test('checkout shows the right total', async ({ page }) => {
   await page.goto('/checkout');
@@ -235,7 +235,7 @@ test('checkout shows the right total', async ({ page }) => {
         </p>
 
         <CodeBlock
-          code={`import { verifyText } from '@freetextfromimage/rendercheck/core';
+          code={`import { verifyText } from '@rendercheck/sdk/core';
 
 const report = await verifyText({
   image: fs.readFileSync('screenshot.png'),
@@ -275,7 +275,7 @@ if (!report.pass) console.error(report.message);
         <h3 className="text-lg font-semibold text-foreground mb-3">Playwright: one element and a region</h3>
         <CodeBlock
           code={`import { test } from '@playwright/test';
-import { expect } from '@freetextfromimage/rendercheck/playwright';
+import { expect } from '@rendercheck/sdk/playwright';
 
 test('order confirmation displays the order number', async ({ page }) => {
   await page.goto('/order-confirmation');
@@ -297,14 +297,14 @@ test('order confirmation displays the order number', async ({ page }) => {
         <CodeBlock
           code={`// cypress.config.ts
 import { defineConfig } from 'cypress';
-import { registerRenderCheck } from '@freetextfromimage/rendercheck/cypress/plugin';
+import { registerRenderCheck } from '@rendercheck/sdk/cypress/plugin';
 
 export default defineConfig({
   e2e: { setupNodeEvents(on) { registerRenderCheck(on); } },
 });
 
 // cypress/support/e2e.ts
-import '@freetextfromimage/rendercheck/cypress';
+import '@rendercheck/sdk/cypress';
 
 // in a test
 cy.visit('/checkout');

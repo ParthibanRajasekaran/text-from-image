@@ -73,7 +73,7 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
 
   const externalItems = [
     { label: 'GitHub', href: 'https://github.com/ParthibanRajasekaran/text-from-image' },
-    { label: 'npm', href: 'https://www.npmjs.com/package/@freetextfromimage/rendercheck' },
+    { label: 'npm', href: 'https://www.npmjs.com/package/@rendercheck/sdk' },
   ];
 
   return (

@@ -12,7 +12,7 @@ body:
     id: version
     attributes:
       label: Version or commit
-      description: "For the SDK: the output of `npm ls @freetextfromimage/rendercheck`"
+      description: "For the SDK: the output of `npm ls @rendercheck/sdk`"
     validations: { required: true }
   - type: textarea
     id: steps

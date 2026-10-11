@@ -21,7 +21,7 @@ describe('callSite', () => {
   it('skips RenderCheck, node_modules and Node frames and returns the test file and line', () => {
     const stack = [
       'Error',
-      '    at toShowText (/proj/node_modules/@freetextfromimage/rendercheck/dist/playwright/index.js:10:5)',
+      '    at toShowText (/proj/node_modules/@rendercheck/sdk/dist/playwright/index.js:10:5)',
       '    at node:internal/process/task_queues:95:5',
       '    at /proj/packages/rendercheck/src/playwright/matcher.ts:40:9',
       '    at /proj/tests/checkout.spec.ts:23:7',

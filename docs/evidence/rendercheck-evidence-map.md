@@ -7,7 +7,7 @@ This document maps all public claims about RenderCheck to their supporting evide
 ### "RenderCheck is live and works"
 
 **Evidence:**
-- npm package published: `@freetextfromimage/rendercheck` ([npmjs.com](https://www.npmjs.com/package/@freetextfromimage/rendercheck))
+- npm package published: `@rendercheck/sdk` ([npmjs.com](https://www.npmjs.com/package/@rendercheck/sdk))
 - MIT license: source available at GitHub
 - Version: 0.1.0
 - Browser demo live at [getrendercheck.com](https://getrendercheck.com) — try the OCR tool directly

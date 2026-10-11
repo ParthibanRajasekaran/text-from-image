@@ -183,13 +183,13 @@ export default function RenderCheck() {
         <section id="install" className="border-t pt-8 scroll-mt-24">
           <h2 className="text-2xl font-bold text-foreground mb-6">Install</h2>
           <CodeBlock
-            code="npm install @freetextfromimage/rendercheck"
+            code="npm install @rendercheck/sdk"
             language="bash"
             filename="Terminal"
             className="mb-4"
           />
           <p className="text-sm text-foreground/90">
-            Package: <code className="bg-code-bg text-code-text px-1 rounded">@freetextfromimage/rendercheck</code>. Runs OCR locally: no API key, no upload, no network calls. Requires Node ≥18 and Playwright or Cypress.
+            Package: <code className="bg-code-bg text-code-text px-1 rounded">@rendercheck/sdk</code>. Runs OCR locally: no API key, no upload, no network calls. Requires Node ≥18 and Playwright or Cypress.
           </p>
         </section>
 
@@ -198,7 +198,7 @@ export default function RenderCheck() {
           <h2 className="text-2xl font-bold text-foreground mb-6">Quick Start</h2>
           <CodeBlock
             code={`import { test } from '@playwright/test';
-import { expect } from '@freetextfromimage/rendercheck/playwright';
+import { expect } from '@rendercheck/sdk/playwright';
 
 test('checkout shows the correct total', async ({ page }) => {
   await page.goto('https://example.com/checkout');
@@ -233,7 +233,7 @@ test('checkout shows the correct total', async ({ page }) => {
 });
 
 // Cypress: cy.matchText(expected, options)
-// Any runner: verifyText({ image, expected, options }) from '@freetextfromimage/rendercheck/core'`}
+// Any runner: verifyText({ image, expected, options }) from '@rendercheck/sdk/core'`}
             language="typescript"
             filename="types.ts"
             className="mb-6"

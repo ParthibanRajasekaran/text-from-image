@@ -113,7 +113,7 @@ export default function WhatIsVerificationDebt() {
           <li>Run them in CI. Keep the confidence threshold realistic for your fonts.</li>
         </ol>
         <CodeBlock
-          code={`import { expect } from '@freetextfromimage/rendercheck/playwright';
+          code={`import { expect } from '@rendercheck/sdk/playwright';
 
 await expect(page).toShowText('Total: $14.00', { minConfidence: 85 });`}
           language="typescript"

@@ -210,8 +210,8 @@ export function HeroStage() {
             transition={{ delay: 0.4 }}
             className="mx-auto flex w-fit items-center gap-3 rounded-xl border border-code-border bg-code-bg px-4 py-2 font-mono text-sm text-code-text"
           >
-            <span>npm i -D @freetextfromimage/rendercheck</span>
-            <CopyButton text="npm i -D @freetextfromimage/rendercheck" label="Copy install command" tone="dark" />
+            <span>npm i -D @rendercheck/sdk</span>
+            <CopyButton text="npm i -D @rendercheck/sdk" label="Copy install command" tone="dark" />
           </motion.div>
         </div>
 
