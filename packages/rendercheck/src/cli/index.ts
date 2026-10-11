@@ -5,6 +5,7 @@ import path from 'node:path';
 import { loadImage, runRead, runVerify } from './run';
 import { logUsage, readUsage, summarize, usageFile } from './usage';
 import { shutdown } from '../core/ocr';
+import { ALL_AGENTS, runInit, type Agent } from './init';
 import type { Region } from '../core/types';
 
 const HELP = `rendercheck: check what a user can actually see in a screenshot. Local OCR, offline.
@@ -13,6 +14,8 @@ Usage
   rendercheck verify <image> --expect "Total: $14.00" [options]
   rendercheck read <image> [options]
   rendercheck mcp                     start the MCP server (stdio) for AI agents
+  rendercheck init [--agents claude,agents,cursor,copilot] [--dry-run]
+                                      teach this repo's AI agents to use RenderCheck
   rendercheck stats                   usage on this machine (local file, never sent anywhere)
 
 Options
@@ -54,6 +57,8 @@ async function main(argv: string[]): Promise<number> {
       'min-contrast': { type: 'string' },
       region: { type: 'string' },
       json: { type: 'boolean' },
+      agents: { type: 'string' },
+      'dry-run': { type: 'boolean' },
       help: { type: 'boolean', short: 'h' },
       version: { type: 'boolean', short: 'v' },
     },
@@ -66,6 +71,19 @@ async function main(argv: string[]): Promise<number> {
     const { startStdio } = await import('../mcp/server');
     await startStdio(version());
     return -1; // keep running until the client disconnects
+  }
+
+  if (cmd === 'init') {
+    const agents = values.agents ? (values.agents.split(',').map((x) => x.trim()) as Agent[]) : ALL_AGENTS;
+    const bad = agents.filter((a) => !ALL_AGENTS.includes(a));
+    if (bad.length) throw new Error(`Unknown agent "${bad[0]}". Choose from: ${ALL_AGENTS.join(', ')}`);
+    const res = runInit({ dir: process.cwd(), agents, dryRun: values['dry-run'] });
+    if (values.json) console.log(JSON.stringify(res, null, 2));
+    else {
+      for (const r of res) console.log(`${(values['dry-run'] ? 'would be ' : '') + r.action}`.padEnd(18) + path.relative(process.cwd(), r.file) + (r.note ? `  (${r.note})` : ''));
+      if (!values['dry-run']) console.log('\nDone. Restart your agent so it picks up the MCP server.');
+    }
+    return 0;
   }
 
   if (cmd === 'stats') {
