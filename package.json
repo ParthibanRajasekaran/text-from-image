@@ -67,7 +67,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "jest-axe": "^11.0.0",
-    "jsdom": "^24.0.0",
+    "jsdom": "^29.1.1",
     "postcss": "^8.5.29",
     "rollup-plugin-visualizer": "^7.1.1",
     "tailwindcss": "^3.4.15",
