@@ -1,0 +1,474 @@
+{
+  "environment": {
+    "node": "v22.22.0",
+    "platform": "linux x64",
+    "playwright": "1.64.0",
+    "chromium": "141.0.7390.37",
+    "tesseractJs": "5.1.1",
+    "rendercheck": "0.6.0",
+    "viewport": "520x120 @1x",
+    "minContrastRatio": 4.5
+  },
+  "summary": {
+    "fixtures": 21,
+    "bugs": 13,
+    "controls": 8,
+    "naive": {
+      "TP": 0,
+      "FN": 13,
+      "FP": 0,
+      "TN": 8
+    },
+    "rendercheck": {
+      "TP": 12,
+      "FN": 1,
+      "FP": 3,
+      "TN": 5
+    }
+  },
+  "matrix": [
+    "white-on-near-white: naive=FN rendercheck=TP (LOW_CONFIDENCE)",
+    "very-light-grey: naive=FN rendercheck=TP (INSUFFICIENT_CONTRAST)",
+    "mid-grey-fails-aa: naive=FN rendercheck=TP (INSUFFICIENT_CONTRAST)",
+    "clipped-overflow-hidden: naive=FN rendercheck=TP (NOT_FOUND)",
+    "ellipsis-truncated: naive=FN rendercheck=TP (NOT_FOUND)",
+    "covered-by-overlay: naive=FN rendercheck=TP (NOT_FOUND)",
+    "opacity-near-zero: naive=FN rendercheck=TP (INSUFFICIENT_CONTRAST)",
+    "font-size-1px: naive=FN rendercheck=TP (NOT_FOUND)",
+    "offscreen-left: naive=FN rendercheck=TP (NOT_FOUND)",
+    "color-transparent: naive=FN rendercheck=TP (NOT_FOUND)",
+    "wrong-currency-css-content: naive=FN rendercheck=TP (NOT_FOUND)",
+    "text-in-image-stale: naive=FN rendercheck=TP (NOT_FOUND)",
+    "limit-same-text-visible-elsewhere: naive=FN rendercheck=FN (pass)",
+    "control-black-on-white: naive=TN rendercheck=TN (pass)",
+    "control-dark-mode: naive=TN rendercheck=TN (pass)",
+    "control-aa-boundary-grey: naive=TN rendercheck=FP (INSUFFICIENT_CONTRAST)",
+    "control-correct-currency: naive=TN rendercheck=TN (pass)",
+    "control-text-in-image-ok: naive=TN rendercheck=TN (pass)",
+    "limit-large-text-3-to-1: naive=TN rendercheck=FP (INSUFFICIENT_CONTRAST)",
+    "limit-decorative-font: naive=TN rendercheck=TN (pass)",
+    "limit-small-text-9px: naive=TN rendercheck=FP (NOT_FOUND)"
+  ],
+  "rows": [
+    {
+      "id": "white-on-near-white",
+      "class": "low contrast",
+      "truth": "bug",
+      "expected": "Order confirmed",
+      "why": "#ffffff text on #fefefe, ratio about 1.01:1",
+      "naive": {
+        "flagged": false,
+        "outcome": "FN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "TP",
+        "failure": "LOW_CONFIDENCE",
+        "read": "Order confirmed",
+        "confidence": 77,
+        "minContrast": null
+      },
+      "ocrMs": 100
+    },
+    {
+      "id": "very-light-grey",
+      "class": "low contrast",
+      "truth": "bug",
+      "expected": "Payment received",
+      "why": "#e0e0e0 on white, ratio about 1.3:1",
+      "naive": {
+        "flagged": false,
+        "outcome": "FN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "TP",
+        "failure": "INSUFFICIENT_CONTRAST",
+        "read": "Payment received",
+        "confidence": 97,
+        "minContrast": 1.31
+      },
+      "ocrMs": 85
+    },
+    {
+      "id": "mid-grey-fails-aa",
+      "class": "low contrast",
+      "truth": "bug",
+      "expected": "Delivery by Friday",
+      "why": "#999999 on white, ratio about 2.8:1, readable but fails WCAG AA 4.5:1",
+      "naive": {
+        "flagged": false,
+        "outcome": "FN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "TP",
+        "failure": "INSUFFICIENT_CONTRAST",
+        "read": "Delivery by Friday",
+        "confidence": 97,
+        "minContrast": 2.78
+      },
+      "ocrMs": 55
+    },
+    {
+      "id": "clipped-overflow-hidden",
+      "class": "clipped",
+      "truth": "bug",
+      "expected": "Your session has expired",
+      "why": "text pushed below a 56px overflow:hidden box",
+      "naive": {
+        "flagged": false,
+        "outcome": "FN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "TP",
+        "failure": "NOT_FOUND",
+        "read": "",
+        "confidence": 0,
+        "minContrast": null
+      },
+      "ocrMs": 7
+    },
+    {
+      "id": "ellipsis-truncated",
+      "class": "clipped",
+      "truth": "bug",
+      "expected": "Order confirmed for Alice Johnson",
+      "why": "nowrap + text-overflow:ellipsis in a 230px box; the end of the string is not shown",
+      "naive": {
+        "flagged": false,
+        "outcome": "FN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "TP",
+        "failure": "NOT_FOUND",
+        "read": "Order confirmed fo...",
+        "confidence": 96,
+        "minContrast": null
+      },
+      "ocrMs": 62
+    },
+    {
+      "id": "covered-by-overlay",
+      "class": "covered",
+      "truth": "bug",
+      "expected": "Confirm your email address",
+      "why": "opaque cookie-banner style panel sits over the text",
+      "naive": {
+        "flagged": false,
+        "outcome": "FN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "TP",
+        "failure": "NOT_FOUND",
+        "read": "",
+        "confidence": 0,
+        "minContrast": null
+      },
+      "ocrMs": 7
+    },
+    {
+      "id": "opacity-near-zero",
+      "class": "invisible",
+      "truth": "bug",
+      "expected": "Welcome back, Sam",
+      "why": "opacity 0.02 (a fade-in that never finished)",
+      "naive": {
+        "flagged": false,
+        "outcome": "FN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "TP",
+        "failure": "INSUFFICIENT_CONTRAST",
+        "read": "Welcome back, Sam",
+        "confidence": 96,
+        "minContrast": 1.05
+      },
+      "ocrMs": 56
+    },
+    {
+      "id": "font-size-1px",
+      "class": "invisible",
+      "truth": "bug",
+      "expected": "Terms and conditions apply",
+      "why": "font-size: 1px",
+      "naive": {
+        "flagged": false,
+        "outcome": "FN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "TP",
+        "failure": "NOT_FOUND",
+        "read": "",
+        "confidence": 0,
+        "minContrast": null
+      },
+      "ocrMs": 7
+    },
+    {
+      "id": "offscreen-left",
+      "class": "invisible",
+      "truth": "bug",
+      "expected": "Checkout complete",
+      "why": "position:absolute; left:-9999px",
+      "naive": {
+        "flagged": false,
+        "outcome": "FN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "TP",
+        "failure": "NOT_FOUND",
+        "read": "",
+        "confidence": 0,
+        "minContrast": null
+      },
+      "ocrMs": 5
+    },
+    {
+      "id": "color-transparent",
+      "class": "invisible",
+      "truth": "bug",
+      "expected": "Reset your password",
+      "why": "color: transparent (a broken gradient-text fallback)",
+      "naive": {
+        "flagged": false,
+        "outcome": "FN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "TP",
+        "failure": "NOT_FOUND",
+        "read": "",
+        "confidence": 0,
+        "minContrast": null
+      },
+      "ocrMs": 5
+    },
+    {
+      "id": "wrong-currency-css-content",
+      "class": "wrong text rendered",
+      "truth": "bug",
+      "expected": "Total: $14.00",
+      "why": "DOM says \"$14.00\"; the \"$\" is font-size:0 and a ::before paints a euro sign instead",
+      "naive": {
+        "flagged": false,
+        "outcome": "FN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "TP",
+        "failure": "NOT_FOUND",
+        "read": "Total: €14.00",
+        "confidence": 93,
+        "minContrast": null
+      },
+      "ocrMs": 31
+    },
+    {
+      "id": "text-in-image-stale",
+      "class": "wrong text rendered",
+      "truth": "bug",
+      "expected": "Free delivery over $50",
+      "why": "banner is an image saying \"$30\"; the DOM copy (off-screen screen-reader text) says \"$50\"",
+      "naive": {
+        "flagged": false,
+        "outcome": "FN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "TP",
+        "failure": "NOT_FOUND",
+        "read": "Free delivery over $30",
+        "confidence": 96,
+        "minContrast": null
+      },
+      "ocrMs": 141
+    },
+    {
+      "id": "limit-same-text-visible-elsewhere",
+      "class": "limit probe",
+      "truth": "bug",
+      "expected": "Order confirmed",
+      "why": "the #target element is invisible (opacity 0) but a different, visible element on the page shows the same words; a whole-screenshot check cannot tell them apart (a region or locator screenshot would)",
+      "naive": {
+        "flagged": false,
+        "outcome": "FN"
+      },
+      "rendercheck": {
+        "flagged": false,
+        "outcome": "FN",
+        "failure": null,
+        "read": "Order confirmed (toast)",
+        "confidence": 97,
+        "minContrast": 17.63
+      },
+      "ocrMs": 212
+    },
+    {
+      "id": "control-black-on-white",
+      "class": "control",
+      "truth": "ok",
+      "expected": "Order confirmed",
+      "why": "plain #111 on white",
+      "naive": {
+        "flagged": false,
+        "outcome": "TN"
+      },
+      "rendercheck": {
+        "flagged": false,
+        "outcome": "TN",
+        "failure": null,
+        "read": "Order confirmed",
+        "confidence": 96,
+        "minContrast": 17.63
+      },
+      "ocrMs": 62
+    },
+    {
+      "id": "control-dark-mode",
+      "class": "control",
+      "truth": "ok",
+      "expected": "Payment received",
+      "why": "#e8e8e8 on #121212",
+      "naive": {
+        "flagged": false,
+        "outcome": "TN"
+      },
+      "rendercheck": {
+        "flagged": false,
+        "outcome": "TN",
+        "failure": null,
+        "read": "Payment received",
+        "confidence": 96,
+        "minContrast": 14.49
+      },
+      "ocrMs": 128
+    },
+    {
+      "id": "control-aa-boundary-grey",
+      "class": "control",
+      "truth": "ok",
+      "expected": "Delivery by Friday",
+      "why": "#767676 on white, about 4.5:1, just passes AA",
+      "naive": {
+        "flagged": false,
+        "outcome": "TN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "FP",
+        "failure": "INSUFFICIENT_CONTRAST",
+        "read": "Delivery by Friday",
+        "confidence": 97,
+        "minContrast": 4.35
+      },
+      "ocrMs": 62
+    },
+    {
+      "id": "control-correct-currency",
+      "class": "control",
+      "truth": "ok",
+      "expected": "Total: $14.00",
+      "why": "same markup as the currency bug but the ::before paints \"$\"",
+      "naive": {
+        "flagged": false,
+        "outcome": "TN"
+      },
+      "rendercheck": {
+        "flagged": false,
+        "outcome": "TN",
+        "failure": null,
+        "read": "Total: $14.00",
+        "confidence": 96,
+        "minContrast": 17.17
+      },
+      "ocrMs": 46
+    },
+    {
+      "id": "control-text-in-image-ok",
+      "class": "control",
+      "truth": "ok",
+      "expected": "Free delivery over $50",
+      "why": "banner image says \"$50\", matching the DOM copy",
+      "naive": {
+        "flagged": false,
+        "outcome": "TN"
+      },
+      "rendercheck": {
+        "flagged": false,
+        "outcome": "TN",
+        "failure": null,
+        "read": "Free delivery over $50",
+        "confidence": 97,
+        "minContrast": 11.29
+      },
+      "ocrMs": 101
+    },
+    {
+      "id": "limit-large-text-3-to-1",
+      "class": "limit probe",
+      "truth": "ok",
+      "expected": "Big Sale",
+      "why": "64px #8a8a8a on white (about 3.4:1): passes WCAG AA for large text (3:1) but not the 4.5:1 this run asks for",
+      "naive": {
+        "flagged": false,
+        "outcome": "TN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "FP",
+        "failure": "INSUFFICIENT_CONTRAST",
+        "read": "Big Sale",
+        "confidence": 96,
+        "minContrast": 3.36
+      },
+      "ocrMs": 35
+    },
+    {
+      "id": "limit-decorative-font",
+      "class": "limit probe",
+      "truth": "ok",
+      "expected": "Grand Opening Sale",
+      "why": "asks for a cursive italic face, but on the benchmark machine no cursive font is installed so it fell back to the default sans (italic); this probe did not test a true decorative face",
+      "naive": {
+        "flagged": false,
+        "outcome": "TN"
+      },
+      "rendercheck": {
+        "flagged": false,
+        "outcome": "TN",
+        "failure": null,
+        "read": "Grand Opening Sale",
+        "confidence": 97,
+        "minContrast": 17.47
+      },
+      "ocrMs": 56
+    },
+    {
+      "id": "limit-small-text-9px",
+      "class": "limit probe",
+      "truth": "ok",
+      "expected": "Terms and conditions apply",
+      "why": "9px #222 on white: small, but legible to a person at 1x",
+      "naive": {
+        "flagged": false,
+        "outcome": "TN"
+      },
+      "rendercheck": {
+        "flagged": true,
+        "outcome": "FP",
+        "failure": "NOT_FOUND",
+        "read": "Terms snd conditions sly",
+        "confidence": 68,
+        "minContrast": null
+      },
+      "ocrMs": 45
+    }
+  ]
+}

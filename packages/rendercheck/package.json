@@ -85,7 +85,8 @@
     "test:cypress": "cypress run --project examples/cypress --browser electron",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build",
-    "test:offline": "unshare -rn env RENDERCHECK_EXPECT_NO_NETWORK=1 vitest run __tests__/offline.spec.ts"
+    "test:offline": "unshare -rn env RENDERCHECK_EXPECT_NO_NETWORK=1 vitest run __tests__/offline.spec.ts",
+    "bench": "tsup && node benchmarks/run.mjs"
   },
   "dependencies": {
     "@tesseract.js-data/eng": "^1.0.0",
