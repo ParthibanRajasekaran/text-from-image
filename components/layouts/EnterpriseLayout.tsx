@@ -1,4 +1,5 @@
 import React from 'react';
+import { PageBackdrop } from '../PageBackdrop';
 
 export interface EnterpriseLayoutProps {
   /** Main page content */
@@ -19,7 +20,7 @@ export interface EnterpriseLayoutProps {
 
 /**
  * EnterpriseLayout: Content page layout for professional SaaS pages
- * - Solid background (no Aurora gradient)
+ * - Shared page backdrop (faint grid, glows, scan hairline)
  * - 12-column grid with optional sidebar
  * - Single <div> landmark (AppShell provides root <main>)
  * - Used for: /developers, /rendercheck, /case-studies, /access, /labs, /changelog
@@ -42,9 +43,10 @@ export function EnterpriseLayout({
 
       <div
         id="enterprise-content"
-        className={`relative min-h-screen py-16 sm:py-20 lg:py-24 bg-background ${className}`}
+        className={`relative isolate min-h-screen overflow-x-clip py-16 sm:py-20 lg:py-24 bg-background ${className}`}
         role="main"
       >
+        <PageBackdrop />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             {/* Breadcrumb */}

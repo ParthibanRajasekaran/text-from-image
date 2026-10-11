@@ -37,7 +37,7 @@ describe('About Page', () => {
     );
 
     const heading = screen.getByRole('heading', { level: 1 });
-    expect(heading).toHaveTextContent(/About TextFromImage/);
+    expect(heading).toHaveTextContent(/About RenderCheck/);
   });
 
   it('renders all section headings with correct hierarchy', () => {
@@ -50,7 +50,7 @@ describe('About Page', () => {
     const h2s = screen.getAllByRole('heading', { level: 2 });
     const h2Texts = h2s.map(h => h.textContent);
 
-    expect(h2Texts).toContain('Why TextFromImage');
+    expect(h2Texts).toContain('Why RenderCheck');
     expect(h2Texts).toContain('How It Works');
     expect(h2Texts).toContain("What's Next");
     expect(h2Texts).toContain('Quality & Trust');
@@ -80,7 +80,7 @@ describe('About Page', () => {
       </BrowserRouter>
     );
 
-    const headshot = screen.getByAltText(/Parthiban Rajasekaran, founder of TextFromImage/);
+    const headshot = screen.getByAltText(/Parthiban Rajasekaran, author of RenderCheck/);
     expect(headshot).toBeInTheDocument();
     expect(headshot).toHaveAttribute('src', 'images/headshot.jpg');
     expect(headshot).toHaveAttribute('width', '480');
@@ -96,7 +96,7 @@ describe('About Page', () => {
     );
 
     expect(screen.getByText('Parthiban Rajasekaran')).toBeInTheDocument();
-    expect(screen.getByText('Founder & Engineer')).toBeInTheDocument();
+    expect(screen.getByText('Creator & Engineer')).toBeInTheDocument();
   });
 
   it('renders CTA links to main tool and guides', () => {
@@ -221,7 +221,7 @@ describe('About Page', () => {
 
     const jsonLd = scriptTags[0].textContent;
     expect(jsonLd).toContain('"@type":"AboutPage"');
-    expect(jsonLd).toContain('About TextFromImage');
+    expect(jsonLd).toContain('About RenderCheck');
   });
 
   it('renders with proper accessibility attributes', () => {
