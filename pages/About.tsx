@@ -172,6 +172,35 @@ export default function About() {
             for the gap between what a test suite asserts and what users actually see. The page defines it, lists
             five failure types and states what it does not cover.
           </p>
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-2">What you can check</h3>
+            <ul className="list-disc space-y-1 pl-5">
+              <li>
+                Published on npm with a provenance attestation, so the package is tied to the build that made it:{' '}
+                <a className="text-accent underline" href="https://www.npmjs.com/package/@rendercheck/sdk" target="_blank" rel="noopener noreferrer">@rendercheck/sdk</a>.
+              </li>
+              <li>
+                Listed in the official{' '}
+                <a className="text-accent underline" href="https://registry.modelcontextprotocol.io/v0/servers?search=rendercheck" target="_blank" rel="noopener noreferrer">MCP Registry</a>{' '}
+                as io.github.ParthibanRajasekaran/rendercheck.
+              </li>
+              <li>
+                Tagged{' '}
+                <a className="text-accent underline" href="https://github.com/ParthibanRajasekaran/text-from-image/releases" target="_blank" rel="noopener noreferrer">GitHub releases</a>{' '}
+                with notes for each version.
+              </li>
+              <li>
+                A{' '}
+                <a className="text-accent underline" href="https://github.com/ParthibanRajasekaran/text-from-image/tree/main/packages/rendercheck/benchmarks" target="_blank" rel="noopener noreferrer">re-runnable benchmark</a>{' '}
+                of 21 fixtures that publishes its misses and false positives.
+              </li>
+              <li>
+                A{' '}
+                <a className="text-accent underline" href="https://github.com/ParthibanRajasekaran/text-from-image/tree/main/docs/evidence" target="_blank" rel="noopener noreferrer">dated evidence folder</a>{' '}
+                with the method for every public figure.
+              </li>
+            </ul>
+          </div>
           <p className="text-xs text-muted-foreground border-t border-border pt-4">
             RenderCheck is an independent project. It is not affiliated with, endorsed by or built for my employer,
             and opinions here are my own.
