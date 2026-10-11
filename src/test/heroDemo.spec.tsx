@@ -124,7 +124,7 @@ describe('<HeroDemo />', () => {
     const { container } = setup();
     upload(container);
     const line = await screen.findByTestId('hero-demo-scanline');
-    await waitFor(() => expect(line.style.transition).toContain('none'));
+    await waitFor(() => expect(line.style.transition).toContain('0s'));
     expect(line.style.transition).not.toContain('700ms');
   });
 

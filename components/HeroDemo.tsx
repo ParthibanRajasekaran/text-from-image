@@ -276,7 +276,7 @@ export function HeroDemo({ className = '', createEngine, readPixels = readImageD
   const activeLine: OCRLine | undefined = lines[activeLineIndex];
 
   const mismatch = target && !target.contained ? target : null;
-  const transition = reducedMotion ? 'none' : `${SCAN_MS}ms ${SCAN_EASING}`;
+  const transition = reducedMotion ? '0s' : `${SCAN_MS}ms ${SCAN_EASING}`;
   const busy = phase === 'loading-engine' || phase === 'reading';
 
   const statusText = (() => {
