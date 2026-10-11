@@ -61,6 +61,60 @@ export function FactsStrip() {
   );
 }
 
+const TRUST_BADGES = [
+  {
+    title: 'Local by construction',
+    spec: 'OCR runs in a WASM worker in your browser or test process',
+    icon: (
+      <>
+        <path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z" />
+        <path d="M9 12l2.2 2.2L15.5 10" />
+      </>
+    ),
+  },
+  {
+    title: 'Strict CSP',
+    spec: "default-src 'self' · connect-src 'self' · object-src 'none'",
+    icon: (
+      <>
+        <rect x="4" y="10" width="16" height="10" rx="2" />
+        <path d="M8 10V7a4 4 0 018 0v3" />
+      </>
+    ),
+  },
+  {
+    title: 'Tesseract.js WASM',
+    spec: 'Engine, worker and English data self-hosted',
+    icon: (
+      <>
+        <rect x="6" y="6" width="12" height="12" rx="2" />
+        <path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3" />
+      </>
+    ),
+  },
+];
+
+/** Spec plates for the three security claims. Each one is backed by vercel.json or the self-hosted /ocr files. */
+export function TrustBadges() {
+  return (
+    <section aria-label="Security by construction" className="container mx-auto px-4 pb-24 sm:px-6 lg:px-8">
+      <motion.ul {...reveal} className="mx-auto grid max-w-5xl gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-3">
+        {TRUST_BADGES.map((b) => (
+          <li key={b.title} className="flex items-start gap-4 bg-surface p-6">
+            <svg viewBox="0 0 24 24" className="mt-0.5 h-7 w-7 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              {b.icon}
+            </svg>
+            <div>
+              <p className="font-display text-base font-semibold tracking-[-0.02em]">{b.title}</p>
+              <p className="mt-1 break-words font-mono text-xs leading-relaxed text-muted-foreground">{b.spec}</p>
+            </div>
+          </li>
+        ))}
+      </motion.ul>
+    </section>
+  );
+}
+
 const PLAYWRIGHT_SNIPPET = `import { expect } from '@rendercheck/sdk/playwright';
 
 test('order confirmation', async ({ page }) => {

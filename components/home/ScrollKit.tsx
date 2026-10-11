@@ -40,7 +40,7 @@ export function SectionDivider() {
   );
 }
 
-/** Copy button with a small spring and a green confirmation. Clipboard errors are swallowed on purpose. */
+/** Copy button: the copy icon turns into a check with a quick spring. Clipboard errors are swallowed on purpose. */
 export function CopyButton({ text, label = 'Copy code', tone = 'theme' }: { text: string; label?: string; tone?: 'theme' | 'dark' }) {
   const [done, setDone] = useState(false);
   const copy = async () => {
@@ -60,14 +60,26 @@ export function CopyButton({ text, label = 'Copy code', tone = 'theme' }: { text
       animate={{ scale: done ? [1, 1.12, 1] : 1 }}
       transition={{ type: 'spring', stiffness: 500, damping: 18 }}
       aria-label={done ? 'Copied' : label}
-      className={`rounded-md border px-2.5 py-1 font-mono text-xs transition-colors ${
+      className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 font-mono text-xs transition-colors ${
         done
-          ? 'border-foreground/40 text-foreground'
+          ? tone === 'dark'
+            ? 'border-white/40 text-white'
+            : 'border-foreground/40 text-foreground'
           : tone === 'dark'
             ? 'border-code-border text-code-text/80 hover:text-code-text'
             : 'border-border text-muted-foreground hover:text-foreground'
       }`}
     >
+      <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        {done ? (
+          <path d="M3 8.5l3.2 3.2L13 4.8" className={tone === 'dark' ? 'text-emerald-400' : 'text-emerald-600'} stroke="currentColor" />
+        ) : (
+          <>
+            <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" />
+            <path d="M10.5 5.5V4A1.5 1.5 0 009 2.5H4A1.5 1.5 0 002.5 4v5A1.5 1.5 0 004 10.5h1.5" />
+          </>
+        )}
+      </svg>
       {done ? 'Copied' : 'Copy'}
       <span role="status" className="sr-only">{done ? 'Copied to clipboard' : ''}</span>
     </motion.button>

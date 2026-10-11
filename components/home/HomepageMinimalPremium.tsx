@@ -10,7 +10,7 @@ import { HeroStage } from './HeroStage';
 import { LegibilitySlider } from './LegibilitySlider';
 import { ProofLedger } from './ProofLedger';
 import { ScrollScanLine, SectionDivider } from './ScrollKit';
-import { BentoGrid, FactsStrip, SectionHeading, WorkflowSteps } from './HomeSections';
+import { BentoGrid, FactsStrip, SectionHeading, TrustBadges, WorkflowSteps } from './HomeSections';
 import { useOCRProcessor } from '../../hooks/useOCRProcessor';
 import { useLocalHistory, type HistoryItem } from '../../hooks/useLocalHistory';
 import { useLiveRegion } from '../../hooks/useLiveRegion';
@@ -84,6 +84,7 @@ export function HomepageMinimalPremium() {
         <ScrollScanLine />
         <HeroStage />
         <FactsStrip />
+        <TrustBadges />
         <LegibilitySlider />
         <SectionDivider />
         <ProofLedger />
