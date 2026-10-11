@@ -109,9 +109,8 @@ function getLocalCommit() {
 async function fetchProductionHTML() {
   return new Promise((resolve) => {
     try {
-      const options = {
-        rejectUnauthorized: false // Temporary workaround for expired cert
-      };
+      // Certificate validation stays on. An invalid certificate is reported as a failed fetch.
+      const options = {};
       
       https.get(PROD_URL, options, (res) => {
         if (res.statusCode === 301 || res.statusCode === 302) {

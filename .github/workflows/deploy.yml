@@ -43,6 +43,10 @@ on:
           - production
           - preview
 
+# Least privilege: the jobs only read the repository. The preview job also posts a comment on the PR.
+permissions:
+  contents: read
+
 jobs:
   preview:
     name: Deploy Preview
@@ -53,6 +57,11 @@ jobs:
       !contains(github.event.pull_request.title, '[skip deploy]')
     
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
     
     # Cancel superseded preview builds for same PR
     concurrency:

@@ -31,6 +31,15 @@ describe('callSite', () => {
   it('understands file:// URLs and named frames', () => {
     expect(callSite('Error\n    at run (file:///proj/tests/a.spec.mjs:5:3)')).toEqual({ file: '/proj/tests/a.spec.mjs', line: 5 });
   });
+  it('reads Windows paths and ignores frames without line and column', () => {
+    expect(callSite('Error\n    at run (C:\\proj\\tests\\a.spec.ts:12:4)')).toEqual({ file: 'C:\\proj\\tests\\a.spec.ts', line: 12 });
+    expect(callSite('Error\n    at <anonymous>\n    at native\n    at /proj/tests/b.spec.ts:x:y')).toBeUndefined();
+  });
+  it('stays fast on a very long frame with many colons', () => {
+    const t = Date.now();
+    callSite('Error\n    at ' + ':1'.repeat(50000));
+    expect(Date.now() - t).toBeLessThan(500);
+  });
   it('returns undefined without a stack', () => {
     expect(callSite(undefined)).toBeUndefined();
   });

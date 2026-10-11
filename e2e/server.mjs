@@ -42,7 +42,7 @@ const MIME = {
 function sourceToRegExp(source) {
   const unsupported = source.replace(/\(\.\*\)/g, '').match(/[()*+?[\]{}|\\]/);
   if (unsupported) throw new Error(`e2e/server.mjs does not support this vercel.json source: ${source}`);
-  const escaped = source.split('(.*)').map((part) => part.replace(/[.]/g, '\\.'));
+  const escaped = source.split('(.*)').map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
   return new RegExp(`^${escaped.join('.*')}$`);
 }
 
