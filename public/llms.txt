@@ -4,7 +4,7 @@
 
 Key facts:
 - OCR engine: Tesseract.js (WebAssembly), self-hosted. English language data ships with the package.
-- Network: the site's Content Security Policy limits connections to its own origin. The SDK makes no network requests.
+- Network: the site's Content Security Policy limits connections to its own origin. The SDK, command line and MCP server make no network requests; the command line and MCP server keep a local-only usage log at `~/.rendercheck/usage.jsonl` (disable with `RENDERCHECK_NO_USAGE_LOG=1`).
 - Install: `npm install --save-dev @rendercheck/sdk` (Node 18+, and `@playwright/test` 1.40+ or `cypress` 12+).
 - The package was published as `@freetextfromimage/rendercheck` up to version 0.4.1 and renamed to `@rendercheck/sdk` from 0.5.0. The API is unchanged.
 
@@ -34,7 +34,7 @@ Key facts:
 
 ## Trust
 
-- [Security and architecture](https://getrendercheck.com/security): how the tool stays local, the CSP, and the threat model
+- [Security and architecture](https://getrendercheck.com/security): how the tool stays local, the response headers and CSP, and the stated limits
 - [Privacy policy](https://getrendercheck.com/privacy-policy)
 - [Terms](https://getrendercheck.com/terms)
 
