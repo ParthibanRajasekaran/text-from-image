@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.1] - 2026-10-11
+
+### Changed
+
+- Release process only, no code changes: this is the first version published from GitHub Actions with npm trusted
+  publishing, so it carries a provenance attestation linking the package to its source commit. 0.5.0 was published
+  by hand from a maintainer's machine and has none.
+
 ## [0.5.0] - 2026-10-11
 
 ### Changed
