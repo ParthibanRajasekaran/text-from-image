@@ -103,7 +103,11 @@ test.describe('OCR', () => {
     await expect(result).toBeVisible({ timeout: 75_000 });
     const elapsedMs = Date.now() - startedAt;
 
-    const recognised = (await page.locator('#ocr-tool').innerText()).replace(/\s+/g, ' ');
+    // Read the extracted-text block only: the result card also shows a "Catch this in CI" snippet that
+    // repeats the first line, which must not count towards the character-similarity score.
+    const recognised = (
+      await page.locator('#ocr-tool').getByLabel('Extracted text', { exact: true }).innerText()
+    ).replace(/\s+/g, ' ');
     const score = similarity(
       EXPECTED_TEXT,
       // keep only the part of the page that came from OCR (from the first expected word on)
