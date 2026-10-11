@@ -423,6 +423,35 @@ cy.get('#total').matchText('Total: $14.00');`}
 
           <details className="border border-border rounded-lg p-4 cursor-pointer group">
             <summary className="font-medium text-foreground group-open:text-primary">
+              Does the CLI or MCP server keep a usage log?
+            </summary>
+            <div className="mt-3 text-sm text-muted-foreground space-y-2">
+              <p>
+                Yes, a local one. Each run of the CLI or the MCP server appends one line to{' '}
+                <code>~/.rendercheck/usage.jsonl</code> on your own machine. A line holds the time, the surface (CLI or
+                MCP), the tool name, pass or fail, the failure kind, and the duration in milliseconds. It never holds
+                screenshot text or file paths.
+              </p>
+              <p>Nothing is sent anywhere. The file is only written to disk and read back by you.</p>
+            </div>
+          </details>
+
+          <details className="border border-border rounded-lg p-4 cursor-pointer group">
+            <summary className="font-medium text-foreground group-open:text-primary">
+              How do I view, disable or move the usage log?
+            </summary>
+            <div className="mt-3 text-sm text-muted-foreground space-y-2">
+              <p>
+                View a summary with <code>rendercheck stats</code>. Turn logging off by setting{' '}
+                <code>RENDERCHECK_NO_USAGE_LOG=1</code>. Write the file somewhere else by setting{' '}
+                <code>RENDERCHECK_USAGE_FILE</code> to a path. If the log cannot be written, the run carries on and the
+                assertion is unaffected.
+              </p>
+            </div>
+          </details>
+
+          <details className="border border-border rounded-lg p-4 cursor-pointer group">
+            <summary className="font-medium text-foreground group-open:text-primary">
               Is OCR accuracy guaranteed?
             </summary>
             <div className="mt-3 text-sm text-muted-foreground">
