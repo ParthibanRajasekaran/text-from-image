@@ -35,7 +35,7 @@ npx @rendercheck/sdk mcp
 # write agent instructions and MCP config into this repo
 npx @rendercheck/sdk init`;
 
-/** Command line, MCP server and `init`: shipping in 0.6.0, so the copy says so. */
+/** Command line, MCP server and `init`: released in 0.6.0. */
 function AgentsSection() {
   return (
     <section id="agents" className="mb-12 scroll-mt-24 border-t pt-8">
@@ -45,8 +45,8 @@ function AgentsSection() {
         OCR as the SDK: no API key, no upload.
       </p>
       <p className="text-sm text-muted-foreground mb-6 max-w-2xl">
-        Available from 0.6.0. This release is not on npm yet, so the commands below work once it is published. The
-        current SDK install is unchanged.
+        Available from 0.6.0 (released 11 October 2026). Run the commands below with npx, no install step needed. The
+        server is also listed in the MCP Registry as io.github.ParthibanRajasekaran/rendercheck.
       </p>
 
       <CodeBlock code={AGENT_COMMANDS} language="bash" filename="Terminal" className="mb-6" />
