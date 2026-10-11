@@ -102,6 +102,35 @@ cy.get('#total').matchText('Total: $14.00');
 > checkout page, including the failing cases. Other Cypress versions and browsers are untested.
 > Run it with `npm run build && npx cypress@13 run --project examples/cypress` (add `--browser electron`).
 
+## Command line and AI agents
+
+Check a screenshot from a terminal, a script or an AI coding agent. Same local, offline OCR.
+
+```bash
+npx @rendercheck/sdk verify screenshot.png --expect "Total: $14.00" --min-contrast 4.5
+npx @rendercheck/sdk read screenshot.png --json
+```
+
+Exit code `0` means pass, `1` the assertion failed, `2` an error. `--json` prints `{ pass, failure, read, confidence, box, message }`.
+
+### MCP server
+
+`rendercheck mcp` is a [Model Context Protocol](https://modelcontextprotocol.io) server over stdio with two tools:
+`verify_text` (is this text really visible, legible and readable?) and `read_text` (what does a user see?).
+
+```json
+{
+  "mcpServers": {
+    "rendercheck": { "command": "npx", "args": ["-y", "@rendercheck/sdk", "mcp"] }
+  }
+}
+```
+
+Claude Code: `claude mcp add rendercheck -- npx -y @rendercheck/sdk mcp`.
+
+Runs are counted in `~/.rendercheck/usage.jsonl` on your machine only, so `rendercheck stats` can show them to you.
+Screenshot text is never recorded and nothing is sent anywhere. Set `RENDERCHECK_NO_USAGE_LOG=1` to turn it off.
+
 ## Core
 
 ```ts

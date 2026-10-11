@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **`rendercheck` command line.** `rendercheck verify <image> --expect "Total: $14.00"` checks a screenshot and exits
+  0 (pass), 1 (assertion failed) or 2 (error); `--json` gives a stable machine-readable result. `rendercheck read
+  <image>` prints the text a user would see.
+- **MCP server.** `npx -y @rendercheck/sdk mcp` starts a stdio Model Context Protocol server with two tools,
+  `verify_text` and `read_text`, so AI coding agents can check what actually rendered. Local OCR, offline.
+- **Local usage log.** Runs are counted in `~/.rendercheck/usage.jsonl` on your own machine (tool, pass/fail, time; never
+  screenshot text) and `rendercheck stats` prints them. Nothing is sent anywhere. Disable with
+  `RENDERCHECK_NO_USAGE_LOG=1`.
+
 ## [0.5.1] - 2026-10-11
 
 ### Changed
