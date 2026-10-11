@@ -90,7 +90,7 @@ export function ProofLedger() {
   return (
     <section className="container mx-auto px-4 pb-24 sm:px-6 lg:px-8">
       <div ref={ref} style={pinned ? { height: '220vh' } : undefined}>
-        <div className={pinned ? 'sticky top-24' : ''}>
+        <div className={pinned ? 'sticky top-24 flex min-h-[calc(100vh-7rem)] flex-col justify-center' : ''}>
           <SectionHeading
             eyebrow="Proof"
             title="Zero bytes leave your machine"
