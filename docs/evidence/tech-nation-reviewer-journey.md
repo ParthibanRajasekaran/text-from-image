@@ -120,9 +120,9 @@ Observation:
 Looks for:
 - CSP headers ✓ (in response headers)
 - HTTPS ✓ (site uses HTTPS, no mixed content)
-- No external ad trackers on `/developers` page ✓
+- No external trackers on `/developers` page ✓
 
-**Their assessment:** "Security approach is coherent: privacy-first, no ads on dev pages."
+**Their assessment:** "Security approach is coherent: privacy-first, no ads."
 
 ### Minute 18-20: Check Code Quality and Honesty
 

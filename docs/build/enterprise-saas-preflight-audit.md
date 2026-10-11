@@ -63,32 +63,15 @@ Pre-emptively change nested `<main>` to `<div>` in ContentLayout, GuideLayout, a
 ### Action for PR 1
 Add complete security headers block to `vercel.json` with:
 - CSP allowing: Google Analytics, Google Tag Manager, Formspree, Tesseract Worker, Framer Motion inline styles
-- **Do NOT include AdSense domains** (privacy-first positioning)
+- **Do NOT include any ad network domains** (privacy-first positioning)
 - All 7 headers listed above
 - Cache-Control for immutable assets
 
 ---
 
-## 4. ADSENSE LOADING AUDIT
+## 4. ADVERTISING AUDIT
 
-### Current Implementation
-| File | Component | Script | Consent Gated? | Issue |
-|---|---|---|---|---|
-| `src/ads/AutoAds.tsx` | Auto Ads | `pagead2.googlesyndication.com` | YES (`ad_storage`) | Mounted in `<head>`, aggressive |
-| `src/ads/InArticle.tsx` | In-Article Ads | `pagead2.googlesyndication.com` | YES (`ad_storage`) | Only renders when consent granted |
-
-### Environment
-- Client ID: `VITE_ADSENSE_PUB_ID` env variable
-- Consent requirement: `consent.ad_storage === 'granted'`
-- Ad format: `data-ad-format="fluid"` + `data-ad-layout="in-article"`
-
-### Strategic Issue
-**Privacy-first positioning + AdSense is incoherent.** RenderCheck site (PR 2+ pages) should NOT run ads. Browser OCR / legacy pages can keep ads for now.
-
-### Action for PR 1
-- Audit where ads are actually mounted (likely only on legacy/niche pages)
-- Plan to remove AdSense from all new developer-focused pages (/developers, /rendercheck, /access, /labs, /changelog)
-- CSP headers should NOT include `pagead2.googlesyndication.com` on new pages
+The site shows no ads and loads no ad scripts. The CSP allows no ad hosts, and `e2e/no-third-party.spec.ts` enforces this.
 
 ---
 
@@ -239,7 +222,6 @@ API_KEY_PREFIX: {
 ### ⚠️ Document for PR 3
 - **API key format import:** Must source from `packages/core`, not redefine
 - **OCR not on content pages:** Verify bundle doesn't accidentally load tesseract on new pages
-- **AdSense removal:** Plan to exclude from developer-focused pages
 
 ### ✅ Ready as-is
 - Lazy OCR loading via Worker — good strategy, no changes needed

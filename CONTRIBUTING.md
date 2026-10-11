@@ -260,15 +260,13 @@ git commit -m "asjkdhaksjdhaksd"
 Include motivation and context:
 
 ```
-feat(consent): implement Consent Mode v2
+feat(ocr): add confidence threshold to text extraction
 
-Adds Google Consent Mode v2 support with default denied state.
-Wires CMP callbacks to update ad_storage, ad_user_data, ad_personalization.
+Filters out words below the configured minimum confidence.
 
-- Default all consents to 'denied' on page load
-- Add updateConsent() function for CMP integration
-- Test with Tag Assistant Chrome extension
-- See docs/adsense-submit.md for CMP wiring example
+- Read the threshold from VITE_OCR_MIN_CONFIDENCE
+- Default to 60 when unset
+- Cover both branches with unit tests
 ```
 
 ---
@@ -299,7 +297,6 @@ Tests are in `__tests__/` and named `*.spec.tsx`:
 __tests__/
 ├── routes.spec.tsx           # Route rendering validation
 ├── seo.spec.tsx              # SEO tags & JSON-LD validation
-├── adsense-readiness.spec.tsx # AdSense slot & consent tests
 ├── deprecation.spec.tsx       # Deprecation policy enforcement
 ├── a11y.spec.tsx             # Accessibility checks
 └── ...

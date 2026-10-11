@@ -273,7 +273,6 @@ specs/
 ├── routes.json           # All valid routes, metadata
 ├── seo.spec.json         # SEO requirements (title, canonical, og:image)
 ├── a11y.spec.json        # Accessibility requirements (WCAG 2.1 AA)
-├── adsense.spec.json     # AdSense policy (slot placement, consent)
 └── ...
 ```
 

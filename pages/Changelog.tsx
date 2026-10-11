@@ -56,7 +56,7 @@ const ENTRIES: ChangelogEntry[] = [
     status: 'live',
     category: 'Security',
     description:
-      'Content Security Policy, X-Frame-Options, and other security headers now enforced across all pages. Privacy-first approach: no external ad networks on developer pages.',
+      'Content Security Policy, X-Frame-Options, and other security headers now enforced across all pages. The site shows no ads and loads no third-party scripts.',
   },
   {
     date: '2026-06-15',

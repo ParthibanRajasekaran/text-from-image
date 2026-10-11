@@ -171,7 +171,6 @@ Searched for `aria-hidden` on containers like:
 **Result:** None found. Only used appropriately on:
 - Decorative icons
 - Modal backdrops
-- Ad placeholders
 
 ---
 
