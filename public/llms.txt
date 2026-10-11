@@ -18,6 +18,7 @@ Key facts:
 ## Developers
 
 - [Developer documentation](https://getrendercheck.com/developers): install, quick start, API reference and examples
+- [For AI agents](https://getrendercheck.com/developers): the "For AI agents" section covers the command line (`verify`, `read`), an MCP server (`verify_text`, `read_text`) and `rendercheck init`, available from 0.6.0 (not yet on npm)
 - [Playwright OCR testing](https://getrendercheck.com/playwright-ocr-testing): the `toShowText` matcher in Playwright
 - [Cypress OCR testing](https://getrendercheck.com/cypress-ocr-testing): `cy.matchText` in Cypress
 - [Changelog](https://getrendercheck.com/changelog): release history

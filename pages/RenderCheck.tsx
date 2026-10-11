@@ -4,6 +4,7 @@ import { EnterpriseLayout } from '../components/layouts/EnterpriseLayout';
 import { ScrollNav } from '../components/ui/ScrollNav';
 import { CodeBlock } from '../components/ui/CodeBlock';
 import { StatusBadge } from '../components/ui/StatusBadge';
+import { CopyButton } from '../components/home/ScrollKit';
 import { ROUTES } from '../router';
 
 // Loaded on demand: the demo pulls in the OCR client and analysis code.
@@ -17,8 +18,85 @@ const sections = [
   { id: 'install', label: 'Install' },
   { id: 'quick-start', label: 'Quick Start' },
   { id: 'api', label: 'API Reference' },
+  { id: 'agents', label: 'For AI agents' },
   { id: 'limitations', label: 'Limitations' },
 ];
+
+const MCP_CONFIG = `{
+  "mcpServers": {
+    "rendercheck": { "command": "npx", "args": ["-y", "@rendercheck/sdk", "mcp"] }
+  }
+}`;
+
+const AGENT_COMMANDS = `# check a screenshot (exit 0 pass, 1 fail, 2 error; add --json for machine output)
+npx @rendercheck/sdk verify shot.png --expect "Total: $14.00"
+# run the MCP server over stdio (tools: verify_text, read_text)
+npx @rendercheck/sdk mcp
+# write agent instructions and MCP config into this repo
+npx @rendercheck/sdk init`;
+
+/** Command line, MCP server and `init`: shipping in 0.6.0, so the copy says so. */
+function AgentsSection() {
+  return (
+    <section id="agents" className="mb-12 scroll-mt-24 border-t pt-8">
+      <h2 className="text-2xl font-bold text-foreground mb-4">For AI agents</h2>
+      <p className="text-foreground/90 mb-2 max-w-2xl">
+        Let a coding agent check the pixels after it changes UI. The command line and an MCP server run the same local
+        OCR as the SDK: no API key, no upload.
+      </p>
+      <p className="text-sm text-muted-foreground mb-6 max-w-2xl">
+        Available from 0.6.0. This release is not on npm yet, so the commands below work once it is published. The
+        current SDK install is unchanged.
+      </p>
+
+      <CodeBlock code={AGENT_COMMANDS} language="bash" filename="Terminal" className="mb-6" />
+
+      <div className="mb-6 overflow-hidden rounded-lg border border-border">
+        <div className="flex items-center justify-between border-b border-border px-4 py-2">
+          <span className="text-sm text-muted-foreground">MCP config (Claude Code, Cursor and other MCP clients)</span>
+          <div className="[&_button]:min-h-11 [&_button]:min-w-11 [&_button]:justify-center">
+            <CopyButton text={MCP_CONFIG} label="Copy MCP config" />
+          </div>
+        </div>
+        <pre
+          tabIndex={0}
+          aria-label="MCP server configuration JSON"
+          className="overflow-x-auto bg-muted/50 p-4 text-xs leading-relaxed text-foreground"
+        >
+          <code>{MCP_CONFIG}</code>
+        </pre>
+      </div>
+
+      <ul className="mb-6 max-w-2xl list-disc space-y-2 pl-5 text-sm text-foreground/90">
+        <li>
+          <code>init</code> adds a short instruction and the MCP entry for Claude Code, Codex (<code>AGENTS.md</code>),
+          Cursor and Copilot. Re-running only updates its own marked block.
+        </li>
+        <li>
+          Runs are counted in <code>~/.rendercheck</code> on your machine only. Screenshot text is never recorded and
+          nothing is sent anywhere. Set <code>RENDERCHECK_NO_USAGE_LOG=1</code> to turn it off.
+        </li>
+      </ul>
+
+      <div className="flex flex-wrap gap-3">
+        <a
+          href="https://github.com/ParthibanRajasekaran/text-from-image/tree/main/packages/rendercheck#command-line-and-ai-agents"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-11 items-center rounded-full border border-border px-5 text-sm font-medium text-foreground hover:bg-muted"
+        >
+          CLI and MCP reference
+        </a>
+        <a
+          href={`${ROUTES.DEVELOPERS}#agents`}
+          className="inline-flex min-h-11 items-center rounded-full border border-border px-5 text-sm font-medium text-foreground hover:bg-muted"
+        >
+          Developer docs
+        </a>
+      </div>
+    </section>
+  );
+}
 
 export default function RenderCheck() {
   const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://getrendercheck.com';
@@ -259,6 +337,8 @@ test('checkout shows the correct total', async ({ page }) => {
             </div>
           </div>
         </section>
+
+        <AgentsSection />
 
         {/* Limitations */}
         <section id="limitations" className="border-t pt-8 scroll-mt-24">
