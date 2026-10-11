@@ -100,7 +100,8 @@ const results = { environment, summary, matrix, rows };
 writeFileSync(path.join(here, 'results.json'), JSON.stringify(results, null, 2) + '\n');
 
 // ---- results.md ----
-const esc = (s) => String(s).replace(/\|/g, '\\|');
+// Escape backslashes first so an existing backslash cannot undo the pipe escape.
+const esc = (s) => String(s).replace(/\\/g, '\\\\').replace(/\|/g, '\\|');
 const cell = (s) => '`' + esc(s || '(nothing)') + '`';
 const sum = (k) => {
   const c = summary[k];
