@@ -30,7 +30,7 @@ describe('About Page', () => {
         <About />
       </BrowserRouter>
     );
-    const h1 = screen.getByRole('heading', { level: 1, name: /about textfromimage/i });
+    const h1 = screen.getByRole('heading', { level: 1, name: /about rendercheck/i });
     expect(h1).toBeInTheDocument();
   });
 
@@ -40,7 +40,7 @@ describe('About Page', () => {
         <About />
       </BrowserRouter>
     );
-    const img = screen.getByAltText(/parthiban rajasekaran, founder of textfromimage/i);
+    const img = screen.getByAltText(/parthiban rajasekaran, author of rendercheck/i);
     expect(img).toBeInTheDocument();
     expect(img).toHaveAttribute('width', '480');
     expect(img).toHaveAttribute('height', '600');
@@ -102,9 +102,8 @@ describe('About Page', () => {
     if (aboutScript) {
       const data = JSON.parse(aboutScript.textContent || '{}');
       expect(data['@type']).toBe('AboutPage');
-      expect(data.mainEntity['@type']).toBe('Organization');
-      expect(data.mainEntity.founder['@type']).toBe('Person');
-      expect(data.mainEntity.founder.name).toBe('Parthiban Rajasekaran');
+      expect(data.mainEntity['@type']).toBe('Person');
+      expect(data.mainEntity.name).toBe('Parthiban Rajasekaran');
     }
   });
 

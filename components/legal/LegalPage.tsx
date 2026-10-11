@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { useSEO } from '../../src/seo';
+import { PageBackdrop } from '../PageBackdrop';
 import { ScrollNav, type ScrollNavSection } from '../ui/ScrollNav';
 
 interface LegalPageProps {
@@ -30,7 +31,9 @@ export function LegalPage({ title, description, path, docRef, version, effective
   useSEO({ title: `${title} | RenderCheck`, description, canonical });
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+    <div className="relative isolate overflow-x-clip">
+      <PageBackdrop />
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
       <div className="grid grid-cols-1 md:grid-cols-[220px_minmax(0,1fr)] gap-10">
         <aside className="hidden md:block sticky top-24 self-start" aria-label="On this page">
           <ScrollNav sections={toc} />
@@ -52,6 +55,7 @@ export function LegalPage({ title, description, path, docRef, version, effective
           {children}
         </article>
       </div>
+      </div>
     </div>
   );
 }
@@ -59,7 +63,7 @@ export function LegalPage({ title, description, path, docRef, version, effective
 /** A plain data table for legal pages. */
 export function LegalTable({ head, rows }: { head: string[]; rows: ReactNode[][] }) {
   return (
-    <div className="mb-4 overflow-x-auto rounded-lg border border-border">
+    <div role="region" aria-label="Table, scrollable" tabIndex={0} className="mb-4 overflow-x-auto rounded-lg border border-border">
       <table className="w-full text-left text-sm">
         <thead className="bg-muted text-foreground">
           <tr>

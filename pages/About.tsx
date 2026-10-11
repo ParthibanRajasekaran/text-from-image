@@ -14,15 +14,15 @@ export default function About() {
   const canonicalAbsolute = new URL('/about', SITE_URL).toString();
 
   useSEO({
-    title: 'About TextFromImage: Private, Fast, On-Device OCR',
+    title: 'About RenderCheck: Local OCR for UI Tests and Images',
     description:
-      'Learn how TextFromImage extracts text privately in your browser, no signup, no uploads.',
+      'Who builds RenderCheck, how its OCR stays local in your browser and your test process, and what is planned next.',
     canonical: canonicalAbsolute,
   });
 
   // Section navigation for scroll spy
   const sections: ScrollNavSection[] = [
-    { id: 'pillars', label: 'Why TextFromImage' },
+    { id: 'pillars', label: 'Why RenderCheck' },
     { id: 'how-it-works', label: 'How It Works' },
     { id: 'quality', label: 'Quality & Trust' },
     { id: 'roadmap', label: 'Roadmap' },
@@ -32,29 +32,20 @@ export default function About() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'AboutPage',
-    name: 'About TextFromImage',
+    name: 'About RenderCheck',
     url: canonicalAbsolute,
     mainEntity: {
-      '@type': 'Organization',
-      name: 'TextFromImage',
-      url: SITE_URL,
-      logo: `${SITE_URL}/logo.png`,
-      description: 'Privacy-first OCR tool that runs entirely in your browser',
-      founder: {
-        '@type': 'Person',
-        name: 'Parthiban Rajasekaran',
-        url: 'https://www.linkedin.com/in/parthibanrajasekaran',
-        image: `${SITE_URL}/images/headshot.jpg`,
-        sameAs: [
-          'https://www.linkedin.com/in/parthibanrajasekaran',
-          'https://github.com/ParthibanRajasekaran',
-        ],
-      },
-      contactPoint: [{
-        '@type': 'ContactPoint',
-        email: CONTACT_EMAIL,
-        contactType: 'customer support'
-      }],
+      '@type': 'Person',
+      name: 'Parthiban Rajasekaran',
+      url: 'https://www.linkedin.com/in/parthibanrajasekaran',
+      image: `${SITE_URL}/images/headshot.jpg`,
+      jobTitle: 'Software engineer',
+      description: 'Author of RenderCheck, a local OCR toolkit for UI tests and images',
+      sameAs: [
+        'https://www.linkedin.com/in/parthibanrajasekaran',
+        'https://github.com/ParthibanRajasekaran',
+      ],
+      email: CONTACT_EMAIL,
     },
   };
 
@@ -65,7 +56,7 @@ export default function About() {
         <figure className="mb-4">
           <img
             src="images/headshot.jpg"
-            alt="Parthiban Rajasekaran, founder of TextFromImage"
+            alt="Parthiban Rajasekaran, author of RenderCheck"
             width={480}
             height={600}
             loading="lazy"
@@ -76,7 +67,7 @@ export default function About() {
         </figure>
         <div className="px-6 pb-6">
           <h3 className="font-semibold text-foreground mb-1">Parthiban Rajasekaran</h3>
-          <p className="text-xs text-muted-foreground mb-3">Founder & Engineer</p>
+          <p className="text-xs text-muted-foreground mb-3">Creator & Engineer</p>
           <p className="text-xs text-foreground/80 leading-relaxed mb-4">
             Full-stack engineer passionate about privacy, performance, and accessible software.
           </p>
@@ -109,8 +100,8 @@ export default function About() {
 
   return (
     <ContentLayout
-      title="About TextFromImage"
-      subtitle="Extract text from images in your browser. No signup. No uploads."
+      title="About RenderCheck"
+      subtitle="Local OCR for UI tests and images. No signup. No uploads."
       breadcrumb={[
         { label: 'Home', href: '/' },
         { label: 'About' },
@@ -123,9 +114,9 @@ export default function About() {
       {/* Hero + CTAs */}
       <Glass className="mb-8 space-y-4">
         <p className="text-foreground/90 leading-relaxed">
-          TextFromImage proves that modern browsers are powerful enough to run OCR
-          locally. Extract text from images instantly, without uploading to the cloud, without
-          compromise.
+          RenderCheck reads text from pixels on your own machine: in your browser for the free
+          image-to-text tool, and in your test process for the Playwright and Cypress SDK. Nothing is
+          uploaded.
         </p>
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
@@ -145,20 +136,20 @@ export default function About() {
 
       {/* Value Pillars */}
       <section id="pillars" className="mb-8">
-        <h2 className="text-2xl font-semibold text-foreground mb-4">Why TextFromImage</h2>
+        <h2 className="text-2xl font-semibold text-foreground mb-4">Why RenderCheck</h2>
         <div className="grid sm:grid-cols-3 gap-4">
           <PillarCard
-            icon="🔒"
+            icon={<svg viewBox="0 0 24 24" className="h-8 w-8 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 11V8a5 5 0 0110 0v3M5 11h14v9H5z" /></svg>}
             title="Private"
             body="Your images never leave your device. Processing happens in your browser, no servers, no uploads, no logs."
           />
           <PillarCard
-            icon="⚡"
+            icon={<svg viewBox="0 0 24 24" className="h-8 w-8 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z" /></svg>}
             title="Fast"
             body="Instant results. OCR runs locally using Tesseract (WASM), with nothing uploaded."
           />
           <PillarCard
-            icon="♿"
+            icon={<svg viewBox="0 0 24 24" className="h-8 w-8 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 4a1.5 1.5 0 100 .01M6 8h12M12 8v5l-3 7M12 13l3 7" /></svg>}
             title="Accessible"
             body="Built for everyone. Keyboard navigation, screen reader support, and semantic HTML structure."
           />
