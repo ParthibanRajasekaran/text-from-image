@@ -114,6 +114,11 @@ export function Footer() {
             </a>
           </div>
         </div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+          <p className="text-xs text-muted-foreground text-center sm:text-left">
+            Playwright, Cypress, GitHub and Tesseract are trademarks of their respective owners. RenderCheck is independent and not affiliated with or endorsed by them.
+          </p>
+        </div>
       </div>
     </footer>
   );
