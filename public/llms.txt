@@ -1,0 +1,48 @@
+# RenderCheck
+
+> RenderCheck is a local OCR toolkit for UI testing. The SDK (`@rendercheck/sdk`) adds assertions to Playwright and Cypress that read the rendered screen with OCR on the developer's machine and fail the test when visible text is wrong, too faint to read, or missing. A free image-to-text tool runs the same engine in the browser. Nothing is uploaded and no API key is needed. RenderCheck is in developer beta, MIT licensed, and maintained by Parthiban Rajasekaran. There are no published customer case studies yet.
+
+Key facts:
+- OCR engine: Tesseract.js (WebAssembly), self-hosted. English language data ships with the package.
+- Network: the site's Content Security Policy limits connections to its own origin. The SDK makes no network requests.
+- Install: `npm install --save-dev @rendercheck/sdk` (Node 18+, and `@playwright/test` 1.40+ or `cypress` 12+).
+- The package was published as `@freetextfromimage/rendercheck` up to version 0.4.1 and renamed to `@rendercheck/sdk` from 0.5.0. The API is unchanged.
+
+## Product
+
+- [RenderCheck overview](https://getrendercheck.com/rendercheck): what the SDK checks and how it fits into a test suite
+- [Image to text](https://getrendercheck.com/image-to-text): free browser tool that reads text from an image locally
+- [Redact image](https://getrendercheck.com/redact-image): find emails, card numbers and IBANs in a screenshot and black them out in the browser
+- [Labs](https://getrendercheck.com/labs): experiments and their status
+
+## Developers
+
+- [Developer documentation](https://getrendercheck.com/developers): install, quick start, API reference and examples
+- [Playwright OCR testing](https://getrendercheck.com/playwright-ocr-testing): the `toShowText` matcher in Playwright
+- [Cypress OCR testing](https://getrendercheck.com/cypress-ocr-testing): `cy.matchText` in Cypress
+- [Changelog](https://getrendercheck.com/changelog): release history
+- [npm package](https://www.npmjs.com/package/@rendercheck/sdk)
+- [Source code](https://github.com/ParthibanRajasekaran/text-from-image)
+
+## Concepts and research
+
+- [What is verification debt?](https://getrendercheck.com/what-is-verification-debt): the gap between what tests assert and what users see on screen, with five failure types and examples
+- [Verification Debt Score](https://getrendercheck.com/verify-debt-score): a self-assessment questionnaire that runs in the browser
+- [AI UI bug gallery](https://getrendercheck.com/ai-ui-bug-gallery): worked examples of wrong currency, truncated copy and invisible text, each with the assertion that catches it
+- [OCR challenge lab](https://getrendercheck.com/ocr-challenge-lab): hard screenshots for trying the OCR engine
+
+## Trust
+
+- [Security and architecture](https://getrendercheck.com/security): how the tool stays local, the CSP, and the threat model
+- [Privacy policy](https://getrendercheck.com/privacy-policy)
+- [Terms](https://getrendercheck.com/terms)
+
+## About
+
+- [About](https://getrendercheck.com/about): who builds RenderCheck
+- [Contact](https://getrendercheck.com/contact)
+- [Early access](https://getrendercheck.com/access)
+
+## Optional
+
+- [Case studies](https://getrendercheck.com/case-studies): none published yet; the page says so

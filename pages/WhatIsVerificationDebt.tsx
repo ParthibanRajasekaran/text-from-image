@@ -33,6 +33,7 @@ export default function WhatIsVerificationDebt() {
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'TechArticle', headline: 'What is verification debt?', url: canonical, description, author: { '@type': 'Person', name: 'Parthiban Rajasekaran' } },
+      { '@type': 'DefinedTerm', name: 'Verification debt', url: canonical, description: FAQS[0].answer, inDefinedTermSet: { '@type': 'DefinedTermSet', name: 'RenderCheck glossary', url: canonical } },
       { '@type': 'FAQPage', mainEntity: FAQS.map((f) => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })) },
     ],
   };

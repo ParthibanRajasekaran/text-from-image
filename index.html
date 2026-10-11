@@ -7,9 +7,8 @@
     <!-- Primary Meta Tags -->
     <title>RenderCheck - Local OCR for Images and UI Tests | Extract Text Online</title>
     <meta name="title" content="RenderCheck - Local OCR for Images and UI Tests | Extract Text Online" />
-    <meta name="description" content="Extract text from images instantly with our free OCR tool that runs in your browser. Convert JPG, PNG, WEBP to text without uploading anything. No registration required." />
-    <meta name="keywords" content="text from image, OCR, image to text, extract text, photo to text converter, OCR online, image text extractor, free OCR, convert image to text, screenshot to text, JPG to text, PNG to text" />
-    <meta name="author" content="Free Text From Image" />
+    <meta name="description" content="RenderCheck uses privacy-first OCR to test screenshots, documents, and rendered interfaces, helping teams catch visible text failures that DOM checks and code reviews can miss." />
+    <meta name="author" content="Parthiban Rajasekaran" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <link rel="canonical" href="https://getrendercheck.com/" />
     
@@ -17,54 +16,103 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://getrendercheck.com/" />
     <meta property="og:title" content="RenderCheck - Local OCR for Images and UI Tests" />
-    <meta property="og:description" content="Extract text from images instantly with our free OCR tool that runs in your browser. Convert JPG, PNG, WEBP to text without uploading anything." />
-    <meta property="og:image" content="https://getrendercheck.com/og-image.png" />
-    <meta property="og:site_name" content="Free Text From Image" />
+    <meta property="og:description" content="Local OCR assertions for Playwright and Cypress, and a free image-to-text tool that runs in your browser. Nothing is uploaded." />
+    <meta property="og:image" content="https://getrendercheck.com/og/default.png" />
+    <meta property="og:site_name" content="RenderCheck" />
     <meta property="og:locale" content="en_US" />
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://getrendercheck.com/" />
     <meta property="twitter:title" content="RenderCheck - Local OCR for Images and UI Tests" />
-    <meta property="twitter:description" content="Extract text from images instantly with our free OCR tool that runs in your browser. Convert JPG, PNG, WEBP to text without uploading anything." />
-    <meta property="twitter:image" content="https://getrendercheck.com/twitter-image.png" />
+    <meta property="twitter:description" content="Local OCR assertions for Playwright and Cypress, and a free image-to-text tool that runs in your browser. Nothing is uploaded." />
+    <meta property="twitter:image" content="https://getrendercheck.com/og/default.png" />
     
     <!-- Additional SEO -->
-    <meta name="theme-color" content="#2563eb" />
-    <meta name="application-name" content="Free Text From Image" />
+    <meta name="theme-color" content="#F5F5F7" />
+    <meta name="application-name" content="RenderCheck" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Text From Image" />
+    <meta name="apple-mobile-web-app-title" content="RenderCheck" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="mobile-web-app-capable" content="yes" />
     
     <!-- Structured Data for Rich Results -->
     <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Free Text From Image",
-      "applicationCategory": "UtilityApplication",
-      "operatingSystem": "Any",
+      "@type": "WebSite",
+      "@id": "https://getrendercheck.com/#website",
+      "url": "https://getrendercheck.com/",
+      "name": "RenderCheck",
+      "description": "Local OCR assertions for Playwright and Cypress, and a free image-to-text tool that runs in your browser.",
+      "publisher": {
+        "@id": "https://getrendercheck.com/#author"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://getrendercheck.com/#author",
+      "name": "Parthiban Rajasekaran",
+      "url": "https://getrendercheck.com/about",
+      "sameAs": [
+        "https://github.com/ParthibanRajasekaran",
+        "https://www.linkedin.com/in/parthiban-rajasekaran/"
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://getrendercheck.com/#sdk",
+      "name": "RenderCheck SDK",
+      "alternateName": "@rendercheck/sdk",
+      "applicationCategory": "DeveloperApplication",
+      "applicationSubCategory": "Testing library",
+      "operatingSystem": "Node.js 18 or later",
+      "description": "Assertions for Playwright and Cypress that read the rendered screen with OCR on your machine and fail the test when the visible text is wrong, too faint to read, or missing. No API key, no upload.",
+      "url": "https://getrendercheck.com/rendercheck",
+      "downloadUrl": "https://www.npmjs.com/package/@rendercheck/sdk",
+      "softwareHelp": {
+        "@type": "CreativeWork",
+        "url": "https://getrendercheck.com/developers"
+      },
+      "license": "https://opensource.org/license/mit",
+      "isAccessibleForFree": true,
+      "author": {
+        "@id": "https://getrendercheck.com/#author"
+      },
+      "sameAs": [
+        "https://www.npmjs.com/package/@rendercheck/sdk",
+        "https://github.com/ParthibanRajasekaran/text-from-image"
+      ],
       "offers": {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "USD"
-      },
-      "description": "Free OCR tool that runs in your browser to extract text from images. Convert JPG, PNG, WEBP to text without uploading anything.",
+      }
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://getrendercheck.com/#tool",
+      "name": "RenderCheck image to text",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires WebAssembly",
+      "description": "Read text from an image with OCR that runs in your browser. Images are not uploaded.",
       "url": "https://getrendercheck.com/",
-      "screenshot": "https://getrendercheck.com/screenshot.png",
-      "featureList": [
-        "Browser-based OCR",
-        "Multiple Image Formats (JPG, PNG, WEBP)",
-        "Fast Processing",
-        "Privacy-Focused",
-        "No Registration Required",
-        "Free Forever",
-        "Copy and Download Results",
-        "Dark Mode Support"
-      ]
+      "isAccessibleForFree": true,
+      "author": {
+        "@id": "https://getrendercheck.com/#author"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
     }
+  ]
+}
     </script>
     
     <style>

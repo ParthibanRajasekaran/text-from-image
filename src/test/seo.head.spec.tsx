@@ -13,7 +13,7 @@ describe('SEO head tags', () => {
         canonical="https://getrendercheck.com/test"
       />
     );
-  expect(document.title).toBe('Test Title | TextFromImage');
+  expect(document.title).toBe('Test Title | RenderCheck');
     const metaDesc = document.querySelector('meta[name="description"]');
     expect(metaDesc).toBeTruthy();
     expect(metaDesc?.getAttribute('content')).toBe('Test description for SEO.');
