@@ -59,7 +59,7 @@ export function toAnnotation(record, workspace) {
   return `::error ${props.join(',')}::${escapeData(lines.join('\n'))}`;
 }
 
-const cell = (s) => String(s ?? '').replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
+const cell = (s) => String(s ?? '').replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
 
 export function summaryMarkdown(records, workspace, artifactUrl) {
   if (!records.length) return '### RenderCheck\n\nNo failing assertions.\n';

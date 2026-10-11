@@ -27,6 +27,17 @@ const colors = {
   cyan: '\x1b[36m',
 };
 
+/** Remove HTML tags for display only. Repeats until stable so nested fragments cannot survive. */
+function stripTags(text) {
+  let out = String(text);
+  let prev;
+  do {
+    prev = out;
+    out = out.replace(/<[^>]*>/g, '');
+  } while (out !== prev);
+  return out.replace(/[<>]/g, '');
+}
+
 function log(message, color = 'reset') {
   console.log(`${colors[color]}${message}${colors.reset}`);
 }
@@ -106,7 +117,7 @@ async function verifyDeployment(productionUrl) {
     
     if (titleMatch || h1Match) {
       const title = titleMatch ? titleMatch[1] : '';
-      const h1 = h1Match ? h1Match[1].replace(/<[^>]+>/g, '') : '';
+      const h1 = h1Match ? stripTags(h1Match[1]) : '';
       
       success('Page loaded successfully');
       info(`  Title: ${title}`);

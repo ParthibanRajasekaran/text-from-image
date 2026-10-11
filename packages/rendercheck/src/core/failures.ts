@@ -47,13 +47,18 @@ export function callSite(stack: string | undefined): { file: string; line: numbe
     let frame = raw.trim().replace(/^at\s+/, '');
     const paren = /\((.*)\)$/.exec(frame);
     if (paren) frame = paren[1];
-    const m = /^(.*):(\d+):(\d+)$/.exec(frame);
-    if (!m) continue;
-    let file = m[1];
+    // Split from the right: "<file>:<line>:<column>". Avoids a backtracking regex on long frames.
+    const colSep = frame.lastIndexOf(':');
+    const lineSep = colSep > 0 ? frame.lastIndexOf(':', colSep - 1) : -1;
+    if (lineSep < 1) continue;
+    const lineText = frame.slice(lineSep + 1, colSep);
+    const colText = frame.slice(colSep + 1);
+    if (!/^\d+$/.test(lineText) || !/^\d+$/.test(colText)) continue;
+    let file = frame.slice(0, lineSep);
     if (file.startsWith('file://')) file = decodeURIComponent(new URL(file).pathname);
     if (file.startsWith('node:') || file.includes('node_modules') || file.includes('/rendercheck/dist/')) continue;
     if (/[\\/]packages[\\/]rendercheck[\\/]src[\\/]/.test(file)) continue;
-    return { file, line: Number(m[2]) };
+    return { file, line: Number(lineText) };
   }
   return undefined;
 }
