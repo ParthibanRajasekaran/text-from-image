@@ -1,0 +1,28 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.ParthibanRajasekaran/rendercheck",
+  "description": "Check from a screenshot that text is really visible to a user. Local, offline OCR: verify_text and read_text.",
+  "repository": {
+    "url": "https://github.com/ParthibanRajasekaran/text-from-image",
+    "source": "github",
+    "subfolder": "packages/rendercheck"
+  },
+  "version": "0.6.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@rendercheck/sdk",
+      "version": "0.6.0",
+      "runtimeHint": "npx",
+      "packageArguments": [
+        {
+          "type": "positional",
+          "value": "mcp"
+        }
+      ],
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
