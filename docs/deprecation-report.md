@@ -1,5 +1,5 @@
 # 📋 Deprecation Audit Report
-**Branch:** `feat/adsense-readiness`  
+**Branch:** `feat/deprecation-audit`  
 **Date:** 2025-11-09  
 **Status:** READ-ONLY (no code changes — candidates for review only)
 
@@ -88,7 +88,6 @@ Environment variables referenced in code but not defined in `.env.example` or ma
 
 | Variable | Location | Reason | Confidence |
 |----------|----------|--------|------------|
-| `VITE_ENABLE_ADS_IN_PREVIEW` | `pages/CopyTextFromImageGuide.tsx` line 47 | Used to enable ads in preview mode, defined in code but may not be set in `.env.example`. | **Medium** |
 | `VITE_OCR_MIN_CONFIDENCE` | `.env.example` | Defined in env but no usage found in current codebase. Historical remnant? | **Low** |
 | `VITE_OCR_MIN_TEXT_LENGTH` | `.env.example` | Defined in env but no usage found in current codebase. Historical remnant? | **Low** |
 

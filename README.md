@@ -233,7 +233,6 @@ components/         # Reusable React components
 hooks/              # Custom React hooks (useShortcuts, useLocalHistory, etc.)
 
 lib/                # Business logic
-  ├── consent.ts    # Consent Mode v2 management
   ├── analytics.ts  # Web Vitals tracking
   └── config/       # Feature flags & env guards
 
@@ -461,7 +460,6 @@ The site ships no advertising and loads nothing from a third party at runtime. T
 - robots.txt and sitemap.xml are present.
 
 **Performance:**
-- Ad slots use fixed min-height to prevent layout shift.
 - No OCR/UX regressions; light/dark mode consistent.
 
 ## 🤝 Contributing
