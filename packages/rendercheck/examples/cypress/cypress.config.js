@@ -3,7 +3,7 @@
  * no API key and no network call.
  *
  * In your own project:
- *   const { registerRenderCheck } = require('@freetextfromimage/rendercheck/cypress/plugin');
+ *   const { registerRenderCheck } = require('@rendercheck/sdk/cypress/plugin');
  */
 const http = require('node:http');
 const fs = require('node:fs');

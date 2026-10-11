@@ -18,7 +18,7 @@ export default function CypressOcrTesting() {
           filename: 'cypress.config.ts',
           language: 'typescript',
           code: `import { defineConfig } from 'cypress';
-import { registerRenderCheck } from '@freetextfromimage/rendercheck/cypress/plugin';
+import { registerRenderCheck } from '@rendercheck/sdk/cypress/plugin';
 
 export default defineConfig({
   e2e: { setupNodeEvents(on) { registerRenderCheck(on); } },
@@ -29,7 +29,7 @@ export default defineConfig({
           intro: 'Import once in your support file.',
           filename: 'cypress/support/e2e.ts',
           language: 'typescript',
-          code: `import '@freetextfromimage/rendercheck/cypress';`,
+          code: `import '@rendercheck/sdk/cypress';`,
         },
       ]}
       usage={[

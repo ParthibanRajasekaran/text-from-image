@@ -240,7 +240,7 @@ export default function VerificationDebtScore() {
                     </li>
                     <li className="flex gap-3">
                       <span className="text-accent">→</span>
-                      <span>Use <a href="https://www.npmjs.com/package/@freetextfromimage/rendercheck" className="text-accent underline">RenderCheck</a> for Playwright/Cypress tests</span>
+                      <span>Use <a href="https://www.npmjs.com/package/@rendercheck/sdk" className="text-accent underline">RenderCheck</a> for Playwright/Cypress tests</span>
                     </li>
                     <li className="flex gap-3">
                       <span className="text-accent">→</span>

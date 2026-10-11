@@ -1,7 +1,7 @@
 /**
  * Cypress, Node side. Register it in `setupNodeEvents`:
  *
- *   import { registerRenderCheck } from '@freetextfromimage/rendercheck/cypress/plugin';
+ *   import { registerRenderCheck } from '@rendercheck/sdk/cypress/plugin';
  *   export default defineConfig({ e2e: { setupNodeEvents(on) { registerRenderCheck(on); } } });
  *
  * The browser cannot run Tesseract on a screenshot file, so `cy.matchText` hands the screenshot to

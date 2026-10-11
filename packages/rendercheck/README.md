@@ -4,6 +4,9 @@ Assert what users actually **see**, not just what is in the DOM. RenderCheck tak
 it with OCR **on your machine**, and fails your Playwright or Cypress test with a clear message when the
 rendered text is wrong, too faint to read, or not there at all.
 
+> **Renamed.** Up to 0.4.1 this package was published as `@freetextfromimage/rendercheck`. From 0.5.0 it is
+> `@rendercheck/sdk`; the API is unchanged. See the [CHANGELOG](CHANGELOG.md) for migration steps.
+
 - **Local only.** OCR runs in-process (Tesseract.js, WebAssembly). No API key, no upload, no network
   calls. The English language data ships in the package.
 - **Catches what DOM tests cannot:** a `€` where a `$` should be, text covered by another element,
@@ -18,7 +21,7 @@ Expected to find text "[Total: $14.00]" but OCR read "[Total: €14.00]" (Confid
 ## Install
 
 ```bash
-npm install --save-dev @freetextfromimage/rendercheck
+npm install --save-dev @rendercheck/sdk
 ```
 
 Requires Node 18+, and `@playwright/test` (≥ 1.40) or `cypress` (≥ 12).
@@ -27,7 +30,7 @@ Requires Node 18+, and `@playwright/test` (≥ 1.40) or `cypress` (≥ 12).
 
 ```ts
 import { test } from '@playwright/test';
-import { expect } from '@freetextfromimage/rendercheck/playwright'; // Playwright's expect + toShowText
+import { expect } from '@rendercheck/sdk/playwright'; // Playwright's expect + toShowText
 
 test('checkout shows the right total', async ({ page }) => {
   await page.goto('/checkout');
@@ -80,14 +83,14 @@ digits, so a page that shows `14.00` where `١٤٫٠٠` belongs fails, which is 
 ```ts
 // cypress.config.ts
 import { defineConfig } from 'cypress';
-import { registerRenderCheck } from '@freetextfromimage/rendercheck/cypress/plugin';
+import { registerRenderCheck } from '@rendercheck/sdk/cypress/plugin';
 
 export default defineConfig({
   e2e: { setupNodeEvents(on) { registerRenderCheck(on); } },
 });
 
 // cypress/support/e2e.ts
-import '@freetextfromimage/rendercheck/cypress';
+import '@rendercheck/sdk/cypress';
 
 // in a test
 cy.visit('/checkout');
@@ -102,7 +105,7 @@ cy.get('#total').matchText('Total: $14.00');
 ## Core
 
 ```ts
-import { verifyText } from '@freetextfromimage/rendercheck/core';
+import { verifyText } from '@rendercheck/sdk/core';
 
 const report = await verifyText({
   image: fs.readFileSync('screenshot.png'), // PNG or JPEG

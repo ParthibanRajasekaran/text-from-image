@@ -127,7 +127,7 @@ MIT — Dataset is free to use, cite, fork, and distribute.
 
 ## Related Resources
 
-- [RenderCheck npm package](https://www.npmjs.com/package/@freetextfromimage/rendercheck)
+- [RenderCheck npm package](https://www.npmjs.com/package/@rendercheck/sdk)
 - [FreeTextFromImage Documentation](https://getrendercheck.com)
 - [Verification Debt Score Assessment](https://getrendercheck.com/verify-debt-score)
 - [AI UI Verification in CI](https://getrendercheck.com/workflows/ocr-in-ci)

@@ -82,7 +82,7 @@ export function IntegrationDoc(p: IntegrationDocProps) {
 
       <section id="setup" className="mb-12 scroll-mt-24 border-t pt-8">
         <h2 className="text-2xl font-bold text-foreground mb-6">Install and set up</h2>
-        <CodeBlock code="npm install --save-dev @freetextfromimage/rendercheck" language="bash" filename="Terminal" className="mb-4" />
+        <CodeBlock code="npm install --save-dev @rendercheck/sdk" language="bash" filename="Terminal" className="mb-4" />
         <p className="text-sm text-muted-foreground mb-6">Requires Node 18+. The English OCR data ships in the package.</p>
         {p.setup.map((s) => (
           <div key={s.title} className="mb-6">

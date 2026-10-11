@@ -18,7 +18,7 @@ export default function PlaywrightOcrTesting() {
           filename: 'checkout.spec.ts',
           language: 'typescript',
           code: `import { test } from '@playwright/test';
-import { expect } from '@freetextfromimage/rendercheck/playwright';`,
+import { expect } from '@rendercheck/sdk/playwright';`,
         },
       ]}
       usage={[

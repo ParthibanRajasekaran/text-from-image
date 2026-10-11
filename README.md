@@ -10,12 +10,12 @@ Expected to find text "[Total: $14.00]" but OCR read "[Total: €14.00]" (Confid
 ```
 
 ```bash
-npm install --save-dev @freetextfromimage/rendercheck
+npm install --save-dev @rendercheck/sdk
 ```
 
 ```ts
 import { test } from '@playwright/test';
-import { expect } from '@freetextfromimage/rendercheck/playwright';
+import { expect } from '@rendercheck/sdk/playwright';
 
 test('checkout shows the right total', async ({ page }) => {
   await page.goto('/checkout');

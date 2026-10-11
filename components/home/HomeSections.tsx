@@ -83,7 +83,7 @@ export function FactsStrip() {
   );
 }
 
-const PLAYWRIGHT_SNIPPET = `import { expect } from '@freetextfromimage/rendercheck/playwright';
+const PLAYWRIGHT_SNIPPET = `import { expect } from '@rendercheck/sdk/playwright';
 
 test('order confirmation', async ({ page }) => {
   await page.goto('/checkout/done');
@@ -160,7 +160,7 @@ export function BentoGrid() {
 
 export function WorkflowSteps() {
   const steps = [
-    { n: '01', t: 'Import expect', d: "From '@freetextfromimage/rendercheck/playwright'" },
+    { n: '01', t: 'Import expect', d: "From '@rendercheck/sdk/playwright'" },
     { n: '02', t: 'Assert what users see', d: 'await expect(page).toShowText("Total: $14.00")' },
     { n: '03', t: 'OCR runs on your machine', d: 'The screenshot is read locally. Nothing is uploaded' },
     { n: '04', t: 'Get a clear failure', d: 'Expected vs read text, OCR confidence and a diff' },

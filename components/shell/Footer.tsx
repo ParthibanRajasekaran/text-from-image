@@ -33,7 +33,7 @@ const getColumns = (): { title: string; links: FooterLink[] }[] => [
       { label: 'Verification debt', to: ROUTES.WHAT_IS_VERIFICATION_DEBT },
       { label: 'Changelog', to: ROUTES.CHANGELOG },
       { label: 'GitHub', href: REPO },
-      { label: 'npm', href: 'https://www.npmjs.com/package/@freetextfromimage/rendercheck' },
+      { label: 'npm', href: 'https://www.npmjs.com/package/@rendercheck/sdk' },
     ],
   },
   {

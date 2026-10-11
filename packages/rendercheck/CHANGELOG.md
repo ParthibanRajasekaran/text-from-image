@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-10-11
+
+### Changed
+
+- **Renamed** from `@freetextfromimage/rendercheck` to `@rendercheck/sdk`. The API is identical to 0.4.1; only the
+  package name and import paths change. To migrate, run
+  `npm uninstall @freetextfromimage/rendercheck && npm install --save-dev @rendercheck/sdk` and replace
+  `@freetextfromimage/rendercheck` with `@rendercheck/sdk` in your imports. The old package stays on npm,
+  deprecated, with a pointer to the new name.
+
 ## [0.4.1] - 2026-10-10
 
 ### Changed

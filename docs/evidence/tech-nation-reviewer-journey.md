@@ -55,7 +55,7 @@ Flow:
 
 Observations:
 - ✓ Explicit product state matrix (Live, Beta, Planned)
-- ✓ npm package listed: `@freetextfromimage/rendercheck`
+- ✓ npm package listed: `@rendercheck/sdk`
 - ✓ Code examples for Playwright and Cypress (working tests, not marketing speak)
 - ✓ API reference shows input/output types (TypeScript interfaces)
 - ✓ No "Coming Soon" without a state badge
@@ -67,7 +67,7 @@ Observations:
 
 **Reviewer opens new tab → npmjs.com**
 
-Search: `@freetextfromimage/rendercheck`
+Search: `@rendercheck/sdk`
 
 Results:
 - Package exists ✓

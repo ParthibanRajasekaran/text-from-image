@@ -1,6 +1,6 @@
 name: Release RenderCheck SDK
 
-# Publishes @freetextfromimage/rendercheck to npm with no stored token, using npm trusted publishing (OIDC).
+# Publishes @rendercheck/sdk to npm with no stored token, using npm trusted publishing (OIDC).
 # One-time setup on npmjs.com: package -> Settings -> Trusted Publisher -> GitHub Actions ->
 #   owner ParthibanRajasekaran, repository text-from-image, workflow file release-rendercheck.yml.
 # Release: bump packages/rendercheck/package.json, merge, then push a tag:  git tag rendercheck-v0.2.1 && git push --tags

@@ -11,7 +11,7 @@ export type { AssertionOptions, VerifyReport, Region, FailureKind } from '../cor
  * Playwright's `expect` plus `toShowText`:
  *
  *   import { test } from '@playwright/test';
- *   import { expect } from '@freetextfromimage/rendercheck/playwright';
+ *   import { expect } from '@rendercheck/sdk/playwright';
  *
  *   await expect(page).toShowText('Total: $14.00', { minConfidence: 85, minContrastRatio: 4.5 });
  *   await expect(page.locator('.total')).toShowText('Total: $14.00');

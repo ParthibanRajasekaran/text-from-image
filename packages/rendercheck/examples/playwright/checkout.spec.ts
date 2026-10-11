@@ -7,7 +7,7 @@
  * local file and the OCR runs in-process.
  *
  * In your own project, import from the published package instead of the source:
- *   import { expect, test } from '@freetextfromimage/rendercheck/playwright';
+ *   import { expect, test } from '@rendercheck/sdk/playwright';
  */
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';

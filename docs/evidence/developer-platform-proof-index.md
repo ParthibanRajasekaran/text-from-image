@@ -20,7 +20,7 @@ Maps each website claim to its proof for Tech Nation visa application. When a re
 | "OCR-based verification for AI-generated UI" | Title | Technical | See API Reference and code examples |
 | "Catch bugs where DOM tests pass but visible text is wrong" | Hero | Educational | See "Use Cases" section with examples |
 | "Works with Playwright, Cypress, and any E2E tool" | Docs | Technical + Examples | See Playwright and Cypress integration examples |
-| "npm install @freetextfromimage/rendercheck" | Install section | Repository | Visit npmjs.com package page |
+| "npm install @rendercheck/sdk" | Install section | Repository | Visit npmjs.com package page |
 | "Requires Node 18+" | Requirements | Technical | Check package.json engines |
 | "MIT licensed" | Sidebar | License | View LICENSE file on GitHub |
 

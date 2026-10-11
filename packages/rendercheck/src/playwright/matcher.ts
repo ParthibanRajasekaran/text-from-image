@@ -45,7 +45,7 @@ async function testInfo(): Promise<{ file?: string; line?: number; title?: strin
 }
 
 /**
- * Matcher function. Use it through `expect` from '@freetextfromimage/rendercheck/playwright',
+ * Matcher function. Use it through `expect` from '@rendercheck/sdk/playwright',
  * or add it to your own `expect.extend({ toShowText })`.
  */
 export async function toShowText(

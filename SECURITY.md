@@ -1,6 +1,6 @@
 # Security policy
 
-RenderCheck is in developer beta. This policy covers the SDK (`@freetextfromimage/rendercheck`) and the site at getrendercheck.com.
+RenderCheck is in developer beta. This policy covers the SDK (`@rendercheck/sdk`) and the site at getrendercheck.com.
 
 ## Reporting a vulnerability
 
