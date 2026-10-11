@@ -49,7 +49,7 @@ describe('evidence-snapshot', () => {
     expect(md).toContain('provenance attestation: yes');
     expect(md).not.toMatch(/adoption/i);
     expect(md).not.toContain(EMD);
-    expect(calls.some((u) => u.includes('registry.npmjs.org'))).toBe(true);
+    expect(calls.some((u) => new URL(u).hostname === 'registry.npmjs.org')).toBe(true);
   });
 
   it('records failures and does not claim "None yet" when the outside fetch fails', async () => {
