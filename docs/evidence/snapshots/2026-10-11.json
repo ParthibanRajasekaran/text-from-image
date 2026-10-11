@@ -1,0 +1,613 @@
+{
+  "generatedAt": "2026-10-11T17:54:09.285Z",
+  "date": "2026-10-11",
+  "package": "@rendercheck/sdk",
+  "repo": "ParthibanRajasekaran/text-from-image",
+  "authenticated": false,
+  "method": "Plain GET requests to the public APIs listed under Sources. No scraping, no estimation. A failed request is recorded under Failed fetches and its figures are left out.",
+  "sources": [
+    {
+      "label": "npm downloads (last 90 days)",
+      "url": "https://api.npmjs.org/downloads/range/2026-07-14:2026-10-11/@rendercheck/sdk"
+    },
+    {
+      "label": "npm registry packument",
+      "url": "https://registry.npmjs.org/%40rendercheck%2Fsdk"
+    },
+    {
+      "label": "GitHub repo",
+      "url": "https://api.github.com/repos/ParthibanRajasekaran/text-from-image"
+    },
+    {
+      "label": "GitHub open issues",
+      "url": "https://api.github.com/search/issues?q=repo%3AParthibanRajasekaran%2Ftext-from-image%20type%3Aissue%20state%3Aopen&per_page=1"
+    },
+    {
+      "label": "GitHub closed issues",
+      "url": "https://api.github.com/search/issues?q=repo%3AParthibanRajasekaran%2Ftext-from-image%20type%3Aissue%20state%3Aclosed&per_page=1"
+    },
+    {
+      "label": "GitHub open PRs",
+      "url": "https://api.github.com/search/issues?q=repo%3AParthibanRajasekaran%2Ftext-from-image%20type%3Apr%20state%3Aopen&per_page=1"
+    },
+    {
+      "label": "GitHub closed or merged PRs",
+      "url": "https://api.github.com/search/issues?q=repo%3AParthibanRajasekaran%2Ftext-from-image%20type%3Apr%20state%3Aclosed&per_page=1"
+    },
+    {
+      "label": "GitHub issues and PRs not authored by ParthibanRajasekaran (page 1)",
+      "url": "https://api.github.com/search/issues?q=repo%3AParthibanRajasekaran%2Ftext-from-image%20-author%3AParthibanRajasekaran&per_page=100&page=1"
+    },
+    {
+      "label": "GitHub contributors",
+      "url": "https://api.github.com/repos/ParthibanRajasekaran/text-from-image/contributors?per_page=100"
+    },
+    {
+      "label": "GitHub releases",
+      "url": "https://api.github.com/repos/ParthibanRajasekaran/text-from-image/releases?per_page=100"
+    },
+    {
+      "label": "GitHub tags",
+      "url": "https://api.github.com/repos/ParthibanRajasekaran/text-from-image/tags?per_page=100"
+    }
+  ],
+  "failures": [
+    {
+      "label": "npm downloads (last 90 days)",
+      "url": "https://api.npmjs.org/downloads/range/2026-07-14:2026-10-11/@rendercheck/sdk",
+      "error": "HTTP 404"
+    }
+  ],
+  "dependentsCheckUrl": "https://www.npmjs.com/package/@rendercheck/sdk?activeTab=dependents",
+  "data": {
+    "npm": {
+      "downloads": null,
+      "registry": {
+        "latest": "0.6.0",
+        "versionCount": 4,
+        "created": "2026-10-11T10:34:33.790Z",
+        "modified": "2026-10-11T15:19:59.597Z",
+        "versions": [
+          {
+            "version": "0.0.0-stage",
+            "published": "2026-10-11T10:34:33.790Z"
+          },
+          {
+            "version": "0.5.0",
+            "published": "2026-10-11T10:36:10.413Z"
+          },
+          {
+            "version": "0.5.1",
+            "published": "2026-10-11T11:17:16.968Z"
+          },
+          {
+            "version": "0.6.0",
+            "published": "2026-10-11T15:19:59.284Z"
+          }
+        ],
+        "latestHasProvenance": true,
+        "latestProvenanceUrl": "https://registry.npmjs.org/-/npm/v1/attestations/@rendercheck%2fsdk@0.6.0"
+      }
+    },
+    "github": {
+      "repo": {
+        "stars": 94,
+        "forks": 65,
+        "watchers": 0,
+        "createdAt": "2025-11-05T13:03:39Z",
+        "pushedAt": "2026-10-11T17:52:31Z"
+      },
+      "counts": {
+        "openIssues": 5,
+        "closedIssues": 0,
+        "openPRs": 1,
+        "closedPRs": 111
+      },
+      "outside": {
+        "outside": [],
+        "bots": [
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump jsdom from 24.1.3 to 29.1.1",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/110",
+            "state": "open",
+            "date": "2026-10-11"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump jsdom from 24.1.3 to 30.1.2",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/80",
+            "state": "closed",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump @testing-library/jest-dom from 6.9.1 to 7.0.1",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/79",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump jest-axe from 10.0.0 to 11.0.0",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/78",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump @vitejs/plugin-react from 5.1.0 to 5.2.0 in the minor-and-patch group",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/77",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump rollup-plugin-visualizer from 5.14.0 to 7.1.1",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/74",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump vite from 6.4.4 to 8.3.3",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/73",
+            "state": "closed",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump @vitejs/plugin-react from 5.1.0 to 6.1.2",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/72",
+            "state": "closed",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump typescript from 5.8.3 to 5.9.3 in the minor-and-patch group",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/71",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump typescript from 5.8.3 to 5.9.3 in /packages/rendercheck",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/70",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps): bump postcss-selector-parser and tailwindcss",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/67",
+            "state": "closed",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps): bump web-vitals from 5.1.0 to 6.2.3",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/66",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump typescript from 5.8.3 to 7.0.2",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/65",
+            "state": "closed",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump @types/node from 22.19.0 to 26.6.4",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/64",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps): bump framer-motion from 12.23.24 to 14.0.0",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/63",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps): bump the minor-and-patch group with 9 updates",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/62",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps): bump actions/setup-node from 4 to 7",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/61",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump typescript from 5.8.3 to 7.0.2 in /packages/rendercheck",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/60",
+            "state": "closed",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump @playwright/test from 1.56.1 to 1.64.0 in /packages/rendercheck",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/59",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump vitest from 4.1.11 to 5.0.3 in /packages/rendercheck",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/58",
+            "state": "closed",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps): bump tesseract.js from 5.1.1 to 7.0.0 in /packages/rendercheck",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/57",
+            "state": "closed",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps): bump actions/github-script from 7 to 9",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/56",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps-dev): bump @types/node from 22.20.5 to 26.6.4 in /packages/rendercheck",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/55",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps): bump actions/upload-artifact from 4 to 7",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/54",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps): bump dorny/paths-filter from 3 to 4",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/53",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "build(deps): bump actions/checkout from 3 to 7",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/52",
+            "state": "merged",
+            "date": "2026-10-10"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Fix browser API mocks for Vitest 4.x compatibility",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/37",
+            "state": "closed",
+            "date": "2026-02-13"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Update dependencies and resolve security vulnerabilities",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/36",
+            "state": "closed",
+            "date": "2026-02-13"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Fix 10 npm dependency vulnerabilities",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/35",
+            "state": "merged",
+            "date": "2026-02-13"
+          },
+          {
+            "kind": "PR",
+            "login": "dependabot[bot]",
+            "title": "chore(deps): bump the npm_and_yarn group across 1 directory with 5 updates",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/34",
+            "state": "closed",
+            "date": "2026-01-05"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "[WIP] Address feedback on guardrails implementation",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/32",
+            "state": "closed",
+            "date": "2025-11-08"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "[WIP] WIP address feedback on placing guardrails with spec driven development",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/31",
+            "state": "closed",
+            "date": "2025-11-08"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "[WIP] Fix Spectral config loading in CI job",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/30",
+            "state": "merged",
+            "date": "2025-11-08"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Remove unused extractionStartTime state variable",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/27",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Remove unused shouldReduceMotion variable from HeroOCR",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/26",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Fix race condition in history restore causing concurrent OCR operations",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/25",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Fix handleRestore to use setExtractedText instead of fake file object",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/24",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "[WIP] Update OCR application with UX v2/v3 enhancements",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/22",
+            "state": "closed",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Replace home component fallback with dedicated 404 page",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/21",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Add crypto.getRandomValues fallback for Safari < 15.4 compatibility",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/20",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Make progress percentages configurable in GlassProgressBar",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/19",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Remove unused sendToAnalytics function from webVitals utility",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/18",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Deduplicate formatTimestamp function into shared utility",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/17",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Add error feedback for invalid file types in GlassDropzone",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/16",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "[WIP] Work in progress for UX refresh updates from PR #8",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/15",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Memoize faqSchema to prevent unnecessary useEffect executions",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/14",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Clarify announcement element cleanup is already implemented",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/13",
+            "state": "closed",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Clarify sendToAnalytics is example template, not dead code",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/12",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "[WIP] Update UX refresh implementation based on feedback",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/11",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Remove fake aggregateRating from structured data schema",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/10",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Replace native confirm() with accessible ConfirmDialog component",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/9",
+            "state": "merged",
+            "date": "2025-11-07"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "[WIP] Fix CSS semicolon issue in PostCSS production PR",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/6",
+            "state": "closed",
+            "date": "2025-11-06"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "[WIP] Address feedback on replacing Tailwind CDN with PostCSS plugin",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/5",
+            "state": "merged",
+            "date": "2025-11-06"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Clarify PR workflow limitations and confirm Tailwind v4 migration completion",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/4",
+            "state": "merged",
+            "date": "2025-11-06"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "Add missing popover color theme configuration",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/3",
+            "state": "merged",
+            "date": "2025-11-06"
+          },
+          {
+            "kind": "PR",
+            "login": "Copilot",
+            "title": "[WIP] Fix: Replace Tailwind CDN with PostCSS plugin for production",
+            "url": "https://github.com/ParthibanRajasekaran/text-from-image/pull/2",
+            "state": "merged",
+            "date": "2025-11-06"
+          }
+        ]
+      },
+      "contributors": [
+        {
+          "login": "ParthibanRajasekaran",
+          "contributions": 335,
+          "bot": false,
+          "owner": true
+        },
+        {
+          "login": "Copilot",
+          "contributions": 49,
+          "bot": true,
+          "owner": false
+        },
+        {
+          "login": "dependabot[bot]",
+          "contributions": 17,
+          "bot": true,
+          "owner": false
+        }
+      ],
+      "releases": [
+        {
+          "tag": "rendercheck-v0.6.0",
+          "name": "rendercheck v0.6.0",
+          "published": "2026-10-11",
+          "url": "https://github.com/ParthibanRajasekaran/text-from-image/releases/tag/rendercheck-v0.6.0"
+        },
+        {
+          "tag": "rendercheck-v0.5.1",
+          "name": "rendercheck v0.5.1",
+          "published": "2026-10-11",
+          "url": "https://github.com/ParthibanRajasekaran/text-from-image/releases/tag/rendercheck-v0.5.1"
+        },
+        {
+          "tag": "rendercheck-v0.4.1",
+          "name": "rendercheck v0.4.1",
+          "published": "2026-10-11",
+          "url": "https://github.com/ParthibanRajasekaran/text-from-image/releases/tag/rendercheck-v0.4.1"
+        },
+        {
+          "tag": "rendercheck-v0.4.0",
+          "name": "rendercheck v0.4.0",
+          "published": "2026-10-11",
+          "url": "https://github.com/ParthibanRajasekaran/text-from-image/releases/tag/rendercheck-v0.4.0"
+        }
+      ],
+      "tags": [
+        "rendercheck-v0.6.0",
+        "rendercheck-v0.5.1",
+        "rendercheck-v0.4.1",
+        "rendercheck-v0.4.0"
+      ]
+    }
+  }
+}
