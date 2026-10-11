@@ -18,7 +18,7 @@ const DAY = 86400000;
 
 /** Replace em dashes in any text that reaches the output. */
 export const clean = (s) => String(s ?? '').split(DASH).join('-');
-const cell = (s) => clean(s).replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
+const cell = (s) => clean(s).replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
 const isoDay = (d) => d.toISOString().slice(0, 10);
 
 export const isBot = (u) => !!u && (u.type === 'Bot' || /\[bot\]$/i.test(u.login || ''));
