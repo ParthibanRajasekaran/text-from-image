@@ -16,7 +16,7 @@ interface HeaderProps {
  * Header: Global sticky navigation with theme toggle
  * - Scroll-aware: transparent → blurred background when scrolling
  * - Logo with Developer Beta badge
- * - Main nav: Product | RenderCheck | Labs | Developers | Security | Access
+ * - Main nav: Product | SDK | Labs | Developers | Security | Access
  * - Mobile: hamburger menu with focus trap
  * - CTA: Get started button
  */
@@ -67,7 +67,7 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
   ].includes(location.pathname as never);
 
   const navItems = [
-    { label: 'RenderCheck', href: ROUTES.RENDERCHECK },
+    { label: 'SDK', href: ROUTES.RENDERCHECK },
     { label: 'Developers', href: ROUTES.DEVELOPERS },
     { label: 'Labs', href: ROUTES.LABS },
     { label: 'Access', href: ROUTES.ACCESS },

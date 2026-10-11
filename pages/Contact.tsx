@@ -7,6 +7,7 @@ import { useTheme } from '../hooks/useTheme';
 import { ScrollNav, type ScrollNavSection } from '../components/ui/ScrollNav';
 import { AnchorSection } from '../components/a11y/AnchorSection';
 import { CONTACT_EMAIL } from '../src/config';
+import { CopyButton } from '../components/home/ScrollKit';
 
 export default function Contact() {
   const { theme, toggleTheme } = useTheme();
@@ -134,6 +135,10 @@ export default function Contact() {
                               {CONTACT_EMAIL}
                               <span aria-hidden="true">→</span>
                             </a>
+                            <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                              <CopyButton text={CONTACT_EMAIL} label="Copy email address" />
+                              <span>Using a web mail client? Copy the address instead.</span>
+                            </div>
                           </div>
                         </div>
                       </div>

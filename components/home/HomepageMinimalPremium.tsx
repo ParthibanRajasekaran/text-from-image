@@ -10,7 +10,6 @@ import { HeroStage } from './HeroStage';
 import { LegibilitySlider } from './LegibilitySlider';
 import { ProofLedger } from './ProofLedger';
 import { CopyButton, ScrollScanLine, SectionDivider } from './ScrollKit';
-import { CONTACT_EMAIL } from '../../src/config';
 import { BentoGrid, FactsStrip, SectionHeading, TrustBadges, WorkflowSteps } from './HomeSections';
 import { useOCRProcessor } from '../../hooks/useOCRProcessor';
 import { useLocalHistory, type HistoryItem } from '../../hooks/useLocalHistory';
@@ -206,8 +205,8 @@ export function HomepageMinimalPremium() {
                 Developer beta
               </h2>
               <p className="mx-auto max-w-2xl text-muted-foreground">
-                The npm package is published and the browser tool is live. RenderCheck is looking for the first
-                teams to write up how they run it in CI. This site claims only what the repository can prove.
+                The npm package is published and the browser tool is live. The next milestone is the first public
+                write-up from a team running it in CI. This site claims only what the repository can prove.
               </p>
               <div className="flex flex-col justify-center gap-4 sm:flex-row">
                 <a
@@ -225,9 +224,7 @@ export function HomepageMinimalPremium() {
               </div>
               <p className="text-sm text-muted-foreground">
                 Using it in a project?{' '}
-                <a href={`mailto:${CONTACT_EMAIL}?subject=RenderCheck%20case%20study`}>
-                  Write to the author
-                </a>{' '}
+                <a href="/contact">Get in touch</a>{' '}
                 about a case study.
               </p>
             </div>
