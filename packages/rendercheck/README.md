@@ -128,6 +128,16 @@ Exit code `0` means pass, `1` the assertion failed, `2` an error. `--json` print
 
 Claude Code: `claude mcp add rendercheck -- npx -y @rendercheck/sdk mcp`.
 
+Set up every agent in a repo in one step:
+
+```bash
+npx @rendercheck/sdk init            # Claude Code, Codex/AGENTS.md, Cursor, Copilot
+npx @rendercheck/sdk init --agents claude,cursor --dry-run
+```
+
+It adds a short instruction ("after changing UI, verify the pixels with `verify_text`") and the MCP server entry. Re-running
+is safe: only the marked RenderCheck block is updated.
+
 Runs are counted in `~/.rendercheck/usage.jsonl` on your machine only, so `rendercheck stats` can show them to you.
 Screenshot text is never recorded and nothing is sent anywhere. Set `RENDERCHECK_NO_USAGE_LOG=1` to turn it off.
 
