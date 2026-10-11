@@ -162,6 +162,39 @@ export function HomepageMinimalPremium() {
           </div>
         </section>
 
+        {/* AUTHOR */}
+        <section aria-labelledby="author-heading" className="container mx-auto px-4 pb-24 sm:px-6 lg:px-8">
+          <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-[auto_1fr] md:items-center">
+            <picture>
+              <source type="image/webp" srcSet="/images/parthiban-480.webp 480w, /images/parthiban-960.webp 960w" sizes="144px" />
+              <img
+                src="/images/parthiban-480.jpg"
+                alt="Parthiban Rajasekaran, author of RenderCheck"
+                width={144}
+                height={180}
+                loading="lazy"
+                decoding="async"
+                className="aspect-[4/5] h-auto w-36 rounded-xl border border-border object-cover"
+              />
+            </picture>
+            <div className="space-y-3">
+              <h2 id="author-heading" className="font-display text-3xl font-semibold tracking-[-0.04em]">
+                Built by Parthiban Rajasekaran
+              </h2>
+              <p className="text-muted-foreground">
+                I designed and built RenderCheck. I am a Principal Dev Engineer working on reliability and
+                AI-assisted delivery in regulated financial services, and I write and speak on the same:{' '}
+                <a href="https://leaddev.com/community/parthiban-rajasekaran" target="_blank" rel="noopener noreferrer">LeadDev</a>,{' '}
+                <a href="https://2026.platformcon.com/speakers/parthiban-rajasekaran" target="_blank" rel="noopener noreferrer">PlatformCon 2026</a>.
+                RenderCheck is an independent project, not affiliated with my employer.
+              </p>
+              <p>
+                <a href="/about">About the author and track record</a>
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* HONEST STATUS + CTA */}
         <section className="container mx-auto px-4 pb-28 sm:px-6 lg:px-8">
           <motion.div
@@ -170,11 +203,11 @@ export function HomepageMinimalPremium() {
           >
             <div className="relative space-y-6">
               <h2 className="font-display text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">
-                Early, open and honest about it
+                Developer beta
               </h2>
               <p className="mx-auto max-w-2xl text-muted-foreground">
-                RenderCheck is in developer beta. The npm package is published, the browser tool is live, and
-                there are no case studies yet. This site claims only what the repository can prove.
+                The npm package is published and the browser tool is live. RenderCheck is looking for the first
+                teams to write up how they run it in CI. This site claims only what the repository can prove.
               </p>
               <div className="flex flex-col justify-center gap-4 sm:flex-row">
                 <a
@@ -193,9 +226,9 @@ export function HomepageMinimalPremium() {
               <p className="text-sm text-muted-foreground">
                 Using it in a project?{' '}
                 <a href={`mailto:${CONTACT_EMAIL}?subject=RenderCheck%20case%20study`}>
-                  Tell me how it went
-                </a>
-                . I am looking for the first write-up.
+                  Write to the author
+                </a>{' '}
+                about a case study.
               </p>
             </div>
           </motion.div>
