@@ -59,8 +59,8 @@ function ScanDemo({ progress }: { progress: MotionValue<number> }) {
               {!reduce && (
                 <motion.div
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 h-16 bg-foreground/[0.06]"
-                  style={{ top: scanTop, opacity: scanOpacity, borderBottom: '1px solid hsl(var(--text))' }}
+                  className="pointer-events-none absolute inset-x-0 h-16 bg-foreground/[0.12] dark:bg-foreground/[0.07]"
+                  style={{ top: scanTop, opacity: scanOpacity, borderBottom: '2px solid hsl(var(--text))' }}
                 />
               )}
             </div>
