@@ -46,7 +46,7 @@ export default function Contact() {
       },
       sameAs: [
         'https://github.com/ParthibanRajasekaran/text-from-image',
-        'https://www.linkedin.com/in/parthibanrajasekaran',
+        'https://www.linkedin.com/in/parthiban-rajasekaran/',
       ],
     },
   };
@@ -178,7 +178,7 @@ export default function Contact() {
                               Reach out to Parthiban Rajasekaran directly on LinkedIn for business inquiries or just to connect.
                             </p>
                             <a
-                              href="https://www.linkedin.com/in/parthibanrajasekaran"
+                              href="https://www.linkedin.com/in/parthiban-rajasekaran/"
                               rel="noopener noreferrer"
                               target="_blank"
                               className="inline-flex items-center gap-2 text-accent hover:text-accent-2 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background rounded px-2 py-1 font-medium"

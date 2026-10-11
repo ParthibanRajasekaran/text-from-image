@@ -109,7 +109,7 @@ export function Footer() {
             <a href="https://github.com/ParthibanRajasekaran/text-from-image" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               GitHub
             </a>
-            <a href="https://www.linkedin.com/in/parthibanrajasekaran" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a href="https://www.linkedin.com/in/parthiban-rajasekaran/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               LinkedIn
             </a>
           </div>

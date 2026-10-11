@@ -21,7 +21,7 @@ export function HomeStructuredData({ siteUrl }: { siteUrl: string }) {
       '@context': 'https://schema.org',
       '@type': 'Person',
       'name': 'Parthiban Rajasekaran',
-      'sameAs': ['https://github.com/ParthibanRajasekaran', 'https://www.linkedin.com/in/parthibanrajasekaran'],
+      'sameAs': ['https://github.com/ParthibanRajasekaran', 'https://www.linkedin.com/in/parthiban-rajasekaran/'],
       'url': siteUrl
     }} />
     <StructuredData data={{
