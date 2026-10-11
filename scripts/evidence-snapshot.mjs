@@ -76,7 +76,7 @@ export async function collect({ fetchImpl = globalThis.fetch, now = new Date(), 
   const dl = await get('npm downloads (last 90 days)', `https://api.npmjs.org/downloads/range/${start}:${end}/${PKG}`);
   out.npm.downloads = dl?.downloads ? { start, end, ...summariseDownloads(dl.downloads) } : null;
 
-  const reg = await get('npm registry packument', `https://registry.npmjs.org/${PKG.replace('/', '%2F')}`);
+  const reg = await get('npm registry packument', `https://registry.npmjs.org/${encodeURIComponent(PKG)}`);
   if (reg) {
     const latest = reg['dist-tags']?.latest ?? null;
     const lv = latest ? reg.versions?.[latest] : null;
