@@ -113,7 +113,7 @@ export default function Security() {
         <code>rendercheck init</code> writes files into the current project: agent instructions
         (CLAUDE.md, AGENTS.md, Cursor and Copilot rules) and MCP configuration files. Run it with{' '}
         <code>--dry-run</code> to see what it would write first. The command line and MCP server are in
-        0.6.0, which is not yet on npm.
+        0.6.0 and later.
       </p>
 
       <h2 id="third-party">Third-party requests</h2>

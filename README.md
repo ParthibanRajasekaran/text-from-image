@@ -98,7 +98,7 @@ After deploy, validate with [Twitter Card Validator](https://cards-dev.twitter.c
 
 - Per-word confidence scores
 - Low-confidence results are flagged for review
-- Accuracy depends on the image; no benchmark figure is published yet
+- Accuracy depends on the image. There is no general accuracy figure; `packages/rendercheck/benchmarks` is a small self-made suite that shows the class of bug and lists the cases where it is wrong
 
 
 ## 🧩 Spec-Driven Development (SDD)

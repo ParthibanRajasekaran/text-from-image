@@ -1,6 +1,6 @@
 # Draft GitHub issues for the roadmap
 
-Drafts only. Nothing here has been filed. Items 1 to 5 come from the "Roadmap and sustainability" section of the About page ("These are plans, not products"); items 6 and 7 follow from the Security page. Wording is deliberately non-committal: no dates, no promises.
+Drafts only. Nothing here has been filed. Items 1 to 3 come from the "Roadmap and sustainability" section of the About page ("These are plans, not products"); items 4 and 5 follow from the Security page. Wording is deliberately non-committal: no dates, no promises.
 
 ---
 
@@ -20,38 +20,7 @@ Acceptance: a new language loads under the conditions in `__tests__/offline.spec
 
 ---
 
-## 2. Publish a reproducible accuracy benchmark
-
-**Labels:** `documentation`, `research`, `sdk`
-
-**Body:**
-The site makes no accuracy percentage because there is no published benchmark. Add one that anyone can rerun.
-
-Scope:
-- A fixed, licensed set of UI screenshots with ground-truth text.
-- A script in the repo that prints per-case results and the method, so numbers are reproducible.
-- Report failures as well as passes, including low-contrast and small-text cases.
-
-Do not add any accuracy claim to the site until the benchmark exists and is linked. `scripts/check-claims.mjs` should keep blocking unbacked percentages.
-
----
-
-## 3. Publish SDK 0.6.0 (CLI, MCP server, `init`) to npm
-
-**Labels:** `release`, `sdk`
-
-**Body:**
-The command line (`verify`, `read`, `stats`, `init`) and MCP server (`verify_text`, `read_text`) are in `packages/rendercheck` at 0.6.0 but not yet on npm. The Developers page and `llms.txt` say so.
-
-Checklist:
-- Run the unit tests and `npm run test:offline`.
-- Confirm the package contents (`npm pack --dry-run`) include only intended files.
-- Update the changelog, and remove the "not yet on npm" wording from the site and `llms.txt` after publishing.
-- Confirm the Security page text on the local usage log still matches the code.
-
----
-
-## 4. Explore a hosted history of failures across CI runs (discussion)
+## 2. Explore a hosted history of failures across CI runs (discussion)
 
 **Labels:** `discussion`, `idea`, `needs-demand`
 
@@ -67,7 +36,7 @@ The open-source core stays MIT licensed and free whatever happens here.
 
 ---
 
-## 5. Gather requirements for single sign-on (only if requested)
+## 3. Gather requirements for single sign-on (only if requested)
 
 **Labels:** `discussion`, `idea`, `needs-demand`
 
@@ -78,7 +47,7 @@ If you need SSO, please describe the product it would protect and your identity 
 
 ---
 
-## 6. Enable and document GitHub private vulnerability reporting
+## 4. Enable and document GitHub private vulnerability reporting
 
 **Labels:** `security`, `maintenance`
 
@@ -91,7 +60,7 @@ Tasks (maintainer):
 
 ---
 
-## 7. Triage dependency advisories in build and development tooling
+## 5. Triage dependency advisories in build and development tooling
 
 **Labels:** `security`, `dependencies`
 

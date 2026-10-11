@@ -11,7 +11,7 @@ describe('For AI agents section', () => {
   });
 
   [ROUTES.RENDERCHECK, ROUTES.DEVELOPERS].forEach((path) => {
-    it(`${path} documents the commands, MCP config and the 0.6.0 caveat`, async () => {
+    it(`${path} documents the commands, MCP config and the 0.6.0 release`, async () => {
       const r = createMemoryRouter(router.routes, { initialEntries: [path] });
       const { container } = render(<RouterProvider router={r} />);
       await waitFor(() => expect(screen.getByRole('heading', { level: 2, name: 'For AI agents' })).toBeTruthy());
@@ -21,6 +21,8 @@ describe('For AI agents section', () => {
       expect(text).toContain('npx @rendercheck/sdk init');
       expect(text).toContain('"mcpServers"');
       expect(text).toContain('Available from 0.6.0');
+      expect(text).not.toMatch(/not (yet )?on npm/i);
+      expect(text).toContain('io.github.ParthibanRajasekaran/rendercheck');
       expect(screen.getByRole('button', { name: 'Copy MCP config' })).toBeTruthy();
       expect(text).not.toContain('—');
     });
@@ -30,6 +32,7 @@ describe('For AI agents section', () => {
     const txt = readFileSync(resolve(__dirname, '../../public/llms.txt'), 'utf8');
     expect(txt).toMatch(/For AI agents/);
     expect(txt).toMatch(/0\.6\.0/);
+    expect(txt).not.toMatch(/not yet on npm/i);
     expect(txt).not.toContain('—');
   });
 });
