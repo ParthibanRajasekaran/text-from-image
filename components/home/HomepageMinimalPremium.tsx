@@ -188,9 +188,9 @@ export function HomepageMinimalPremium() {
                 <a href="https://2026.platformcon.com/speakers/parthiban-rajasekaran" target="_blank" rel="noopener noreferrer">PlatformCon 2026</a>.
                 RenderCheck is an independent project, not affiliated with my employer.
               </p>
-              <p>
-                <a href="/about">About the author and track record</a>
-              </p>
+              <a href="/about" className="inline-flex min-h-11 items-center underline">
+                About the author and track record
+              </a>
             </div>
           </div>
         </section>
