@@ -67,13 +67,13 @@ function ScanDemo({ progress }: { progress: MotionValue<number> }) {
           </div>
 
           {/* right: the assertion and its verdict */}
-          <div className="p-6 sm:p-8">
+          <div className="p-6 sm:p-8 lg:p-5 2xl:p-8">
             <div className="mb-4 flex items-center justify-between">
               <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">Assertion</p>
               <CopyButton text={"await expect(page).toShowText('Payment successful');"} />
             </div>
             {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- keyboard users must be able to scroll long code */}
-            <pre tabIndex={0} aria-label="Code example" className="overflow-x-auto rounded-xl border border-code-border bg-code-bg p-4 font-mono text-[13px] leading-6 text-code-text">
+            <pre tabIndex={0} aria-label="Code example" className="overflow-x-auto rounded-xl border border-code-border bg-code-bg p-4 font-mono text-[13px] leading-6 text-code-text lg:px-3 lg:text-[11px] 2xl:px-4 2xl:text-[13px]">
               <code>
                 <span className="text-code-text/70">await</span> expect(page)
                 {'\n'}  .<span className="text-white">toShowText</span>(
@@ -102,10 +102,11 @@ function ScanDemo({ progress }: { progress: MotionValue<number> }) {
 }
 
 /**
- * Desktop: the demo pins under the header for 2.4 screens of scroll and the scroll position plays it.
- * Mobile and reduced motion: normal flow, no scroll hijacking. Reduced motion shows the finished state.
+ * Desktop (lg+): copy on the left (5 of 12 columns), the demo on the right (7 of 12). Both stay pinned under the
+ * header for 2.4 screens while scroll position plays the demo. Mobile and reduced motion: stacked, normal flow,
+ * no scroll hijacking. Reduced motion shows the finished state.
  */
-function PinnedStage() {
+function HeroLayout({ children }: { children: React.ReactNode }) {
   const pinned = usePinned();
   const reduce = useReducedMotion();
   const ref = React.useRef<HTMLDivElement>(null);
@@ -115,9 +116,16 @@ function PinnedStage() {
   });
   const done = useMotionValue(1);
   return (
-    <div ref={ref} className="mt-16 sm:mt-20" style={pinned ? { height: '240vh' } : undefined}>
-      <div className={pinned ? 'sticky top-24' : ''}>
-        <ScanDemo progress={reduce ? done : scrollYProgress} />
+    <div ref={ref} style={pinned ? { height: '240vh' } : undefined}>
+      <div
+        className={`grid items-center gap-12 lg:grid-cols-12 lg:gap-10 ${
+          pinned ? 'sticky top-24 min-h-[calc(100vh-7rem)]' : ''
+        }`}
+      >
+        <div className="space-y-8 text-center lg:col-span-5 lg:text-left">{children}</div>
+        <div className="lg:col-span-7">
+          <ScanDemo progress={reduce ? done : scrollYProgress} />
+        </div>
       </div>
     </div>
   );
@@ -140,8 +148,8 @@ export function HeroStage() {
         />
       </div>
 
-      <div className="container mx-auto px-4 pb-20 pt-20 sm:px-6 sm:pt-28 lg:px-8 lg:pb-28 lg:pt-32">
-        <div className="mx-auto max-w-4xl space-y-8 text-center">
+      <div className="container mx-auto px-4 pb-20 pt-20 sm:px-6 sm:pt-28 lg:px-8 lg:pb-28 lg:pt-24">
+        <HeroLayout>
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
             <StatusBadge variant="developer-beta" label="Developer Beta" size="md" />
           </motion.div>
@@ -150,7 +158,7 @@ export function HeroStage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.12 }}
-            className="font-display text-5xl font-semibold leading-[1.04] tracking-[-0.04em] sm:text-6xl lg:text-[5.25rem] [text-wrap:balance]"
+            className="font-display text-5xl font-semibold leading-[1.04] tracking-[-0.04em] sm:text-6xl lg:text-[3.5rem] xl:text-[4.25rem] [text-wrap:balance]"
           >
             Verify what <span className="whitespace-nowrap">AI-generated</span> UI actually shows
           </motion.h1>
@@ -159,7 +167,7 @@ export function HeroStage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="mx-auto max-w-2xl text-lg leading-relaxed tracking-[-0.01em] text-muted-foreground sm:text-xl"
+            className="mx-auto max-w-2xl text-lg leading-relaxed lg:mx-0 tracking-[-0.01em] text-muted-foreground sm:text-xl"
           >
             Your DOM tests pass while users read the wrong text. RenderCheck reads the rendered pixels
             locally, in your test process or your browser, and fails the build when what users see is wrong.
@@ -169,7 +177,7 @@ export function HeroStage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.28 }}
-            className="flex flex-col justify-center gap-4 pt-2 sm:flex-row"
+            className="flex flex-col justify-center gap-4 pt-2 sm:flex-row lg:justify-start"
           >
             <a
               href={ROUTES.DEVELOPERS}
@@ -189,7 +197,7 @@ export function HeroStage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="mx-auto w-full max-w-md overflow-hidden rounded-xl border border-code-border bg-code-bg text-left font-mono text-sm text-code-text"
+            className="mx-auto w-full max-w-md overflow-hidden rounded-xl lg:mx-0 border border-code-border bg-code-bg text-left font-mono text-sm text-code-text"
           >
             <div className="flex items-center gap-1.5 border-b border-code-border px-3.5 py-2.5" aria-hidden="true">
               <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
@@ -202,9 +210,12 @@ export function HeroStage() {
               <CopyButton text="npm i -D @rendercheck/sdk" label="Copy install command" tone="dark" />
             </div>
           </motion.div>
-        </div>
 
-        <PinnedStage />
+          <p className="text-sm text-muted-foreground">
+            Works with <span className="text-foreground">Playwright</span>, <span className="text-foreground">Cypress</span> and{' '}
+            <span className="text-foreground">GitHub Actions</span>
+          </p>
+        </HeroLayout>
       </div>
     </section>
   );
