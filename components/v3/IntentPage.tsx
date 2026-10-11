@@ -60,7 +60,7 @@ export function IntentPage({
       headline: title,
       description,
       dateModified: new Date().toISOString(),
-      author: { '@type': 'Person', name: 'TextFromImage' },
+      author: { '@type': 'Person', name: 'Parthiban Rajasekaran' },
       mainEntityOfPage: canonicalUrl,
     };
 

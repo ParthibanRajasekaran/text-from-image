@@ -32,9 +32,9 @@ export interface SEOProps {
   jsonLd?: Record<string, any> | Record<string, any>[];
 }
 
-const SITE_NAME = 'TextFromImage';
+const SITE_NAME = 'RenderCheck';
 const SITE_URL = 'https://getrendercheck.com';
-const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og/default.png`;
 
 /**
  * SEO component that renders meta tags, Open Graph, Twitter Card, and JSON-LD
