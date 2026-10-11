@@ -187,6 +187,10 @@ export function HomepageMinimalPremium() {
                 <a href="https://2026.platformcon.com/speakers/parthiban-rajasekaran" target="_blank" rel="noopener noreferrer">PlatformCon 2026</a>.
                 RenderCheck is an independent project, not affiliated with my employer.
               </p>
+              <p className="text-muted-foreground">
+                The package is published with provenance on npm and listed in the MCP Registry, and the benchmark
+                can be re-run. The evidence is listed on the About page.
+              </p>
               <a href="/about" className="inline-flex min-h-11 items-center underline">
                 About the author and track record
               </a>
