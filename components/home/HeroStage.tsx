@@ -175,7 +175,7 @@ export function HeroStage() {
               href={ROUTES.DEVELOPERS}
               className="inline-flex h-12 items-center justify-center rounded-full bg-primary px-8 text-[15px] font-medium text-primary-foreground transition duration-150 hover:opacity-85 active:scale-[0.98]"
             >
-              Add it to your tests
+              Read the docs
             </a>
             <a
               href="#ocr-tool"

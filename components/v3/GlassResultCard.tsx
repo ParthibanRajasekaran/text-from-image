@@ -1,3 +1,4 @@
+import { CopyButton } from '../home/ScrollKit';
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { CopyIcon } from '../icons/CopyIcon';
@@ -74,6 +75,12 @@ export function GlassResultCard({ text, onCopy, onDownload, filename = 'extracte
     onDownload?.();
   }, [text, filename, onDownload]);
 
+  // First non-empty line, capped, escaped for a single-quoted string literal.
+  const firstLine = text.split('\n').map((l) => l.trim()).find(Boolean)?.slice(0, 60) ?? '';
+  const literal = firstLine.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  const ciSnippet = firstLine
+    ? `import { expect } from '@rendercheck/sdk/playwright';\n\nawait expect(page).toShowText('${literal}');`
+    : '';
   const jsonOutput = JSON.stringify(
     { file: filename, words: text.trim().split(/\s+/).filter(Boolean).length, characters: text.length, text },
     null,
@@ -163,6 +170,15 @@ export function GlassResultCard({ text, onCopy, onDownload, filename = 'extracte
               />
             )}
           </div>
+          {ciSnippet && (
+            <div className="mt-4 rounded-lg border border-border">
+              <div className="flex items-center justify-between border-b border-border px-3 py-2">
+                <p className="text-xs font-medium text-muted-foreground">Catch this in CI</p>
+                <CopyButton text={ciSnippet} label="Copy Playwright snippet" />
+              </div>
+              <pre tabIndex={0} aria-label="Playwright assertion for this text" className="overflow-x-auto p-3 font-mono text-xs text-foreground">{ciSnippet}</pre>
+            </div>
+          )}
         </div>
       </motion.div>
 
