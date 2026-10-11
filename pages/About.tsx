@@ -22,8 +22,10 @@ export default function About() {
 
   // Section navigation for scroll spy
   const sections: ScrollNavSection[] = [
+    { id: 'author', label: 'The author' },
     { id: 'pillars', label: 'Why RenderCheck' },
     { id: 'how-it-works', label: 'How It Works' },
+    { id: 'record', label: 'Track record' },
     { id: 'quality', label: 'Quality & Trust' },
     { id: 'roadmap', label: 'Roadmap' },
     { id: 'contact', label: 'Contact' },
@@ -39,11 +41,15 @@ export default function About() {
       name: 'Parthiban Rajasekaran',
       url: 'https://www.linkedin.com/in/parthiban-rajasekaran/',
       image: `${SITE_URL}/images/parthiban-960.jpg`,
-      jobTitle: 'Software engineer',
-      description: 'Author of RenderCheck, a local OCR toolkit for UI tests and images',
+      jobTitle: 'Principal Dev Engineer',
+      description:
+        'Author of RenderCheck, a local OCR assertion SDK for Playwright and Cypress. Writes and speaks on AI-accelerated delivery and reliability.',
+      knowsAbout: ['Software test automation', 'Reliability engineering', 'AI-assisted software delivery', 'Verification debt'],
       sameAs: [
         'https://www.linkedin.com/in/parthiban-rajasekaran/',
         'https://github.com/ParthibanRajasekaran',
+        'https://leaddev.com/community/parthiban-rajasekaran',
+        'https://medium.com/@rajasekaran.parthiban7',
       ],
       email: CONTACT_EMAIL,
     },
@@ -75,9 +81,9 @@ export default function About() {
         </figure>
         <div className="px-6 pb-6">
           <h3 className="font-semibold text-foreground mb-1">Parthiban Rajasekaran</h3>
-          <p className="text-xs text-muted-foreground mb-3">Creator & Engineer</p>
+          <p className="text-xs text-muted-foreground mb-3">Author of RenderCheck · Principal Dev Engineer</p>
           <p className="text-xs text-foreground/80 leading-relaxed mb-4">
-            Full-stack engineer passionate about privacy, performance, and accessible software.
+            Works on reliability, test automation and AI-assisted delivery in regulated financial services. Writes and speaks on the same.
           </p>
           <div className="flex gap-2 text-xs">
             <a
@@ -109,7 +115,7 @@ export default function About() {
   return (
     <ContentLayout
       title="About RenderCheck"
-      subtitle="Local OCR for UI tests and images. No signup. No uploads."
+      subtitle="Verifying what AI-generated interfaces actually show. Built and maintained by Parthiban Rajasekaran."
       breadcrumb={[
         { label: 'Home', href: '/' },
         { label: 'About' },
@@ -122,44 +128,75 @@ export default function About() {
       {/* Hero + CTAs */}
       <Glass className="mb-8 space-y-4">
         <p className="text-foreground/90 leading-relaxed">
-          RenderCheck reads text from pixels on your own machine: in your browser for the free
-          image-to-text tool, and in your test process for the Playwright and Cypress SDK. Nothing is
-          uploaded.
+          RenderCheck reads text from pixels on your own machine: in your test process for the Playwright and
+          Cypress SDK, and in your browser for the free image-to-text tool. Nothing is uploaded. It exists
+          to catch what DOM assertions cannot: text that the code says is on screen and the user cannot read.
         </p>
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
-            to="/"
+            to="/developers"
             className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-full hover:opacity-85 active:scale-[0.98] transition duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+          >
+            Read the docs
+          </Link>
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center px-6 py-3 border border-border text-foreground font-medium rounded-full hover:bg-foreground/[0.04] transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
           >
             Try Image → Text
           </Link>
-          <Link
-            to="/image-to-text"
-            className="inline-flex items-center justify-center px-6 py-3 border border-accent/30 text-accent font-semibold rounded-lg hover:bg-accent/5 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
-          >
-            See Guides
-          </Link>
         </div>
       </Glass>
+
+      {/* Author */}
+      <section id="author" className="mb-8">
+        <h2 className="text-2xl font-semibold text-foreground mb-4">The author</h2>
+        <Glass className="space-y-4 text-foreground/90 leading-relaxed">
+          <p>
+            I am Parthiban Rajasekaran, a Principal Dev Engineer at Capital One in the UK, working on
+            reliability, observability and AI-assisted delivery in regulated financial services. Before that I led
+            quality and platform engineering across eight product teams for Volkswagen Group at Diconium in Berlin
+            (2018 to 2023), after six years as a software engineer at Tata Consultancy Services.
+          </p>
+          <p>
+            I designed and built RenderCheck myself: the Playwright and Cypress matchers, the locale rules, the
+            GitHub Action that annotates pull requests, the in-browser OCR worker, and the checks that fail the build
+            if anything leaves the page. The design rule is that the check runs where the pixels are, so a screenshot
+            never has to be uploaded to be verified.
+          </p>
+          <p>
+            I use the term{' '}
+            <Link to="/what-is-verification-debt" className="text-accent underline">
+              verification debt
+            </Link>{' '}
+            for the gap between what a test suite asserts and what users actually see. The page defines it, lists
+            five failure types and states what it does not cover.
+          </p>
+          <p className="text-xs text-muted-foreground border-t border-border pt-4">
+            RenderCheck is an independent project. It is not affiliated with, endorsed by or built for my employer,
+            and opinions here are my own.
+          </p>
+        </Glass>
+      </section>
 
       {/* Value Pillars */}
       <section id="pillars" className="mb-8">
         <h2 className="text-2xl font-semibold text-foreground mb-4">Why RenderCheck</h2>
         <div className="grid sm:grid-cols-3 gap-4">
           <PillarCard
+            icon={<svg viewBox="0 0 24 24" className="h-8 w-8 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z M12 9a3 3 0 100 6 3 3 0 000-6z" /></svg>}
+            title="Reads what is rendered"
+            body="A test can pass while the screen shows € for $, a clipped label or text nobody can read. RenderCheck asserts on the pixels."
+          />
+          <PillarCard
             icon={<svg viewBox="0 0 24 24" className="h-8 w-8 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 11V8a5 5 0 0110 0v3M5 11h14v9H5z" /></svg>}
-            title="Private"
-            body="Your images never leave your device. Processing happens in your browser, no servers, no uploads, no logs."
+            title="Local only"
+            body="OCR runs in your test process or your browser tab. No API key, no upload, no network call from the SDK."
           />
           <PillarCard
-            icon={<svg viewBox="0 0 24 24" className="h-8 w-8 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z" /></svg>}
-            title="Fast"
-            body="Instant results. OCR runs locally using Tesseract (WASM), with nothing uploaded."
-          />
-          <PillarCard
-            icon={<svg viewBox="0 0 24 24" className="h-8 w-8 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 4a1.5 1.5 0 100 .01M6 8h12M12 8v5l-3 7M12 13l3 7" /></svg>}
-            title="Accessible"
-            body="Built for everyone. Keyboard navigation, screen reader support, and semantic HTML structure."
+            icon={<svg viewBox="0 0 24 24" className="h-8 w-8 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7" /></svg>}
+            title="Fails with evidence"
+            body="A failure says what OCR read, where it differs and where on the screen, and the GitHub Action marks the failing test line."
           />
         </div>
       </section>
@@ -171,45 +208,54 @@ export default function About() {
           <ol className="space-y-3">
             <li className="flex gap-3">
               <span className="font-bold text-accent flex-shrink-0">1.</span>
-              <span className="text-foreground/90">Upload an image, it stays in your browser.</span>
+              <span className="text-foreground/90">Your test takes a screenshot, or you drop an image into the browser tool.</span>
             </li>
             <li className="flex gap-3">
               <span className="font-bold text-accent flex-shrink-0">2.</span>
-              <span className="text-foreground/90">OCR runs locally in Web Workers, no server call.</span>
+              <span className="text-foreground/90">Tesseract (WebAssembly) reads it on your machine, with the English data installed alongside.</span>
             </li>
             <li className="flex gap-3">
               <span className="font-bold text-accent flex-shrink-0">3.</span>
-              <span className="text-foreground/90">Results appear instantly. Copy, export, or use.</span>
+              <span className="text-foreground/90">The assertion passes, or fails with a diff of expected against read text, confidence and contrast.</span>
             </li>
           </ol>
-          <p className="text-xs text-muted-foreground mt-4 border-t border-white/10 pt-4">
-            Your images and data remain on your device at all times. No uploads. No server storage.
+          <p className="text-xs text-muted-foreground mt-4 border-t border-border pt-4">
+            Architecture and threat model:{' '}
+            <Link to="/security" className="text-accent underline">how it stays local</Link>.
           </p>
         </Glass>
       </section>
 
-      {/* Roadmap */}
-      <section id="roadmap" className="mb-8">
-        <h2 className="text-2xl font-semibold text-foreground mb-4">What's Next</h2>
+      {/* Track record */}
+      <section id="record" className="mb-8">
+        <h2 className="text-2xl font-semibold text-foreground mb-4">Track record</h2>
         <Glass>
-          <div className="space-y-3 text-sm text-foreground/90">
-            <div>
-              <strong className="text-foreground">Tables → Excel</strong>
-              <p className="text-xs text-foreground/70">Extract tables from images into .xlsx files.</p>
-            </div>
-            <div>
-              <strong className="text-foreground">More Languages & Handwriting</strong>
-              <p className="text-xs text-foreground/70">Additional languages and better handwriting support.</p>
-            </div>
-            <div>
-              <strong className="text-foreground">PWA & Offline</strong>
-              <p className="text-xs text-foreground/70">Install as app, work completely offline.</p>
-            </div>
-            <div>
-              <strong className="text-foreground">Redaction Tools</strong>
-              <p className="text-xs text-foreground/70">Privacy-focused redaction before export.</p>
-            </div>
-          </div>
+          <p className="text-sm text-muted-foreground mb-4">
+            Each item links to a page I do not control, so you can check it.
+          </p>
+          <ul className="space-y-3 text-sm text-foreground/90">
+            <li>
+              <strong>Writing.</strong> Author of a LeadDev article on why AI-assisted coding sped up delivery while
+              incidents rose, listed on my{' '}
+              <a className="text-accent underline" href="https://leaddev.com/community/parthiban-rajasekaran" target="_blank" rel="noopener noreferrer">LeadDev author page</a>,
+              which also lists me as a Cypress and Pynt ambassador. Author of the book{' '}
+              <em>Building High-Performance Engineering Teams</em> (ISBN 979-8242088597).
+            </li>
+            <li>
+              <strong>Speaking.</strong> PlatformCon 2026: &ldquo;From Copilot to canary: Platform guardrails for
+              AI-accelerated delivery&rdquo; (
+              <a className="text-accent underline" href="https://2026.platformcon.com/speakers/parthiban-rajasekaran" target="_blank" rel="noopener noreferrer">speaker page</a>
+              ). Roundtable host at an IQPC summit: &ldquo;Moving Faster Without Breaking Things&rdquo; (
+              <a className="text-accent underline" href="https://www.iqpc.com/events-platform-engineering-summit/speakers/parthiban-rajasekaran" target="_blank" rel="noopener noreferrer">speaker page</a>
+              ).
+            </li>
+            <li>
+              <strong>Open source.</strong> RenderCheck is MIT licensed and developed in the open at{' '}
+              <a className="text-accent underline" href="https://github.com/ParthibanRajasekaran/text-from-image" target="_blank" rel="noopener noreferrer">github.com/ParthibanRajasekaran/text-from-image</a>.
+              Releases are published to npm from GitHub Actions with provenance, so each version can be traced to its
+              source commit.
+            </li>
+          </ul>
         </Glass>
       </section>
 
@@ -221,34 +267,70 @@ export default function About() {
             <li className="flex gap-2">
               <span className="text-accent">✓</span>
               <span>
-                <strong>Core Web Vitals:</strong> LCP &lt; 2.5s, INP &lt; 200ms, CLS &lt; 0.1
+                <strong>Network proof:</strong> an end-to-end test fails the build on any off-origin or upload request
+                during an OCR run, under the same Content Security Policy that production serves.
               </span>
             </li>
             <li className="flex gap-2">
               <span className="text-accent">✓</span>
               <span>
-                <strong>Accessibility:</strong> Keyboard accessible, screen reader tested, semantic HTML
+                <strong>Accessibility:</strong> axe-core runs in CI on the main pages in light and dark themes.
               </span>
             </li>
             <li className="flex gap-2">
               <span className="text-accent">✓</span>
               <span>
-                <strong>Consent Mode v2:</strong> Ads load only after explicit consent
+                <strong>Tested on every pull request:</strong> unit tests for the site and the SDK, plus a Playwright
+                end-to-end suite.
               </span>
             </li>
             <li className="flex gap-2">
               <span className="text-accent">✓</span>
               <span>
-                <strong>No Ads on Tools:</strong> Ad-free experience on all OCR/converter pages
+                <strong>Supply chain:</strong> npm publishing uses trusted publishing from GitHub Actions, with a
+                provenance statement on each release.
               </span>
             </li>
             <li className="flex gap-2">
               <span className="text-accent">✓</span>
               <span>
-                <strong>Security:</strong> served over HTTPS, no cookies, no third-party scripts
+                <strong>Privacy:</strong> no cookies, no analytics and no advertising scripts. See the{' '}
+                <a className="text-accent underline" href="/privacy-policy">privacy policy</a> and the{' '}
+                <a className="text-accent underline" href="/security">security page</a>.
               </span>
             </li>
           </ul>
+        </Glass>
+      </section>
+
+      {/* Roadmap */}
+      <section id="roadmap" className="mb-8">
+        <h2 className="text-2xl font-semibold text-foreground mb-4">Roadmap and sustainability</h2>
+        <Glass>
+          <div className="space-y-4 text-sm text-foreground/90">
+            <p>
+              These are plans, not products. Nothing below is for sale or open for sign-up today.
+            </p>
+            <div>
+              <strong className="text-foreground">Stays free and open</strong>
+              <p className="text-xs text-foreground/70">
+                The SDK, the GitHub Action and the browser tool remain MIT licensed and free to use.
+              </p>
+            </div>
+            <div>
+              <strong className="text-foreground">Next for the open-source core</strong>
+              <p className="text-xs text-foreground/70">
+                More bundled OCR languages beyond English, and a published, reproducible accuracy benchmark.
+              </p>
+            </div>
+            <div>
+              <strong className="text-foreground">Under consideration for teams</strong>
+              <p className="text-xs text-foreground/70">
+                A hosted history of failures across CI runs, and enterprise needs such as single sign-on, only if
+                teams using the SDK ask for them. If this becomes a paid offering, the open-source core stays as it is.
+              </p>
+            </div>
+          </div>
         </Glass>
       </section>
 
@@ -257,7 +339,7 @@ export default function About() {
         <h2 className="text-2xl font-semibold text-foreground mb-4">Have Questions?</h2>
         <Glass className="space-y-3">
           <p className="text-foreground/90">
-            Found a bug? Have a feature request?{' '}
+            Found a bug, have a feature request, or want to write up how you use RenderCheck in CI?{' '}
             <Link
               to="/contact"
               className="text-accent hover:text-accent-2 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded px-1"

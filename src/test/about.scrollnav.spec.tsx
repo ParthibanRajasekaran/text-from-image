@@ -52,7 +52,9 @@ describe('About Page', () => {
 
     expect(h2Texts).toContain('Why RenderCheck');
     expect(h2Texts).toContain('How It Works');
-    expect(h2Texts).toContain("What's Next");
+    expect(h2Texts).toContain('Roadmap and sustainability');
+    expect(h2Texts).toContain('The author');
+    expect(h2Texts).toContain('Track record');
     expect(h2Texts).toContain('Quality & Trust');
     expect(h2Texts).toContain('Have Questions?');
   });
@@ -64,13 +66,9 @@ describe('About Page', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText('Private')).toBeInTheDocument();
-    expect(screen.getByText('Fast')).toBeInTheDocument();
-    expect(screen.getByText('Accessible')).toBeInTheDocument();
-
-    expect(screen.getByText(/Your images never leave your device/)).toBeInTheDocument();
-    expect(screen.getByText(/Instant results/)).toBeInTheDocument();
-    expect(screen.getByText(/Built for everyone/)).toBeInTheDocument();
+    expect(screen.getByText('Reads what is rendered')).toBeInTheDocument();
+    expect(screen.getByText('Local only')).toBeInTheDocument();
+    expect(screen.getByText('Fails with evidence')).toBeInTheDocument();
   });
 
   it('renders founder card with headshot image', () => {
@@ -96,21 +94,18 @@ describe('About Page', () => {
     );
 
     expect(screen.getByText('Parthiban Rajasekaran')).toBeInTheDocument();
-    expect(screen.getByText('Creator & Engineer')).toBeInTheDocument();
+    expect(screen.getByText(/Author of RenderCheck · Principal Dev Engineer/)).toBeInTheDocument();
   });
 
-  it('renders CTA links to main tool and guides', () => {
+  it('renders CTA links to the docs and the main tool', () => {
     render(
       <BrowserRouter>
         <About />
       </BrowserRouter>
     );
 
-    const tryLink = screen.getByRole('link', { name: /Try Image → Text/ });
-    expect(tryLink).toHaveAttribute('href', '/');
-
-    const guidesLink = screen.getByRole('link', { name: /See Guides/ });
-    expect(guidesLink).toHaveAttribute('href', '/image-to-text');
+    expect(screen.getByRole('link', { name: /Read the docs/ })).toHaveAttribute('href', '/developers');
+    expect(screen.getByRole('link', { name: /Try Image → Text/ })).toHaveAttribute('href', '/');
   });
 
   it('renders How It Works section with ordered list', () => {
@@ -120,35 +115,58 @@ describe('About Page', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText(/Upload an image, it stays in your browser/)).toBeInTheDocument();
-    expect(screen.getByText(/OCR runs locally in Web Workers/)).toBeInTheDocument();
-    expect(screen.getByText(/Results appear instantly/)).toBeInTheDocument();
+    expect(screen.getByText(/Your test takes a screenshot/)).toBeInTheDocument();
+    expect(screen.getByText(/Tesseract \(WebAssembly\) reads it on your machine/)).toBeInTheDocument();
+    expect(screen.getByText(/The assertion passes, or fails with a diff/)).toBeInTheDocument();
   });
 
-  it('renders roadmap section with feature items', () => {
+  it('labels the roadmap as plans and keeps the core free', () => {
     render(
       <BrowserRouter>
         <About />
       </BrowserRouter>
     );
 
-    expect(screen.getByText(/Tables → Excel/)).toBeInTheDocument();
-    expect(screen.getByText(/More Languages & Handwriting/)).toBeInTheDocument();
-    expect(screen.getByText(/PWA & Offline/)).toBeInTheDocument();
-    expect(screen.getByText(/Redaction Tools/)).toBeInTheDocument();
+    expect(screen.getByText(/These are plans, not products/)).toBeInTheDocument();
+    expect(screen.getByText('Stays free and open')).toBeInTheDocument();
+    expect(screen.getByText('Under consideration for teams')).toBeInTheDocument();
   });
 
-  it('renders Quality & Trust section with key commitments', () => {
+  it('renders Quality & Trust section with checkable commitments', () => {
     render(
       <BrowserRouter>
         <About />
       </BrowserRouter>
     );
 
-    expect(screen.getByText(/Core Web Vitals/)).toBeInTheDocument();
-    expect(screen.getByText(/Keyboard accessible, screen reader tested, semantic HTML/)).toBeInTheDocument();
-    expect(screen.getByText(/Consent Mode v2/)).toBeInTheDocument();
-    expect(screen.getByText(/No Ads on Tools/)).toBeInTheDocument();
+    expect(screen.getByText(/Network proof:/)).toBeInTheDocument();
+    expect(screen.getByText(/axe-core runs in CI/)).toBeInTheDocument();
+    expect(screen.getByText(/Supply chain:/)).toBeInTheDocument();
+  });
+
+  it('attributes the work to its author with external, checkable links and an independence statement', () => {
+    render(
+      <BrowserRouter>
+        <About />
+      </BrowserRouter>
+    );
+
+    const hrefs = screen.getAllByRole('link').map((a) => a.getAttribute('href'));
+    expect(hrefs).toContain('https://leaddev.com/community/parthiban-rajasekaran');
+    expect(hrefs).toContain('https://2026.platformcon.com/speakers/parthiban-rajasekaran');
+    expect(screen.getByText(/independent project/i)).toBeInTheDocument();
+    expect(screen.getByText(/ISBN 979-8242088597/)).toBeInTheDocument();
+  });
+
+  it('makes no claims about partners, customers or a company', () => {
+    render(
+      <BrowserRouter>
+        <About />
+      </BrowserRouter>
+    );
+
+    const text = document.body.textContent ?? '';
+    expect(text).not.toMatch(/design partner|our customers|our team|trusted by|waitlist/i);
   });
 
   it('renders contact section with link and email', () => {
