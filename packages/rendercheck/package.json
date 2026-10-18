@@ -111,7 +111,7 @@
     "@playwright/test": "1.64.0",
     "@types/node": "^26.6.4",
     "@types/pngjs": "^6.0.5",
-    "tsup": "^8.5.0",
+    "tsup": "^9.0.0",
     "typescript": "~5.9.3",
     "vitest": "^4.0.18",
     "zod": "^4.6.5"
